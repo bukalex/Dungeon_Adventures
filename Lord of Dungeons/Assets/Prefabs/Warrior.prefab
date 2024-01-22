@@ -120,7 +120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fcc70df4a6ddd04398b496e9c240a74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  body: {fileID: 5555731992974423127}
   meleeRange: 0.8
   meleeCooldown: 0.625
 --- !u!114 &2060364349164352800
@@ -135,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b26f57ac95b9af94ea85b04302eb90af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  body: {fileID: 5555731992974423127}
+  speed: 0.75
 --- !u!1 &8139960661779500219
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,4 +254,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 908c849ec00dd4641887849fe5ebbac3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 6120607074264631025}

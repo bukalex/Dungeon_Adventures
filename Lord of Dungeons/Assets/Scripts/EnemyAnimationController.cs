@@ -6,8 +6,10 @@ public class EnemyAnimationController : MonoBehaviour
 {
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private bool interrupt = false;
+    private DirectionName direction = DirectionName.FRONT;
 
-    public enum DirectionName { FRONT, BACK, LEFT, RIGHT }
+    private enum DirectionName { FRONT, BACK, LEFT, RIGHT }
 
     void Start()
     {
@@ -18,27 +20,29 @@ public class EnemyAnimationController : MonoBehaviour
     }
 
     //Call this method when change movement direction
-    public void changeDirection(DirectionName direction)
+    public void ChangeDirection(float angle)
     {
-        switch (direction)
+        if (Mathf.Abs(angle) > 135 && direction != DirectionName.LEFT)
         {
-            case DirectionName.FRONT:
-                animator.SetTrigger("front");
-                break;
-
-            case DirectionName.BACK:
-                animator.SetTrigger("back");
-                break;
-
-            case DirectionName.LEFT:
-                animator.SetTrigger("side");
-                spriteRenderer.flipX = false;
-                break;
-
-            case DirectionName.RIGHT:
-                animator.SetTrigger("side");
-                spriteRenderer.flipX = true;
-                break;
+            direction = DirectionName.LEFT;
+            animator.SetTrigger("side");
+            spriteRenderer.flipX = false;
+        }
+        else if (135 >= angle && angle > 45 && direction != DirectionName.BACK)
+        {
+            direction = DirectionName.BACK;
+            animator.SetTrigger("back");
+        }
+        else if (-135 <= angle && angle < -45 && direction != DirectionName.FRONT)
+        {
+            direction = DirectionName.FRONT;
+            animator.SetTrigger("front");
+        }
+        else if (Mathf.Abs(angle) <= 45 && direction != DirectionName.RIGHT)
+        {
+            direction = DirectionName.RIGHT;
+            animator.SetTrigger("side");
+            spriteRenderer.flipX = true;
         }
     }
 
@@ -53,17 +57,22 @@ public class EnemyAnimationController : MonoBehaviour
     public void Walk()
     {
         animator.SetBool("isWalking", true);
+        animator.SetBool("isRunning", false);
     }
 
     public void Run()
     {
+        animator.SetBool("isWalking", true);
         animator.SetBool("isRunning", true);
     }
 
     public void Attack()
     {
-        Stop();
-        animator.SetTrigger("attack");
+        if (!interrupt)
+        {
+            Stop();
+            animator.SetTrigger("attack");
+        }
     }
 
     public void Defend()
@@ -74,6 +83,7 @@ public class EnemyAnimationController : MonoBehaviour
 
     public void Confuse()
     {
+        StartCoroutine(Interrupt());
         Stop();
         animator.SetBool("isConfused", true);
     }
@@ -86,7 +96,15 @@ public class EnemyAnimationController : MonoBehaviour
 
     public void Die()
     {
+        StartCoroutine(Interrupt());
         Stop();
         animator.SetTrigger("isDead");
+    }
+
+    IEnumerator Interrupt()
+    {
+        interrupt = true;
+        yield return new WaitForSeconds(1.0f);
+        interrupt = false;
     }
 }

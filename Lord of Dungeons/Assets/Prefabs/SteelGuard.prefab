@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 3709116588778584301}
   - component: {fileID: 7237140901737375159}
   - component: {fileID: 2697591959969603912}
+  - component: {fileID: 6306942329176369196}
   m_Layer: 0
   m_Name: SteelGuard
   m_TagString: Enemy
@@ -238,3 +239,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c5a5e0cd0b53f549ad4f231f981dacb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectionRange: 5
+  isDetector: 0
+  speed: 0.5
+  satisfactionRadius: 1
+--- !u!114 &6306942329176369196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5612716396147068638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c14a49e4bcc04874184aeb28ce60abff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meleeRange: 1
+  meleeCooldown: 1

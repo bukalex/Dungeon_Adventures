@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WarriorAnimationController : MonoBehaviour
+public class PlayerAnimationController : MonoBehaviour
 {
     private Animator animator;
     private KeyCode verticalKeyCode = KeyCode.S;
     private KeyCode horizontalKeyCode = KeyCode.S;
+    private bool interrupt = false;
 
     void Start()
     {
@@ -63,7 +64,7 @@ public class WarriorAnimationController : MonoBehaviour
         }
 
         //Attack 1
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !interrupt)
         {
             animator.SetBool("isRunning", false);
             animator.SetBool("isWalking", false);
@@ -71,7 +72,7 @@ public class WarriorAnimationController : MonoBehaviour
         }
 
         //Attack 2
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) && !interrupt)
         {
             animator.SetBool("isRunning", false);
             animator.SetBool("isWalking", false);
@@ -79,7 +80,7 @@ public class WarriorAnimationController : MonoBehaviour
         }
 
         //Stop attacking
-        if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1) || interrupt)
         {
             animator.ResetTrigger("attack1");
             animator.ResetTrigger("attack2");
@@ -95,8 +96,18 @@ public class WarriorAnimationController : MonoBehaviour
 
     public void Die()
     {
+        StartCoroutine(Interrupt());
+
         animator.SetBool("isRunning", false);
         animator.SetBool("isWalking", false);
+
         animator.SetTrigger("isDead");
+    }
+
+    IEnumerator Interrupt()
+    {
+        interrupt = true;
+        yield return new WaitForSeconds(1.0f);
+        interrupt = false;
     }
 }

@@ -4,41 +4,92 @@ using UnityEngine;
 
 public class GeneralCharacterController : MonoBehaviour
 {
+    [SerializeField] float speed = 0.75f;
+    [SerializeField] float health = 100.0f;
+
     private Rigidbody2D body;
     private Vector2 direction;
     private Vector2 attackDirection = new Vector2(0, -1);
-    private float speed = 0.75f;
+
+    private PlayerAnimationController animationController;
 
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
+        animationController = GetComponentInChildren<PlayerAnimationController>();
     }
 
     void Update()
     {
-        //Movement with WASD and run with left shift
-        //Cannot run and fight at once
-        direction = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        direction.Normalize();
+        if (isAlive())
+        {
+            //Movement with WASD and run with left shift
+            //Cannot run and fight at once
+            direction = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            direction.Normalize();
 
-        if (Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(0) && !Input.GetMouseButton(1))
-        {
-            body.velocity = direction * speed * 2;
-        }
-        else
-        {
-            body.velocity = direction * speed;
-        }
+            if (Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(0) && !Input.GetMouseButton(1))
+            {
+                body.velocity = direction * speed * 2;
+            }
+            else
+            {
+                body.velocity = direction * speed;
+            }
 
-        //Save attackDirection
-        if (direction.magnitude != 0)
-        {
-            attackDirection = direction;
+            //Save attackDirection
+            if (direction.magnitude != 0)
+            {
+                attackDirection = direction;
+            }
         }
     }
 
-    public Vector2 GetAttackDirection()
+    //Detect enemies in the 90 degree sector in front of the player
+    public List<GeneralEnemyController> DetectEnemies(float range, bool inSector = true)
     {
-        return attackDirection;
+        Collider2D[] targets = Physics2D.OverlapCircleAll(transform.position, range);
+        List<GeneralEnemyController> enemies = new List<GeneralEnemyController>();
+
+        foreach (Collider2D target in targets)
+        {
+            if (target.tag.Equals("Enemy") && target.GetComponent<GeneralEnemyController>().isAlive())
+            {
+                Vector2 targetDirection = target.transform.position - transform.position;
+
+                if (!inSector)
+                {
+                    enemies.Add(target.GetComponent<GeneralEnemyController>());
+                }
+                else if (Vector2.Angle(attackDirection, targetDirection) <= 45)
+                {
+                    enemies.Add(target.GetComponent<GeneralEnemyController>());
+                }
+            }
+        }
+
+        return enemies;
+    }
+
+    //Call this method when enemy hits player
+    public void DealDamage(float damage)
+    {
+        Debug.Log("Character was hit");
+
+        health -= damage;
+        if (health <= 0)
+        {
+            animationController.Die();
+        }
+    }
+
+    public bool isAlive()
+    {
+        if (health > 0)
+        {
+            return true;
+        }
+
+        return false;
     }
 }
