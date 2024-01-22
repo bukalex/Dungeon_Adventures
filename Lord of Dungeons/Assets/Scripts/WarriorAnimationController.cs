@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class WarriorAnimationController : MonoBehaviour
 {
-    [SerializeField] Animator animator;
-
-    private KeyCode directionKeyCode = KeyCode.S;
+    private Animator animator;
+    private KeyCode verticalKeyCode = KeyCode.S;
+    private KeyCode horizontalKeyCode = KeyCode.S;
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         transform.localPosition = new Vector3(0, 0, 0);
     }
 
@@ -18,22 +19,22 @@ public class WarriorAnimationController : MonoBehaviour
         //Change direction
         if (Input.GetKeyDown(KeyCode.A))
         {
-            directionKeyCode = KeyCode.A;
+            horizontalKeyCode = KeyCode.A;
             animator.SetTrigger("left");
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            directionKeyCode = KeyCode.D;
+            horizontalKeyCode = KeyCode.D;
             animator.SetTrigger("right");
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
-            directionKeyCode = KeyCode.W;
+            verticalKeyCode = KeyCode.W;
             animator.SetTrigger("back");
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            directionKeyCode = KeyCode.S;
+            verticalKeyCode = KeyCode.S;
             animator.SetTrigger("front");
         }
 
@@ -44,7 +45,7 @@ public class WarriorAnimationController : MonoBehaviour
         }
 
         //Stop walking
-        if (Input.GetKeyUp(directionKeyCode))
+        if (!Input.GetKey(verticalKeyCode) && !Input.GetKey(horizontalKeyCode))
         {
             animator.SetBool("isWalking", false);
         }
@@ -85,14 +86,14 @@ public class WarriorAnimationController : MonoBehaviour
         }
     }
 
-    public void PlayHurt()
+    public void Hurt()
     {
         animator.SetBool("isRunning", false);
         animator.SetBool("isWalking", false);
         animator.SetTrigger("isHurt");
     }
 
-    public void PlayDied()
+    public void Die()
     {
         animator.SetBool("isRunning", false);
         animator.SetBool("isWalking", false);

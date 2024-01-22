@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class GeneralEnemyController : MonoBehaviour
 {
+    private EnemyAnimationController animationController;
+
     void Start()
     {
-        
+        animationController = GetComponentInChildren<EnemyAnimationController>();
     }
 
     void Update()
@@ -17,6 +19,6 @@ public class GeneralEnemyController : MonoBehaviour
     //Call this method when player hits enemy
     public void OnHit()
     {
-        Debug.Log("Enemy was hit");
+        animationController.Hurt();
     }
 }

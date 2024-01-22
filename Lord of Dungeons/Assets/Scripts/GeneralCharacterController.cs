@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class GeneralCharacterController : MonoBehaviour
 {
-    [SerializeField] Rigidbody2D body;
-
+    private Rigidbody2D body;
     private Vector2 direction;
+    private Vector2 attackDirection = new Vector2(0, -1);
     private float speed = 0.75f;
+
+    void Start()
+    {
+        body = GetComponent<Rigidbody2D>();
+    }
 
     void Update()
     {
@@ -24,5 +29,16 @@ public class GeneralCharacterController : MonoBehaviour
         {
             body.velocity = direction * speed;
         }
+
+        //Save attackDirection
+        if (direction.magnitude != 0)
+        {
+            attackDirection = direction;
+        }
+    }
+
+    public Vector2 GetAttackDirection()
+    {
+        return attackDirection;
     }
 }

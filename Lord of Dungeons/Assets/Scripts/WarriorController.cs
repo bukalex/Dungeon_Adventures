@@ -4,13 +4,23 @@ using UnityEngine;
 
 public class WarriorController : MonoBehaviour
 {
-    [SerializeField] Rigidbody2D body;
     [SerializeField] float meleeRange = 0.8f;
     [SerializeField] float meleeCooldown = 0.625f;
 
     private bool isReadyToAttack = true;
+    private Rigidbody2D body;
+    private GeneralCharacterController characterController;
+    private WarriorAnimationController animationController;
 
     private enum AttackType { BASIC, SPECIAL }
+
+    void Start()
+    {
+        body = GetComponent<Rigidbody2D>();
+        characterController = GetComponent<GeneralCharacterController>();
+
+        animationController = GetComponentInChildren<WarriorAnimationController>();
+    }
 
     void Update()
     {
@@ -59,6 +69,7 @@ public class WarriorController : MonoBehaviour
         isReadyToAttack = true;
     }
 
+    //Detect enemies in the 90 degree sector in front of the player
     private List<GeneralEnemyController> DetectEnemies()
     {
         Collider2D[] targets = Physics2D.OverlapCircleAll(transform.position, meleeRange);
@@ -68,7 +79,13 @@ public class WarriorController : MonoBehaviour
         {
             if (target.tag.Equals("Enemy"))
             {
-                enemies.Add(target.GetComponent<GeneralEnemyController>());
+                Vector2 attackDirection = characterController.GetAttackDirection();
+                Vector2 targetDirection = target.transform.position - transform.position;
+
+                if (Vector2.Angle(attackDirection, targetDirection) <= 45)
+                {
+                    enemies.Add(target.GetComponent<GeneralEnemyController>());
+                }
             }
         }
 
@@ -78,6 +95,6 @@ public class WarriorController : MonoBehaviour
     //Call this method when enemy hits player
     public void OnHit()
     {
-        Debug.Log("Player was hit");
+        animationController.Hurt();
     }
 }
