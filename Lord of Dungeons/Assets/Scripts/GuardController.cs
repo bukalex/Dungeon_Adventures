@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GuardController : MonoBehaviour
 {
+    [SerializeField] GameObject coinPrefab;
     [SerializeField] float meleeRange = 1.0f;
     [SerializeField] float meleeCooldown = 1.0f;
     [SerializeField] float damage = 10.0f;
@@ -42,6 +43,13 @@ public class GuardController : MonoBehaviour
                 }
             }
         }
+
+        //check if a guard is dead
+        if (enemyController.health <= 0)
+        {
+            //spawn a coin after his death
+            Instantiate(coinPrefab);
+        }
     }
 
     private void PerformAttack()
@@ -58,4 +66,5 @@ public class GuardController : MonoBehaviour
         yield return new WaitForSeconds(time);
         isReadyToAttack = true;
     }
+
 }

@@ -8,7 +8,7 @@ public class GeneralEnemyController : MonoBehaviour
     [SerializeField] bool isDetector = false;
     [SerializeField] float speed = 0.3f;
     [SerializeField] float satisfactionRadius = 0.75f;
-    [SerializeField] float health = 100.0f;
+    [SerializeField] public float health = 100.0f;
 
     private EnemyAnimationController animationController;
     private Rigidbody2D body;
