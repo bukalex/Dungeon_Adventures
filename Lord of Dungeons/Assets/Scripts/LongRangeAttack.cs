@@ -15,7 +15,5 @@ public class LongRangeAttack : MonoBehaviour
         mousPos = mousPos.normalized;
 
         Vector3 direction2target = mousPos - transform.position;
-
-        Instantiate(bulletPrefab, direction2target, direction2target.rotation);
     }
 }
