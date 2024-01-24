@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
+    //public GameObject Coin;
     private Animator animator;
     private KeyCode verticalKeyCode = KeyCode.S;
     private KeyCode horizontalKeyCode = KeyCode.S;
@@ -102,6 +103,7 @@ public class PlayerAnimationController : MonoBehaviour
         animator.SetBool("isWalking", false);
 
         animator.SetTrigger("isDead");
+       
     }
 
     IEnumerator Interrupt()
