@@ -77,6 +77,6 @@ public class WarriorController : MonoBehaviour
     public void UpdateScore(int coinValue)
     {
         score += coinValue;
-        scoreText.text = "Score: " + score; 
+        scoreText.text = score.ToString(); 
     }
 }
