@@ -46,6 +46,8 @@ public class GeneralCharacterController : MonoBehaviour
                 attackDirection = direction;
             }
         }
+
+        healthBar.SetHealth(health);
     }
 
     //Detect enemies in the 90 degree sector in front of the player
