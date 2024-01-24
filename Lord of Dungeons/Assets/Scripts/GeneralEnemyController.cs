@@ -8,7 +8,7 @@ public class GeneralEnemyController : MonoBehaviour
     [SerializeField] bool isDetector = false;
     [SerializeField] float speed = 0.3f;
     [SerializeField] float satisfactionRadius = 0.75f;
-    [SerializeField] float health = 100.0f;
+    [SerializeField] public float health = 100.0f;
 
     private EnemyAnimationController animationController;
     private Rigidbody2D body;
@@ -43,7 +43,7 @@ public class GeneralEnemyController : MonoBehaviour
 
         foreach (Collider2D target in targets)
         {
-            if (target.tag.Equals("Player") && target.GetComponent<GeneralCharacterController>().isAlive())
+            if (target.tag.Equals("Player") && target.GetComponent<GeneralCharacterController>().isAlive() && target.GetType() == typeof(PolygonCollider2D))
             {
                 if (ignoreObstacles)
                 {

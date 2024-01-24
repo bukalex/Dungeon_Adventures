@@ -53,7 +53,7 @@ public class GeneralCharacterController : MonoBehaviour
 
         foreach (Collider2D target in targets)
         {
-            if (target.tag.Equals("Enemy") && target.GetComponent<GeneralEnemyController>().isAlive())
+            if (target.tag.Equals("Enemy") && target.GetComponent<GeneralEnemyController>().isAlive() && target.GetType() == typeof(PolygonCollider2D))
             {
                 Vector2 targetDirection = target.transform.position - transform.position;
 

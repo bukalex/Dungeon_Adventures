@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GuardController : MonoBehaviour
 {
+    [SerializeField] GameObject coinPrefab;
     [SerializeField] float meleeRange = 1.0f;
     [SerializeField] float meleeCooldown = 1.0f;
     [SerializeField] float damage = 10.0f;
@@ -18,6 +19,12 @@ public class GuardController : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         enemyController = GetComponent<GeneralEnemyController>();
         animationController = GetComponentInChildren<EnemyAnimationController>();
+
+        if (enemyController.health <= 0)
+        {
+            //spawn a coin after his death
+            Instantiate(coinPrefab);
+        }
     }
 
     void Update()
@@ -42,6 +49,7 @@ public class GuardController : MonoBehaviour
                 }
             }
         }
+
     }
 
     private void PerformAttack()
@@ -58,4 +66,5 @@ public class GuardController : MonoBehaviour
         yield return new WaitForSeconds(time);
         isReadyToAttack = true;
     }
+
 }
