@@ -9,10 +9,12 @@ public class PlayerAnimationController : MonoBehaviour
     private KeyCode verticalKeyCode = KeyCode.S;
     private KeyCode horizontalKeyCode = KeyCode.S;
     private bool interrupt = false;
+    private PolygonCollider2D[] polygonColliders;
 
     void Start()
     {
         animator = GetComponent<Animator>();
+        polygonColliders = transform.parent.GetComponents<PolygonCollider2D>();
         transform.localPosition = new Vector3(0, 0, 0);
     }
 
@@ -21,21 +23,29 @@ public class PlayerAnimationController : MonoBehaviour
         //Change direction
         if (Input.GetKeyDown(KeyCode.A))
         {
+            DisablePolygonColliders(2);
+
             horizontalKeyCode = KeyCode.A;
             animator.SetTrigger("left");
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
+            DisablePolygonColliders(3);
+
             horizontalKeyCode = KeyCode.D;
             animator.SetTrigger("right");
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
+            DisablePolygonColliders(1);
+
             verticalKeyCode = KeyCode.W;
             animator.SetTrigger("back");
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
+            DisablePolygonColliders(0);
+
             verticalKeyCode = KeyCode.S;
             animator.SetTrigger("front");
         }
@@ -111,5 +121,15 @@ public class PlayerAnimationController : MonoBehaviour
         interrupt = true;
         yield return new WaitForSeconds(1.0f);
         interrupt = false;
+    }
+
+    private void DisablePolygonColliders(int exceptionIndex)
+    {
+        foreach (PolygonCollider2D polygonCollider in polygonColliders)
+        {
+            polygonCollider.enabled = false;
+        }
+
+        polygonColliders[exceptionIndex].enabled = true;
     }
 }

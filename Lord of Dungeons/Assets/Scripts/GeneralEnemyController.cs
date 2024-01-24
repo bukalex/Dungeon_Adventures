@@ -43,7 +43,7 @@ public class GeneralEnemyController : MonoBehaviour
 
         foreach (Collider2D target in targets)
         {
-            if (target.tag.Equals("Player") && target.GetComponent<GeneralCharacterController>().isAlive())
+            if (target.tag.Equals("Player") && target.GetComponent<GeneralCharacterController>().isAlive() && target.GetType() == typeof(PolygonCollider2D))
             {
                 if (ignoreObstacles)
                 {
