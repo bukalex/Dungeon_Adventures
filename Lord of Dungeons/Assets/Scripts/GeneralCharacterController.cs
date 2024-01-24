@@ -5,11 +5,12 @@ using UnityEngine;
 public class GeneralCharacterController : MonoBehaviour
 {
     [SerializeField] float speed = 0.75f;
-    [SerializeField] float health = 100.0f;
+    [SerializeField] public float health = 100.0f;
 
     private Rigidbody2D body;
     private Vector2 direction;
     private Vector2 attackDirection = new Vector2(0, -1);
+    public healthBar healthBar;
 
     private PlayerAnimationController animationController;
 
@@ -17,6 +18,8 @@ public class GeneralCharacterController : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         animationController = GetComponentInChildren<PlayerAnimationController>();
+
+        healthBar.SetMaxHealth(100);
     }
 
     void Update()
@@ -42,6 +45,13 @@ public class GeneralCharacterController : MonoBehaviour
             {
                 attackDirection = direction;
             }
+        }
+
+        healthBar.SetHealth(health);
+
+        if (health > 100)
+        {
+            healthBar.SetHealth(100);
         }
     }
 
@@ -77,6 +87,8 @@ public class GeneralCharacterController : MonoBehaviour
         Debug.Log("Character was hit");
 
         health -= damage;
+
+        healthBar.SetHealth(health);
         if (health <= 0)
         {
             animationController.Die();
