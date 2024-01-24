@@ -1889,6 +1889,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3709116588778584301, guid: e6afb494e8e23a1418ccb147e8ce0a61, type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5612716396147068638, guid: e6afb494e8e23a1418ccb147e8ce0a61, type: 3}
       propertyPath: m_Name
       value: SteelGuard
@@ -3617,6 +3621,17 @@ Transform:
   - {fileID: 1212781135}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1670654490 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8008249627576500885, guid: a86d48118a70fbb4993399ca8ae2e524, type: 3}
+  m_PrefabInstance: {fileID: 8877203332425796826}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1758467670 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5845509629236005313, guid: a86d48118a70fbb4993399ca8ae2e524, type: 3}
@@ -3742,6 +3757,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Warrior
       objectReference: {fileID: 0}
+    - target: {fileID: 4102231930359267010, guid: de83a0095c14d1845933cf66b5845c03, type: 3}
+      propertyPath: scoreText
+      value: 
+      objectReference: {fileID: 1670654490}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
