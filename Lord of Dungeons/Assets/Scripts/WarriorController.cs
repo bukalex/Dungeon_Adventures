@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class WarriorController : MonoBehaviour
 {
+    LongRangeAttack lrg;
+
     [SerializeField] float meleeRange = 1.0f;
     [SerializeField] float meleeCooldown = 0.625f;
     [SerializeField] float damage = 15.0f;
