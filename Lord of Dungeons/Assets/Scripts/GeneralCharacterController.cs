@@ -48,6 +48,11 @@ public class GeneralCharacterController : MonoBehaviour
         }
 
         healthBar.SetHealth(health);
+
+        if (health > 100)
+        {
+            healthBar.SetHealth(100);
+        }
     }
 
     //Detect enemies in the 90 degree sector in front of the player
