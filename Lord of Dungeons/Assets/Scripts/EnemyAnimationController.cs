@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyAnimationController : MonoBehaviour
 {
+    public GameObject Coin;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private bool interrupt = false;
@@ -99,6 +100,7 @@ public class EnemyAnimationController : MonoBehaviour
         StartCoroutine(Interrupt());
         Stop();
         animator.SetTrigger("isDead");
+        Instantiate(Coin, transform.position, Quaternion.identity);
     }
 
     IEnumerator Interrupt()
