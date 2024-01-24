@@ -19,6 +19,12 @@ public class GuardController : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         enemyController = GetComponent<GeneralEnemyController>();
         animationController = GetComponentInChildren<EnemyAnimationController>();
+
+        if (enemyController.health <= 0)
+        {
+            //spawn a coin after his death
+            Instantiate(coinPrefab);
+        }
     }
 
     void Update()
@@ -44,12 +50,6 @@ public class GuardController : MonoBehaviour
             }
         }
 
-        //check if a guard is dead
-        if (enemyController.health <= 0)
-        {
-            //spawn a coin after his death
-            Instantiate(coinPrefab);
-        }
     }
 
     private void PerformAttack()
