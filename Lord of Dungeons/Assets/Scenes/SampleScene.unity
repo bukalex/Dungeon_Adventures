@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &59415017 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5845509629236005313, guid: a86d48118a70fbb4993399ca8ae2e524, type: 3}
+  m_PrefabInstance: {fileID: 463493938}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &191273803
 GameObject:
   m_ObjectHideFlags: 0
@@ -1680,6 +1685,17 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!114 &284738927 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8008249627576500885, guid: a86d48118a70fbb4993399ca8ae2e524, type: 3}
+  m_PrefabInstance: {fileID: 463493938}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &312489145
 GameObject:
   m_ObjectHideFlags: 0
@@ -1928,7 +1944,7 @@ PrefabInstance:
     - target: {fileID: 4102231930359267010, guid: de83a0095c14d1845933cf66b5845c03, type: 3}
       propertyPath: scoreText
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 284738927}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3331,6 +3347,11 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &1358516512 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3438706853552976172, guid: de83a0095c14d1845933cf66b5845c03, type: 3}
+  m_PrefabInstance: {fileID: 761971990}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1459389296
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3383,6 +3404,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: SceneChangeTrigger
       objectReference: {fileID: 0}
+    - target: {fileID: 7630965821581442856, guid: 14c0e2c9df4aa10459bb2aae77e835f3, type: 3}
+      propertyPath: moveObjects.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7630965821581442856, guid: 14c0e2c9df4aa10459bb2aae77e835f3, type: 3}
+      propertyPath: moveObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 1358516512}
+    - target: {fileID: 7630965821581442856, guid: 14c0e2c9df4aa10459bb2aae77e835f3, type: 3}
+      propertyPath: moveObjects.Array.data[1]
+      value: 
+      objectReference: {fileID: 59415017}
+    - target: {fileID: 7630965821581442856, guid: 14c0e2c9df4aa10459bb2aae77e835f3, type: 3}
+      propertyPath: moveObjects.Array.data[2]
+      value: 
+      objectReference: {fileID: 312489145}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
