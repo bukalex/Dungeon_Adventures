@@ -10,10 +10,10 @@ public class Coin : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
            
-            WarriorController playerController = other.gameObject.GetComponent<WarriorController>();
+            GeneralCharacterController playerController = other.gameObject.GetComponent<GeneralCharacterController>();
             if (playerController != null)
             {
-                playerController.UpdateScore(1);
+                playerController.uiManager.UpdateScore(1);
             }
             Destroy(gameObject);  
         }

@@ -3753,6 +3753,23 @@ Transform:
   - {fileID: 1212781135}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1634978402 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4016041727957439750, guid: cdf3e3b7ddad60141bd8349c100f88a5, type: 3}
+  m_PrefabInstance: {fileID: 4332042485708811455}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1634978408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634978402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aea8e3668ae1261478d9c3dc05ec090b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1758467670
 GameObject:
   m_ObjectHideFlags: 0
@@ -4485,6 +4502,14 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: -1600751417
       objectReference: {fileID: 0}
+    - target: {fileID: 1783585528064327756, guid: cdf3e3b7ddad60141bd8349c100f88a5, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2896227137691391502, guid: cdf3e3b7ddad60141bd8349c100f88a5, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4016041727957439750, guid: cdf3e3b7ddad60141bd8349c100f88a5, type: 3}
       propertyPath: m_Name
       value: Chest
@@ -4492,6 +4517,10 @@ PrefabInstance:
     - target: {fileID: 4016041727957439750, guid: cdf3e3b7ddad60141bd8349c100f88a5, type: 3}
       propertyPath: m_TagString
       value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 4326942250894072800, guid: cdf3e3b7ddad60141bd8349c100f88a5, type: 3}
+      propertyPath: m_TagString
+      value: Object
       objectReference: {fileID: 0}
     - target: {fileID: 4492210297007729943, guid: cdf3e3b7ddad60141bd8349c100f88a5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4537,10 +4566,15 @@ PrefabInstance:
       propertyPath: coinPrefab
       value: 
       objectReference: {fileID: 2320948880545772444, guid: a0fd24ae8008524469e30102b9e6c56e, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5751614517370686113, guid: cdf3e3b7ddad60141bd8349c100f88a5, type: 3}
+    - {fileID: 8278041924164229465, guid: cdf3e3b7ddad60141bd8349c100f88a5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4016041727957439750, guid: cdf3e3b7ddad60141bd8349c100f88a5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1634978408}
   m_SourcePrefab: {fileID: 100100000, guid: cdf3e3b7ddad60141bd8349c100f88a5, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

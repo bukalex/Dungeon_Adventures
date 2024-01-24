@@ -6,6 +6,7 @@ public class GeneralCharacterController : MonoBehaviour
 {
     [SerializeField] float speed = 0.75f;
     [SerializeField] public float health = 100.0f;
+    [SerializeField] public UIManager uiManager;
 
     private Rigidbody2D body;
     private Vector2 direction;
@@ -84,6 +85,58 @@ public class GeneralCharacterController : MonoBehaviour
         }
 
         return enemies;
+    }
+
+    //Detect objects in the 90 degree sector in front of the player
+    public List<DestroyBehaviour> DetectDestroyObjects(float range, bool inSector = true)
+    {
+        Collider2D[] targets = Physics2D.OverlapCircleAll(transform.position, range);
+        List<DestroyBehaviour> objects = new List<DestroyBehaviour>();
+
+        foreach (Collider2D target in targets)
+        {
+            if (target.tag.Equals("Object") && target.GetType() == typeof(PolygonCollider2D))
+            {
+                Vector2 targetDirection = target.transform.position - transform.position;
+
+                if (!inSector)
+                {
+                    objects.Add(target.GetComponent<DestroyBehaviour>());
+                }
+                else if (Vector2.Angle(attackDirection, targetDirection) <= 45)
+                {
+                    objects.Add(target.GetComponent<DestroyBehaviour>());
+                }
+            }
+        }
+
+        return objects;
+    }
+
+    //Detect objects in the 90 degree sector in front of the player
+    public List<CollectBehaviour> DetectCollectObjects(float range, bool inSector = true)
+    {
+        Collider2D[] targets = Physics2D.OverlapCircleAll(transform.position, range);
+        List<CollectBehaviour> objects = new List<CollectBehaviour>();
+
+        foreach (Collider2D target in targets)
+        {
+            if (target.tag.Equals("Object") && target.GetType() == typeof(PolygonCollider2D))
+            {
+                Vector2 targetDirection = target.transform.position - transform.position;
+
+                if (!inSector)
+                {
+                    objects.Add(target.GetComponent<CollectBehaviour>());
+                }
+                else if (Vector2.Angle(attackDirection, targetDirection) <= 45)
+                {
+                    objects.Add(target.GetComponent<CollectBehaviour>());
+                }
+            }
+        }
+
+        return objects;
     }
 
     //Call this method when enemy hits player
