@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WarriorController : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class WarriorController : MonoBehaviour
     [SerializeField] float meleeCooldown = 0.625f;
     [SerializeField] float damage = 15.0f;
 
+    public int score = 0;  // Score number of coin
+    public Text scoreText;
     private bool isReadyToAttack = true;
     private Rigidbody2D body;
     private GeneralCharacterController characterController;
@@ -68,5 +71,12 @@ public class WarriorController : MonoBehaviour
         isReadyToAttack = false;
         yield return new WaitForSeconds(time);
         isReadyToAttack = true;
+    }
+   
+
+    public void UpdateScore(int coinValue)
+    {
+        score += coinValue;
+        scoreText.text = "Score: " + score; 
     }
 }
