@@ -22,6 +22,7 @@ public class WarriorController : MonoBehaviour
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
+        scoreText = GetComponent<Text>();
         characterController = GetComponent<GeneralCharacterController>();
     }
 
