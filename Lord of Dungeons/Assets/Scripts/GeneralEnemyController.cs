@@ -39,6 +39,8 @@ public class GeneralEnemyController : MonoBehaviour
             body.velocity = Vector2.zero;
             GetComponent<BoxCollider2D>().enabled = false;
         }
+
+
     }
 
     //Search
