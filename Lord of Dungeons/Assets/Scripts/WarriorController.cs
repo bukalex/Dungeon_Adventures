@@ -46,8 +46,9 @@ public class WarriorController : MonoBehaviour
 
     private void PerformAttack(AttackType attackType)
     {
-        //Find enemies within attack range
-        List<GeneralEnemyController> enemies = characterController.DetectEnemies(meleeRange);
+        //Find enemies and objects within attack range
+        characterController.DetectEnemies(meleeRange, out List<GeneralEnemyController> enemies);
+        characterController.DetectObjects(meleeRange, out List<GameObject> objects);
 
         //Fight enemies
         foreach (GeneralEnemyController enemy in enemies)
@@ -62,6 +63,12 @@ public class WarriorController : MonoBehaviour
                     enemy.DealDamage(damage * 2);
                     break;
             }
+        }
+
+        //Fight objects
+        foreach (GameObject obj in objects)
+        {
+            
         }
     }
 

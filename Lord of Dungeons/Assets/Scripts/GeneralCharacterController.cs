@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class GeneralCharacterController : MonoBehaviour
 {
@@ -46,14 +47,16 @@ public class GeneralCharacterController : MonoBehaviour
     }
 
     //Detect enemies in the 90 degree sector in front of the player
-    public List<GeneralEnemyController> DetectEnemies(float range, bool inSector = true)
+    public void DetectEnemies(float range, out List<GeneralEnemyController> enemies, bool inSector = true)
     {
         Collider2D[] targets = Physics2D.OverlapCircleAll(transform.position, range);
-        List<GeneralEnemyController> enemies = new List<GeneralEnemyController>();
+        enemies = new List<GeneralEnemyController>();
+        
 
         foreach (Collider2D target in targets)
         {
-            if (target.tag.Equals("Enemy") && target.GetComponent<GeneralEnemyController>().isAlive() && target.GetType() == typeof(PolygonCollider2D))
+            //Detects enemies
+            if (target.CompareTag("Enemy") && target.GetComponent<GeneralEnemyController>().isAlive() && target.GetType() == typeof(PolygonCollider2D))
             {
                 Vector2 targetDirection = target.transform.position - transform.position;
 
@@ -67,8 +70,30 @@ public class GeneralCharacterController : MonoBehaviour
                 }
             }
         }
+    }
 
-        return enemies;
+    public void DetectObjects(float range, out List<GameObject> objects, bool inSector = true)
+    {
+        Collider2D[] targets = Physics2D.OverlapCircleAll(transform.position, range);
+        objects = new List<GameObject>();
+
+        foreach (Collider2D target in targets)
+        {
+            //Detects objects
+            if (target.CompareTag("Object"))
+            {
+                Vector2 targetDirection = target.transform.position - transform.position;
+
+                if (!inSector)
+                {
+                    objects.Add(target.gameObject);
+                }
+                else if (Vector2.Angle(attackDirection, targetDirection) <= 45)
+                {
+                    objects.Add(target.gameObject);
+                }
+            }
+        }
     }
 
     //Call this method when enemy hits player
