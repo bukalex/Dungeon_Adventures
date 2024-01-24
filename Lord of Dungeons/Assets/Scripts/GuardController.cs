@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GuardController : MonoBehaviour
 {
-    [SerializeField] GameObject coinPrefab;
     [SerializeField] float meleeRange = 1.0f;
     [SerializeField] float meleeCooldown = 1.0f;
     [SerializeField] float damage = 10.0f;
@@ -20,11 +19,6 @@ public class GuardController : MonoBehaviour
         enemyController = GetComponent<GeneralEnemyController>();
         animationController = GetComponentInChildren<EnemyAnimationController>();
 
-        if (enemyController.health <= 0)
-        {
-            //spawn a coin after his death
-            Instantiate(coinPrefab);
-        }
     }
 
     void Update()

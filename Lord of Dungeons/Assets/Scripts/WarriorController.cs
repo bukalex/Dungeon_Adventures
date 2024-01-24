@@ -12,7 +12,7 @@ public class WarriorController : MonoBehaviour
     [SerializeField] float damage = 15.0f;
 
     public int score = 0;  // Score number of coin
-    public Text scoreText;
+    [SerializeField] Text scoreText;
     private bool isReadyToAttack = true;
     private Rigidbody2D body;
     private GeneralCharacterController characterController;
@@ -22,7 +22,6 @@ public class WarriorController : MonoBehaviour
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
-        scoreText = GetComponent<Text>();
         characterController = GetComponent<GeneralCharacterController>();
     }
 
@@ -80,6 +79,7 @@ public class WarriorController : MonoBehaviour
     public void UpdateScore(int coinValue)
     {
         score += coinValue;
+        Debug.Log(scoreText);
         scoreText.text = score.ToString(); 
     }
 }
