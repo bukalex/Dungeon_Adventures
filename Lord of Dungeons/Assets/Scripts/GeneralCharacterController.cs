@@ -45,12 +45,12 @@ public class GeneralCharacterController : MonoBehaviour
             if (direction.magnitude != 0)
             {
                 attackDirection = direction;
-                GetComponent<BoxCollider2D>().enabled = false;
             }
         }
         else
         {
             body.velocity = Vector2.zero;
+            GetComponent<BoxCollider2D>().enabled = false;
         }
 
         healthBar.SetHealth(health);
