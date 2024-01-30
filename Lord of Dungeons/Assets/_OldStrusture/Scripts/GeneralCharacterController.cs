@@ -6,7 +6,7 @@ public class GeneralCharacterController : MonoBehaviour
 {
     [SerializeField] float speed = 0.75f;
     [SerializeField] public float health = 100.0f;
-    [SerializeField] public UIManager uiManager;
+    [SerializeField] public UImanager uiManager;
 
     private Rigidbody2D body;
     private Vector2 direction;

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SocialPlatforms.Impl;
 
-public class UIManager : MonoBehaviour
+public class UImanager : MonoBehaviour
 {
     [SerializeField] Text scoreText;
 
