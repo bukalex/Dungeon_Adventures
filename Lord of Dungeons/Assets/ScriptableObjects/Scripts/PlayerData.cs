@@ -23,6 +23,8 @@ public class PlayerData : ScriptableObject
     public float deffense = 10.0f;
     public float specialDeffense = 10.0f;
 
+    public float npcDetectionRadius = 0.75f;
+
     //Type
     public CharacterType type = CharacterType.WARRIOR;
 
@@ -68,7 +70,7 @@ public class PlayerData : ScriptableObject
                 attacksByType.Add(AttackButton.LMB, AttackType.BASIC);
                 attacksByMana.Add(AttackButton.LMB, 0.0f);
                 attacksByStamina.Add(AttackButton.LMB, 2.5f);
-                attacksByRange.Add(AttackButton.LMB, 1.0f);
+                attacksByRange.Add(AttackButton.LMB, 0.7f);
                 attacksByCooldown.Add(AttackButton.LMB, 0.625f);
 
                 attacksByDamage.Add(AttackButton.RMB, attack * 0.75f);

@@ -13,6 +13,9 @@ public class SOManager : MonoBehaviour
     [SerializeField]
     private List<ItemParameters> items;
 
+    [SerializeField]
+    private List<NPCParameters> npcs;
+
     void Awake()
     {
         playerData.SetDictionaries();
@@ -25,6 +28,11 @@ public class SOManager : MonoBehaviour
         foreach (ItemParameters item in items)
         {
             item.playerData = playerData;
+        }
+
+        foreach (NPCParameters npc in npcs)
+        {
+            npc.playerData = playerData;
         }
     }
 }

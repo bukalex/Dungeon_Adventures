@@ -94,7 +94,7 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.125, y: -0.6}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.35
 --- !u!114 &1033650342991500364
@@ -109,7 +109,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9cad3279c793eb43b22969e57e699b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
   enemyParameters: {fileID: 11400000, guid: 3de6ac5ee0cb5b04d8e6e3355c2015d8, type: 2}
   animator: {fileID: 9050633706751259815}
   spriteRenderer: {fileID: 8155789756617482204}
@@ -142,7 +141,7 @@ Transform:
   m_GameObject: {fileID: 6895228956401663398}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.125, y: 0.6, z: 0}
   m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
   m_ConstrainProportionsScale: 1
   m_Children: []

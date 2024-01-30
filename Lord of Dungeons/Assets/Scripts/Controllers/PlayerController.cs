@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
@@ -20,9 +21,10 @@ public class PlayerController : MonoBehaviour
     private Vector3 attackDirection = Vector3.down;
     private PlayerData.AttackButton attackButton = PlayerData.AttackButton.NONE;
 
-    private bool interruptAnimation = false;
     private bool isReadyToAttack = true;
     private bool arleadyDead = false;
+
+    private NPCController activeNPC = null;
 
     void Awake()
     {
@@ -75,14 +77,14 @@ public class PlayerController : MonoBehaviour
             if (isReadyToAttack)
             {
                 //Left Mouse Button
-                if (Input.GetMouseButton(0))
+                if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
                 {
                     attackButton = PlayerData.AttackButton.LMB;
 
                     body.velocity = movementDirection * playerData.speed * 0.5f;
                     AttackWithLMB();
 
-                    List<EnemyController> enemies = DetectTargets<EnemyController>(playerData.attacksByRange[attackButton]);
+                    List<EnemyController> enemies = DetectTargets<EnemyController>(playerData.attacksByRange[attackButton] + playerData.colliderRadius);
                     foreach (EnemyController enemy in enemies)
                     {
                         if (enemy.isAlive())
@@ -96,6 +98,32 @@ public class PlayerController : MonoBehaviour
                 if (attackButton != PlayerData.AttackButton.NONE)
                 {
                     StartCoroutine(Cooldown(playerData.attacksByCooldown[attackButton]));
+                }
+            }
+            #endregion
+
+            //NPC interaction
+            #region
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                List<NPCController> npcs = DetectTargets<NPCController>(playerData.npcDetectionRadius + playerData.colliderRadius, false);
+
+                if (npcs.Count > 0)
+                {
+                    activeNPC = npcs[0];
+                }
+            }
+
+            if (activeNPC != null)
+            {
+                if ((activeNPC.transform.position - transform.position).magnitude - playerData.colliderRadius - activeNPC.GetColliderRadius() <= playerData.npcDetectionRadius)
+                {
+                    activeNPC.InteractWithPlayer(true);
+                }
+                else
+                {
+                    activeNPC.InteractWithPlayer(false);
+                    activeNPC = null;
                 }
             }
             #endregion
@@ -209,18 +237,8 @@ public class PlayerController : MonoBehaviour
     //Die
     private void Die()
     {
-        StartCoroutine(Interrupt());
-
         Stop();
         animator.SetTrigger("isDead");
-
-    }
-
-    IEnumerator Interrupt()
-    {
-        interruptAnimation = true;
-        yield return new WaitForSeconds(1.0f);
-        interruptAnimation = false;
     }
     #endregion
 }

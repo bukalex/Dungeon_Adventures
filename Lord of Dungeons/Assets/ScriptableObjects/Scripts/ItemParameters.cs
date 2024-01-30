@@ -24,5 +24,5 @@ public class ItemParameters : ScriptableObject
     //Enums
     public enum ItemCategory { RESOURCES, EQUIPMENT }
     public enum ResourceType { COIN, WOOD, ROCK }
-    public enum EquipmentType { }
+    public enum EquipmentType { SWORD }
 }
