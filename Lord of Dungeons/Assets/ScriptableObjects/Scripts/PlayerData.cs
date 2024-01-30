@@ -30,7 +30,7 @@ public class PlayerData : ScriptableObject
     public RuntimeAnimatorController animController;
 
     //Resources
-    public Dictionary<ResourceType, int> resources = new Dictionary<ResourceType, int>();
+    public Dictionary<ItemParameters.ResourceType, int> resources = new Dictionary<ItemParameters.ResourceType, int>();
 
     //Attacks
     public Dictionary<AttackButton, AttackType> attacksByType = new Dictionary<AttackButton, AttackType>();
@@ -42,7 +42,6 @@ public class PlayerData : ScriptableObject
 
     //Enums
     public enum CharacterType { WARRIOR, ARCHER, WIZARD }
-    public enum ResourceType { WOOD, ROCK }
     public enum AttackButton { NONE, LMB, RMB }
     public enum AttackType { BASIC, SPECIAL }
 
@@ -50,8 +49,9 @@ public class PlayerData : ScriptableObject
     {
         //Set resources
         resources.Clear();
-        resources.Add(ResourceType.WOOD, 0);
-        resources.Add(ResourceType.ROCK, 0);
+        resources.Add(ItemParameters.ResourceType.COIN, 0);
+        resources.Add(ItemParameters.ResourceType.WOOD, 0);
+        resources.Add(ItemParameters.ResourceType.ROCK, 0);
 
         //Set attacks
         attacksByDamage.Clear();

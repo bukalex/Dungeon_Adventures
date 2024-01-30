@@ -5,9 +5,6 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField]
-    private PlayerData playerData;
-
-    [SerializeField]
     private EnemyParameters enemyParameters;
 
     [SerializeField]
@@ -52,7 +49,7 @@ public class EnemyController : MonoBehaviour
             //Movement and attack
             if (PlayerDetected())
             {
-                ChangeDirection(Vector2.SignedAngle(Vector3.right, playerData.position - transform.position));
+                ChangeDirection(Vector2.SignedAngle(Vector3.right, enemyParameters.playerData.position - transform.position));
 
                 if (targetDistance > enemyParameters.attackRange)
                 {
@@ -89,7 +86,7 @@ public class EnemyController : MonoBehaviour
         switch (enemyParameters.type)
         {
             case EnemyParameters.EnemyType.GUARD:
-                playerData.DealDamage(enemyParameters.attackType, enemyParameters.attack);
+                enemyParameters.playerData.DealDamage(enemyParameters.attackType, enemyParameters.attack);
                 break;
 
             case EnemyParameters.EnemyType.GHOST:
@@ -105,8 +102,8 @@ public class EnemyController : MonoBehaviour
 
     private bool PlayerDetected()
     {
-        targetDistance = (playerData.position - transform.position).magnitude - playerData.colliderRadius - enemyParameters.colliderRadius;
-        return targetDistance <= enemyParameters.detectionRadius && playerData.isAlive();
+        targetDistance = (enemyParameters.playerData.position - transform.position).magnitude - enemyParameters.playerData.colliderRadius - enemyParameters.colliderRadius;
+        return targetDistance <= enemyParameters.detectionRadius && enemyParameters.playerData.isAlive();
     }
 
     public bool isAlive()

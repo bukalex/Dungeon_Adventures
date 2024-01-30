@@ -5,13 +5,26 @@ using UnityEngine;
 public class SOManager : MonoBehaviour
 {
     [SerializeField]
-    private List<PlayerData> playerDatas;
+    private PlayerData playerData;
+
+    [SerializeField]
+    private List<EnemyParameters> enemies;
+
+    [SerializeField]
+    private List<ItemParameters> items;
 
     void Awake()
     {
-        foreach (PlayerData playerData in playerDatas)
+        playerData.SetDictionaries();
+
+        foreach (EnemyParameters enemy in enemies)
         {
-            playerData.SetDictionaries();
+            enemy.playerData = playerData;
+        }
+
+        foreach (ItemParameters item in items)
+        {
+            item.playerData = playerData;
         }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu (fileName = "New Enemy Parameters", menuName = "Enemy parameters")]
 public class EnemyParameters : ScriptableObject
 {
+    public PlayerData playerData;
     public float colliderRadius = 1.0f;
 
     //Stats
