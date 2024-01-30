@@ -19,12 +19,15 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private CircleCollider2D circleCollider;
 
+    [SerializeField]
+    private healthBar HealthBar;
+
     private DirectionName directionName = DirectionName.FRONT;
     private Vector3 movementDirection = Vector3.zero;
     private Vector3 attackDirection = Vector3.down;
     private float targetDistance;
 
-    private float health;
+
     private float mana;
     private float stamina;
 
@@ -37,9 +40,10 @@ public class EnemyController : MonoBehaviour
     {
         animator.runtimeAnimatorController = enemyParameters.animController;
 
-        health = enemyParameters.health;
         mana = enemyParameters.mana;
         stamina = enemyParameters.stamina;
+
+        HealthBar.SetMaxHealth(enemyParameters.maxHealth);
     }
 
     void Update()
@@ -72,6 +76,8 @@ public class EnemyController : MonoBehaviour
             circleCollider.enabled = false;
             body.velocity = Vector3.zero;
         }
+
+        HealthBar.SetHealth(enemyParameters.health);
     }
 
     private void Seek()
@@ -108,14 +114,15 @@ public class EnemyController : MonoBehaviour
 
     public bool isAlive()
     {
-        return health > 0;
+        return enemyParameters.health > 0;
     }
 
     public void DealDamage(PlayerData.AttackType attackType, float damage)
     {
         Debug.Log("Enemy was hit. Damage: " + damage);
 
-        health -= damage;
+        enemyParameters.health -= damage;
+        HealthBar.SetHealth(enemyParameters.health);
         if (!isAlive())
         {
             Die();

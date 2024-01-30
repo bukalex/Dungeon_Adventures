@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ddae792339ded641ad5663a529ccf72, type: 3}
-  m_Name: SteelGuard
+  m_Name: Ghost
   m_EditorClassIdentifier: 
-  playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
-  colliderRadius: 0.4
-  health: -10
-  maxHealth: 100
+  playerData: {fileID: 0}
+  colliderRadius: 1
+  health: 200
+  maxHealth: 200
   mana: 0
-  stamina: 50
+  stamina: 0
   healthRestoreRate: 1
-  manaRestoreRate: 0
+  manaRestoreRate: 1
   staminaRestoreRate: 1
-  attack: 10
+  attack: 50
   deffense: 10
   specialDeffense: 10
   attackType: 0
   attackRange: 1
-  attackCooldown: 0.625
-  manaCost: 0
+  attackCooldown: 1
+  manaCost: 1
   staminaCost: 1
   detectionRadius: 3.5
-  type: 0
-  animController: {fileID: 9100000, guid: 1b67d6649ddbc6b49aea995556dbe4b5, type: 2}
+  type: 1
+  animController: {fileID: 0}

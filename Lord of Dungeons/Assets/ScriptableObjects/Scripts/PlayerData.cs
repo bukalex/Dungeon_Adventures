@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Player Data", menuName = "Player data")]
+[CreateAssetMenu(fileName = "New Player Data", menuName = "ScriptableObjects/Player data")]
 public class PlayerData : ScriptableObject
 {
     public Vector3 position = Vector3.zero;

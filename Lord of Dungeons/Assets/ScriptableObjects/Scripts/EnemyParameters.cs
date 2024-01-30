@@ -10,6 +10,7 @@ public class EnemyParameters : ScriptableObject
 
     //Stats
     public float health = 100.0f;
+    public float maxHealth = 100.0f;
     public float mana = 50.0f;
     public float stamina = 50.0f;
 
