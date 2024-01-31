@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour
     private Rigidbody2D body;
 
     [SerializeField]
-    private CircleCollider2D circleCollider;
+    private CapsuleCollider2D capsuleCollider;
 
     [SerializeField]
     private healthBar HealthBar;
@@ -27,12 +27,14 @@ public class EnemyController : MonoBehaviour
     private Vector3 attackDirection = Vector3.down;
     private float targetDistance;
 
-
+    private float health;
     private float mana;
     private float stamina;
 
     private bool interruptAnimation = false;
     private bool isReadyToAttack = true;
+    public bool isUsingMana = false;
+    public bool isUsingStamina = false;
 
     public enum DirectionName { FRONT, BACK, LEFT, RIGHT }
 
@@ -40,16 +42,20 @@ public class EnemyController : MonoBehaviour
     {
         animator.runtimeAnimatorController = enemyParameters.animController;
 
+        health = enemyParameters.health;
         mana = enemyParameters.mana;
         stamina = enemyParameters.stamina;
 
-        HealthBar.SetMaxHealth(enemyParameters.maxHealth);
+        HealthBar.SetMaxHealth(enemyParameters.health);
     }
 
     void Update()
     {
         if (isAlive())
         {
+            //Stats restore
+            RestoreStats();
+
             //Movement and attack
             if (PlayerDetected())
             {
@@ -73,7 +79,7 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            circleCollider.enabled = false;
+            capsuleCollider.enabled = false;
             body.velocity = Vector3.zero;
         }
 
@@ -121,8 +127,8 @@ public class EnemyController : MonoBehaviour
     {
         Debug.Log("Enemy was hit. Damage: " + damage);
 
-        enemyParameters.health -= damage;
-        HealthBar.SetHealth(enemyParameters.health);
+        health -= damage;
+        HealthBar.SetHealth(health);
         if (!isAlive())
         {
             Die();
@@ -134,6 +140,62 @@ public class EnemyController : MonoBehaviour
         isReadyToAttack = false;
         yield return new WaitForSeconds(time);
         isReadyToAttack = true;
+    }
+
+    private bool AffordAttack(bool isPerFrame = false)
+    {
+        float multiplier = 1.0f;
+        if (isPerFrame)
+        {
+            multiplier = Time.deltaTime;
+        }
+
+        if (enemyParameters.manaCost != 0)
+        {
+            if (enemyParameters.manaCost <= mana)
+            {
+                isUsingMana = true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        if (enemyParameters.staminaCost != 0)
+        {
+            if (enemyParameters.staminaCost <= stamina)
+            {
+                isUsingStamina = true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        if (isUsingMana)
+        {
+            mana = Mathf.Clamp(mana - enemyParameters.manaCost * multiplier, 0, enemyParameters.mana);
+        }
+        if (isUsingStamina)
+        {
+            stamina = Mathf.Clamp(stamina - enemyParameters.staminaCost * multiplier, 0, enemyParameters.stamina);
+        }
+
+        return true;
+    }
+
+    private void RestoreStats()
+    {
+        health = Mathf.Clamp(health + enemyParameters.healthRestoreRate * Time.deltaTime, 0, enemyParameters.health);
+        if (!isUsingMana)
+        {
+            mana = Mathf.Clamp(mana + enemyParameters.manaRestoreRate * Time.deltaTime, 0, enemyParameters.mana);
+        }
+        if (!isUsingStamina)
+        {
+            stamina = Mathf.Clamp(stamina + enemyParameters.staminaRestoreRate * Time.deltaTime, 0, enemyParameters.stamina);
+        }
     }
 
     //Animation

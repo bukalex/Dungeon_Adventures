@@ -12,10 +12,13 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
 
     [SerializeField]
+    private Animator shield;
+
+    [SerializeField]
     private Rigidbody2D body;
 
     [SerializeField]
-    private CircleCollider2D circleCollider;
+    private CapsuleCollider2D capsuleCollider;
 
     private Vector3 movementDirection = Vector3.zero;
     private Vector3 attackDirection = Vector3.down;
@@ -23,6 +26,7 @@ public class PlayerController : MonoBehaviour
 
     private bool isReadyToAttack = true;
     private bool arleadyDead = false;
+    private bool isTalkingToNPC = false;
 
     private NPCController activeNPC = null;
 
@@ -35,9 +39,14 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         playerData.position = transform.position;
+        playerData.isUsingMana = false;
+        playerData.isUsingStamina = false;
 
         if (playerData.isAlive())
         {
+            //Stats restore
+            playerData.RestoreStats();
+
             //Movement
             #region
             movementDirection = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0).normalized;
@@ -48,18 +57,24 @@ public class PlayerController : MonoBehaviour
                 ChangeDirection(Vector2.SignedAngle(Vector3.right, movementDirection));
             }
 
-            if (movementDirection.magnitude != 0 && attackButton == PlayerData.AttackButton.NONE)
+            if (movementDirection.magnitude != 0)
             {
                 attackDirection = movementDirection;
 
-                if (Input.GetKey(KeyCode.LeftShift))
+                if (Input.GetKey(KeyCode.LeftShift) && playerData.AffordAttack(PlayerData.AttackButton.SHIFT, true))
                 {
-                    Run();
+                    if (attackButton == PlayerData.AttackButton.NONE)
+                    {
+                        Run();
+                    }
                     body.velocity = movementDirection * playerData.speed * 2;
                 }
                 else
                 {
-                    Walk();
+                    if (attackButton == PlayerData.AttackButton.NONE)
+                    {
+                        Walk();
+                    }
                     body.velocity = movementDirection * playerData.speed;
                 }
             }
@@ -72,40 +87,83 @@ public class PlayerController : MonoBehaviour
 
             //Attacks
             #region
-            attackButton = PlayerData.AttackButton.NONE;
-
             if (isReadyToAttack)
             {
                 //Left Mouse Button
+                #region
                 if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
                 {
                     attackButton = PlayerData.AttackButton.LMB;
 
-                    body.velocity = movementDirection * playerData.speed * 0.5f;
-                    AttackWithLMB();
-
-                    List<EnemyController> enemies = DetectTargets<EnemyController>(playerData.attacksByRange[attackButton] + playerData.colliderRadius);
-                    foreach (EnemyController enemy in enemies)
+                    if (playerData.AffordAttack(attackButton))
                     {
-                        if (enemy.isAlive())
+                        body.velocity = movementDirection * playerData.speed * 0.5f;
+                        AttackWithLMB();
+
+                        List<EnemyController> enemies = DetectTargets<EnemyController>(playerData.attacksByRange[attackButton] + playerData.colliderRadius);
+                        foreach (EnemyController enemy in enemies)
                         {
-                            enemy.DealDamage(playerData.attacksByType[attackButton], playerData.attacksByDamage[attackButton]);
+                            if (enemy.isAlive())
+                            {
+                                enemy.DealDamage(playerData.attacksByType[attackButton], playerData.attacksByDamage[attackButton]);
+                            }
                         }
                     }
                 }
-                //check other buttons
+                if (Input.GetMouseButtonUp(0))
+                {
+                    attackButton = PlayerData.AttackButton.NONE;
+                }
+                #endregion
 
-                if (attackButton != PlayerData.AttackButton.NONE)
+                //Cooldown
+                if (playerData.attacksByCooldown.ContainsKey(attackButton))
                 {
                     StartCoroutine(Cooldown(playerData.attacksByCooldown[attackButton]));
                 }
             }
+
+            //Right Mouse Button
+            #region
+            if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
+            {
+                attackButton = PlayerData.AttackButton.RMB;
+
+                if (playerData.AffordAttack(attackButton))
+                {
+                    ActivateShield(true);
+                    playerData.defense *= 5;
+                    playerData.specialDefense *= 5;
+                }
+            }
+
+            if (Input.GetMouseButton(1) && !EventSystem.current.IsPointerOverGameObject())
+            {
+                attackButton = PlayerData.AttackButton.RMB;
+                playerData.AffordAttack(attackButton, true);
+            }
+
+            if ((Input.GetMouseButtonUp(1) || Input.GetMouseButton(1) && !playerData.AffordAttack(attackButton, true)) && !EventSystem.current.IsPointerOverGameObject())
+            {
+                attackButton = PlayerData.AttackButton.NONE;
+
+                ActivateShield(false);
+                playerData.defense /= 5;
+                playerData.specialDefense /= 5;
+            }
+            #endregion
             #endregion
 
             //NPC interaction
             #region
             if (Input.GetKeyDown(KeyCode.E))
             {
+                if (activeNPC == null)
+                {
+                    isTalkingToNPC = false;
+                }
+                isTalkingToNPC = !isTalkingToNPC;
+
                 List<NPCController> npcs = DetectTargets<NPCController>(playerData.npcDetectionRadius + playerData.colliderRadius, false);
 
                 if (npcs.Count > 0)
@@ -118,7 +176,7 @@ public class PlayerController : MonoBehaviour
             {
                 if ((activeNPC.transform.position - transform.position).magnitude - playerData.colliderRadius - activeNPC.GetColliderRadius() <= playerData.npcDetectionRadius)
                 {
-                    activeNPC.InteractWithPlayer(true);
+                    activeNPC.InteractWithPlayer(isTalkingToNPC);
                 }
                 else
                 {
@@ -131,7 +189,7 @@ public class PlayerController : MonoBehaviour
         else if (!arleadyDead)
         {
             Die();
-            circleCollider.enabled = false;
+            capsuleCollider.enabled = false;
             body.velocity = Vector3.zero;
 
             arleadyDead = true;
@@ -185,6 +243,12 @@ public class PlayerController : MonoBehaviour
 
     //Animation
     #region
+    //Activate/deactivate shield
+    private void ActivateShield(bool isActive)
+    {
+        shield.SetBool("shieldActivated", isActive);
+    }
+
     //Change movement direction
     private void ChangeDirection(float angle)
     {

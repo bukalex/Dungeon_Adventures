@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New NPC Parameters", menuName = "NPC parameters")]
+[CreateAssetMenu(fileName = "New NPC Parameters", menuName = "ScriptableObjects/NPC parameters")]
 public class NPCParameters : ScriptableObject
 {
     public PlayerData playerData;

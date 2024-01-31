@@ -12,19 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a93d807b6f3d60429ecb3efc2f4b886, type: 3}
   m_Name: Warrior
   m_EditorClassIdentifier: 
-  position: {x: -0.37170073, y: -4.995882, z: 0}
+  position: {x: 0.67099005, y: -2.4243689, z: 0}
   colliderRadius: 0.3
-  health: 1e+12
+  maxHealth: 100
+  maxMana: 50
+  maxStamina: 50
+  health: 100
   mana: 50
-  stamina: 50
+  stamina: 17.318493
   speed: 0.75
   healthRestoreRate: 1
   manaRestoreRate: 1
   staminaRestoreRate: 1
   attack: 20
   specialAttack: 20
-  deffense: 20
-  specialDeffense: 20
+  defense: 0
+  specialDefense: 0
   npcDetectionRadius: 0.75
+  isUsingMana: 0
+  isUsingStamina: 0
   type: 0
   animController: {fileID: 9100000, guid: 830695f2cf9ff4e42b14d58fc0eefe19, type: 2}

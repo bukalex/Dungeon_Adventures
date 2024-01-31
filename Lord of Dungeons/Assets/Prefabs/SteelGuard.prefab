@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3711029590176133290}
   - component: {fileID: 5965241633063302086}
-  - component: {fileID: 5217309652808191738}
+  - component: {fileID: 8810905020771586454}
   - component: {fileID: 1033650342991500364}
   m_Layer: 0
   m_Name: SteelGuard
@@ -63,8 +63,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &5217309652808191738
-CircleCollider2D:
+--- !u!70 &8810905020771586454
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -96,8 +96,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.35
+  m_Size: {x: 1, y: 0.5}
+  m_Direction: 1
 --- !u!114 &1033650342991500364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,7 +114,7 @@ MonoBehaviour:
   animator: {fileID: 9050633706751259815}
   spriteRenderer: {fileID: 8155789756617482204}
   body: {fileID: 5965241633063302086}
-  circleCollider: {fileID: 5217309652808191738}
+  capsuleCollider: {fileID: 8810905020771586454}
   HealthBar: {fileID: 5261657716517792453}
 --- !u!1 &3996478497317477910
 GameObject:
