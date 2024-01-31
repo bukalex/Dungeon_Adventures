@@ -38,11 +38,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void Initialize()
-    {
-    }
-
-
     void Update()
     {
         //Update values
