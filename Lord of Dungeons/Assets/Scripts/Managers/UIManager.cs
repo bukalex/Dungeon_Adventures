@@ -6,14 +6,14 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    //[SerializeField]
-    //private PlayerData playerData;
-    //
-    //[SerializeField]
-    //private TMP_Text coinCounter;
-    //
-    //[SerializeField]
-    //private healthBar HealthBar;
+    [SerializeField]
+    private PlayerData playerData;
+    
+    [SerializeField]
+    private TMP_Text coinCounter;
+    
+    [SerializeField]
+    private healthBar HealthBar;
 
     [SerializeField]
     public GameObject inventory;
@@ -42,10 +42,10 @@ public class UIManager : MonoBehaviour
     {
         //Update values
         //coinCounter.text = playerData.resources[ItemParameters.ResourceType.COIN].ToString();
-        //HealthBar.SetHealth(playerData.health);
+        HealthBar.SetHealth(playerData.health);
 
         //Open inventory
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             Debug.Log("Button E was pressed!");
             inventory.SetActive(true);

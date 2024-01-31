@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
+    public Item[] startItems;
+
     public int maxStackCount = 16;
     public InventorySlot[] inventorySlots;
     public GameObject inventoryItemPrefab;
+
 
     public int selectedSlot = -1;
 
     private void Start()
     {
         changeSelectedSlot(0);
+        foreach(var item in startItems)
+        {
+            AddItem(item);
+        }
     }
 
     private void Update()

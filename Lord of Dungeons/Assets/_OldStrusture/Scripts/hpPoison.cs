@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class hpPoison : MonoBehaviour
 {
+    private Item item;
+
+    [SerializeField] private SpriteRenderer sr;
+
+    public void Initialize(Item item)
+    {
+        this.item = item;
+        sr.sprite = item.image;
+    }
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
-
-            GeneralCharacterController generalCharacterController = other.gameObject.GetComponent<GeneralCharacterController>();
-            if (generalCharacterController != null)
-            {
-                generalCharacterController.health += 30;
-            }
+            InventoryManager.instance.AddItem(item);
             Destroy(gameObject);
         }
     }
