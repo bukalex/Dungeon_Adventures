@@ -245,6 +245,11 @@ public class PlayerController : MonoBehaviour
         isReadyToAttack = true;
     }
 
+    public PlayerData GetPlayerData()
+    {
+        return playerData;
+    }
+
     //Animation
     #region
     //Activate/deactivate shield

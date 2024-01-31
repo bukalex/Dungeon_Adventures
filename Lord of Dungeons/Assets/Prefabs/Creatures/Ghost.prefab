@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 7068078384106996963}
   - component: {fileID: 9203432213145845901}
-  - component: {fileID: 6264132593869675205}
+  - component: {fileID: 4106667478172586409}
   - component: {fileID: 8450202033232913847}
   m_Layer: 0
   m_Name: Ghost
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62,8 +62,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &6264132593869675205
-CircleCollider2D:
+--- !u!70 &4106667478172586409
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -95,8 +95,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
+  m_Size: {x: 1.5, y: 1}
+  m_Direction: 1
 --- !u!114 &8450202033232913847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,7 +113,7 @@ MonoBehaviour:
   animator: {fileID: 4858756477190837903}
   spriteRenderer: {fileID: 3111650714437216042}
   body: {fileID: 9203432213145845901}
-  capsuleCollider: {fileID: 0}
+  capsuleCollider: {fileID: 4106667478172586409}
   HealthBar: {fileID: 0}
   isUsingMana: 0
   isUsingStamina: 0
@@ -144,7 +144,7 @@ Transform:
   m_GameObject: {fileID: 4915555467428413334}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15.417762, y: 0.1291311, z: 0}
+  m_LocalPosition: {x: 0.1, y: 0.94, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
