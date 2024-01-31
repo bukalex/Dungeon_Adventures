@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ed05b4d375b5d24db9207e8e55202cb, type: 3}
   m_Name: SPDPoision
   m_EditorClassIdentifier: 
+  playerData: {fileID: 0}
   tile: {fileID: 11400000, guid: adadd99da20aa8445a87837cab704bd1, type: 2}
   itemType: 0
+  materialType: 0
   range: {x: 5, y: 4}
-  isStackable: 1
+  price: 1
+  isStackable: 0
   isUsable: 1
   image: {fileID: 21300000, guid: 06593467ab29b5c43b5a73e2a3383e41, type: 3}
+  animController: {fileID: 0}

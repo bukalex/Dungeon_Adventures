@@ -5,7 +5,7 @@ using UnityEngine;
 public class ItemController : MonoBehaviour
 {
     [SerializeField]
-    private ItemParameters itemParameters;
+    private Item itemParameters;
 
     [SerializeField]
     private SpriteRenderer spriteRenderer;
@@ -15,7 +15,7 @@ public class ItemController : MonoBehaviour
 
     void Awake()
     {
-        spriteRenderer.sprite = itemParameters.sprite;
+        spriteRenderer.sprite = itemParameters.image;
 
         if (animator != null)
         {
@@ -25,9 +25,9 @@ public class ItemController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && itemParameters.category == ItemParameters.ItemCategory.RESOURCES)
+        if (collision.gameObject.CompareTag("Player") && itemParameters.itemType == Item.ItemType.Material)
         {
-            itemParameters.playerData.resources[itemParameters.resourceType]++;
+            itemParameters.playerData.resources[itemParameters.materialType]++;
 
             Destroy(gameObject);
         }

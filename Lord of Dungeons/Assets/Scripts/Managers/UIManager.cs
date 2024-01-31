@@ -41,7 +41,7 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         //Update values
-        coinCounter.text = playerData.resources[ItemParameters.ResourceType.COIN].ToString();
+        coinCounter.text = playerData.resources[Item.MaterialType.Coin].ToString();
         HealthBar.SetHealth(playerData.health);
 
         //Open inventory

@@ -221,7 +221,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 850308711691307496, guid: ca992215c4f1c9749a626d100a1c7f5e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 850308711691307496, guid: ca992215c4f1c9749a626d100a1c7f5e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -233,11 +233,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 850308711691307496, guid: ca992215c4f1c9749a626d100a1c7f5e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PickUpItem
+      value: SellItem
       objectReference: {fileID: 0}
     - target: {fileID: 850308711691307496, guid: ca992215c4f1c9749a626d100a1c7f5e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: TemporaryTradingSystem, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 850308711691307496, guid: ca992215c4f1c9749a626d100a1c7f5e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 850308711691307496, guid: ca992215c4f1c9749a626d100a1c7f5e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -3294,6 +3298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a85afb15361090a43ab3f8570ac4812c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
   items2Pickup:
   - {fileID: 11400000, guid: 2b698833b242a8b49a73616c048bcc8c, type: 2}
   - {fileID: 11400000, guid: 2f17d659d2812c64fb7f335195cee143, type: 2}
@@ -6369,11 +6374,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3711029590176133290, guid: efef7a2fbb187444da8293bee0556e23, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.38
+      value: 1.9
       objectReference: {fileID: 0}
     - target: {fileID: 3711029590176133290, guid: efef7a2fbb187444da8293bee0556e23, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.19
+      value: -2.29
       objectReference: {fileID: 0}
     - target: {fileID: 3711029590176133290, guid: efef7a2fbb187444da8293bee0556e23, type: 3}
       propertyPath: m_LocalPosition.z
@@ -6452,6 +6457,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aea8e3668ae1261478d9c3dc05ec090b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1685797379
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1685797380}
+  - component: {fileID: 1685797381}
+  m_Layer: 0
+  m_Name: CheatManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1685797380
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685797379}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.430167, y: -0.31491658, z: -0.033144988}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1685797381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685797379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9305ec8caf563d4a8601239ae0a8b85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
 --- !u!1 &1739968881
 GameObject:
   m_ObjectHideFlags: 0
@@ -6972,6 +7022,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: af03c575eef52d54eaf2a1fa7887ad71, type: 2}
   npcs:
   - {fileID: 11400000, guid: 4d64d2c9acd401f46ab0ef1e16f5f6b5, type: 2}
+  tradingSystem: {fileID: 1024724368}
 --- !u!4 &1906320284
 Transform:
   m_ObjectHideFlags: 0
@@ -8000,3 +8051,4 @@ SceneRoots:
   - {fileID: 7697015834543220368}
   - {fileID: 7233425015266146310}
   - {fileID: 1906320284}
+  - {fileID: 1685797380}

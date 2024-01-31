@@ -19,9 +19,9 @@ public class NPCParameters : ScriptableObject
 
     public void SellItem(int price)
     {
-        if (playerData.resources[ItemParameters.ResourceType.COIN] >= price)
+        if (playerData.resources[Item.MaterialType.Coin] >= price)
         {
-            playerData.resources[ItemParameters.ResourceType.COIN] -= price;
+            playerData.resources[Item.MaterialType.Coin] -= price;
             Debug.Log("Sold");
         }
     }

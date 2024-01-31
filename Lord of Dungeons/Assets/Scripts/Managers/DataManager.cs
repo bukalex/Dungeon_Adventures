@@ -13,10 +13,13 @@ public class DataManager : MonoBehaviour
     private List<EnemyParameters> enemies;
 
     [SerializeField]
-    private List<ItemParameters> items;
+    private List<Item> items;
 
     [SerializeField]
     private List<NPCParameters> npcs;
+
+    [SerializeField]
+    private TemporaryTradingSystem tradingSystem;
 
     void Awake()
     {
@@ -28,7 +31,7 @@ public class DataManager : MonoBehaviour
             enemy.playerData = playerData;
         }
 
-        foreach (ItemParameters item in items)
+        foreach (Item item in items)
         {
             item.playerData = playerData;
         }
@@ -37,6 +40,8 @@ public class DataManager : MonoBehaviour
         {
             npc.playerData = playerData;
         }
+
+        tradingSystem.playerData = playerData;
     }
 
     private void Update()

@@ -94,7 +94,28 @@ public class EnemyController : MonoBehaviour
 
     private void AvoidObstacles()
     {
+        if (CastWhisker(enemyParameters.whiskerAngle) || CastWhisker(enemyParameters.whiskerAngle * 2))
+        {
+            //transform.Rotate(Vector3.forward, -enemyParameters.rotationSpeed * Time.deltaTime);
+            //movementDirection = (enemyParameters.playerData.position - transform.position).normalized;
+            //body.velocity = movementDirection * enemyParameters.speed * speedMultiplier;
+        }
+        else if (CastWhisker(-enemyParameters.whiskerAngle) || CastWhisker(-enemyParameters.whiskerAngle * 2))
+        {
+            //transform.Rotate(Vector3.forward, enemyParameters.rotationSpeed * Time.deltaTime);
+        }
+    }
 
+    private bool CastWhisker(float angle)
+    {
+        Vector2 whiskerDirection = Quaternion.Euler(0, 0, angle) * transform.up;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, whiskerDirection, enemyParameters.whiskerLength);
+        if (hit.collider != null)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private void PerformAttack()

@@ -9,11 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3c75182168ae794583687d55dc9bb26, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ed05b4d375b5d24db9207e8e55202cb, type: 3}
   m_Name: Coin
   m_EditorClassIdentifier: 
-  sprite: {fileID: -1719298780, guid: b8738ba33536b654fa9538143e63bb2c, type: 3}
+  playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
+  tile: {fileID: 0}
+  itemType: 1
+  materialType: 0
+  range: {x: 5, y: 4}
+  price: 0
+  isStackable: 1
+  isUsable: 1
+  image: {fileID: 0}
   animController: {fileID: 9100000, guid: f786e7eb472486348bc725b400ec4e8b, type: 2}
-  category: 0
-  resourceType: 0
-  equipmentType: 0

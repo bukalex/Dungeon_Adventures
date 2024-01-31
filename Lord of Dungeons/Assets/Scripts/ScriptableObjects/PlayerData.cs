@@ -44,7 +44,7 @@ public class PlayerData : ScriptableObject
     public RuntimeAnimatorController animController;
 
     //Resources
-    public Dictionary<ItemParameters.ResourceType, int> resources = new Dictionary<ItemParameters.ResourceType, int>();
+    public Dictionary<Item.MaterialType, int> resources = new Dictionary<Item.MaterialType, int>();
 
     //Attacks
     public Dictionary<AttackButton, float> attacksByDamage = new Dictionary<AttackButton, float>();
@@ -74,9 +74,9 @@ public class PlayerData : ScriptableObject
     {
         //Set resources
         resources.Clear();
-        resources.Add(ItemParameters.ResourceType.COIN, 0);
-        resources.Add(ItemParameters.ResourceType.WOOD, 0);
-        resources.Add(ItemParameters.ResourceType.ROCK, 0);
+        resources.Add(Item.MaterialType.Coin, 0);
+        resources.Add(Item.MaterialType.Iron, 0);
+        resources.Add(Item.MaterialType.Rock, 0);
 
         //Set attacks
         attacksByDamage.Clear();
