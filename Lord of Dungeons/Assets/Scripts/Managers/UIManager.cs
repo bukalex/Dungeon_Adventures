@@ -41,7 +41,7 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         //Update values
-        //coinCounter.text = playerData.resources[ItemParameters.ResourceType.COIN].ToString();
+        coinCounter.text = playerData.resources[ItemParameters.ResourceType.COIN].ToString();
         HealthBar.SetHealth(playerData.health);
 
         //Open inventory
@@ -50,7 +50,7 @@ public class UIManager : MonoBehaviour
             Debug.Log("Button E was pressed!");
             inventory.SetActive(true);
         }
-        else if (Input.GetKeyUp(KeyCode.E))
+        else if (Input.GetKeyUp(KeyCode.Tab))
         {
             inventory.SetActive(false);
         }
