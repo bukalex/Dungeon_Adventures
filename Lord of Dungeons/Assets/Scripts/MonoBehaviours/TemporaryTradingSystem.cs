@@ -11,5 +11,5 @@ public class TemporaryTradingSystem : MonoBehaviour
         InventoryManager.instance.AddItem(items2Pickup[id]);
     }
 
-    public void 
+    
 }

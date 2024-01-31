@@ -85,74 +85,82 @@ public class PlayerController : MonoBehaviour
 
             //Attacks
             #region
-            if (isReadyToAttack)
+            switch (playerData.type)
             {
-                //Left Mouse Button
-                #region
-                if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
-                {
-                    attackButton = PlayerData.AttackButton.LMB;
-
-                    if (playerData.AffordAttack(attackButton))
+                case PlayerData.CharacterType.WARRIOR:
+                    if (isReadyToAttack)
                     {
-                        body.velocity = movementDirection * playerData.speed * 0.5f;
-                        AttackWithLMB();
-
-                        List<EnemyController> enemies = DetectTargets<EnemyController>(playerData.attacksByRange[attackButton] + playerData.colliderRadius);
-                        foreach (EnemyController enemy in enemies)
+                        //Left Mouse Button
+                        #region
+                        if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
                         {
-                            if (enemy.isAlive())
+                            attackButton = PlayerData.AttackButton.LMB;
+
+                            if (playerData.AffordAttack(attackButton))
                             {
-                                enemy.DealDamage(PlayerData.AttackType.BASIC, playerData.attacksByDamage[attackButton], playerData.attack);
+                                body.velocity = movementDirection * playerData.speed * 0.5f;
+                                AttackWithLMB();
+
+                                List<EnemyController> enemies = DetectTargets<EnemyController>(playerData.attacksByRange[attackButton] + playerData.colliderRadius);
+                                foreach (EnemyController enemy in enemies)
+                                {
+                                    if (enemy.isAlive())
+                                    {
+                                        enemy.DealDamage(PlayerData.AttackType.BASIC, playerData.attacksByDamage[attackButton], playerData.attack);
+                                    }
+                                }
                             }
                         }
+                        if (Input.GetMouseButtonUp(0))
+                        {
+                            attackButton = PlayerData.AttackButton.NONE;
+                        }
+                        #endregion
+
+                        //Cooldown
+                        if (playerData.attacksByCooldown.ContainsKey(attackButton))
+                        {
+                            StartCoroutine(Cooldown(playerData.attacksByCooldown[attackButton]));
+                        }
                     }
-                }
-                if (Input.GetMouseButtonUp(0))
-                {
-                    attackButton = PlayerData.AttackButton.NONE;
-                }
-                #endregion
 
-                //Cooldown
-                if (playerData.attacksByCooldown.ContainsKey(attackButton))
-                {
-                    StartCoroutine(Cooldown(playerData.attacksByCooldown[attackButton]));
-                }
+                    //Right Mouse Button
+                    #region
+                    if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
+                    {
+                        attackButton = PlayerData.AttackButton.RMB;
+
+                        if (playerData.AffordAttack(attackButton))
+                        {
+                            ActivateShield(true);
+
+                            shieldActivated = true;
+                            playerData.defense *= 5.0f;
+                            playerData.specialDefense *= 5.0f;
+                        }
+                    }
+
+                    if (shieldActivated)
+                    {
+                        attackButton = PlayerData.AttackButton.RMB;
+
+                        if ((Input.GetMouseButtonUp(1) || !playerData.AffordAttack(attackButton, true)) && !EventSystem.current.IsPointerOverGameObject())
+                        {
+                            attackButton = PlayerData.AttackButton.NONE;
+
+                            ActivateShield(false);
+
+                            shieldActivated = false;
+                            playerData.defense /= 5.0f;
+                            playerData.specialDefense /= 5.0f;
+                        }
+                    }
+                    #endregion
+                    break;
+
+                case PlayerData.CharacterType.ARCHER:
+                    break;
             }
-
-            //Right Mouse Button
-            #region
-            if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
-            {
-                attackButton = PlayerData.AttackButton.RMB;
-
-                if (playerData.AffordAttack(attackButton))
-                {
-                    ActivateShield(true);
-
-                    shieldActivated = true;
-                    playerData.defense *= 5.0f;
-                    playerData.specialDefense *= 5.0f;
-                }
-            }
-
-            if (shieldActivated)
-            {
-                attackButton = PlayerData.AttackButton.RMB;
-                
-                if ((Input.GetMouseButtonUp(1) || !playerData.AffordAttack(attackButton, true)) && !EventSystem.current.IsPointerOverGameObject())
-                {
-                    attackButton = PlayerData.AttackButton.NONE;
-
-                    ActivateShield(false);
-
-                    shieldActivated = false;
-                    playerData.defense /= 5.0f;
-                    playerData.specialDefense /= 5.0f;
-                }
-            }
-            #endregion
             #endregion
 
             //NPC interaction

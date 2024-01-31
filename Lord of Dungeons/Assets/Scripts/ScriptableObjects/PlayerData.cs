@@ -13,6 +13,11 @@ public class PlayerData : ScriptableObject
     public float maxMana = 50.0f;
     public float maxStamina = 50.0f;
 
+    public float initialAttack = 3.0f;
+    public float initialSpecialAttack = 3.0f;
+    public float initialDefense = 2.0f;
+    public float initialSpecialDefense = 2.0f;
+
     public float health = 100.0f;
     public float mana = 50.0f;
     public float stamina = 50.0f;
@@ -52,6 +57,18 @@ public class PlayerData : ScriptableObject
     public enum CharacterType { WARRIOR, ARCHER, WIZARD }
     public enum AttackButton { NONE, LMB, RMB, SHIFT }
     public enum AttackType { BASIC, SPECIAL }
+
+    public void SetStats()
+    {
+        health = maxHealth;
+        mana = maxMana;
+        stamina = maxStamina;
+
+        attack = initialAttack;
+        specialAttack = initialSpecialAttack;
+        defense = initialDefense;
+        specialDefense = initialSpecialDefense;
+    }
 
     public void SetDictionaries()
     {

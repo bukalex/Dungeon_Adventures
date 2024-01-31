@@ -20,8 +20,8 @@ public class DataManager : MonoBehaviour
 
     void Awake()
     {
+        playerData.SetStats();
         playerData.SetDictionaries();
-        playerData.health = playerData.maxHealth;
 
         foreach (EnemyParameters enemy in enemies)
         {
