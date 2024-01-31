@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class SOManager : MonoBehaviour
+public class DataManager : MonoBehaviour
 {
+
     [SerializeField]
     private PlayerData playerData;
 
@@ -35,5 +37,22 @@ public class SOManager : MonoBehaviour
         {
             npc.playerData = playerData;
         }
+    }
+
+    private void Update()
+    {
+    }
+
+    //Getting player position where he changed scene
+    private void getPlayerPosition(Vector2 exitPosition)
+    {
+        exitPosition = playerData.position;
+    }
+
+    //Getting current scene 
+    private void getCurrentSceneParametrs(string currentSceneName)
+    {
+        var activeScene = SceneManager.GetActiveScene();
+        currentSceneName = activeScene.name;
     }
 }
