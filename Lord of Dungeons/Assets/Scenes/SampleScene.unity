@@ -5190,6 +5190,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3438706853552976172, guid: de83a0095c14d1845933cf66b5845c03, type: 3}
   m_PrefabInstance: {fileID: 761971990}
   m_PrefabAsset: {fileID: 0}
+--- !u!212 &2146397115 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 7050232872075030454, guid: 09b40470022585540ab86add4c2e63f2, type: 3}
+  m_PrefabInstance: {fileID: 5562855080991132545}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &788999915573080864
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5473,6 +5478,10 @@ PrefabInstance:
       propertyPath: dialogWindow
       value: 
       objectReference: {fileID: 576621214}
+    - target: {fileID: 173605579500432063, guid: 09b40470022585540ab86add4c2e63f2, type: 3}
+      propertyPath: spriteRenderer
+      value: 
+      objectReference: {fileID: 2146397115}
     - target: {fileID: 5790246729030208149, guid: 09b40470022585540ab86add4c2e63f2, type: 3}
       propertyPath: m_Name
       value: Trader

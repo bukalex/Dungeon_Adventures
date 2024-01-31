@@ -11,6 +11,9 @@ public class NPCParameters : ScriptableObject
     //Type
     public NPCType type = NPCType.TRADER;
 
+    //Animator controller
+    public RuntimeAnimatorController animController;
+
     //Enums
     public enum NPCType { TRADER, BLACKSMITH }
 

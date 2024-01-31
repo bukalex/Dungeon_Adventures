@@ -12,6 +12,7 @@ public class EnemyParameters : ScriptableObject
     public float health = 100.0f;
     public float mana = 50.0f;
     public float stamina = 50.0f;
+    public float speed = 0.6f;
 
     public float healthRestoreRate = 1.0f;
     public float manaRestoreRate = 1.0f;

@@ -24,7 +24,6 @@ public class EnemyController : MonoBehaviour
 
     private DirectionName directionName = DirectionName.FRONT;
     private Vector3 movementDirection = Vector3.zero;
-    private Vector3 attackDirection = Vector3.down;
     private float targetDistance;
 
     private float health;
@@ -59,7 +58,9 @@ public class EnemyController : MonoBehaviour
 
                 if (targetDistance > enemyParameters.attackRange)
                 {
-                    Seek();
+                    Run();
+                    Seek(2);
+                    AvoidObstacles();
                 }
                 else
                 {
@@ -85,7 +86,13 @@ public class EnemyController : MonoBehaviour
         HealthBar.SetHealth(health);
     }
 
-    private void Seek()
+    private void Seek(float speedMultiplier = 1.0f)
+    {
+        movementDirection = (enemyParameters.playerData.position - transform.position).normalized;
+        body.velocity = movementDirection * enemyParameters.speed * speedMultiplier;
+    }
+
+    private void AvoidObstacles()
     {
 
     }

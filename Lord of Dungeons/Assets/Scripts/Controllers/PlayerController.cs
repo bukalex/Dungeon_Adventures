@@ -170,16 +170,13 @@ public class PlayerController : MonoBehaviour
                 if (npcs.Count > 0)
                 {
                     activeNPC = npcs[0];
+                    activeNPC.InteractWithPlayer(isTalkingToNPC);
                 }
             }
 
             if (activeNPC != null)
             {
-                if ((activeNPC.transform.position - transform.position).magnitude - playerData.colliderRadius - activeNPC.GetColliderRadius() <= playerData.npcDetectionRadius)
-                {
-                    activeNPC.InteractWithPlayer(isTalkingToNPC);
-                }
-                else
+                if ((activeNPC.transform.position - transform.position).magnitude - playerData.colliderRadius - activeNPC.GetColliderRadius() > playerData.npcDetectionRadius)
                 {
                     activeNPC.InteractWithPlayer(false);
                     activeNPC = null;
