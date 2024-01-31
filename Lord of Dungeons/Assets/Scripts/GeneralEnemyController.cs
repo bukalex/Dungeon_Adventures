@@ -8,7 +8,8 @@ public class GeneralEnemyController : MonoBehaviour
     [SerializeField] bool isDetector = false;
     [SerializeField] float speed = 0.3f;
     [SerializeField] float satisfactionRadius = 0.75f;
-    [SerializeField] float health = 100.0f;
+    [SerializeField] GameObject coinPrefab;
+    [SerializeField] public float health = 100.0f;
 
     private EnemyAnimationController animationController;
     private Rigidbody2D body;
@@ -33,6 +34,13 @@ public class GeneralEnemyController : MonoBehaviour
                 animationController.ChangeDirection(Vector2.SignedAngle(Vector3.right, player.transform.position - transform.position));
             }
         }
+        else
+        {
+            body.velocity = Vector2.zero;
+            GetComponent<BoxCollider2D>().enabled = false;
+        }
+
+
     }
 
     //Search
@@ -107,6 +115,7 @@ public class GeneralEnemyController : MonoBehaviour
         if (health <= 0)
         {
             animationController.Die();
+            Instantiate(coinPrefab, transform.position, new Quaternion());
         }
     }
 

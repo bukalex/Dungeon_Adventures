@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class WarriorController : MonoBehaviour
 {
+    LongRangeAttack lrg;
+
     [SerializeField] float meleeRange = 1.0f;
     [SerializeField] float meleeCooldown = 0.625f;
     [SerializeField] float damage = 15.0f;
 
-    public int score = 0;  // Score number of coin
-    public Text scoreText;
     private bool isReadyToAttack = true;
     private Rigidbody2D body;
     private GeneralCharacterController characterController;
@@ -46,9 +46,9 @@ public class WarriorController : MonoBehaviour
 
     private void PerformAttack(AttackType attackType)
     {
-        //Find enemies and objects within attack range
-        characterController.DetectEnemies(meleeRange, out List<GeneralEnemyController> enemies);
-        characterController.DetectObjects(meleeRange, out List<GameObject> objects);
+        //Find enemies within attack range
+        List<GeneralEnemyController> enemies = characterController.DetectEnemies(meleeRange);
+        List<DestroyBehaviour> destroyObjects = characterController.DetectDestroyObjects(meleeRange);
 
         //Fight enemies
         foreach (GeneralEnemyController enemy in enemies)
@@ -65,10 +65,9 @@ public class WarriorController : MonoBehaviour
             }
         }
 
-        //Fight objects
-        foreach (GameObject obj in objects)
+        foreach (DestroyBehaviour obj in destroyObjects)
         {
-            
+            obj.PlayAnimation();
         }
     }
 
@@ -78,12 +77,5 @@ public class WarriorController : MonoBehaviour
         isReadyToAttack = false;
         yield return new WaitForSeconds(time);
         isReadyToAttack = true;
-    }
-   
-
-    public void UpdateScore(int coinValue)
-    {
-        score += coinValue;
-        scoreText.text = score.ToString(); 
     }
 }

@@ -18,6 +18,7 @@ public class GuardController : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         enemyController = GetComponent<GeneralEnemyController>();
         animationController = GetComponentInChildren<EnemyAnimationController>();
+
     }
 
     void Update()
@@ -42,6 +43,7 @@ public class GuardController : MonoBehaviour
                 }
             }
         }
+
     }
 
     private void PerformAttack()
@@ -58,4 +60,5 @@ public class GuardController : MonoBehaviour
         yield return new WaitForSeconds(time);
         isReadyToAttack = true;
     }
+
 }
