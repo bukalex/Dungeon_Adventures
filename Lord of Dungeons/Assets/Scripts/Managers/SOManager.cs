@@ -19,6 +19,7 @@ public class SOManager : MonoBehaviour
     void Awake()
     {
         playerData.SetDictionaries();
+        playerData.health = playerData.maxHealth;
 
         foreach (EnemyParameters enemy in enemies)
         {

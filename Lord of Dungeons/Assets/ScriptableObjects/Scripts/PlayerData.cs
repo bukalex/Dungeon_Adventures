@@ -9,6 +9,10 @@ public class PlayerData : ScriptableObject
     public float colliderRadius = 1.0f;
 
     //Stats
+    public float maxHealth = 100.0f;
+    public float maxMana = 50.0f;
+    public float maxStamina = 50.0f;
+
     public float health = 100.0f;
     public float mana = 50.0f;
     public float stamina = 50.0f;
@@ -18,12 +22,15 @@ public class PlayerData : ScriptableObject
     public float manaRestoreRate = 1.0f;
     public float staminaRestoreRate = 1.0f;
 
-    public float attack = 10.0f;
-    public float specialAttack = 10.0f;
-    public float deffense = 10.0f;
-    public float specialDeffense = 10.0f;
+    public float attack = 3.0f;
+    public float specialAttack = 3.0f;
+    public float defense = 2.0f;
+    public float specialDefense = 2.0f;
 
     public float npcDetectionRadius = 0.75f;
+
+    public bool isUsingMana = false;
+    public bool isUsingStamina = false;
 
     //Type
     public CharacterType type = CharacterType.WARRIOR;
@@ -35,7 +42,6 @@ public class PlayerData : ScriptableObject
     public Dictionary<ItemParameters.ResourceType, int> resources = new Dictionary<ItemParameters.ResourceType, int>();
 
     //Attacks
-    public Dictionary<AttackButton, AttackType> attacksByType = new Dictionary<AttackButton, AttackType>();
     public Dictionary<AttackButton, float> attacksByDamage = new Dictionary<AttackButton, float>();
     public Dictionary<AttackButton, float> attacksByMana = new Dictionary<AttackButton, float>();
     public Dictionary<AttackButton, float> attacksByStamina = new Dictionary<AttackButton, float>();
@@ -44,7 +50,7 @@ public class PlayerData : ScriptableObject
 
     //Enums
     public enum CharacterType { WARRIOR, ARCHER, WIZARD }
-    public enum AttackButton { NONE, LMB, RMB }
+    public enum AttackButton { NONE, LMB, RMB, SHIFT }
     public enum AttackType { BASIC, SPECIAL }
 
     public void SetDictionaries()
@@ -57,7 +63,6 @@ public class PlayerData : ScriptableObject
 
         //Set attacks
         attacksByDamage.Clear();
-        attacksByType.Clear();
         attacksByMana.Clear();
         attacksByStamina.Clear();
         attacksByRange.Clear();
@@ -66,19 +71,17 @@ public class PlayerData : ScriptableObject
         switch (type)
         {
             case CharacterType.WARRIOR:
-                attacksByDamage.Add(AttackButton.LMB, attack * 1.5f);
-                attacksByType.Add(AttackButton.LMB, AttackType.BASIC);
+                attacksByDamage.Add(AttackButton.LMB, 20.0f);
                 attacksByMana.Add(AttackButton.LMB, 0.0f);
                 attacksByStamina.Add(AttackButton.LMB, 2.5f);
                 attacksByRange.Add(AttackButton.LMB, 0.7f);
-                attacksByCooldown.Add(AttackButton.LMB, 0.625f);
+                attacksByCooldown.Add(AttackButton.LMB, 0.65f);
 
-                attacksByDamage.Add(AttackButton.RMB, attack * 0.75f);
-                attacksByType.Add(AttackButton.RMB, AttackType.BASIC);
-                attacksByMana.Add(AttackButton.RMB, 0.0f);
-                attacksByStamina.Add(AttackButton.RMB, 5.0f);
-                attacksByRange.Add(AttackButton.RMB, 4.0f);
-                attacksByCooldown.Add(AttackButton.RMB, 0.625f);
+                attacksByMana.Add(AttackButton.RMB, 2.5f);
+                attacksByStamina.Add(AttackButton.RMB, 0.0f);
+
+                attacksByMana.Add(AttackButton.SHIFT, 0.0f);
+                attacksByStamina.Add(AttackButton.SHIFT, 1.0f);
                 break;
 
             case CharacterType.ARCHER:
@@ -94,10 +97,81 @@ public class PlayerData : ScriptableObject
         return health > 0;
     }
 
-    public void DealDamage(EnemyParameters.AttackType attackType, float damage)
+    public void DealDamage(EnemyParameters.AttackType attackType, float damage, float attackWeight)
     {
-        Debug.Log("Player was hit. Damage: " + damage);
+        switch (attackType)
+        {
+            case EnemyParameters.AttackType.BASIC:
+                damage *= 1.0f + (attackWeight - defense) * 0.05f;
+                break;
 
+            case EnemyParameters.AttackType.SPECIAL:
+                damage *= 1.0f + (attackWeight - specialDefense) * 0.05f;
+                break;
+        }
+
+        if (damage < 1.0f)
+        {
+            damage = 1.0f;
+        }
+
+        Debug.Log("Player was hit. Damage: " + damage);
         health -= damage;
+    }
+
+    public bool AffordAttack(AttackButton attackButton, bool isPerFrame = false)
+    {
+        float multiplier = 1.0f;
+        if (isPerFrame)
+        {
+            multiplier = Time.deltaTime;
+        }
+
+        if (attacksByMana[attackButton] != 0)
+        {
+            if (attacksByMana[attackButton] * multiplier <= mana)
+            {
+                isUsingMana = true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        if (attacksByStamina[attackButton] != 0)
+        {
+            if (attacksByStamina[attackButton] * multiplier <= stamina)
+            {
+                isUsingStamina = true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        if (isUsingMana)
+        {
+            mana = Mathf.Clamp(mana - attacksByMana[attackButton] * multiplier, 0, maxMana);
+        }
+        if (isUsingStamina)
+        {
+            stamina = Mathf.Clamp(stamina - attacksByStamina[attackButton] * multiplier, 0, maxStamina);
+        }
+
+        return true;
+    }
+
+    public void RestoreStats()
+    {
+        health = Mathf.Clamp(health + healthRestoreRate * Time.deltaTime, 0, maxHealth);
+        if (!isUsingMana)
+        {
+            mana = Mathf.Clamp(mana + manaRestoreRate * Time.deltaTime, 0, maxMana);
+        }
+        if (!isUsingStamina)
+        {
+            stamina = Mathf.Clamp(stamina + staminaRestoreRate * Time.deltaTime, 0, maxStamina);
+        }
     }
 }

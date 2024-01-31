@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New NPC Parameters", menuName = "NPC parameters")]
+[CreateAssetMenu(fileName = "New NPC Parameters", menuName = "ScriptableObjects/NPC parameters")]
 public class NPCParameters : ScriptableObject
 {
     public PlayerData playerData;
@@ -10,6 +10,9 @@ public class NPCParameters : ScriptableObject
 
     //Type
     public NPCType type = NPCType.TRADER;
+
+    //Animator controller
+    public RuntimeAnimatorController animController;
 
     //Enums
     public enum NPCType { TRADER, BLACKSMITH }

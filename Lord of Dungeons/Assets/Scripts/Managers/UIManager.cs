@@ -12,9 +12,18 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TMP_Text coinCounter;
 
+    [SerializeField]
+    private healthBar HealthBar;
+
+    void Awake()
+    {
+        HealthBar.SetMaxHealth(playerData.maxHealth);
+    }
+
     void Update()
     {
         //Update values
         coinCounter.text = playerData.resources[ItemParameters.ResourceType.COIN].ToString();
+        HealthBar.SetHealth(playerData.health);
     }
 }

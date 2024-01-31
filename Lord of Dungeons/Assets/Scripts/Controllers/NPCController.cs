@@ -10,9 +10,19 @@ public class NPCController : MonoBehaviour
     [SerializeField]
     private GameObject dialogWindow;
 
-    void Start()
-    {
+    [SerializeField]
+    private Animator animator;
 
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
+
+    private DirectionName directionName = DirectionName.FRONT;
+
+    public enum DirectionName { FRONT, BACK, LEFT, RIGHT }
+
+    void Awake()
+    {
+        animator.runtimeAnimatorController = npcParameters.animController;
     }
 
     void Update()
@@ -22,6 +32,9 @@ public class NPCController : MonoBehaviour
 
     public void InteractWithPlayer(bool isActive)
     {
+        ChangeDirection(Vector2.SignedAngle(Vector3.right, npcParameters.playerData.position - transform.position));
+        Greeting();
+
         dialogWindow.SetActive(isActive);
     }
 
@@ -29,4 +42,39 @@ public class NPCController : MonoBehaviour
     {
         return npcParameters.colliderRadius;
     }
+
+    //Animation
+    #region
+    //Change movement direction
+    private void ChangeDirection(float angle)
+    {
+        if (Mathf.Abs(angle) > 135 && directionName != DirectionName.LEFT)
+        {
+            directionName = DirectionName.LEFT;
+            animator.SetTrigger("side");
+            spriteRenderer.flipX = false;
+        }
+        else if (135 >= angle && angle > 45 && directionName != DirectionName.BACK)
+        {
+            directionName = DirectionName.BACK;
+            animator.SetTrigger("back");
+        }
+        else if (-135 <= angle && angle < -45 && directionName != DirectionName.FRONT)
+        {
+            directionName = DirectionName.FRONT;
+            animator.SetTrigger("front");
+        }
+        else if (Mathf.Abs(angle) <= 45 && directionName != DirectionName.RIGHT)
+        {
+            directionName = DirectionName.RIGHT;
+            animator.SetTrigger("side");
+            spriteRenderer.flipX = true;
+        }
+    }
+
+    private void Greeting()
+    {
+        animator.SetTrigger("greeting");
+    }
+    #endregion
 }

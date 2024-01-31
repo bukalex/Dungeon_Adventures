@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
   colliderRadius: 0.4
-  health: -10
-  maxHealth: 100
+  health: 100
   mana: 0
   stamina: 50
   healthRestoreRate: 1
   manaRestoreRate: 0
   staminaRestoreRate: 1
-  attack: 10
-  deffense: 10
-  specialDeffense: 10
+  attack: 6
+  defense: 2
+  specialDefense: 0
   attackType: 0
+  attackDamage: 15
   attackRange: 1
-  attackCooldown: 0.625
+  attackCooldown: 0.75
   manaCost: 0
   staminaCost: 1
   detectionRadius: 3.5

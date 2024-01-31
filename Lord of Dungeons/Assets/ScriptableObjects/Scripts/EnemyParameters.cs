@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu (fileName = "New Enemy Parameters", menuName = "Enemy parameters")]
+[CreateAssetMenu (fileName = "New Enemy Parameters", menuName = "ScriptableObjects/Enemy parameters")]
 public class EnemyParameters : ScriptableObject
 {
     public PlayerData playerData;
@@ -10,19 +10,20 @@ public class EnemyParameters : ScriptableObject
 
     //Stats
     public float health = 100.0f;
-    public float maxHealth = 100.0f;
     public float mana = 50.0f;
     public float stamina = 50.0f;
+    public float speed = 0.6f;
 
     public float healthRestoreRate = 1.0f;
     public float manaRestoreRate = 1.0f;
     public float staminaRestoreRate = 1.0f;
 
-    public float attack = 10.0f;
-    public float deffense = 10.0f;
-    public float specialDeffense = 10.0f;
+    public float attack = 3.0f;
+    public float defense = 2.0f;
+    public float specialDefense = 2.0f;
 
     public AttackType attackType = AttackType.BASIC;
+    public float attackDamage = 15.0f;
     public float attackRange = 1.0f;
     public float attackCooldown = 1.0f;
     public float manaCost = 1.0f;
