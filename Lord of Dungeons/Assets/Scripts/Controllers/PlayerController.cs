@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     private bool isReadyToAttack = true;
     private bool arleadyDead = false;
     private bool isTalkingToNPC = false;
+    private bool shieldActivated = false;
 
     private NPCController activeNPC = null;
 
@@ -44,9 +45,6 @@ public class PlayerController : MonoBehaviour
 
         if (playerData.isAlive())
         {
-            //Stats restore
-            playerData.RestoreStats();
-
             //Movement
             #region
             movementDirection = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0).normalized;
@@ -105,7 +103,7 @@ public class PlayerController : MonoBehaviour
                         {
                             if (enemy.isAlive())
                             {
-                                enemy.DealDamage(playerData.attacksByType[attackButton], playerData.attacksByDamage[attackButton]);
+                                enemy.DealDamage(PlayerData.AttackType.BASIC, playerData.attacksByDamage[attackButton], playerData.attack);
                             }
                         }
                     }
@@ -132,24 +130,27 @@ public class PlayerController : MonoBehaviour
                 if (playerData.AffordAttack(attackButton))
                 {
                     ActivateShield(true);
-                    playerData.defense *= 5;
-                    playerData.specialDefense *= 5;
+
+                    shieldActivated = true;
+                    playerData.defense *= 5.0f;
+                    playerData.specialDefense *= 5.0f;
                 }
             }
 
-            if (Input.GetMouseButton(1) && !EventSystem.current.IsPointerOverGameObject())
+            if (shieldActivated)
             {
                 attackButton = PlayerData.AttackButton.RMB;
-                playerData.AffordAttack(attackButton, true);
-            }
+                
+                if ((Input.GetMouseButtonUp(1) || !playerData.AffordAttack(attackButton, true)) && !EventSystem.current.IsPointerOverGameObject())
+                {
+                    attackButton = PlayerData.AttackButton.NONE;
 
-            if ((Input.GetMouseButtonUp(1) || Input.GetMouseButton(1) && !playerData.AffordAttack(attackButton, true)) && !EventSystem.current.IsPointerOverGameObject())
-            {
-                attackButton = PlayerData.AttackButton.NONE;
+                    ActivateShield(false);
 
-                ActivateShield(false);
-                playerData.defense /= 5;
-                playerData.specialDefense /= 5;
+                    shieldActivated = false;
+                    playerData.defense /= 5.0f;
+                    playerData.specialDefense /= 5.0f;
+                }
             }
             #endregion
             #endregion
@@ -185,12 +186,18 @@ public class PlayerController : MonoBehaviour
                 }
             }
             #endregion
+
+            //Stats restore
+            playerData.RestoreStats();
         }
         else if (!arleadyDead)
         {
             Die();
+
             capsuleCollider.enabled = false;
             body.velocity = Vector3.zero;
+
+            ActivateShield(false);
 
             arleadyDead = true;
         }

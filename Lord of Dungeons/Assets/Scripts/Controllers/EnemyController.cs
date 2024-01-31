@@ -31,7 +31,6 @@ public class EnemyController : MonoBehaviour
     private float mana;
     private float stamina;
 
-    private bool interruptAnimation = false;
     private bool isReadyToAttack = true;
     public bool isUsingMana = false;
     public bool isUsingStamina = false;
@@ -53,9 +52,6 @@ public class EnemyController : MonoBehaviour
     {
         if (isAlive())
         {
-            //Stats restore
-            RestoreStats();
-
             //Movement and attack
             if (PlayerDetected())
             {
@@ -67,7 +63,7 @@ public class EnemyController : MonoBehaviour
                 }
                 else
                 {
-                    if (isReadyToAttack)
+                    if (isReadyToAttack && AffordAttack())
                     {
                         PerformAttack();
                         StartCoroutine(Cooldown(enemyParameters.attackCooldown));
@@ -76,6 +72,9 @@ public class EnemyController : MonoBehaviour
                     body.velocity = Vector3.zero;
                 }
             }
+
+            //Stats restore
+            RestoreStats();
         }
         else
         {
@@ -83,7 +82,7 @@ public class EnemyController : MonoBehaviour
             body.velocity = Vector3.zero;
         }
 
-        HealthBar.SetHealth(enemyParameters.health);
+        HealthBar.SetHealth(health);
     }
 
     private void Seek()
@@ -98,7 +97,7 @@ public class EnemyController : MonoBehaviour
         switch (enemyParameters.type)
         {
             case EnemyParameters.EnemyType.GUARD:
-                enemyParameters.playerData.DealDamage(enemyParameters.attackType, enemyParameters.attack);
+                enemyParameters.playerData.DealDamage(enemyParameters.attackType, enemyParameters.attackDamage, enemyParameters.attack);
                 break;
 
             case EnemyParameters.EnemyType.GHOST:
@@ -120,15 +119,30 @@ public class EnemyController : MonoBehaviour
 
     public bool isAlive()
     {
-        return enemyParameters.health > 0;
+        return health > 0;
     }
 
-    public void DealDamage(PlayerData.AttackType attackType, float damage)
+    public void DealDamage(PlayerData.AttackType attackType, float damage, float attackWeight)
     {
-        Debug.Log("Enemy was hit. Damage: " + damage);
+        switch (attackType)
+        {
+            case PlayerData.AttackType.BASIC:
+                damage *= 1.0f + (attackWeight - enemyParameters.defense) * 0.05f;
+                break;
 
+            case PlayerData.AttackType.SPECIAL:
+                damage *= 1.0f + (attackWeight - enemyParameters.specialDefense) * 0.05f;
+                break;
+        }
+
+        if (damage < 1.0f)
+        {
+            damage = 1.0f;
+        }
+
+        Debug.Log("Enemy was hit. Damage: " + damage);
         health -= damage;
-        HealthBar.SetHealth(health);
+
         if (!isAlive())
         {
             Die();
@@ -152,7 +166,7 @@ public class EnemyController : MonoBehaviour
 
         if (enemyParameters.manaCost != 0)
         {
-            if (enemyParameters.manaCost <= mana)
+            if (enemyParameters.manaCost * multiplier <= mana)
             {
                 isUsingMana = true;
             }
@@ -163,7 +177,7 @@ public class EnemyController : MonoBehaviour
         }
         if (enemyParameters.staminaCost != 0)
         {
-            if (enemyParameters.staminaCost <= stamina)
+            if (enemyParameters.staminaCost * multiplier <= stamina)
             {
                 isUsingStamina = true;
             }
@@ -248,25 +262,14 @@ public class EnemyController : MonoBehaviour
 
     private void Attack()
     {
-        if (!interruptAnimation)
-        {
-            Stop();
-            animator.SetTrigger("attack");
-        }
+        Stop();
+        animator.SetTrigger("attack");
     }
 
     private void Die()
     {
-        StartCoroutine(Interrupt());
         Stop();
         animator.SetTrigger("isDead");
-    }
-
-    IEnumerator Interrupt()
-    {
-        interruptAnimation = true;
-        yield return new WaitForSeconds(1.0f);
-        interruptAnimation = false;
     }
     #endregion
 }

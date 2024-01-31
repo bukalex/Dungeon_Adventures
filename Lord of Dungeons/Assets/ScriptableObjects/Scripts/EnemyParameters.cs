@@ -17,11 +17,12 @@ public class EnemyParameters : ScriptableObject
     public float manaRestoreRate = 1.0f;
     public float staminaRestoreRate = 1.0f;
 
-    public float attack = 10.0f;
-    public float defense = 10.0f;
-    public float specialDefense = 10.0f;
+    public float attack = 3.0f;
+    public float defense = 2.0f;
+    public float specialDefense = 2.0f;
 
     public AttackType attackType = AttackType.BASIC;
+    public float attackDamage = 15.0f;
     public float attackRange = 1.0f;
     public float attackCooldown = 1.0f;
     public float manaCost = 1.0f;

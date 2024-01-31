@@ -22,10 +22,10 @@ public class PlayerData : ScriptableObject
     public float manaRestoreRate = 1.0f;
     public float staminaRestoreRate = 1.0f;
 
-    public float attack = 10.0f;
-    public float specialAttack = 10.0f;
-    public float defense = 10.0f;
-    public float specialDefense = 10.0f;
+    public float attack = 3.0f;
+    public float specialAttack = 3.0f;
+    public float defense = 2.0f;
+    public float specialDefense = 2.0f;
 
     public float npcDetectionRadius = 0.75f;
 
@@ -42,7 +42,6 @@ public class PlayerData : ScriptableObject
     public Dictionary<ItemParameters.ResourceType, int> resources = new Dictionary<ItemParameters.ResourceType, int>();
 
     //Attacks
-    public Dictionary<AttackButton, AttackType> attacksByType = new Dictionary<AttackButton, AttackType>();
     public Dictionary<AttackButton, float> attacksByDamage = new Dictionary<AttackButton, float>();
     public Dictionary<AttackButton, float> attacksByMana = new Dictionary<AttackButton, float>();
     public Dictionary<AttackButton, float> attacksByStamina = new Dictionary<AttackButton, float>();
@@ -64,7 +63,6 @@ public class PlayerData : ScriptableObject
 
         //Set attacks
         attacksByDamage.Clear();
-        attacksByType.Clear();
         attacksByMana.Clear();
         attacksByStamina.Clear();
         attacksByRange.Clear();
@@ -73,12 +71,11 @@ public class PlayerData : ScriptableObject
         switch (type)
         {
             case CharacterType.WARRIOR:
-                attacksByDamage.Add(AttackButton.LMB, attack * 1.5f);
-                attacksByType.Add(AttackButton.LMB, AttackType.BASIC);
+                attacksByDamage.Add(AttackButton.LMB, 20.0f);
                 attacksByMana.Add(AttackButton.LMB, 0.0f);
                 attacksByStamina.Add(AttackButton.LMB, 2.5f);
                 attacksByRange.Add(AttackButton.LMB, 0.7f);
-                attacksByCooldown.Add(AttackButton.LMB, 0.625f);
+                attacksByCooldown.Add(AttackButton.LMB, 0.65f);
 
                 attacksByMana.Add(AttackButton.RMB, 2.5f);
                 attacksByStamina.Add(AttackButton.RMB, 0.0f);
@@ -100,10 +97,25 @@ public class PlayerData : ScriptableObject
         return health > 0;
     }
 
-    public void DealDamage(EnemyParameters.AttackType attackType, float damage)
+    public void DealDamage(EnemyParameters.AttackType attackType, float damage, float attackWeight)
     {
-        Debug.Log("Player was hit. Damage: " + damage);
+        switch (attackType)
+        {
+            case EnemyParameters.AttackType.BASIC:
+                damage *= 1.0f + (attackWeight - defense) * 0.05f;
+                break;
 
+            case EnemyParameters.AttackType.SPECIAL:
+                damage *= 1.0f + (attackWeight - specialDefense) * 0.05f;
+                break;
+        }
+
+        if (damage < 1.0f)
+        {
+            damage = 1.0f;
+        }
+
+        Debug.Log("Player was hit. Damage: " + damage);
         health -= damage;
     }
 
@@ -117,7 +129,7 @@ public class PlayerData : ScriptableObject
 
         if (attacksByMana[attackButton] != 0)
         {
-            if (attacksByMana[attackButton] <= mana)
+            if (attacksByMana[attackButton] * multiplier <= mana)
             {
                 isUsingMana = true;
             }
@@ -128,7 +140,7 @@ public class PlayerData : ScriptableObject
         }
         if (attacksByStamina[attackButton] != 0)
         {
-            if (attacksByStamina[attackButton] <= stamina)
+            if (attacksByStamina[attackButton] * multiplier <= stamina)
             {
                 isUsingStamina = true;
             }
