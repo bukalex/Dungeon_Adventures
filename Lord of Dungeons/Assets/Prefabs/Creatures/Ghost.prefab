@@ -113,8 +113,10 @@ MonoBehaviour:
   animator: {fileID: 4858756477190837903}
   spriteRenderer: {fileID: 3111650714437216042}
   body: {fileID: 9203432213145845901}
-  circleCollider: {fileID: 6264132593869675205}
+  capsuleCollider: {fileID: 0}
   HealthBar: {fileID: 0}
+  isUsingMana: 0
+  isUsingStamina: 0
 --- !u!1 &4915555467428413334
 GameObject:
   m_ObjectHideFlags: 0

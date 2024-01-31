@@ -108,6 +108,8 @@ public class EnemyController : MonoBehaviour
                 break;
 
             case EnemyParameters.EnemyType.GHOST:
+                GameObject projectile = Instantiate(enemyParameters.projectilePrefab, transform.position, new Quaternion());
+                projectile.GetComponent<ProjectileController>().Launch(movementDirection, tag);
                 break;
 
             case EnemyParameters.EnemyType.RAT:

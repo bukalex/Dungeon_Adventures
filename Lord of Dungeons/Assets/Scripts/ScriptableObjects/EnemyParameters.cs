@@ -22,7 +22,7 @@ public class EnemyParameters : ScriptableObject
     public float defense = 2.0f;
     public float specialDefense = 2.0f;
 
-    public AttackType attackType = AttackType.BASIC;
+    public PlayerData.AttackType attackType = PlayerData.AttackType.BASIC;
     public float attackDamage = 15.0f;
     public float attackRange = 1.0f;
     public float attackCooldown = 1.0f;
@@ -37,8 +37,9 @@ public class EnemyParameters : ScriptableObject
     //Animator controller
     public RuntimeAnimatorController animController;
 
+    //Projectile prefab
+    public GameObject projectilePrefab;
+
     //Enums
     public enum EnemyType { GUARD, GHOST, RAT, BAT }
-    public enum AttackName { SWORD }
-    public enum AttackType { BASIC, SPECIAL }
 }

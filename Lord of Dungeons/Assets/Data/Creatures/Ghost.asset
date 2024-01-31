@@ -15,20 +15,22 @@ MonoBehaviour:
   playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
   colliderRadius: 1
   health: 200
-  maxHealth: 200
-  mana: 0
+  mana: 100
   stamina: 0
+  speed: 0.6
   healthRestoreRate: 1
-  manaRestoreRate: 1
-  staminaRestoreRate: 1
-  attack: 50
-  deffense: 10
-  specialDeffense: 10
-  attackType: 0
-  attackRange: 1
+  manaRestoreRate: 2
+  staminaRestoreRate: 0
+  attack: 5
+  defense: 6
+  specialDefense: 1
+  attackType: 1
+  attackDamage: 20
+  attackRange: 3
   attackCooldown: 1
-  manaCost: 1
-  staminaCost: 1
-  detectionRadius: 3.5
+  manaCost: 5
+  staminaCost: 0
+  detectionRadius: 5
   type: 1
   animController: {fileID: 9100000, guid: 37b36fa3a44e4a34db84f9bed843fd2d, type: 2}
+  projectilePrefab: {fileID: 4108418502657585399, guid: 4845562930ef995448a1503e38c4129b, type: 3}
