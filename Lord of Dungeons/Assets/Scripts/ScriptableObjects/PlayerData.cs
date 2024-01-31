@@ -97,15 +97,15 @@ public class PlayerData : ScriptableObject
         return health > 0;
     }
 
-    public void DealDamage(EnemyParameters.AttackType attackType, float damage, float attackWeight)
+    public void DealDamage(AttackType attackType, float damage, float attackWeight)
     {
         switch (attackType)
         {
-            case EnemyParameters.AttackType.BASIC:
+            case AttackType.BASIC:
                 damage *= 1.0f + (attackWeight - defense) * 0.05f;
                 break;
 
-            case EnemyParameters.AttackType.SPECIAL:
+            case AttackType.SPECIAL:
                 damage *= 1.0f + (attackWeight - specialDefense) * 0.05f;
                 break;
         }
