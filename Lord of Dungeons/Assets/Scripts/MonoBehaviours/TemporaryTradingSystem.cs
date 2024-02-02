@@ -22,14 +22,15 @@ public class TemporaryTradingSystem : MonoBehaviour
         }
     }
 
-    public void SellItem(InventoryItem itemInSlot)
+    public void SellItem()
     {
         InventorySlot slot = sellSlot;
-        itemInSlot = sellSlot.GetComponentInChildren<InventoryItem>();
+        InventoryItem itemInSlot = sellSlot.GetComponentInChildren<InventoryItem>();
 
-        if(isSlotEmpty() == true)
+        if(isSlotEmpty() == false)
         {
             playerData.resources[Item.MaterialType.Coin] += itemInSlot.item.price;
+            Destroy(itemInSlot.gameObject);
         }
     }
 
@@ -39,9 +40,10 @@ public class TemporaryTradingSystem : MonoBehaviour
         InventorySlot slot = sellSlot;
         InventoryItem itemInSlot = sellSlot.GetComponentInChildren<InventoryItem>();
         if (itemInSlot != null)
-            return true;
+            return false;
 
-        return false;
+        Debug.Log("Slot is empty");
+        return true;
     }
 }
-}
+
