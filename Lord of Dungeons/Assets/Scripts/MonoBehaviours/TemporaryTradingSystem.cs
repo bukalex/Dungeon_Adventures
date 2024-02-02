@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using static UnityEditor.Progress;
 
 public class TemporaryTradingSystem : MonoBehaviour
 {
+    public InventorySlot sellSlot;
     public PlayerData playerData;
     public Item[] items2Pickup;
 
@@ -20,7 +22,26 @@ public class TemporaryTradingSystem : MonoBehaviour
         }
     }
 
-    public void SellItem(bool itemInSlot)
+    public void SellItem(InventoryItem itemInSlot)
     {
+        InventorySlot slot = sellSlot;
+        itemInSlot = sellSlot.GetComponentInChildren<InventoryItem>();
+
+        if(isSlotEmpty() == true)
+        {
+            playerData.resources[Item.MaterialType.Coin] += itemInSlot.item.price;
+        }
     }
+
+    private bool isSlotEmpty()
+    {
+
+        InventorySlot slot = sellSlot;
+        InventoryItem itemInSlot = sellSlot.GetComponentInChildren<InventoryItem>();
+        if (itemInSlot != null)
+            return true;
+
+        return false;
+    }
+}
 }
