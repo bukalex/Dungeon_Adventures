@@ -41,7 +41,10 @@ public class DataManager : MonoBehaviour
             npc.playerData = playerData;
         }
 
-        tradingSystem.playerData = playerData;
+        if (tradingSystem != null)
+        {
+            tradingSystem.playerData = playerData;
+        }
     }
 
     private void Update()
