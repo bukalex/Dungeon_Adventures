@@ -9,7 +9,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: isDead
+    m_ConditionEvent: isBroken
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -4367189253548092460}
@@ -60,7 +60,7 @@ AnimatorController:
   m_Name: ChestAnimator
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: isDead
+  - m_Name: isBroken
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -93,7 +93,7 @@ AnimatorStateMachine:
     m_Position: {x: 300, y: 120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4367189253548092460}
-    m_Position: {x: 300, y: 0, z: 0}
+    m_Position: {x: 300, y: 20, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []

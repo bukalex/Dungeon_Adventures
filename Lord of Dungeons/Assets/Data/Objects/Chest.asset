@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 665f08dc8a82b6141a692c5644f3351c, type: 3}
-  m_Name: Pot
+  m_Name: Chest
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
   colliderRadius: 1
   dropPrefab: {fileID: 2320948880545772444, guid: a0fd24ae8008524469e30102b9e6c56e, type: 3}
-  health: 30
+  health: 45
   healthRestoreRate: 1
-  attack: 0
+  attack: 3
   defense: 2
   specialDefense: 2
-  animController: {fileID: 9100000, guid: 0924e2e43ea53a94286f51c750eea5d4, type: 2}
+  animController: {fileID: 9100000, guid: 523bbf726b6ae6c4091cc10e83a65d5c, type: 2}

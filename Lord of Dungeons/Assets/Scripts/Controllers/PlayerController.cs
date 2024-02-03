@@ -107,6 +107,15 @@ public class PlayerController : MonoBehaviour
                                     if (enemy.isAlive())
                                     {
                                         enemy.DealDamage(PlayerData.AttackType.BASIC, playerData.attacksByDamage[attackButton], playerData.attack);
+                                    }   
+                                }
+
+                                List<ObjectController> breakables = DetectTargets<ObjectController>(playerData.attacksByRange[attackButton] + playerData.colliderRadius);
+                                foreach (ObjectController breakable in breakables)
+                                {
+                                    if (breakable.isIntact())
+                                    {
+                                        breakable.DealDamage(PlayerData.AttackType.BASIC, playerData.attacksByDamage[attackButton], playerData.attack);
                                     }
                                 }
                             }

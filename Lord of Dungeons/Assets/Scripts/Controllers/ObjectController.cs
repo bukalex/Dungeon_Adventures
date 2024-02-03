@@ -62,7 +62,7 @@ public class ObjectController : MonoBehaviour
 
     private void Bust()
     {
-        
+        Instantiate(objectParameters.dropPrefab, transform.position, new Quaternion());
         animator.SetTrigger("isBroken");
     }
 }
