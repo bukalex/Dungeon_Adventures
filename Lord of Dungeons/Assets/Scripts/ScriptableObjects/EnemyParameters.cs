@@ -42,8 +42,8 @@ public class EnemyParameters : ScriptableObject
 
     //Obstacle avoidance
     public float whiskerLength = 2.0f;
-    public float whiskerAngle = 15.0f;
-    public float rotationSpeed = 100.0f;
+    public float whiskerAngle = 25.0f;
+    public float rotationSpeed = 40.0f;
 
     //Enums
     public enum EnemyType { GUARD, GHOST, RAT, BAT }

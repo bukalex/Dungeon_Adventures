@@ -59,7 +59,7 @@ public class EnemyController : MonoBehaviour
                 if (targetDistance > enemyParameters.attackRange)
                 {
                     Run();
-                    Seek(2);
+                    Seek();
                     AvoidObstacles();
                 }
                 else
@@ -72,6 +72,11 @@ public class EnemyController : MonoBehaviour
 
                     body.velocity = Vector3.zero;
                 }
+            }
+            else
+            {
+                Stop();
+                body.velocity = Vector3.zero;
             }
 
             //Stats restore
@@ -86,30 +91,30 @@ public class EnemyController : MonoBehaviour
         HealthBar.SetHealth(health);
     }
 
-    private void Seek(float speedMultiplier = 1.0f)
+    private void Seek()
     {
         movementDirection = (enemyParameters.playerData.position - transform.position).normalized;
-        body.velocity = movementDirection * enemyParameters.speed * speedMultiplier;
     }
 
     private void AvoidObstacles()
     {
         if (CastWhisker(enemyParameters.whiskerAngle) || CastWhisker(enemyParameters.whiskerAngle * 2))
         {
-            //transform.Rotate(Vector3.forward, -enemyParameters.rotationSpeed * Time.deltaTime);
-            //movementDirection = (enemyParameters.playerData.position - transform.position).normalized;
-            //body.velocity = movementDirection * enemyParameters.speed * speedMultiplier;
+            movementDirection = Quaternion.Euler(0, 0, -enemyParameters.rotationSpeed) * movementDirection.normalized;
         }
         else if (CastWhisker(-enemyParameters.whiskerAngle) || CastWhisker(-enemyParameters.whiskerAngle * 2))
         {
-            //transform.Rotate(Vector3.forward, enemyParameters.rotationSpeed * Time.deltaTime);
+            movementDirection = Quaternion.Euler(0, 0, enemyParameters.rotationSpeed) * movementDirection.normalized;
         }
+
+        body.velocity = movementDirection * enemyParameters.speed;
     }
 
     private bool CastWhisker(float angle)
     {
-        Vector2 whiskerDirection = Quaternion.Euler(0, 0, angle) * transform.up;
+        Vector2 whiskerDirection = Quaternion.Euler(0, 0, angle) * movementDirection;
         RaycastHit2D hit = Physics2D.Raycast(transform.position, whiskerDirection, enemyParameters.whiskerLength);
+        Debug.DrawRay(transform.position, whiskerDirection, Color.red);
         if (hit.collider != null)
         {
             return true;

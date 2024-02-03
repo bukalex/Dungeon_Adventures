@@ -3298,6 +3298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a85afb15361090a43ab3f8570ac4812c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sellSlot: {fileID: 0}
   playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
   items2Pickup:
   - {fileID: 11400000, guid: 2b698833b242a8b49a73616c048bcc8c, type: 2}
@@ -7973,6 +7974,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ghost
       objectReference: {fileID: 0}
+    - target: {fileID: 2219721725203966253, guid: 3ebd83fbfde218f43b5356eda754a32a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7068078384106996963, guid: 3ebd83fbfde218f43b5356eda754a32a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.24
@@ -8015,11 +8020,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7072885635776701062, guid: 3ebd83fbfde218f43b5356eda754a32a, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7072885635776701062, guid: 3ebd83fbfde218f43b5356eda754a32a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7679540462158388485, guid: 3ebd83fbfde218f43b5356eda754a32a, type: 3}
       propertyPath: m_Camera
