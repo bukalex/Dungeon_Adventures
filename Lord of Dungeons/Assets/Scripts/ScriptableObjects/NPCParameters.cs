@@ -15,7 +15,7 @@ public class NPCParameters : ScriptableObject
     public RuntimeAnimatorController animController;
 
     //Enums
-    public enum NPCType { TRADER, BLACKSMITH }
+    public enum NPCType { TRADER, BLACKSMITH, WIZARD, BANKER, HOMELESS }
 
     public void SellItem(int price)
     {

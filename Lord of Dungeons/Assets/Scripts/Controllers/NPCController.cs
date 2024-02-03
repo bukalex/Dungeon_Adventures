@@ -35,7 +35,10 @@ public class NPCController : MonoBehaviour
         ChangeDirection(Vector2.SignedAngle(Vector3.right, npcParameters.playerData.position - transform.position));
         Greeting();
 
-        dialogWindow.SetActive(isActive);
+        if (dialogWindow != null)
+        {
+            dialogWindow.SetActive(isActive);
+        }
     }
 
     public float GetColliderRadius()
@@ -75,6 +78,22 @@ public class NPCController : MonoBehaviour
     private void Greeting()
     {
         animator.SetTrigger("greeting");
+    }
+
+    private void Walk()
+    {
+        animator.SetBool("isWalking", true);
+    }
+
+    private void Joy()
+    {
+        animator.SetBool("joy", true);
+    }
+
+    private void Stop()
+    {
+        animator.SetBool("isWalking", false);
+        animator.SetBool("joy", false);
     }
     #endregion
 }
