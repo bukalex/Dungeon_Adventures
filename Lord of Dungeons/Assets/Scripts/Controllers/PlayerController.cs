@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
         playerData.position = transform.position;
         playerData.isUsingMana = false;
         playerData.isUsingStamina = false;
-
+        
         if (playerData.isAlive())
         {
             //Movement
@@ -111,10 +111,6 @@ public class PlayerController : MonoBehaviour
                                 }
                             }
                         }
-                        if (Input.GetMouseButtonUp(0))
-                        {
-                            attackButton = PlayerData.AttackButton.NONE;
-                        }
                         #endregion
 
                         //Cooldown
@@ -156,6 +152,12 @@ public class PlayerController : MonoBehaviour
                         }
                     }
                     #endregion
+
+                    //Disable continuous attacks
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        attackButton = PlayerData.AttackButton.NONE;
+                    }
                     break;
 
                 case PlayerData.CharacterType.ARCHER:
