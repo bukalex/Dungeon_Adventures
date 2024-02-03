@@ -17,6 +17,7 @@ MonoBehaviour:
   health: 100
   mana: 0
   stamina: 50
+  speed: 1.2
   healthRestoreRate: 1
   manaRestoreRate: 0
   staminaRestoreRate: 1
@@ -32,3 +33,7 @@ MonoBehaviour:
   detectionRadius: 3.5
   type: 0
   animController: {fileID: 9100000, guid: 1b67d6649ddbc6b49aea995556dbe4b5, type: 2}
+  projectilePrefab: {fileID: 0}
+  whiskerLength: 2
+  whiskerAngle: 20
+  rotationSpeed: 100
