@@ -27,9 +27,11 @@ public class PlayerController : MonoBehaviour
     private bool isReadyToAttack = true;
     private bool arleadyDead = false;
     private bool isTalkingToNPC = false;
+    private bool isLooting = false;
     private bool shieldActivated = false;
 
     private NPCController activeNPC = null;
+    private LootableController activeLootable = null;
 
     void Awake()
     {
@@ -199,6 +201,35 @@ public class PlayerController : MonoBehaviour
                 {
                     activeNPC.InteractWithPlayer(false);
                     activeNPC = null;
+                }
+            }
+            #endregion
+
+            //Chest Interactions
+            #region
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (activeLootable == null)
+                {
+                    isLooting = false;
+                }
+                isLooting = !isLooting;
+
+                List<LootableController> lootables = DetectTargets<LootableController>(playerData.lootableDetectionRadius + playerData.colliderRadius, false);
+
+                if (lootables.Count > 0)
+                {
+                    activeLootable = lootables[0];
+                    activeLootable.InteractWithPlayer(isLooting);
+                }
+            }
+
+            if (activeLootable != null)
+            {
+                if ((activeLootable.transform.position - transform.position).magnitude - playerData.colliderRadius - activeLootable.GetColliderRadius() > playerData.lootableDetectionRadius)
+                {
+                    activeLootable.InteractWithPlayer(false);
+                    activeLootable = null;
                 }
             }
             #endregion

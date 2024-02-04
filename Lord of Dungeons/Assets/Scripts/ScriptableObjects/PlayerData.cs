@@ -33,6 +33,7 @@ public class PlayerData : ScriptableObject
     public float specialDefense = 2.0f;
 
     public float npcDetectionRadius = 0.75f;
+    public float lootableDetectionRadius = 0.75f;
 
     public bool isUsingMana = false;
     public bool isUsingStamina = false;
