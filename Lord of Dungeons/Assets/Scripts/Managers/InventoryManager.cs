@@ -99,7 +99,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        //Look for empty slots
+
         for (int i = 0; i < inventorySlots.Length; i++)
         {
             InventorySlot slot = inventorySlots[i];
