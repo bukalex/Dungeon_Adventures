@@ -99,7 +99,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-
+        //Check if any slot has the same item with count lower than max stack
         for (int i = 0; i < inventorySlots.Length; i++)
         {
             InventorySlot slot = inventorySlots[i];
@@ -120,6 +120,8 @@ public class InventoryManager : MonoBehaviour
         InventoryItem inventoryItem = newItemGo.GetComponent<InventoryItem>();
         inventoryItem.InitializeItem(item);
     }
+
+    
 
     public Item useSelectedItem(bool use)
     {

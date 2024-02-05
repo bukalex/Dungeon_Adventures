@@ -7,7 +7,9 @@ using TMPro;
 
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    [SerializeField]
     public Item item;
+    [SerializeField]
     public TMP_Text countText;
 
     [HideInInspector]

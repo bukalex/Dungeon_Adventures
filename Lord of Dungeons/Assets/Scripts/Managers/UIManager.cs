@@ -47,7 +47,7 @@ public class UIManager : MonoBehaviour
         //Open inventory
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            Debug.Log("Button E was pressed!");
+            Debug.Log("Button TAB was pressed!");
             inventory.SetActive(true);
         }
         else if (Input.GetKeyUp(KeyCode.Tab))
