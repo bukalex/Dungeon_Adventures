@@ -26,7 +26,6 @@ public class PlayerController : MonoBehaviour
     private bool alreadyDead = false;
     private bool isTalkingToNPC = false;
     private bool isLooting = false;
-    private bool shieldActivated = false;
     private bool isAttacking = false;
 
     private NPCController activeNPC = null;
@@ -98,35 +97,13 @@ public class PlayerController : MonoBehaviour
             }
 
             //Right Mouse Button
-            //if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
-            //{
-            //    attackButton = PlayerData.AttackButton.RMB;
-            //
-            //    if (playerData.AffordAttack(attackButton))
-            //    {
-            //        ActivateShield(true);
-            //
-            //        shieldActivated = true;
-            //        playerData.defense *= 5.0f;
-            //        playerData.specialDefense *= 5.0f;
-            //    }
-            //}
-            //
-            //if (shieldActivated)
-            //{
-            //    attackButton = PlayerData.AttackButton.RMB;
-            //
-            //    if ((Input.GetMouseButtonUp(1) || !playerData.AffordAttack(attackButton, true)) && !EventSystem.current.IsPointerOverGameObject())
-            //    {
-            //        attackButton = PlayerData.AttackButton.NONE;
-            //
-            //        ActivateShield(false);
-            //
-            //        shieldActivated = false;
-            //        playerData.defense /= 5.0f;
-            //        playerData.specialDefense /= 5.0f;
-            //    }
-            //}
+            if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
+            {
+                if (BattleManager.Instance.PlayerPerformRMB(playerData))
+                {
+                    SetShield(true);
+                }
+            }
             #endregion
 
             //NPC interaction

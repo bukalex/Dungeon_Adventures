@@ -9,6 +9,10 @@ public class BattleManager : MonoBehaviour
     private Dictionary<PlayerData.CharacterType, Dictionary<AttackButton, Attack>> playerAttacks = new Dictionary<PlayerData.CharacterType, Dictionary<AttackButton, Attack>>();
     private Dictionary<EnemyParameters.EnemyType, Dictionary<AttackButton, Attack>> enemyAttacks = new Dictionary<EnemyParameters.EnemyType, Dictionary<AttackButton, Attack>>();
 
+    private List<Attack> playerRunningAttacks = new List<Attack>();
+    private List<Attack> enemyRunningAttacks = new List<Attack>();
+    private List<Attack> expiredRunningAttacks = new List<Attack>();
+
     private Attack attack;
     private ProjectileController projectileController;
 
@@ -33,7 +37,7 @@ public class BattleManager : MonoBehaviour
     {
         Dictionary<AttackButton, Attack> playerDict = new Dictionary<AttackButton, Attack>();
         playerDict.Add(AttackButton.LMB, new Attack(AttackType.BASIC, 0.55f, 0.65f, 20.0f, 0.7f, 0.0f, 2.5f));
-        playerDict.Add(AttackButton.RMB, new Attack(AttackType.SPECIAL, 3.0f, 0.0f, 0.0f, 0.0f, 2.0f, 0.0f));
+        playerDict.Add(AttackButton.RMB, new Attack(AttackType.SPECIAL, 3.0f, 6.0f, 0.0f, 0.0f, 2.0f, 0.0f));
         playerDict.Add(AttackButton.SHIFT, new Attack(AttackType.BASIC, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f));
         playerAttacks.Add(PlayerData.CharacterType.WARRIOR, playerDict);
 
@@ -46,6 +50,59 @@ public class BattleManager : MonoBehaviour
         enemyAttacks.Add(EnemyParameters.EnemyType.GHOST, ghostLMBDict);
     }
 
+    void Update()
+    {
+        foreach (Attack runningAttack in playerRunningAttacks)
+        {
+            //Calls functions for attacks that have continuous effect
+            if (runningAttack.isRunning)
+            {
+                if (runningAttack.playerRunningDelegate != null)
+                {
+                    runningAttack.playerRunningDelegate(runningAttack.playerData);
+                }
+            }
+            //Calls functions for attacks that have effect upon end of their duration
+            else
+            {
+                if (runningAttack.playerEndDelegate != null)
+                {
+                    runningAttack.playerEndDelegate(runningAttack.playerData);
+                }
+                expiredRunningAttacks.Add(runningAttack);
+            }
+        }
+
+        foreach (Attack runningAttack in enemyRunningAttacks)
+        {
+            //Calls functions for attacks that have continuous effect
+            if (runningAttack.isRunning)
+            {
+                if (runningAttack.playerRunningDelegate != null)
+                {
+                    runningAttack.enemyRunningDelegate(runningAttack.enemyParameters);
+                }
+            }
+            //Calls functions for attacks that have effect upon end of their duration
+            else
+            {
+                if (runningAttack.playerEndDelegate != null)
+                {
+                    runningAttack.enemyEndDelegate(runningAttack.enemyParameters);
+                }
+                expiredRunningAttacks.Add(runningAttack);
+            }
+        }
+
+        //Removes expired attack
+        foreach (Attack runningAttack in expiredRunningAttacks)
+        {
+            playerRunningAttacks.Remove(runningAttack);
+            enemyRunningAttacks.Remove(runningAttack);
+        }
+        expiredRunningAttacks.Clear();
+    }
+
     //Performs an attack for LMB
     public bool PlayerPerformLMB(PlayerData playerData)
     {
@@ -53,7 +110,7 @@ public class BattleManager : MonoBehaviour
 
         switch (playerData.type)
         {
-            case PlayerData.CharacterType.WARRIOR:
+            case PlayerData.CharacterType.WARRIOR://Simple attack with sword
                 if (attack.isReady && AffordAttack(playerData))
                 {
                     List<EnemyController> enemies = DetectTargets<EnemyController>(playerData);
@@ -107,10 +164,17 @@ public class BattleManager : MonoBehaviour
 
         switch (playerData.type)
         {
-            case PlayerData.CharacterType.WARRIOR:
+            case PlayerData.CharacterType.WARRIOR://Activate shield
                 if (attack.isReady && AffordAttack(playerData))
                 {
+                    playerData.defense *= 5;
+                    playerData.specialDefense *= 5;
 
+                    attack.playerData = playerData;
+                    attack.playerEndDelegate = DeactivateShield;
+
+                    StartCoroutine(StartAttack(attack));
+                    playerRunningAttacks.Add(attack);
                 }
                 else
                 {
@@ -141,6 +205,7 @@ public class BattleManager : MonoBehaviour
     //Performs an attack for Shift
     public bool PlayerPerformShift(PlayerData playerData)
     {
+        //Run
         attack = playerAttacks[playerData.type][AttackButton.SHIFT];
         return AffordAttack(playerData, true);
     }
@@ -152,7 +217,7 @@ public class BattleManager : MonoBehaviour
 
         switch (enemyParameters.type)
         {
-            case EnemyParameters.EnemyType.GUARD:
+            case EnemyParameters.EnemyType.GUARD://Simple attack with sword
                 if (attack.isReady && AffordAttack(enemyParameters))
                 {
                     DealDamage(enemyParameters, enemyParameters.playerData);
@@ -163,7 +228,7 @@ public class BattleManager : MonoBehaviour
                 }
                 break;
 
-            case EnemyParameters.EnemyType.GHOST:
+            case EnemyParameters.EnemyType.GHOST://Launches ectoplasm
                 if (attack.isReady && AffordAttack(enemyParameters))
                 {
                     projectileController = Instantiate(enemyParameters.projectilePrefab, enemyParameters.position, new Quaternion()).GetComponent<ProjectileController>();
@@ -276,6 +341,20 @@ public class BattleManager : MonoBehaviour
         attack.isReady = false;
         yield return new WaitForSeconds(attack.cooldown);
         attack.isReady = true;
+    }
+
+    //Use this to start continuous attacks
+    private IEnumerator StartAttack(Attack attack)
+    {
+        attack.isRunning = true;
+        yield return new WaitForSeconds(attack.duration);
+        attack.isRunning = false;
+    }
+
+    private void DeactivateShield(PlayerData playerData)
+    {
+        playerData.defense /= 5;
+        playerData.specialDefense /= 5;
     }
 
     public float GetAttackRange(EnemyParameters.EnemyType enemyType, AttackButton attackButton)
