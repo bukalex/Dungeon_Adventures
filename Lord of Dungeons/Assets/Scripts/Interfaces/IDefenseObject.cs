@@ -5,5 +5,5 @@ using UnityEngine;
 public interface IDefenseObject
 {
     public float GetDefenseValue(BattleManager.AttackType attackType);
-    public void DealDamage(float damage);
+    public IEnumerator DealDamage(float damage, float offset);
 }

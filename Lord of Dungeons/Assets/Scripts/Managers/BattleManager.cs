@@ -32,17 +32,17 @@ public class BattleManager : MonoBehaviour
     private void Initialize()
     {
         Dictionary<AttackButton, Attack> playerDict = new Dictionary<AttackButton, Attack>();
-        playerDict.Add(AttackButton.LMB, new Attack(AttackType.BASIC, 0.65f, 20.0f, 0.7f, 0.0f, 2.5f));
-        playerDict.Add(AttackButton.RMB, new Attack(AttackType.SPECIAL, 0.0f, 0.0f, 0.0f, 2.0f, 0.0f));
-        playerDict.Add(AttackButton.SHIFT, new Attack(AttackType.BASIC, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f));
+        playerDict.Add(AttackButton.LMB, new Attack(AttackType.BASIC, 0.55f, 0.65f, 20.0f, 0.7f, 0.0f, 2.5f));
+        playerDict.Add(AttackButton.RMB, new Attack(AttackType.SPECIAL, 3.0f, 0.0f, 0.0f, 0.0f, 2.0f, 0.0f));
+        playerDict.Add(AttackButton.SHIFT, new Attack(AttackType.BASIC, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f));
         playerAttacks.Add(PlayerData.CharacterType.WARRIOR, playerDict);
 
         Dictionary<AttackButton, Attack> guardLMBDict = new Dictionary<AttackButton, Attack>();
-        guardLMBDict.Add(AttackButton.LMB, new Attack(AttackType.BASIC, 0.65f, 20.0f, 0.7f, 0.0f, 2.5f));
+        guardLMBDict.Add(AttackButton.LMB, new Attack(AttackType.BASIC, 0.65f, 0.75f, 20.0f, 0.7f, 0.0f, 2.5f));
         enemyAttacks.Add(EnemyParameters.EnemyType.GUARD, guardLMBDict);
 
         Dictionary<AttackButton, Attack> ghostLMBDict = new Dictionary<AttackButton, Attack>();
-        ghostLMBDict.Add(AttackButton.LMB, new Attack(AttackType.SPECIAL, 1.5f, 20.0f, 3.0f, 5.0f, 0.0f));
+        ghostLMBDict.Add(AttackButton.LMB, new Attack(AttackType.SPECIAL, 0.0f, 1.5f, 20.0f, 3.0f, 5.0f, 0.0f));
         enemyAttacks.Add(EnemyParameters.EnemyType.GHOST, ghostLMBDict);
     }
 
@@ -267,7 +267,7 @@ public class BattleManager : MonoBehaviour
             damage = 1.0f;
         }
         
-        defenseObject.DealDamage(damage);
+        StartCoroutine(defenseObject.DealDamage(damage, attack.duration));
     }
 
     //Use this to recharge attacks

@@ -65,7 +65,7 @@ public class EnemyParameters : ScriptableObject, IAttackObject, IDefenseObject
             case BattleManager.AttackType.SPECIAL:
                 return specialAttack;
         }
-
+        
         return 0;
     }
 
@@ -137,8 +137,9 @@ public class EnemyParameters : ScriptableObject, IAttackObject, IDefenseObject
         return 0;
     }
 
-    public void DealDamage(float damage)
+    public IEnumerator DealDamage(float damage, float offset)
     {
+        yield return new WaitForSeconds(offset);
         health -= damage;
     }
     #endregion

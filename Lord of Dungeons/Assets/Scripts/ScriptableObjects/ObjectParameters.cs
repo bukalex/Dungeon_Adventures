@@ -39,8 +39,9 @@ public class ObjectParameters : ScriptableObject, IDefenseObject
         return 0;
     }
 
-    public void DealDamage(float damage)
+    public IEnumerator DealDamage(float damage, float offset)
     {
+        yield return new WaitForSeconds(offset);
         health -= damage;
     }
     #endregion
