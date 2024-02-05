@@ -110,14 +110,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9cad3279c793eb43b22969e57e699b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyParameters: {fileID: 11400000, guid: f3fc0769435fc174699736f4f40f1e10, type: 2}
+  enemyParametersOriginal: {fileID: 11400000, guid: f3fc0769435fc174699736f4f40f1e10, type: 2}
   animator: {fileID: 4858756477190837903}
   spriteRenderer: {fileID: 3111650714437216042}
   body: {fileID: 9203432213145845901}
   capsuleCollider: {fileID: 4106667478172586409}
   HealthBar: {fileID: 6019158925657577406}
-  isUsingMana: 0
-  isUsingStamina: 0
 --- !u!1 &4915555467428413334
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,8 +144,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.1, y: 0.94, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7068078384106996963}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -190,7 +188,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -778351333
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: e28f69ebe77928c41bc4d9087fcf0f2d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -260,7 +258,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.65}
+  m_AnchoredPosition: {x: 0, y: 0.4}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &7679540462158388485
