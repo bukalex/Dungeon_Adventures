@@ -5,7 +5,8 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField]
-    private EnemyParameters enemyParameters;
+    private EnemyParameters enemyParametersOriginal;
+    public EnemyParameters enemyParameters { get; private set; }
 
     [SerializeField]
     private Animator animator;
@@ -25,52 +26,42 @@ public class EnemyController : MonoBehaviour
     private DirectionName directionName = DirectionName.FRONT;
     private Vector3 movementDirection = Vector3.zero;
     private float targetDistance;
-
-    private float health;
-    private float mana;
-    private float stamina;
-
-    private bool isReadyToAttack = true;
-    public bool isUsingMana = false;
-    public bool isUsingStamina = false;
+    private bool alreadyDead = false;
 
     public enum DirectionName { FRONT, BACK, LEFT, RIGHT }
 
     void Awake()
     {
+        enemyParameters = Instantiate(enemyParametersOriginal);
+
         animator.runtimeAnimatorController = enemyParameters.animController;
-
-        health = enemyParameters.health;
-        mana = enemyParameters.mana;
-        stamina = enemyParameters.stamina;
-
-        HealthBar.SetMaxHealth(enemyParameters.health);
+        HealthBar.SetMaxHealth(enemyParameters.maxHealth);
     }
 
     void Update()
     {
-        if (isAlive())
+        enemyParameters.position = transform.position;
+        enemyParameters.attackDirection = (enemyParameters.playerData.position - transform.position).normalized;
+        enemyParameters.isUsingMana = false;
+        enemyParameters.isUsingStamina = false;
+
+        if (IsAlive())
         {
             //Movement and attack
             if (PlayerDetected())
             {
                 ChangeDirection(Vector2.SignedAngle(Vector3.right, enemyParameters.playerData.position - transform.position));
 
-                if (targetDistance > enemyParameters.attackRange)
+                if (targetDistance > BattleManager.Instance.GetAttackRange(enemyParameters.type, BattleManager.AttackButton.LMB))
                 {
                     Run();
                     Seek();
                     AvoidObstacles();
                 }
-                else
+                else if (BattleManager.Instance.EnemyPerformLMB(enemyParameters))
                 {
-                    if (isReadyToAttack && AffordAttack())
-                    {
-                        PerformAttack();
-                        StartCoroutine(Cooldown(enemyParameters.attackCooldown));
-                    }
-
                     body.velocity = Vector3.zero;
+                    Attack();
                 }
             }
             else
@@ -82,13 +73,16 @@ public class EnemyController : MonoBehaviour
             //Stats restore
             RestoreStats();
         }
-        else
+        else if (!alreadyDead)
         {
             capsuleCollider.enabled = false;
             body.velocity = Vector3.zero;
+            Die();
+
+            alreadyDead = true;
         }
 
-        HealthBar.SetHealth(health);
+        HealthBar.SetHealth(enemyParameters.health);
     }
 
     private void Seek()
@@ -123,127 +117,27 @@ public class EnemyController : MonoBehaviour
         return false;
     }
 
-    private void PerformAttack()
-    {
-        Attack();
-
-        switch (enemyParameters.type)
-        {
-            case EnemyParameters.EnemyType.GUARD:
-                enemyParameters.playerData.DealDamage(enemyParameters.attackType, enemyParameters.attackDamage, enemyParameters.attack);
-                break;
-
-            case EnemyParameters.EnemyType.GHOST:
-                GameObject projectile = Instantiate(enemyParameters.projectilePrefab, transform.position, new Quaternion());
-                projectile.GetComponent<ProjectileController>().Launch(enemyParameters.playerData.position - transform.position, tag, enemyParameters.attackType, enemyParameters.attackDamage, enemyParameters.attack);
-                break;
-
-            case EnemyParameters.EnemyType.RAT:
-                break;
-
-            case EnemyParameters.EnemyType.BAT:
-                break;
-        }
-    }
-
     private bool PlayerDetected()
     {
         targetDistance = (enemyParameters.playerData.position - transform.position).magnitude - enemyParameters.playerData.colliderRadius - enemyParameters.colliderRadius;
-        return targetDistance <= enemyParameters.detectionRadius && enemyParameters.playerData.isAlive();
+        return targetDistance <= enemyParameters.detectionRadius && enemyParameters.playerData.IsAlive();
     }
 
-    public bool isAlive()
+    public bool IsAlive()
     {
-        return health > 0;
-    }
-
-    public void DealDamage(PlayerData.AttackType attackType, float damage, float attackWeight)
-    {
-        switch (attackType)
-        {
-            case PlayerData.AttackType.BASIC:
-                damage *= 1.0f + (attackWeight - enemyParameters.defense) * 0.05f;
-                break;
-
-            case PlayerData.AttackType.SPECIAL:
-                damage *= 1.0f + (attackWeight - enemyParameters.specialDefense) * 0.05f;
-                break;
-        }
-
-        if (damage < 1.0f)
-        {
-            damage = 1.0f;
-        }
-
-        Debug.Log("Enemy was hit. Damage: " + damage);
-        health -= damage;
-
-        if (!isAlive())
-        {
-            Die();
-        }
-    }
-
-    IEnumerator Cooldown(float time)
-    {
-        isReadyToAttack = false;
-        yield return new WaitForSeconds(time);
-        isReadyToAttack = true;
-    }
-
-    private bool AffordAttack(bool isPerFrame = false)
-    {
-        float multiplier = 1.0f;
-        if (isPerFrame)
-        {
-            multiplier = Time.deltaTime;
-        }
-
-        if (enemyParameters.manaCost != 0)
-        {
-            if (enemyParameters.manaCost * multiplier <= mana)
-            {
-                isUsingMana = true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        if (enemyParameters.staminaCost != 0)
-        {
-            if (enemyParameters.staminaCost * multiplier <= stamina)
-            {
-                isUsingStamina = true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        if (isUsingMana)
-        {
-            mana = Mathf.Clamp(mana - enemyParameters.manaCost * multiplier, 0, enemyParameters.mana);
-        }
-        if (isUsingStamina)
-        {
-            stamina = Mathf.Clamp(stamina - enemyParameters.staminaCost * multiplier, 0, enemyParameters.stamina);
-        }
-
-        return true;
+        return enemyParameters.health > 0;
     }
 
     private void RestoreStats()
     {
-        health = Mathf.Clamp(health + enemyParameters.healthRestoreRate * Time.deltaTime, 0, enemyParameters.health);
-        if (!isUsingMana)
+        enemyParameters.health = Mathf.Clamp(enemyParameters.health + enemyParameters.healthRestoreRate * Time.deltaTime, 0, enemyParameters.maxHealth);
+        if (!enemyParameters.isUsingMana)
         {
-            mana = Mathf.Clamp(mana + enemyParameters.manaRestoreRate * Time.deltaTime, 0, enemyParameters.mana);
+            enemyParameters.mana = Mathf.Clamp(enemyParameters.mana + enemyParameters.manaRestoreRate * Time.deltaTime, 0, enemyParameters.maxMana);
         }
-        if (!isUsingStamina)
+        if (!enemyParameters.isUsingStamina)
         {
-            stamina = Mathf.Clamp(stamina + enemyParameters.staminaRestoreRate * Time.deltaTime, 0, enemyParameters.stamina);
+            enemyParameters.stamina = Mathf.Clamp(enemyParameters.stamina + enemyParameters.staminaRestoreRate * Time.deltaTime, 0, enemyParameters.maxStamina);
         }
     }
 
