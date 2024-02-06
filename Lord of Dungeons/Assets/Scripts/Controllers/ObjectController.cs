@@ -46,5 +46,6 @@ public class ObjectController : MonoBehaviour
     {
         Instantiate(objectParametersOriginal.dropPrefab, transform.position, new Quaternion());
         animator.SetTrigger("isBroken");
+        capsuleCollider.enabled = false;
     }
 }

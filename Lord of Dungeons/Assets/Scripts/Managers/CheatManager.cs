@@ -15,6 +15,18 @@ public class CheatManager : MonoBehaviour
             {
                 playerData.resources[Item.MaterialType.Coin] += 1000;
             }
+
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                playerData.attack += 100;
+                playerData.specialAttack += 100;
+            }
+
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                playerData.defense += 100;
+                playerData.specialDefense += 100;
+            }
         }
     }
 }

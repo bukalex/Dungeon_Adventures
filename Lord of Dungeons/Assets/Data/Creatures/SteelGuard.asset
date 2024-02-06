@@ -12,28 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ddae792339ded641ad5663a529ccf72, type: 3}
   m_Name: SteelGuard
   m_EditorClassIdentifier: 
-  playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
-  colliderRadius: 0.4
+  maxHealth: 100
+  maxMana: 50
+  maxStamina: 100
   health: 100
   mana: 0
-  stamina: 50
+  stamina: 100
   speed: 1.2
+  attack: 6
+  specialAttack: 3
+  defense: 2
+  specialDefense: 0
   healthRestoreRate: 1
   manaRestoreRate: 0
   staminaRestoreRate: 1
-  attack: 6
-  defense: 2
-  specialDefense: 0
-  attackType: 0
-  attackDamage: 15
-  attackRange: 1
-  attackCooldown: 0.75
-  manaCost: 0
-  staminaCost: 1
-  detectionRadius: 3.5
-  type: 0
-  animController: {fileID: 9100000, guid: 1b67d6649ddbc6b49aea995556dbe4b5, type: 2}
-  projectilePrefab: {fileID: 0}
+  isUsingMana: 0
+  isUsingStamina: 0
   whiskerLength: 1
   whiskerAngle: 10
   rotationSpeed: 60
+  playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
+  colliderRadius: 0.4
+  detectionRadius: 6
+  position: {x: 0, y: 0, z: 0}
+  attackDirection: {x: 0, y: -1, z: 0}
+  type: 0
+  animController: {fileID: 9100000, guid: 1b67d6649ddbc6b49aea995556dbe4b5, type: 2}
+  projectilePrefab: {fileID: 0}
