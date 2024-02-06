@@ -69,7 +69,6 @@ public class BattleManager : MonoBehaviour
                 if (runningAttack.playerEndDelegate != null)
                 {
                     runningAttack.playerEndDelegate(runningAttack.playerData);
-                    Debug.Log("2");
                 }
                 expiredRunningAttacks.Add(runningAttack);
             }
@@ -261,6 +260,7 @@ public class BattleManager : MonoBehaviour
             case EnemyParameters.EnemyType.GUARD://Hits ground stunning player
                 if (attack.isReady && AffordAttack(enemyParameters))
                 {
+                    enemyParameters.playerData.isStunned = true;
                     DealDamage(enemyParameters, enemyParameters.playerData);
 
                     attack.playerData = enemyParameters.playerData;
@@ -268,7 +268,6 @@ public class BattleManager : MonoBehaviour
 
                     StartCoroutine(StartAttack(attack));
                     playerRunningAttacks.Add(attack);
-                    Debug.Log("1");
                 }
                 else
                 {

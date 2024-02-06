@@ -81,7 +81,6 @@ public class EnemyController : MonoBehaviour
                 {
                     if (BattleManager.Instance.EnemyPerformRMB(enemyParameters))
                     {
-                        Debug.Log("4");
                         Attack();
                     }
                 }
