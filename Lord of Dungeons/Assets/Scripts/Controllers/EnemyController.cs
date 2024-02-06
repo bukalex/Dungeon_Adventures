@@ -60,7 +60,17 @@ public class EnemyController : MonoBehaviour
                 }
                 else if (BattleManager.Instance.EnemyPerformLMB(enemyParameters))
                 {
-                    body.velocity = Vector3.zero;
+                    if (enemyParameters.type == EnemyParameters.EnemyType.GHOST && targetDistance < BattleManager.Instance.GetAttackRange(enemyParameters.type, BattleManager.AttackButton.LMB) * 0.75f)
+                    {
+                        Run();
+                        Flee();
+                        AvoidObstacles();
+                    }
+                    else
+                    {
+                        body.velocity = Vector3.zero;
+                    }
+                    
                     Attack();
                 }
             }
@@ -79,6 +89,11 @@ public class EnemyController : MonoBehaviour
             body.velocity = Vector3.zero;
             Die();
 
+            if (enemyParameters.type == EnemyParameters.EnemyType.GHOST)
+            {
+                StartCoroutine(DelayedDie());
+            }
+
             alreadyDead = true;
         }
 
@@ -88,6 +103,12 @@ public class EnemyController : MonoBehaviour
     private void Seek()
     {
         movementDirection = (enemyParameters.playerData.position - transform.position).normalized;
+    }
+
+    private void Flee()
+    {
+        movementDirection = (transform.position - enemyParameters.playerData.position).normalized;
+
     }
 
     private void AvoidObstacles()
@@ -139,6 +160,12 @@ public class EnemyController : MonoBehaviour
         {
             enemyParameters.stamina = Mathf.Clamp(enemyParameters.stamina + enemyParameters.staminaRestoreRate * Time.deltaTime, 0, enemyParameters.maxStamina);
         }
+    }
+
+    private IEnumerator DelayedDie()
+    {
+        yield return new WaitForSeconds(0.6f);
+        Destroy(gameObject);
     }
 
     //Animation

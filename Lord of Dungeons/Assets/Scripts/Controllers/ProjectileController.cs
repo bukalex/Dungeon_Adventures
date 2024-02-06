@@ -37,7 +37,6 @@ public class ProjectileController : MonoBehaviour
                     if (targetTag.Equals("Player"))
                     {
                         BattleManager.Instance.ProjectileHit(attackObject, defenseObject, attack);
-                        Destroy(gameObject);
                     }
                     break;
 
@@ -45,13 +44,13 @@ public class ProjectileController : MonoBehaviour
                     if (targetTag.Equals("Enemy") || targetTag.Equals("Object"))
                     {
                         BattleManager.Instance.ProjectileHit(attackObject, defenseObject, attack);
-                        Destroy(gameObject);
                     }
                     break;
+            }
 
-                default:
-                    Destroy(gameObject);
-                    break;
+            if (!targetTag.Equals(parentTag))
+            {
+                Destroy(gameObject);
             }
         }
     }
