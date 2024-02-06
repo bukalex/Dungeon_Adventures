@@ -7,6 +7,12 @@ public class ObjectController : MonoBehaviour
     [SerializeField]
     private ObjectParameters objectParameters;
 
+    [SerializeField] 
+    private GameObject setObject;
+
+    [SerializeField]
+    private GameObject dialogueWindow;
+
     [SerializeField]
     private Animator animator;
 
@@ -24,8 +30,23 @@ public class ObjectController : MonoBehaviour
     void Awake()
     {
         animator.runtimeAnimatorController = objectParameters.animController;
-
+        dialogueWindow.SetActive(false);
         health = objectParameters.health;
+    }
+
+    private void Update()
+    {
+        if (GetObjectType(setObject) == ObjectParameters.ObjectType.Interactable)
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                dialogueWindow.SetActive(true);
+            }
+            else
+            {
+                dialogueWindow.SetActive(false);
+            }
+        }
     }
 
     public bool isIntact()
@@ -64,5 +85,17 @@ public class ObjectController : MonoBehaviour
     {
         Instantiate(objectParameters.dropPrefab, transform.position, new Quaternion());
         animator.SetTrigger("isBroken");
+    }
+
+    private ObjectParameters.ObjectType GetObjectType(GameObject newGameObj)
+    {
+        ObjectParameters objectData = newGameObj.GetComponent<ObjectParameters>();
+        if (objectData.isInteractable == true)
+        {
+            objectData.objectType = ObjectParameters.ObjectType.Interactable;
+            return objectData.objectType;
+        }
+
+        return ObjectParameters.ObjectType.NONE;
     }
 }

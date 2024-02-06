@@ -9,23 +9,23 @@ using UnityEngine;
 public class ObjectParameters : ScriptableObject
 {
     public PlayerData playerData;
-    public float colliderRadius = 1.0f;
-
+    public RuntimeAnimatorController animController;
     public GameObject dropPrefab;
 
-    //Stats
+    [Header("Stats")]
+    public float colliderRadius = 1.0f;
     public float health = 30.0f;
-    
-
     public float healthRestoreRate = 1.0f;
-
-
     public float attack = 3.0f;
     public float defense = 2.0f;
     public float specialDefense = 2.0f;
 
-    public RuntimeAnimatorController animController;
 
-    public enum ObjectType { POT, CHEST}
+    [Header("Attributes")]
+
+    public bool isInteractable;
+    public ObjectType objectType;
+    public enum ObjectType {Interactable, Breakable, Collectable, NONE, POT, CHEST, PORTAL}
+
 
 }
