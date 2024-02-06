@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static BattleManager;
 
 public class PlayerController : MonoBehaviour
 {
@@ -21,14 +22,11 @@ public class PlayerController : MonoBehaviour
     private CapsuleCollider2D capsuleCollider;
 
     private Vector3 movementDirection = Vector3.zero;
-    private Vector3 attackDirection = Vector3.down;
-    private PlayerData.AttackButton attackButton = PlayerData.AttackButton.NONE;
 
-    private bool isReadyToAttack = true;
-    private bool arleadyDead = false;
+    private bool alreadyDead = false;
     private bool isTalkingToNPC = false;
     private bool isLooting = false;
-    private bool shieldActivated = false;
+    private bool isAttacking = false;
 
     private NPCController activeNPC = null;
     private LootableController activeLootable = null;
@@ -45,7 +43,7 @@ public class PlayerController : MonoBehaviour
         playerData.isUsingMana = false;
         playerData.isUsingStamina = false;
         
-        if (playerData.isAlive())
+        if (playerData.IsAlive())
         {
             //Movement
             #region
@@ -59,11 +57,11 @@ public class PlayerController : MonoBehaviour
 
             if (movementDirection.magnitude != 0)
             {
-                attackDirection = movementDirection;
+                playerData.attackDirection = movementDirection;
 
-                if (Input.GetKey(KeyCode.LeftShift) && playerData.AffordAttack(PlayerData.AttackButton.SHIFT, true))
+                if (Input.GetKey(KeyCode.LeftShift) && BattleManager.Instance.PlayerPerformShift(playerData))
                 {
-                    if (attackButton == PlayerData.AttackButton.NONE)
+                    if (!isAttacking)
                     {
                         Run();
                     }
@@ -71,7 +69,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    if (attackButton == PlayerData.AttackButton.NONE)
+                    if (!isAttacking)
                     {
                         Walk();
                     }
@@ -87,92 +85,24 @@ public class PlayerController : MonoBehaviour
 
             //Attacks
             #region
-            switch (playerData.type)
+            //Left Mouse Button
+            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
-                case PlayerData.CharacterType.WARRIOR:
-                    if (isReadyToAttack)
-                    {
-                        //Left Mouse Button
-                        #region
-                        if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
-                        {
-                            attackButton = PlayerData.AttackButton.LMB;
+                if (BattleManager.Instance.PlayerPerformLMB(playerData))
+                {
+                    body.velocity = movementDirection * playerData.speed * 0.5f;
+                    AttackWithLMB();
+                    isAttacking = true;
+                }
+            }
 
-                            if (playerData.AffordAttack(attackButton))
-                            {
-                                body.velocity = movementDirection * playerData.speed * 0.5f;
-                                AttackWithLMB();
-
-                                List<EnemyController> enemies = DetectTargets<EnemyController>(playerData.attacksByRange[attackButton] + playerData.colliderRadius);
-                                foreach (EnemyController enemy in enemies)
-                                {
-                                    if (enemy.isAlive())
-                                    {
-                                        enemy.DealDamage(PlayerData.AttackType.BASIC, playerData.attacksByDamage[attackButton], playerData.attack);
-                                    }   
-                                }
-
-                                List<ObjectController> breakables = DetectTargets<ObjectController>(playerData.attacksByRange[attackButton] + playerData.colliderRadius);
-                                foreach (ObjectController breakable in breakables)
-                                {
-                                    if (breakable.isIntact())
-                                    {
-                                        breakable.DealDamage(PlayerData.AttackType.BASIC, playerData.attacksByDamage[attackButton], playerData.attack);
-                                    }
-                                }
-                            }
-                        }
-                        #endregion
-
-                        //Cooldown
-                        if (playerData.attacksByCooldown.ContainsKey(attackButton))
-                        {
-                            StartCoroutine(Cooldown(playerData.attacksByCooldown[attackButton]));
-                        }
-                    }
-
-                    //Right Mouse Button
-                    #region
-                    if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
-                    {
-                        attackButton = PlayerData.AttackButton.RMB;
-
-                        if (playerData.AffordAttack(attackButton))
-                        {
-                            ActivateShield(true);
-
-                            shieldActivated = true;
-                            playerData.defense *= 5.0f;
-                            playerData.specialDefense *= 5.0f;
-                        }
-                    }
-
-                    if (shieldActivated)
-                    {
-                        attackButton = PlayerData.AttackButton.RMB;
-
-                        if ((Input.GetMouseButtonUp(1) || !playerData.AffordAttack(attackButton, true)) && !EventSystem.current.IsPointerOverGameObject())
-                        {
-                            attackButton = PlayerData.AttackButton.NONE;
-
-                            ActivateShield(false);
-
-                            shieldActivated = false;
-                            playerData.defense /= 5.0f;
-                            playerData.specialDefense /= 5.0f;
-                        }
-                    }
-                    #endregion
-
-                    //Disable continuous attacks
-                    if (Input.GetMouseButtonUp(0))
-                    {
-                        attackButton = PlayerData.AttackButton.NONE;
-                    }
-                    break;
-
-                case PlayerData.CharacterType.ARCHER:
-                    break;
+            //Right Mouse Button
+            if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
+            {
+                if (BattleManager.Instance.PlayerPerformRMB(playerData))
+                {
+                    SetShield(true);
+                }
             }
             #endregion
 
@@ -220,16 +150,7 @@ public class PlayerController : MonoBehaviour
                 if (lootables.Count > 0)
                 {
                     activeLootable = lootables[0];
-                    activeLootable.InteractWithPlayer(isLooting);
-                }
-            }
-
-            if (activeLootable != null)
-            {
-                if ((activeLootable.transform.position - transform.position).magnitude - playerData.colliderRadius - activeLootable.GetColliderRadius() > playerData.lootableDetectionRadius)
-                {
-                    activeLootable.InteractWithPlayer(false);
-                    activeLootable = null;
+                    activeLootable.BeingLooted(isLooting);
                 }
             }
             #endregion
@@ -237,16 +158,16 @@ public class PlayerController : MonoBehaviour
             //Stats restore
             playerData.RestoreStats();
         }
-        else if (!arleadyDead)
+        else if (!alreadyDead)
         {
             Die();
 
             capsuleCollider.enabled = false;
             body.velocity = Vector3.zero;
 
-            ActivateShield(false);
+            SetShield(false);
 
-            arleadyDead = true;
+            alreadyDead = true;
         }
     }
 
@@ -266,7 +187,7 @@ public class PlayerController : MonoBehaviour
                 {
                     targets.Add(target.GetComponent<T>());
                 }
-                else if (Vector2.Angle(attackDirection, targetDirection) <= 45)
+                else if (Vector2.Angle(playerData.attackDirection, targetDirection) <= 45)
                 {
                     targets.Add(target.GetComponent<T>());
                 }
@@ -288,22 +209,10 @@ public class PlayerController : MonoBehaviour
             Input.GetKeyUp(KeyCode.D);
     }
 
-    IEnumerator Cooldown(float time)
-    {
-        isReadyToAttack = false;
-        yield return new WaitForSeconds(time);
-        isReadyToAttack = true;
-    }
-
-    public PlayerData GetPlayerData()
-    {
-        return playerData;
-    }
-
     //Animation
     #region
     //Activate/deactivate shield
-    private void ActivateShield(bool isActive)
+    private void SetShield(bool isActive)
     {
         shield.SetBool("shieldActivated", isActive);
     }

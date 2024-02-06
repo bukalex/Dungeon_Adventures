@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Player Data", menuName = "ScriptableObjects/Player data")]
-public class PlayerData : ScriptableObject
+public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
 {
-    public Vector3 position = Vector3.zero;
-    public float colliderRadius = 1.0f;
-
-    //Stats
+    [Header("Initial stats")]
     public float maxHealth = 100.0f;
     public float maxMana = 50.0f;
     public float maxStamina = 50.0f;
@@ -18,25 +15,31 @@ public class PlayerData : ScriptableObject
     public float initialDefense = 2.0f;
     public float initialSpecialDefense = 2.0f;
 
+    [Header("Run-time stats")]
     public float health = 100.0f;
     public float mana = 50.0f;
     public float stamina = 50.0f;
     public float speed = 0.75f;
-
-    public float healthRestoreRate = 1.0f;
-    public float manaRestoreRate = 1.0f;
-    public float staminaRestoreRate = 1.0f;
 
     public float attack = 3.0f;
     public float specialAttack = 3.0f;
     public float defense = 2.0f;
     public float specialDefense = 2.0f;
 
-    public float npcDetectionRadius = 0.75f;
-    public float lootableDetectionRadius = 0.75f;
+    [Header("Restore values")]
+    public float healthRestoreRate = 1.0f;
+    public float manaRestoreRate = 1.0f;
+    public float staminaRestoreRate = 1.0f;
 
     public bool isUsingMana = false;
     public bool isUsingStamina = false;
+
+    [Header("Others")]
+    public float npcDetectionRadius = 0.75f;
+    public float lootableDetectionRadius = 0.75f;
+    public float colliderRadius = 1.0f;
+    public Vector3 position = Vector3.zero;
+    public Vector3 attackDirection = Vector3.down;
 
     //Type
     public CharacterType type = CharacterType.WARRIOR;
@@ -47,17 +50,8 @@ public class PlayerData : ScriptableObject
     //Resources
     public Dictionary<Item.MaterialType, int> resources = new Dictionary<Item.MaterialType, int>();
 
-    //Attacks
-    public Dictionary<AttackButton, float> attacksByDamage = new Dictionary<AttackButton, float>();
-    public Dictionary<AttackButton, float> attacksByMana = new Dictionary<AttackButton, float>();
-    public Dictionary<AttackButton, float> attacksByStamina = new Dictionary<AttackButton, float>();
-    public Dictionary<AttackButton, float> attacksByRange = new Dictionary<AttackButton, float>();
-    public Dictionary<AttackButton, float> attacksByCooldown = new Dictionary<AttackButton, float>();
-
     //Enums
     public enum CharacterType { WARRIOR, ARCHER, WIZARD }
-    public enum AttackButton { NONE, LMB, RMB, SHIFT }
-    public enum AttackType { BASIC, SPECIAL }
 
     public void SetStats()
     {
@@ -78,106 +72,11 @@ public class PlayerData : ScriptableObject
         resources.Add(Item.MaterialType.Coin, 0);
         resources.Add(Item.MaterialType.Iron, 0);
         resources.Add(Item.MaterialType.Rock, 0);
-
-        //Set attacks
-        attacksByDamage.Clear();
-        attacksByMana.Clear();
-        attacksByStamina.Clear();
-        attacksByRange.Clear();
-        attacksByCooldown.Clear();
-
-        switch (type)
-        {
-            case CharacterType.WARRIOR:
-                attacksByDamage.Add(AttackButton.LMB, 20.0f);
-                attacksByMana.Add(AttackButton.LMB, 0.0f);
-                attacksByStamina.Add(AttackButton.LMB, 2.5f);
-                attacksByRange.Add(AttackButton.LMB, 0.7f);
-                attacksByCooldown.Add(AttackButton.LMB, 0.65f);
-
-                attacksByMana.Add(AttackButton.RMB, 2.5f);
-                attacksByStamina.Add(AttackButton.RMB, 0.0f);
-
-                attacksByMana.Add(AttackButton.SHIFT, 0.0f);
-                attacksByStamina.Add(AttackButton.SHIFT, 1.0f);
-                break;
-
-            case CharacterType.ARCHER:
-                break;
-
-            case CharacterType.WIZARD:
-                break;
-        }
     }
 
-    public bool isAlive()
+    public bool IsAlive()
     {
         return health > 0;
-    }
-
-    public void DealDamage(AttackType attackType, float damage, float attackWeight)
-    {
-        switch (attackType)
-        {
-            case AttackType.BASIC:
-                damage *= 1.0f + (attackWeight - defense) * 0.05f;
-                break;
-
-            case AttackType.SPECIAL:
-                damage *= 1.0f + (attackWeight - specialDefense) * 0.05f;
-                break;
-        }
-
-        if (damage < 1.0f)
-        {
-            damage = 1.0f;
-        }
-
-        Debug.Log("Player was hit. Damage: " + damage);
-        health -= damage;
-    }
-
-    public bool AffordAttack(AttackButton attackButton, bool isPerFrame = false)
-    {
-        float multiplier = 1.0f;
-        if (isPerFrame)
-        {
-            multiplier = Time.deltaTime;
-        }
-
-        if (attacksByMana[attackButton] != 0)
-        {
-            if (attacksByMana[attackButton] * multiplier <= mana)
-            {
-                isUsingMana = true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        if (attacksByStamina[attackButton] != 0)
-        {
-            if (attacksByStamina[attackButton] * multiplier <= stamina)
-            {
-                isUsingStamina = true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        if (isUsingMana)
-        {
-            mana = Mathf.Clamp(mana - attacksByMana[attackButton] * multiplier, 0, maxMana);
-        }
-        if (isUsingStamina)
-        {
-            stamina = Mathf.Clamp(stamina - attacksByStamina[attackButton] * multiplier, 0, maxStamina);
-        }
-
-        return true;
     }
 
     public void RestoreStats()
@@ -192,4 +91,95 @@ public class PlayerData : ScriptableObject
             stamina = Mathf.Clamp(stamina + staminaRestoreRate * Time.deltaTime, 0, maxStamina);
         }
     }
+
+    //Interfaces
+    #region
+    public float GetAttackValue(BattleManager.AttackType attackType)
+    {
+        switch (attackType)
+        {
+            case BattleManager.AttackType.BASIC:
+                return attack;
+
+            case BattleManager.AttackType.SPECIAL:
+                return specialAttack;
+        }
+
+        return 0;
+    }
+
+    public float GetMana(bool max = false)
+    {
+        if (max)
+        {
+            return maxMana;
+        }
+        else
+        {
+            return mana;
+        }
+    }
+
+    public float GetStamina(bool max = false)
+    {
+        if (max)
+        {
+            return maxStamina;
+        }
+        else
+        {
+            return stamina;
+        }
+    }
+
+    public void SetMana(float mana)
+    {
+        this.mana = mana;
+    }
+
+    public void SetStamina(float stamina)
+    {
+        this.stamina = stamina;
+    }
+
+    public bool GetIsUsingMana()
+    {
+        return isUsingMana;
+    }
+
+    public bool GetIsUsingStamina()
+    {
+        return isUsingStamina;
+    }
+
+    public void SetIsUsingMana(bool isUsingMana)
+    {
+        this.isUsingMana = isUsingMana;
+    }
+
+    public void SetIsUsingStamina(bool isUsingStamina)
+    {
+        this.isUsingStamina = isUsingStamina;
+    }
+
+    public float GetDefenseValue(BattleManager.AttackType attackType)
+    {
+        switch (attackType)
+        {
+            case BattleManager.AttackType.BASIC:
+                return defense;
+
+            case BattleManager.AttackType.SPECIAL:
+                return specialDefense;
+        }
+
+        return 0;
+    }
+
+    public IEnumerator DealDamage(float damage, float offset)
+    {
+        yield return new WaitForSeconds(offset);
+        health -= damage;
+    }
+    #endregion
 }
