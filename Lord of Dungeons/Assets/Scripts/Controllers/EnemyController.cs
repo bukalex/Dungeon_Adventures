@@ -45,7 +45,7 @@ public class EnemyController : MonoBehaviour
         enemyParameters.isUsingMana = false;
         enemyParameters.isUsingStamina = false;
 
-        if (IsAlive())
+        if (IsAlive() && !enemyParameters.isStunned)
         {
             //Movement and attack
             if (PlayerDetected())
@@ -58,7 +58,7 @@ public class EnemyController : MonoBehaviour
                     Seek();
                     AvoidObstacles();
                 }
-                else if (BattleManager.Instance.EnemyPerformLMB(enemyParameters))
+                else
                 {
                     if (enemyParameters.type == EnemyParameters.EnemyType.GHOST && targetDistance < BattleManager.Instance.GetAttackRange(enemyParameters.type, BattleManager.AttackButton.LMB) * 0.75f)
                     {
@@ -70,8 +70,20 @@ public class EnemyController : MonoBehaviour
                     {
                         body.velocity = Vector3.zero;
                     }
-                    
-                    Attack();
+
+                    if (BattleManager.Instance.EnemyPerformLMB(enemyParameters))
+                    {
+                        Attack();
+                    }
+                }
+
+                if (enemyParameters.isBoss && enemyParameters.health <= enemyParameters.maxHealth * 0.5f && targetDistance <= BattleManager.Instance.GetAttackRange(enemyParameters.type, BattleManager.AttackButton.RMB))
+                {
+                    if (BattleManager.Instance.EnemyPerformRMB(enemyParameters))
+                    {
+                        Debug.Log("4");
+                        Attack();
+                    }
                 }
             }
             else

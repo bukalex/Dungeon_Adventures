@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
         playerData.isUsingMana = false;
         playerData.isUsingStamina = false;
         
-        if (playerData.IsAlive())
+        if (playerData.IsAlive() && !playerData.isStunned)
         {
             //Movement
             #region

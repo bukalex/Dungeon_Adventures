@@ -43,6 +43,7 @@ public class BattleManager : MonoBehaviour
 
         Dictionary<AttackButton, Attack> guardLMBDict = new Dictionary<AttackButton, Attack>();
         guardLMBDict.Add(AttackButton.LMB, new Attack(AttackType.BASIC, 0.45f, 0.75f, 20.0f, 0.85f, 0.0f, 2.5f));
+        guardLMBDict.Add(AttackButton.RMB, new Attack(AttackType.BASIC, 1.0f, 7.5f, 30.0f, 3.0f, 0.0f, 5.0f));
         enemyAttacks.Add(EnemyParameters.EnemyType.GUARD, guardLMBDict);
 
         Dictionary<AttackButton, Attack> ghostLMBDict = new Dictionary<AttackButton, Attack>();
@@ -68,6 +69,7 @@ public class BattleManager : MonoBehaviour
                 if (runningAttack.playerEndDelegate != null)
                 {
                     runningAttack.playerEndDelegate(runningAttack.playerData);
+                    Debug.Log("2");
                 }
                 expiredRunningAttacks.Add(runningAttack);
             }
@@ -249,6 +251,51 @@ public class BattleManager : MonoBehaviour
         return true;
     }
 
+    //Performs an enemy`s secondary attack
+    public bool EnemyPerformRMB(EnemyParameters enemyParameters)
+    {
+        attack = enemyAttacks[enemyParameters.type][AttackButton.LMB];
+
+        switch (enemyParameters.type)
+        {
+            case EnemyParameters.EnemyType.GUARD://Hits ground stunning player
+                if (attack.isReady && AffordAttack(enemyParameters))
+                {
+                    DealDamage(enemyParameters, enemyParameters.playerData);
+
+                    attack.playerData = enemyParameters.playerData;
+                    attack.playerEndDelegate = DisableStun;
+
+                    StartCoroutine(StartAttack(attack));
+                    playerRunningAttacks.Add(attack);
+                    Debug.Log("1");
+                }
+                else
+                {
+                    return false;
+                }
+                break;
+
+            case EnemyParameters.EnemyType.GHOST:
+                if (attack.isReady && AffordAttack(enemyParameters))
+                {
+                    
+                }
+                else
+                {
+                    return false;
+                }
+                break;
+        }
+
+        if (attack.cooldown > 0)
+        {
+            StartCoroutine(Cooldown(attack));
+        }
+
+        return true;
+    }
+
     //Called be projectiles upon hit
     public void ProjectileHit(IAttackObject attackObject, IDefenseObject defenseObject, Attack attack)
     {
@@ -357,8 +404,18 @@ public class BattleManager : MonoBehaviour
         playerData.specialDefense /= 5;
     }
 
+    private void DisableStun(IDefenseObject defenseObject)
+    {
+        defenseObject.DisableStun();
+    }
+
     public float GetAttackRange(EnemyParameters.EnemyType enemyType, AttackButton attackButton)
     {
-        return enemyAttacks[enemyType][attackButton].range;
+        if (enemyAttacks[enemyType].ContainsKey(attackButton))
+        {
+            return enemyAttacks[enemyType][attackButton].range;
+        }
+
+        return Mathf.Infinity;
     }
 }

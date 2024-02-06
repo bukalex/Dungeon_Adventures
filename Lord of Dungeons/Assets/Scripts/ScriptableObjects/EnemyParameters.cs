@@ -38,6 +38,8 @@ public class EnemyParameters : ScriptableObject, IAttackObject, IDefenseObject
     public PlayerData playerData;
     public float colliderRadius = 1.0f;
     public float detectionRadius = 3.5f;
+    public bool isBoss = false;
+    public bool isStunned = false;
     public Vector3 position = Vector3.zero;
     public Vector3 attackDirection = Vector3.down;
 
@@ -141,6 +143,11 @@ public class EnemyParameters : ScriptableObject, IAttackObject, IDefenseObject
     {
         yield return new WaitForSeconds(offset);
         health -= damage;
+    }
+
+    public void DisableStun()
+    {
+        isStunned = false;
     }
     #endregion
 }

@@ -44,5 +44,10 @@ public class ObjectParameters : ScriptableObject, IDefenseObject
         yield return new WaitForSeconds(offset);
         health -= damage;
     }
+
+    public void DisableStun()
+    {
+        
+    }
     #endregion
 }
