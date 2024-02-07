@@ -17371,6 +17371,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae2ce6fedca763f46ab7183475ed3303, type: 3}
+--- !u!1001 &1078190440
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 388655555825461826, guid: e3e2642901c8ab94d8dbfde81f30a95a, type: 3}
+      propertyPath: m_Name
+      value: SondManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 2808919326602978874, guid: e3e2642901c8ab94d8dbfde81f30a95a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.6501763
+      objectReference: {fileID: 0}
+    - target: {fileID: 2808919326602978874, guid: e3e2642901c8ab94d8dbfde81f30a95a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.6501249
+      objectReference: {fileID: 0}
+    - target: {fileID: 2808919326602978874, guid: e3e2642901c8ab94d8dbfde81f30a95a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.14214972
+      objectReference: {fileID: 0}
+    - target: {fileID: 2808919326602978874, guid: e3e2642901c8ab94d8dbfde81f30a95a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2808919326602978874, guid: e3e2642901c8ab94d8dbfde81f30a95a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2808919326602978874, guid: e3e2642901c8ab94d8dbfde81f30a95a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2808919326602978874, guid: e3e2642901c8ab94d8dbfde81f30a95a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2808919326602978874, guid: e3e2642901c8ab94d8dbfde81f30a95a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2808919326602978874, guid: e3e2642901c8ab94d8dbfde81f30a95a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2808919326602978874, guid: e3e2642901c8ab94d8dbfde81f30a95a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e3e2642901c8ab94d8dbfde81f30a95a, type: 3}
 --- !u!114 &1080028831 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1164446178082987662, guid: c48c27d80276f0d4d8bb624eae657ab9, type: 3}
@@ -17838,10 +17895,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8657246358550972624, guid: ced0f4bf360aac24eb57a4cb1ab757fe, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1429099661}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ced0f4bf360aac24eb57a4cb1ab757fe, type: 3}
 --- !u!114 &1264338384 stripped
 MonoBehaviour:
@@ -17898,26 +17952,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4040586188c5f4abd81f9c9bc30e65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1429099660 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8657246358550972624, guid: ced0f4bf360aac24eb57a4cb1ab757fe, type: 3}
-  m_PrefabInstance: {fileID: 1240397358}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1429099661
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1429099660}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fcc70df4a6ddd04398b496e9c240a74, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  meleeRange: 0.8
-  meleeCooldown: 0.625
-  damage: 15
 --- !u!114 &1432103459 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6812415837312372378, guid: ae2ce6fedca763f46ab7183475ed3303, type: 3}
@@ -27974,3 +28008,4 @@ SceneRoots:
   - {fileID: 430901156}
   - {fileID: 136822174}
   - {fileID: 1508261503}
+  - {fileID: 1078190440}

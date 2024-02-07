@@ -55,7 +55,7 @@ public class BGMSoundData
     {
         Title,
         Dungeon,
-        Hoge, // ‚±‚ê‚ªƒ‰ƒxƒ‹‚É‚È‚é
+        Hoge,
     }
 
     public BGM bgm;
@@ -71,7 +71,7 @@ public class SESoundData
     {
         Attack,
         Damage,
-        Hoge, // ‚±‚ê‚ªƒ‰ƒxƒ‹‚É‚È‚é
+        Hoge,
     }
 
     public SE se;
