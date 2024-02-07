@@ -14,11 +14,27 @@ public class TemporaryTradingSystem : MonoBehaviour
     public TMP_Text priceDisplay;
     public TMP_Text itemName;
     public TMP_Text itemDescription;
+    public TMP_Text[] itemPrice;
     public int coinsFromSale;
 
     public GraphicRaycaster graphicRaycaster;
     public EventSystem eventSystem;
     private PointerEventData eventData;
+
+    private void Start()
+    {
+        //for (int i = 0; i < UIManager.Instance.itemHolders.Length; i++)
+        //{
+        //    InventorySlot storeSlot = UIManager.Instance.itemHolders[i].GetComponentInChildren<InventorySlot>();
+        //    InventorySlot[] storeSlots = new InventorySlot[UIManager.Instance.itemHolders.Length];
+        //    storeSlots[i] = storeSlot;
+        //
+        //    InventoryItem itemInSlot = storeSlots[i].GetComponentInChildren<InventoryItem>();
+        //    InventoryItem[] itemInSlots = new InventoryItem[storeSlots.Length];
+        //
+        //    //itemPrice[i].text = itemInSlots[i].item.price.ToString();
+        //}
+    }
 
     void Update()
     {
@@ -33,12 +49,28 @@ public class TemporaryTradingSystem : MonoBehaviour
                 if (result.gameObject.GetComponent<InventoryItem>() != null)
                 {
                     itemInStore = result.gameObject.GetComponent<InventoryItem>();
+                    for (int i = 0; i < itemPrice.Length; i++)
+                    {
+                        itemPrice[i].text = itemInStore.item.price.ToString();
+                    }
                     itemName.text = itemInStore.item.name;
-                    itemDescription.text = itemInStore.item.description;
+                    //itemDescription.text = itemInStore.item.description;
                     break;
                 }
             }
         }
+
+        //for (int i = 0; i < UIManager.Instance.itemHolders.Length; i++)
+        //{
+        //    InventorySlot storeSlot = UIManager.Instance.itemHolders[i].GetComponentInChildren<InventorySlot>();
+        //    InventorySlot[] storeSlots = new InventorySlot[UIManager.Instance.itemHolders.Length];
+        //    storeSlots[i] = storeSlot;
+        //
+        //    InventoryItem itemInSlot = storeSlots[i].GetComponentInChildren<InventoryItem>();
+        //    InventoryItem[] itemInSlots = new InventoryItem[storeSlots.Length];
+        //
+        //    itemPrice[i].text = itemInSlots[i].item.price.ToString();
+        //}
     }
 
     public void PickUpItem(int id)
