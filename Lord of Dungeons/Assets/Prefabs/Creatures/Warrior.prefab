@@ -400,7 +400,6 @@ GameObject:
   - component: {fileID: 5838760337194241135}
   - component: {fileID: 4567441550735861179}
   - component: {fileID: 9118879467724637701}
-  - component: {fileID: 8122096801088967862}
   m_Layer: 0
   m_Name: Warrior
   m_TagString: Player
@@ -506,18 +505,3 @@ MonoBehaviour:
   shield: {fileID: 6814258707513992531}
   body: {fileID: 5838760337194241135}
   capsuleCollider: {fileID: 4567441550735861179}
---- !u!114 &8122096801088967862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8657246358550972624}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fcc70df4a6ddd04398b496e9c240a74, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  meleeRange: 0.8
-  meleeCooldown: 0.625
-  damage: 15
