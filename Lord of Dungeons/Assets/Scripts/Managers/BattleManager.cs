@@ -24,9 +24,7 @@ public class BattleManager : MonoBehaviour
         if (Instance == null)
         {
             Initialize();
-
             Instance = this;
-            DontDestroyOnLoad(this);
         }
         else
         {
