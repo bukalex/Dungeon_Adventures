@@ -23,17 +23,17 @@ public class TemporaryTradingSystem : MonoBehaviour
 
     private void Start()
     {
-        //for (int i = 0; i < UIManager.Instance.itemHolders.Length; i++)
-        //{
-        //    InventorySlot storeSlot = UIManager.Instance.itemHolders[i].GetComponentInChildren<InventorySlot>();
-        //    InventorySlot[] storeSlots = new InventorySlot[UIManager.Instance.itemHolders.Length];
-        //    storeSlots[i] = storeSlot;
-        //
-        //    InventoryItem itemInSlot = storeSlots[i].GetComponentInChildren<InventoryItem>();
-        //    InventoryItem[] itemInSlots = new InventoryItem[storeSlots.Length];
-        //
-        //    //itemPrice[i].text = itemInSlots[i].item.price.ToString();
-        //}
+        // for (int i = 0; i < UIManager.Instance.itemHolders.Length; i++)
+        // {
+        //     InventorySlot storeSlot = UIManager.Instance.itemHolders[i].GetComponentInChildren<InventorySlot>();
+        //     InventorySlot[] storeSlots = new InventorySlot[UIManager.Instance.itemHolders.Length];
+        //     storeSlots[i] = storeSlot;
+        // 
+        //     InventoryItem itemInSlot = storeSlots[i].GetComponentInChildren<InventoryItem>();
+        //     InventoryItem[] itemInSlots = new InventoryItem[storeSlots.Length];
+        // 
+        //     //itemPrice[i].text = itemInSlots[i].item.price.ToString();
+        // }
     }
 
     void Update()
@@ -103,6 +103,7 @@ public class TemporaryTradingSystem : MonoBehaviour
 
     public void estimateSale()
     {
+        InventorySlot slot = GetComponent<InventorySlot>();
         InventoryItem[] ItemInSlot = new InventoryItem[InventoryManager.Instance.sellSlots.Length];
 
         for (int i = 0; i < InventoryManager.Instance.sellSlots.Length; i++)

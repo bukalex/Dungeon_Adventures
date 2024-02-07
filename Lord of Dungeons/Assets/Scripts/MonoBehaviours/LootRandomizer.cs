@@ -12,13 +12,13 @@ public class LootRandomizer : MonoBehaviour
         int ranK = Random.Range(0, 3);
         int ranM = Random.Range(0, 5);
 
-        for (int i = 0; i < InventoryManager.Instance.chestSlots.Length; i++)
-        {
-            if (ranK % ranM == 0 || ranK % ranM == 2)
-            {
-                spawnNewItem(items[ranK], InventoryManager.Instance.chestSlots[i]);
-            }
-        }
+       //for (int i = 0; i < InventoryManager.Instance.chestSlots.Length; i++)
+       //{
+       //    if (ranK % ranM == 0 || ranK % ranM == 2)
+       //    {
+       //        spawnNewItem(items[ranK], InventoryManager.Instance.chestSlots[i]);
+       //    }
+       //}
     }
 
     public void spawnNewItem(Item item, InventorySlot slot)
