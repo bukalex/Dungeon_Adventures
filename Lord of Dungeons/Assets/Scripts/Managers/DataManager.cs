@@ -24,6 +24,9 @@ public class DataManager : MonoBehaviour
     [SerializeField]
     private InventoryManager inventory;
 
+    [SerializeField]
+    private UIManager UI;
+
     void Awake()
     {
         playerData.SetStats();
@@ -51,6 +54,10 @@ public class DataManager : MonoBehaviour
         if (inventory != null)
         {
             inventory.playerData = playerData;
+        }
+        if (UI != null)
+        {
+            UI.playerData = playerData; 
         }
     }
 

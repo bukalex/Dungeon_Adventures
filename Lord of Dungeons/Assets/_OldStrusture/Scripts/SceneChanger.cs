@@ -10,11 +10,6 @@ public class SceneChanger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player" && Input.GetKeyDown(KeyCode.E))
-        {
             SceneManager.LoadScene(sceneNumber);
-
-        }
     }
-
-}                                                                           
+}                                                                            
