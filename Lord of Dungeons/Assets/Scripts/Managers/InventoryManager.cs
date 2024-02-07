@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
@@ -9,6 +10,7 @@ public class InventoryManager : MonoBehaviour
     public int maxStackCount = 16;
     public InventorySlot[] inventorySlots;
     public GameObject inventoryItemPrefab;
+    public PlayerData playerData;
 
 
     public int selectedSlot = -1;
@@ -24,42 +26,23 @@ public class InventoryManager : MonoBehaviour
 
     private void Update()
     {
-        //Change to selected slot by key code
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.anyKeyDown)
         {
-            changeSelectedSlot(0);
-        } 
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            changeSelectedSlot(1);
+            string[] inputString = { "1", "2", "3", "4", "5", "6", "7", "8", "9"};  
+
+            for(int i = 0; i < inputString.Length; i++)
+            {
+                if (Input.inputString == inputString[i])
+                {
+                    int.TryParse(Input.inputString, out selectedSlot);
+                    selectedSlot -= 1;
+                }
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
+
+        if (Input.GetKey(KeyCode.C))
         {
-            changeSelectedSlot(2);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            changeSelectedSlot(3);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            changeSelectedSlot(4);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            changeSelectedSlot(5);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            changeSelectedSlot(6);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            changeSelectedSlot(7);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha9))
-        {
-            changeSelectedSlot(8);
+            useSelectedItem();
         }
     }
 
@@ -121,30 +104,40 @@ public class InventoryManager : MonoBehaviour
         inventoryItem.InitializeItem(item);
     }
 
-    
+    public void itemIsUsed(Item item)
+    {
+        if (item.isUsable == true)
+        {
+            playerData.health += item.addHP;
+            playerData.speed += item.addSPD;
+            if (playerData.speed ==playerData.speed + item.addSPD)
+            {
+                new WaitForSeconds(item.cooldown);
+                playerData.speed -= item.addSPD;
+            }
+            playerData.health -= item.addStamina;
+        }
+    }
 
-    public Item useSelectedItem(bool use)
+    public Item useSelectedItem()
     {
         InventorySlot slot = inventorySlots[selectedSlot];
         InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
         if (itemInSlot != null) 
         {
             Item item = itemInSlot.item;
-            if (use == true)
+            if (item.isUsable == true)
             {
-                if(Input.GetKey(KeyCode.C))
-                {
                     itemInSlot.count--;
                     if(itemInSlot.count <= 0)
                     {
                         Destroy(itemInSlot.gameObject);
-
+                        itemIsUsed(item);
                     }
                     else
                     {
                         itemInSlot.updateCount();
                     }
-                }
             }
             return item;
         }
