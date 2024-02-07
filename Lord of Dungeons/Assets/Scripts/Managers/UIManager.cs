@@ -31,11 +31,6 @@ public class UIManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(this);
         }
-        else
-        {
-            Debug.Log("Second UIManager was destroyed");
-            Destroy(gameObject);
-        }
     }
 
     void Update()
