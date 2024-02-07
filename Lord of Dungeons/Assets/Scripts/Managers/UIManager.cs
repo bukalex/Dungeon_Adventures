@@ -45,7 +45,12 @@ public class UIManager : MonoBehaviour
     public GameObject chestInventory;
 
     [SerializeField]
+    public GameObject[] itemHolders;
+
+    [SerializeField]
     private GameObject sellMenu, storeMenu;
+
+    public bool isPaused = false;
 
     public static UIManager Instance { get; private set; }
 
@@ -79,6 +84,19 @@ public class UIManager : MonoBehaviour
         else if (Input.GetKeyUp(KeyCode.Tab))
         {
             inventory.SetActive(false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+            {
+                Time.timeScale = 1;
+            }
+            else
+            {
+                Time.timeScale = 0;
+            }
+
         }
     }
 
