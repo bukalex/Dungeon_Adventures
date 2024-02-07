@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class UIManager : MonoBehaviour
 {
@@ -25,7 +26,23 @@ public class UIManager : MonoBehaviour
     public GameObject StaminaBar;
 
     [SerializeField]
+    public GameObject internalInventory;
+
+    [SerializeField]
     public GameObject inventory;
+
+    [SerializeField]
+    public GameObject toolbar;
+
+    //Assign Storage from Store Menu
+    [SerializeField]
+    public GameObject storage;
+
+    [SerializeField]
+    public GameObject sellSlots;
+
+    [SerializeField]
+    private GameObject sellMenu, storeMenu;
 
     public static UIManager Instance { get; private set; }
 
@@ -73,6 +90,12 @@ public class UIManager : MonoBehaviour
         
 
         stats.text = HPstats + ManaStats + StaminaStats + DamageStats + DefenseStats + SpeedStats;
+    }
+
+    public void traderButtons()
+    {
+        sellMenu.SetActive(!sellMenu.activeSelf);
+        storeMenu.SetActive(!storeMenu.activeSelf);
     }
 
     public void InitializeBars()

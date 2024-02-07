@@ -17,7 +17,7 @@ public class hpPoison : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            InventoryManager.instance.AddItem(item);
+            InventoryManager.Instance.AddItem(item);
             Destroy(gameObject);
         }
     }

@@ -8,6 +8,6 @@ public class test : MonoBehaviour
 
     public void PickUpItem(int id)
     {
-        InventoryManager.instance.AddItem(items2Pickup[id]);
+        InventoryManager.Instance.AddItem(items2Pickup[id]);
     }
 }

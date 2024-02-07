@@ -7,7 +7,23 @@ using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
+    public Color selectedSlot, nonSelectedSlot;
     public Image image;
+
+
+    private void Awake()
+    {
+        //unselectSlot();
+    }
+    public void selectSlot()
+    {
+        image.color = selectedSlot;
+    }
+
+    public void unselectSlot()
+    {
+        image.color = nonSelectedSlot;
+    }
     public void OnDrop(PointerEventData eventData)
     {
         if(transform.childCount == 0)
