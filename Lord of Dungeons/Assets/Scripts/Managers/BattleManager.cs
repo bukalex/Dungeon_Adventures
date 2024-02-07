@@ -36,17 +36,18 @@ public class BattleManager : MonoBehaviour
     private void Initialize()
     {
         Dictionary<AttackButton, Attack> playerDict = new Dictionary<AttackButton, Attack>();
-        playerDict.Add(AttackButton.LMB, new Attack(AttackType.BASIC, 0.4f, 0.65f, 20.0f, 0.85f, 0.0f, 2.5f));
-        playerDict.Add(AttackButton.RMB, new Attack(AttackType.SPECIAL, 3.0f, 6.0f, 0.0f, 0.0f, 2.0f, 0.0f));
-        playerDict.Add(AttackButton.SHIFT, new Attack(AttackType.BASIC, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f));
+        playerDict.Add(AttackButton.LMB, new Attack(AttackType.BASIC, 0.4f, 0.0f, 0.65f, 20.0f, 0.85f, 0.0f, 2.5f));
+        playerDict.Add(AttackButton.RMB, new Attack(AttackType.SPECIAL, 0.0f, 3.0f, 6.0f, 0.0f, 0.0f, 2.0f, 0.0f));
+        playerDict.Add(AttackButton.SHIFT, new Attack(AttackType.BASIC, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f));
         playerAttacks.Add(PlayerData.CharacterType.WARRIOR, playerDict);
 
         Dictionary<AttackButton, Attack> guardLMBDict = new Dictionary<AttackButton, Attack>();
-        guardLMBDict.Add(AttackButton.LMB, new Attack(AttackType.BASIC, 0.45f, 0.75f, 20.0f, 0.85f, 0.0f, 2.5f));
+        guardLMBDict.Add(AttackButton.LMB, new Attack(AttackType.BASIC, 0.45f, 0.0f, 1.0f, 20.0f, 0.85f, 0.0f, 2.5f));
+        guardLMBDict.Add(AttackButton.RMB, new Attack(AttackType.BASIC, 1.0f, 3.0f, 7.5f, 30.0f, 3.0f, 0.0f, 10.0f));
         enemyAttacks.Add(EnemyParameters.EnemyType.GUARD, guardLMBDict);
 
         Dictionary<AttackButton, Attack> ghostLMBDict = new Dictionary<AttackButton, Attack>();
-        ghostLMBDict.Add(AttackButton.LMB, new Attack(AttackType.SPECIAL, 0.0f, 1.5f, 10.0f, 5.0f, 5.0f, 0.0f));
+        ghostLMBDict.Add(AttackButton.LMB, new Attack(AttackType.SPECIAL, 0.0f, 0.0f, 1.5f, 10.0f, 5.0f, 5.0f, 0.0f));
         enemyAttacks.Add(EnemyParameters.EnemyType.GHOST, ghostLMBDict);
     }
 
@@ -249,6 +250,51 @@ public class BattleManager : MonoBehaviour
         return true;
     }
 
+    //Performs an enemy`s secondary attack
+    public bool EnemyPerformRMB(EnemyParameters enemyParameters)
+    {
+        attack = enemyAttacks[enemyParameters.type][AttackButton.RMB];
+
+        switch (enemyParameters.type)
+        {
+            case EnemyParameters.EnemyType.GUARD://Hits ground stunning player
+                if (attack.isReady && AffordAttack(enemyParameters))
+                {
+                    enemyParameters.playerData.isStunned = true;
+                    DealDamage(enemyParameters, enemyParameters.playerData);
+
+                    attack.playerData = enemyParameters.playerData;
+                    attack.playerEndDelegate = DisableStun;
+
+                    StartCoroutine(StartAttack(attack));
+                    playerRunningAttacks.Add(attack);
+                }
+                else
+                {
+                    return false;
+                }
+                break;
+
+            case EnemyParameters.EnemyType.GHOST:
+                if (attack.isReady && AffordAttack(enemyParameters))
+                {
+                    
+                }
+                else
+                {
+                    return false;
+                }
+                break;
+        }
+
+        if (attack.cooldown > 0)
+        {
+            StartCoroutine(Cooldown(attack));
+        }
+
+        return true;
+    }
+
     //Called be projectiles upon hit
     public void ProjectileHit(IAttackObject attackObject, IDefenseObject defenseObject, Attack attack)
     {
@@ -332,7 +378,7 @@ public class BattleManager : MonoBehaviour
             damage = 1.0f;
         }
         
-        StartCoroutine(defenseObject.DealDamage(damage, attack.duration));
+        StartCoroutine(defenseObject.DealDamage(damage, attack.timeOffset));
     }
 
     //Use this to recharge attacks
@@ -357,8 +403,18 @@ public class BattleManager : MonoBehaviour
         playerData.specialDefense /= 5;
     }
 
+    private void DisableStun(IDefenseObject defenseObject)
+    {
+        defenseObject.DisableStun();
+    }
+
     public float GetAttackRange(EnemyParameters.EnemyType enemyType, AttackButton attackButton)
     {
-        return enemyAttacks[enemyType][attackButton].range;
+        if (enemyAttacks[enemyType].ContainsKey(attackButton))
+        {
+            return enemyAttacks[enemyType][attackButton].range;
+        }
+
+        return Mathf.Infinity;
     }
 }
