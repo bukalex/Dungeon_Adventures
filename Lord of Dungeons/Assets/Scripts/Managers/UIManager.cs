@@ -40,9 +40,9 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        //Update values
-        coinCounter.text = playerData.resources[Item.MaterialType.Coin].ToString();
-        HealthBar.SetHealth(playerData.health);
+        ////Update values
+        //coinCounter.text = playerData.resources[Item.MaterialType.Coin].ToString();
+        //HealthBar.SetHealth(playerData.health);
 
         //Open inventory
         if (Input.GetKeyDown(KeyCode.Tab))
