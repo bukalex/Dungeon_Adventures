@@ -41,7 +41,6 @@ public class TemporaryTradingSystem : MonoBehaviour
 
     public void estimateSale()
     {
-        InventorySlot slot = GetComponent<InventorySlot>();
         InventoryItem[] ItemInSlot = new InventoryItem[InventoryManager.Instance.sellSlots.Length];
 
         for (int i = 0; i < InventoryManager.Instance.sellSlots.Length; i++)

@@ -14,6 +14,7 @@ public class InventoryManager : MonoBehaviour
     public InventorySlot[] Ability;
     public InventorySlot[] sellSlots;
     public InventorySlot[] storageSlots;
+    public InventorySlot[] chestSlots;
     public GameObject inventoryItemPrefab;
     public PlayerData playerData;
 
@@ -53,9 +54,9 @@ public class InventoryManager : MonoBehaviour
         {
             for (int i = 0; i < inventorySlots.Length; i++)
             {
-                {
-                    inventorySlots[i] = UIManager.Instance.inventory.GetComponentInChildren<InventorySlot>();
-                }
+                
+                inventorySlots[i] = UIManager.Instance.inventory.GetComponentInChildren<InventorySlot>();
+                
             }
         }
         //Initializing slots for internal inventory
@@ -63,9 +64,9 @@ public class InventoryManager : MonoBehaviour
         {
             for (int i = 0; i < internalInventorySlots.Length; i++)
             {
-                {
-                    internalInventorySlots[i] = UIManager.Instance.internalInventory.GetComponentInChildren<InventorySlot>();
-                }
+                
+                 internalInventorySlots[i] = UIManager.Instance.internalInventory.GetComponentInChildren<InventorySlot>();
+                
             }
         }
 
@@ -74,9 +75,9 @@ public class InventoryManager : MonoBehaviour
         {
             for (int i = 0; i < toolBar.Length; i++)
             {
-                {
-                    toolBar[i] = UIManager.Instance.toolbar.GetComponentInChildren<InventorySlot>();
-                }
+                
+                 toolBar[i] = UIManager.Instance.toolbar.GetComponentInChildren<InventorySlot>();
+                
             }
         }
 
@@ -85,9 +86,9 @@ public class InventoryManager : MonoBehaviour
         {
             for (int i = 0; i < sellSlots.Length; i++)
             {
-                {
-                    sellSlots[i] = UIManager.Instance.sellSlots.GetComponentInChildren<InventorySlot>();
-                }
+                
+                sellSlots[i] = UIManager.Instance.sellSlots.GetComponentInChildren<InventorySlot>();
+                
             }
         }
 
@@ -99,6 +100,14 @@ public class InventoryManager : MonoBehaviour
                 {
                     storageSlots[i] = UIManager.Instance.storage.GetComponentInChildren<InventorySlot>();
                 }
+            }
+        }
+
+        foreach(InventorySlot slot in chestSlots)
+        {
+            for(int i = 0;i < chestSlots.Length; i++)
+            {
+                chestSlots[i] = UIManager.Instance.chestInventory.GetComponentInChildren<InventorySlot>();
             }
         }
 

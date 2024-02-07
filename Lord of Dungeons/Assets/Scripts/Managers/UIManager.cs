@@ -41,6 +41,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     public GameObject sellSlots;
 
+    [SerializeField] 
+    public GameObject chestInventory;
+
     [SerializeField]
     private GameObject sellMenu, storeMenu;
 
@@ -81,7 +84,7 @@ public class UIManager : MonoBehaviour
 
     public void displayStats()
     {
-        string HPstats = "HP: " + playerData.maxHealth + "\n";
+        string HPstats = "HP: " + playerData.maxHealth + "\n"; 
         string ManaStats = "Mana: " + playerData.maxMana.ToString() + "\n";
         string StaminaStats = "Stamina: " + playerData.maxStamina.ToString() + "\n";
         string DamageStats = "Damage: " + playerData.attack.ToString() + "\n";
