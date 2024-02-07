@@ -23,6 +23,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private healthBar HealthBar;
 
+    [SerializeField]
+    private GameObject superAttackArea;
+
     private DirectionName directionName = DirectionName.FRONT;
     private Vector3 movementDirection = Vector3.zero;
     private float targetDistance;
@@ -52,36 +55,40 @@ public class EnemyController : MonoBehaviour
             {
                 ChangeDirection(Vector2.SignedAngle(Vector3.right, enemyParameters.playerData.position - transform.position));
 
-                if (targetDistance > BattleManager.Instance.GetAttackRange(enemyParameters.type, BattleManager.AttackButton.LMB))
+                if (enemyParameters.isBoss && 
+                    enemyParameters.health <= enemyParameters.maxHealth * 0.5f && 
+                    targetDistance <= BattleManager.Instance.GetAttackRange(enemyParameters.type, BattleManager.AttackButton.RMB) &&
+                    BattleManager.Instance.EnemyPerformRMB(enemyParameters))
                 {
-                    Run();
-                    Seek();
-                    AvoidObstacles();
+                    SuperAttack();
+                    StartCoroutine(ShowArea());
                 }
                 else
                 {
-                    if (enemyParameters.type == EnemyParameters.EnemyType.GHOST && targetDistance < BattleManager.Instance.GetAttackRange(enemyParameters.type, BattleManager.AttackButton.LMB) * 0.75f)
+                    if (targetDistance > BattleManager.Instance.GetAttackRange(enemyParameters.type, BattleManager.AttackButton.LMB))
                     {
                         Run();
-                        Flee();
+                        Seek();
                         AvoidObstacles();
                     }
                     else
                     {
-                        body.velocity = Vector3.zero;
-                    }
+                        if (enemyParameters.type == EnemyParameters.EnemyType.GHOST && targetDistance < BattleManager.Instance.GetAttackRange(enemyParameters.type, BattleManager.AttackButton.LMB) * 0.75f)
+                        {
+                            Run();
+                            Flee();
+                            AvoidObstacles();
+                        }
+                        else
+                        {
+                            Stop();
+                            body.velocity = Vector3.zero;
+                        }
 
-                    if (BattleManager.Instance.EnemyPerformLMB(enemyParameters))
-                    {
-                        Attack();
-                    }
-                }
-
-                if (enemyParameters.isBoss && enemyParameters.health <= enemyParameters.maxHealth * 0.5f && targetDistance <= BattleManager.Instance.GetAttackRange(enemyParameters.type, BattleManager.AttackButton.RMB))
-                {
-                    if (BattleManager.Instance.EnemyPerformRMB(enemyParameters))
-                    {
-                        Attack();
+                        if (BattleManager.Instance.EnemyPerformLMB(enemyParameters))
+                        {
+                            Attack();
+                        }
                     }
                 }
             }
@@ -94,7 +101,7 @@ public class EnemyController : MonoBehaviour
             //Stats restore
             RestoreStats();
         }
-        else if (!alreadyDead)
+        else if (!alreadyDead && !enemyParameters.isStunned)
         {
             capsuleCollider.enabled = false;
             body.velocity = Vector3.zero;
@@ -179,6 +186,14 @@ public class EnemyController : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private IEnumerator ShowArea()
+    {
+        yield return new WaitForSeconds(0.7f);
+        superAttackArea.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        superAttackArea.SetActive(false);
+    }
+
     //Animation
     #region
     //Change movement direction
@@ -231,6 +246,12 @@ public class EnemyController : MonoBehaviour
     {
         Stop();
         animator.SetTrigger("attack");
+    }
+
+    private void SuperAttack()
+    {
+        Stop();
+        animator.SetTrigger("superAttack");
     }
 
     private void Die()

@@ -16,6 +16,7 @@ public class Attack
     #endregion
 
     public BattleManager.AttackType attackType { get; private set; }
+    public float timeOffset { get; private set; }
     public float duration { get; private set; }
     public float cooldown { get; private set; }
     public float damage { get; private set; }
@@ -25,9 +26,10 @@ public class Attack
     public bool isReady { get; set; }
     public bool isRunning { get; set; }
 
-    public Attack(BattleManager.AttackType attackType, float duration, float cooldown, float damage, float range, float mana, float stamina)
+    public Attack(BattleManager.AttackType attackType, float timeOffset, float duration, float cooldown, float damage, float range, float mana, float stamina)
     {
         this.attackType = attackType;
+        this.timeOffset = timeOffset;
         this.duration = duration;
         this.cooldown = cooldown;
         this.damage = damage;

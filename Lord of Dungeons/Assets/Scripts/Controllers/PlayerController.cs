@@ -158,7 +158,7 @@ public class PlayerController : MonoBehaviour
             //Stats restore
             playerData.RestoreStats();
         }
-        else if (!alreadyDead)
+        else if (!alreadyDead && !playerData.isStunned)
         {
             Die();
 
