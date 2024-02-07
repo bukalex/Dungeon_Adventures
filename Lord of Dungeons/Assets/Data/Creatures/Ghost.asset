@@ -12,25 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ddae792339ded641ad5663a529ccf72, type: 3}
   m_Name: Ghost
   m_EditorClassIdentifier: 
-  playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
-  colliderRadius: 1
-  health: 200
+  maxHealth: 100
+  maxMana: 100
+  maxStamina: 0
+  health: 100
   mana: 100
   stamina: 0
-  speed: 0.6
+  speed: 1.5
+  attack: 0
+  specialAttack: 5
+  defense: 6
+  specialDefense: 6
   healthRestoreRate: 1
   manaRestoreRate: 3
   staminaRestoreRate: 0
-  attack: 5
-  defense: 6
-  specialDefense: 1
-  attackType: 1
-  attackDamage: 20
-  attackRange: 3
-  attackCooldown: 2
-  manaCost: 10
-  staminaCost: 0
-  detectionRadius: 5
+  isUsingMana: 0
+  isUsingStamina: 0
+  whiskerLength: 3
+  whiskerAngle: 10
+  rotationSpeed: 60
+  playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
+  colliderRadius: 0.4
+  detectionRadius: 8
+  position: {x: 0, y: 0, z: 0}
+  attackDirection: {x: 0, y: -1, z: 0}
   type: 1
   animController: {fileID: 9100000, guid: 37b36fa3a44e4a34db84f9bed843fd2d, type: 2}
   projectilePrefab: {fileID: 4108418502657585399, guid: 4845562930ef995448a1503e38c4129b, type: 3}

@@ -11,17 +11,18 @@ public class ProjectileController : MonoBehaviour
     private Rigidbody2D body;
 
     private string parentTag;
-    private PlayerData.AttackType attackType;
-    private float damage;
-    private float attackWeight;
+    private IAttackObject attackObject;
+    private IDefenseObject defenseObject;
+    private Attack attack;
 
-    public void Launch(Vector3 direction, string parentTag, PlayerData.AttackType attackType, float damage, float attackWeight)
+    public void Launch(string parentTag, IAttackObject attackObject, IDefenseObject defenseObject, Attack attack, Vector3 direction)
     {
-        body.velocity = direction.normalized * speed;
         this.parentTag = parentTag;
-        this.attackType = attackType;
-        this.damage = damage;
-        this.attackWeight = attackWeight;
+        this.attackObject = attackObject;
+        this.defenseObject = defenseObject;
+        this.attack = attack;
+
+        body.velocity = direction.normalized * speed;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -35,18 +36,21 @@ public class ProjectileController : MonoBehaviour
                 case "Enemy":
                     if (targetTag.Equals("Player"))
                     {
-                        collision.GetComponent<PlayerController>().GetPlayerData().DealDamage(attackType, damage, attackWeight);
-                        Destroy(gameObject);
+                        BattleManager.Instance.ProjectileHit(attackObject, defenseObject, attack);
                     }
                     break;
 
                 case "Player":
-                    if (targetTag.Equals("Enemy"))
+                    if (targetTag.Equals("Enemy") || targetTag.Equals("Object"))
                     {
-                        collision.GetComponent<EnemyController>().DealDamage(attackType, damage, attackWeight);
-                        Destroy(gameObject);
+                        BattleManager.Instance.ProjectileHit(attackObject, defenseObject, attack);
                     }
                     break;
+            }
+
+            if (!targetTag.Equals(parentTag))
+            {
+                Destroy(gameObject);
             }
         }
     }

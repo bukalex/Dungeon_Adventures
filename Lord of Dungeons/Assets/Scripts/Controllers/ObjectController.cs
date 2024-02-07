@@ -5,7 +5,8 @@ using UnityEngine;
 public class ObjectController : MonoBehaviour
 {
     [SerializeField]
-    private ObjectParameters objectParameters;
+    private ObjectParameters objectParametersOriginal;
+    public ObjectParameters objectParameters { get; private set; }
 
     [SerializeField]
     private Animator animator;
@@ -18,51 +19,33 @@ public class ObjectController : MonoBehaviour
 
     [SerializeField]
     private CapsuleCollider2D capsuleCollider;
-  
-    private float health;
 
+    private bool alreadyBusted = false;
+  
     void Awake()
     {
+        objectParameters = Instantiate(objectParametersOriginal);
         animator.runtimeAnimatorController = objectParameters.animController;
-
-        health = objectParameters.health;
     }
 
-    public bool isIntact()
+    void Update()
     {
-        return health > 0;
-    }
-
-    public void DealDamage(PlayerData.AttackType attackType, float damage, float attackWeight)
-    {
-        switch (attackType)
-        {
-            case PlayerData.AttackType.BASIC:
-                damage *= 1.0f + (attackWeight - objectParameters.defense) * 0.05f;
-                break;
-
-            case PlayerData.AttackType.SPECIAL:
-                damage *= 1.0f + (attackWeight - objectParameters.specialDefense) * 0.05f;
-                break;
-        }
-
-        if (damage < 1.0f)
-        {
-            damage = 1.0f;
-        }
-
-        Debug.Log("Pot was hit. Damage: " + damage);
-        health -= damage;
-
-        if (!isIntact())
+        if (!IsIntact() && !alreadyBusted)
         {
             Bust();
+            alreadyBusted = true;
         }
+    }
+
+    public bool IsIntact()
+    {
+        return objectParameters.health > 0;
     }
 
     private void Bust()
     {
-        Instantiate(objectParameters.dropPrefab, transform.position, new Quaternion());
+        Instantiate(objectParametersOriginal.dropPrefab, transform.position, new Quaternion());
         animator.SetTrigger("isBroken");
+        capsuleCollider.enabled = false;
     }
 }

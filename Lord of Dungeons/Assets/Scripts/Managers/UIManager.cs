@@ -7,13 +7,22 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     [SerializeField]
-    private PlayerData playerData;
-    
+    public PlayerData playerData;
+
     [SerializeField]
-    private TMP_Text coinCounter;
-    
-    [SerializeField]
-    private healthBar HealthBar;
+    public TMP_Text stats;
+
+    //[SerializeField]
+    //private TMP_Text coinCounter;
+    //
+    //[SerializeField]
+    //public Slider HealthBar;
+    //
+    //[SerializeField]
+    //public Slider ManaBar;
+    //
+    //[SerializeField]
+    //public Slider StaminaBar;
 
     [SerializeField]
     public GameObject inventory;
@@ -31,18 +40,17 @@ public class UIManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(this);
         }
-        else
-        {
-            Debug.Log("Second UIManager was destroyed");
-            Destroy(gameObject);
-        }
     }
 
     void Update()
     {
-        //Update values
-        coinCounter.text = playerData.resources[Item.MaterialType.Coin].ToString();
-        HealthBar.SetHealth(playerData.health);
+        ////Update values
+        //coinCounter.text = playerData.resources[Item.MaterialType.Coin].ToString();
+        displayStats();
+        //SetMaxBarValue(playerData.maxHealth, HealthBar);
+
+        //SetBarValue(playerData.health, HealthBar);
+
 
         //Open inventory
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -56,5 +64,29 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void displayStats()
+    {
+        string HPstats = "HP: " + playerData.maxHealth + "\n";
+        string ManaStats = "Mana: " + playerData.maxMana.ToString() + "\n";
+        string StaminaStats = "Stamina: " + playerData.maxStamina.ToString() + "\n";
+        string DamageStats = "Damage: " + playerData.attack.ToString() + "\n";
+        string DefenseStats = "Defense: " + playerData.defense.ToString() + "\n";
+        string SpeedStats = "Speed: " + playerData.speed.ToString() + "\n";
+        
+
+        stats.text = HPstats + ManaStats + StaminaStats + DamageStats + DefenseStats + SpeedStats;
+    }
+
+    public void SetMaxBarValue(float health, Slider slider)
+    {
+        Debug.Log(health, slider);
+        slider.value = health;
+        slider.maxValue = health;
+    }
+
+    public void SetBarValue(float health, Slider slider)
+    {
+        slider.value = health;
+    }
 
 }

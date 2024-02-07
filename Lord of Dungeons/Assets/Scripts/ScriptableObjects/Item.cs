@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -14,11 +15,18 @@ public class Item : ScriptableObject
     public ItemType itemType;
     public MaterialType materialType;
     public Vector2Int range = new Vector2Int(5, 4);
-    public int price;   
+    public int price;
+    public int addHP;
+    public int addSPD;
+    public int addStamina;
+    public int removeHP;
+    [Range(0f, 30f)]
+    public float cooldown;
+    public string description;
 
     [Header("Only UI")]
-    public bool isStackable = true;
-    public bool isUsable = true;
+    public bool isStackable = false;
+    public bool isUsable = false;
 
     [Header("Both")]
     public Sprite image;

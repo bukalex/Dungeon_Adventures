@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8930662251163375519}
   m_Layer: 0
   m_Name: Pot
-  m_TagString: Enemy
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 131c1042d8f293147af13477158e2d59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectParameters: {fileID: 11400000, guid: bf6b4583f0e56054d9393b36ad098af4, type: 2}
+  objectParametersOriginal: {fileID: 11400000, guid: bf6b4583f0e56054d9393b36ad098af4, type: 2}
   animator: {fileID: 8076093146772530360}
   spriteRenderer: {fileID: 5887061553004270653}
   body: {fileID: 4286235906023645579}
@@ -186,7 +186,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1760045773
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 465f8316aad92c6478435ac702bb6b55, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

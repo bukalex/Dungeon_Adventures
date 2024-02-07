@@ -17,6 +17,8 @@ public class LootableController : MonoBehaviour
     [SerializeField]
     private SpriteRenderer spriteRenderer;
 
+    private bool beingChecked;
+
     void Awake()
     {
         animator.runtimeAnimatorController = lootableParameters.animController;
@@ -27,16 +29,18 @@ public class LootableController : MonoBehaviour
 
     }
 
-    public void InteractWithPlayer(bool isActive)
+    public void BeingLooted(bool isLooted)
     {
 
-        Open();
+        
         if (chestInventory != null)
         {
-            chestInventory.SetActive(isActive);
+            beingChecked = isLooted;
+            chestInventory.SetActive(isLooted);
+            Debug.Log("Inventory should open.");
         }
-        Debug.Log("Inventory should open.");
-
+        Open();
+        beingChecked = false;
 
     }
 
@@ -47,7 +51,7 @@ public class LootableController : MonoBehaviour
 
     private void Open()
     {
-        animator.SetTrigger("isOpen");
+        animator.SetBool("isOpen",beingChecked);
 
         Debug.Log("Opened Chest");
     }
