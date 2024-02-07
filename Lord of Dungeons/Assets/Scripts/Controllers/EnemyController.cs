@@ -21,9 +21,6 @@ public class EnemyController : MonoBehaviour
     private CapsuleCollider2D capsuleCollider;
 
     [SerializeField]
-    private healthBar HealthBar;
-
-    [SerializeField]
     private GameObject superAttackArea;
 
     private DirectionName directionName = DirectionName.FRONT;
@@ -38,7 +35,6 @@ public class EnemyController : MonoBehaviour
         enemyParameters = Instantiate(enemyParametersOriginal);
 
         animator.runtimeAnimatorController = enemyParameters.animController;
-        HealthBar.SetMaxHealth(enemyParameters.maxHealth);
     }
 
     void Update()
@@ -115,7 +111,6 @@ public class EnemyController : MonoBehaviour
             alreadyDead = true;
         }
 
-        HealthBar.SetHealth(enemyParameters.health);
     }
 
     private void Seek()
