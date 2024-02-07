@@ -40,6 +40,7 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     public float colliderRadius = 1.0f;
     public Vector3 position = Vector3.zero;
     public Vector3 attackDirection = Vector3.down;
+    public bool isStunned = false;
 
     //Type
     public CharacterType type = CharacterType.WARRIOR;
@@ -180,6 +181,11 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     {
         yield return new WaitForSeconds(offset);
         health -= damage;
+    }
+
+    public void DisableStun()
+    {
+        isStunned = false;
     }
     #endregion
 }

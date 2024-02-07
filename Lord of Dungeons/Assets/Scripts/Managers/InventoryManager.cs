@@ -9,19 +9,118 @@ public class InventoryManager : MonoBehaviour
 
     public int maxStackCount = 16;
     public InventorySlot[] inventorySlots;
+    public InventorySlot[] internalInventorySlots;
+    public InventorySlot[] toolBar;
+    public InventorySlot[] Ability;
+    public InventorySlot[] sellSlots;
+    public InventorySlot[] storageSlots;
+    public InventorySlot[] chestSlots;
     public GameObject inventoryItemPrefab;
     public PlayerData playerData;
 
 
     public int selectedSlot = -1;
 
+    public static InventoryManager Instance { get; private set; }
+
+    public void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+
+
+    }
     private void Start()
     {
+        InitializeSlots();
         changeSelectedSlot(0);
         foreach(var item in startItems)
         {
             AddItem(item);
         }
+    }
+
+    private void InitializeSlots()
+    {
+        //Initializing slots for the whole inventory
+        foreach (InventorySlot slot in inventorySlots)
+        {
+            for (int i = 0; i < inventorySlots.Length; i++)
+            {
+                
+                inventorySlots[i] = UIManager.Instance.inventory.GetComponentInChildren<InventorySlot>();
+                
+            }
+        }
+        //Initializing slots for internal inventory
+        foreach (InventorySlot slot in internalInventorySlots)
+        {
+            for (int i = 0; i < internalInventorySlots.Length; i++)
+            {
+                
+                 internalInventorySlots[i] = UIManager.Instance.internalInventory.GetComponentInChildren<InventorySlot>();
+                
+            }
+        }
+
+        //Initializing slots for toolBar
+        foreach (InventorySlot slot in toolBar)
+        {
+            for (int i = 0; i < toolBar.Length; i++)
+            {
+                
+                 toolBar[i] = UIManager.Instance.toolbar.GetComponentInChildren<InventorySlot>();
+                
+            }
+        }
+
+        //Initializing slots for selling menu
+        foreach (InventorySlot slot in sellSlots)
+        {
+            for (int i = 0; i < sellSlots.Length; i++)
+            {
+                
+                sellSlots[i] = UIManager.Instance.sellSlots.GetComponentInChildren<InventorySlot>();
+                
+            }
+        }
+
+        //Initializing slots for purchase menu
+        foreach (InventorySlot slot in storageSlots)
+        {
+            for (int i = 0; i < storageSlots.Length; i++)
+            {
+                {
+                    storageSlots[i] = UIManager.Instance.storage.GetComponentInChildren<InventorySlot>();
+                }
+            }
+        }
+
+        foreach(InventorySlot slot in chestSlots)
+        {
+            for(int i = 0;i < chestSlots.Length; i++)
+            {
+                chestSlots[i] = UIManager.Instance.chestInventory.GetComponentInChildren<InventorySlot>();
+            }
+        }
+
+        ////Initializing slots for abilities
+        //foreach (InventorySlot slot in Ability)
+        //{
+        //    for (int i = 0; i < Ability.Length; i++)
+        //    {
+        //        { 
+        //            Ability[i] = UIManager.Instance.storage.GetComponentInChildren<InventorySlot>();
+        //        }
+        //    }
+        //}
     }
 
     private void Update()
@@ -54,19 +153,6 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public static InventoryManager instance { get; private set; }
-    private void Awake()
-    {
-       if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(this);
-        }
-        else
-        {
-            DontDestroyOnLoad (gameObject);
-        }
-    }
     public bool AddItem(Item item)
     {
         //check if any slot has the same item with count lower than max stack
