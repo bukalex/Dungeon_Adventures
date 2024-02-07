@@ -12,17 +12,17 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     public TMP_Text stats;
 
-    //[SerializeField]
-    //private TMP_Text coinCounter;
-    //
-    //[SerializeField]
-    //public Slider HealthBar;
-    //
-    //[SerializeField]
-    //public Slider ManaBar;
-    //
-    //[SerializeField]
-    //public Slider StaminaBar;
+    [SerializeField]
+    private TMP_Text coinCounter;
+    
+    [SerializeField]
+    public GameObject HealthBar;
+    
+    [SerializeField]
+    public GameObject ManaBar;
+    
+    [SerializeField]
+    public GameObject StaminaBar;
 
     [SerializeField]
     public GameObject inventory;
@@ -44,12 +44,10 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        ////Update values
-        //coinCounter.text = playerData.resources[Item.MaterialType.Coin].ToString();
+        //Update values
+        coinCounter.text = playerData.resources[Item.MaterialType.Coin].ToString();
         displayStats();
-        //SetMaxBarValue(playerData.maxHealth, HealthBar);
-
-        //SetBarValue(playerData.health, HealthBar);
+        InitializeBars();
 
 
         //Open inventory
@@ -77,16 +75,26 @@ public class UIManager : MonoBehaviour
         stats.text = HPstats + ManaStats + StaminaStats + DamageStats + DefenseStats + SpeedStats;
     }
 
-    public void SetMaxBarValue(float health, Slider slider)
+    public void InitializeBars()
     {
-        Debug.Log(health, slider);
-        slider.value = health;
-        slider.maxValue = health;
+        SetMaxBarValue(playerData.maxHealth, HealthBar);
+        SetMaxBarValue(playerData.maxMana, ManaBar);
+        SetMaxBarValue(playerData.maxStamina, StaminaBar);
+
+        SetBarValue(playerData.health, HealthBar);
+        SetBarValue(playerData.mana, ManaBar);
+        SetBarValue(playerData.stamina, StaminaBar);
     }
 
-    public void SetBarValue(float health, Slider slider)
+    public void SetMaxBarValue(float health, GameObject Bar)
     {
-        slider.value = health;
+        Bar.GetComponent<Slider>().value = health;
+        Bar.GetComponent<Slider>().maxValue = health;
+    }
+
+    public void SetBarValue(float health, GameObject Bar)
+    {
+        Bar.GetComponent<Slider>().value = health;
     }
 
 }
