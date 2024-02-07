@@ -116,7 +116,7 @@ public class InventoryManager : MonoBehaviour
         //{
         //    for (int i = 0; i < Ability.Length; i++)
         //    {
-        //        {
+        //        { 
         //            Ability[i] = UIManager.Instance.storage.GetComponentInChildren<InventorySlot>();
         //        }
         //    }
