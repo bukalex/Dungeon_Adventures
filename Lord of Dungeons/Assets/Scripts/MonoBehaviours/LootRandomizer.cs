@@ -7,7 +7,7 @@ public class LootRandomizer : MonoBehaviour
     public GameObject InventoryItemPref;
     public Item[] items;
     // Start is called before the first frame update
-    void Start()
+    public void Update()
     {
         int ranK = Random.Range(0, 3);
         int ranM = Random.Range(0, 5);

@@ -20,9 +20,9 @@ public class Item : ScriptableObject
     public int addSPD;
     public int addStamina;
     public int removeHP;
+    public string description;
     [Range(0f, 30f)]
     public float cooldown;
-    public string description;
 
     [Header("Only UI")]
     public bool isStackable = false;
