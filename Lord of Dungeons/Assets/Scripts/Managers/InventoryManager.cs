@@ -47,59 +47,66 @@ public class InventoryManager : MonoBehaviour
 
     private void InitializeSlots()
     {
-        ////Initializing slots for the whole inventory
+        //Initializing slots for the whole inventory
+        
         //foreach (InventorySlot slot in inventorySlots)
         //{
         //    for (int i = 0; i < inventorySlots.Length; i++)
         //    {
-        //        {
-        //            inventorySlots[i] = UIManager.Instance.inventory.GetComponentInChildren<InventorySlot>();
-        //        }
+        //        
+        //        inventorySlots[i] = UIManager.Instance.inventory.GetComponentInChildren<InventorySlot>();
+        //        
         //    }
         //}
-        ////Initializing slots for internal inventory
+        inventorySlots = UIManager.Instance.inventory.GetComponentsInChildren<InventorySlot>();
+
+        //Initializing slots for internal inventory
         //foreach (InventorySlot slot in internalInventorySlots)
         //{
         //    for (int i = 0; i < internalInventorySlots.Length; i++)
         //    {
-        //        {
-        //            internalInventorySlots[i] = UIManager.Instance.internalInventory.GetComponentInChildren<InventorySlot>();
-        //        }
+        //       
+        //        internalInventorySlots[i] = UIManager.Instance.internalInventory.GetComponentInChildren<InventorySlot>();
+        //       
         //    }
         //}
-        //
-        ////Initializing slots for toolBar
+        internalInventorySlots = UIManager.Instance.inventory.GetComponentsInChildren<InventorySlot>();
+        
+        //Initializing slots for toolBar
         //foreach (InventorySlot slot in toolBar)
         //{
         //    for (int i = 0; i < toolBar.Length; i++)
         //    {
-        //        {
-        //            toolBar[i] = UIManager.Instance.toolbar.GetComponentInChildren<InventorySlot>();
-        //        }
+        //        
+        //        toolBar[i] = UIManager.Instance.toolbar.GetComponentInChildren<InventorySlot>();
+        //        
         //    }
         //}
+        toolBar = UIManager.Instance.toolbar.GetComponentsInChildren<InventorySlot>();
 
         //Initializing slots for selling menu
         foreach (InventorySlot slot in sellSlots)
         {
             for (int i = 0; i < sellSlots.Length; i++)
             {
-                {
-                    sellSlots[i] = UIManager.Instance.sellSlots.GetComponentInChildren<InventorySlot>();
-                }
+                
+                sellSlots[i] = UIManager.Instance.sellSlots.GetComponentInChildren<InventorySlot>();
+                
             }
         }
+        sellSlots = UIManager.Instance.sellSlots.GetComponentsInChildren<InventorySlot>();
 
         //Initializing slots for purchase menu
         foreach (InventorySlot slot in storageSlots)
         {
             for (int i = 0; i < storageSlots.Length; i++)
             {
-                {
-                    storageSlots[i] = UIManager.Instance.storage.GetComponentInChildren<InventorySlot>();
-                }
+               
+                storageSlots[i] = UIManager.Instance.storage.GetComponentInChildren<InventorySlot>();
+               
             }
         }
+        storageSlots = UIManager.Instance.storage.GetComponentsInChildren<InventorySlot>(); 
 
         ////Initializing slots for abilities
         //foreach (InventorySlot slot in Ability)

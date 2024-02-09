@@ -109,8 +109,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1764.793, y: 0}
-  m_SizeDelta: {x: 155.207, y: 100}
+  m_AnchoredPosition: {x: -1632.7693, y: 0}
+  m_SizeDelta: {x: 163.2263, y: 100}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &4536136095153518451
 CanvasRenderer:
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 50
   m_fontStyle: 0
-  m_HorizontalAlignment: 4
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -258,14 +258,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a85afb15361090a43ab3f8570ac4812c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sellSlot: {fileID: 1936230760046757370}
+  sellSlot: {fileID: 0}
   playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
   items2Pickup:
   - {fileID: 11400000, guid: 2b698833b242a8b49a73616c048bcc8c, type: 2}
   - {fileID: 11400000, guid: 2f17d659d2812c64fb7f335195cee143, type: 2}
   - {fileID: 11400000, guid: c5987065a81e66c4d90f8f2e6a125ce9, type: 2}
+  itemInStore: {fileID: 0}
   priceDisplay: {fileID: 2351654075853250791}
+  itemName: {fileID: 0}
+  itemDescription: {fileID: 0}
+  itemPrice: []
   coinsFromSale: 0
+  graphicRaycaster: {fileID: 3260420287923813360}
+  eventSystem: {fileID: 0}
 --- !u!1 &6442182561592417596
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,8 +405,10 @@ MonoBehaviour:
   storage: {fileID: 5548474066198557162}
   sellSlots: {fileID: 1670421291207517421}
   chestInventory: {fileID: 0}
+  itemHolders: []
   sellMenu: {fileID: 374821998733562744}
   storeMenu: {fileID: 870761845948727452}
+  isPaused: 0
 --- !u!1001 &2041885025015500070
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -929,17 +937,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2493663057652702699, guid: ca114ea27b1fd364a94cb06e96647887, type: 3}
   m_PrefabInstance: {fileID: 3733152726179193033}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1936230760046757370 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2958879515255022899, guid: ca114ea27b1fd364a94cb06e96647887, type: 3}
-  m_PrefabInstance: {fileID: 3733152726179193033}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d4040586188c5f4abd81f9c9bc30e65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4031793659406062212 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 305431517581226573, guid: ca114ea27b1fd364a94cb06e96647887, type: 3}
