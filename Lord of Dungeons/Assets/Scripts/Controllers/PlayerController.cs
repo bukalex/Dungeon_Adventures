@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static BattleManager;
 
 public class PlayerController : MonoBehaviour
 {
@@ -33,7 +32,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Dungeon);
+        //SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Dungeon);
         playerData.position = transform.position;
         animator.runtimeAnimatorController = playerData.animController;
     }

@@ -13,9 +13,9 @@ public class ProjectileController : MonoBehaviour
     private string parentTag;
     private IAttackObject attackObject;
     private IDefenseObject defenseObject;
-    private Attack attack;
+    private AttackParameters attack;
 
-    public void Launch(string parentTag, IAttackObject attackObject, IDefenseObject defenseObject, Attack attack, Vector3 direction)
+    public void Launch(string parentTag, IAttackObject attackObject, IDefenseObject defenseObject, AttackParameters attack, Vector3 direction)
     {
         this.parentTag = parentTag;
         this.attackObject = attackObject;
