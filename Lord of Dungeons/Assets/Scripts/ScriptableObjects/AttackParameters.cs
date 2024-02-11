@@ -7,7 +7,7 @@ public class AttackParameters : ScriptableObject
 {
     public PlayerData.CharacterType characterType;
     public EnemyParameters.EnemyType enemyType;
-    public BattleManager.AttackButton attackButton;
+    public BattleManager.AttackButton attackButton = BattleManager.AttackButton.NONE;
 
     //For continuous attacks
     #region
@@ -20,6 +20,11 @@ public class AttackParameters : ScriptableObject
     public EnemyEndDelegate enemyEndDelegate { get; set; }
     #endregion
 
+    [SerializeField]
+    private int functionIndex = -1;
+    public PlayerAction playerAction;
+    public EnemyAction enemyAction;
+
     public BattleManager.AttackType attackType;
     public float timeOffset;
     public float duration;
@@ -31,11 +36,26 @@ public class AttackParameters : ScriptableObject
     public bool isReady = true;
     public bool isRunning = false;
 
-    public void ResetValues()
+    public void ResetValues(List<PlayerAction> playerActions, List<EnemyAction> enemyActions)
     {
+        if (functionIndex != -1)
+        {
+            if (playerActions != null)
+            {
+                playerAction = playerActions[functionIndex];
+            }
+            else
+            {
+                enemyAction = enemyActions[functionIndex];
+            }
+        }
+        
         isReady = true;
         isRunning = false;
     }
+
+    public delegate void PlayerAction(PlayerData playerData);
+    public delegate void EnemyAction(EnemyParameters enemyParameters);
 
     public delegate void PlayerRunningDelegate(PlayerData playerData);
     public delegate void PlayerEndDelegate(PlayerData playerData);

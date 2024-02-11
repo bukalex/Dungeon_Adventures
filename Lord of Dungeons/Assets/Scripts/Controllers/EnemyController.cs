@@ -54,7 +54,7 @@ public class EnemyController : MonoBehaviour
                 if (enemyParameters.isBoss && 
                     enemyParameters.health <= enemyParameters.maxHealth * 0.5f && 
                     targetDistance <= BattleManager.Instance.GetAttackRange(enemyParameters.type, BattleManager.AttackButton.RMB) &&
-                    BattleManager.Instance.EnemyPerformRMB(enemyParameters))
+                    BattleManager.Instance.EnemyPerformAction(enemyParameters, BattleManager.AttackButton.RMB))
                 {
                     SuperAttack();
                     StartCoroutine(ShowArea());
@@ -81,7 +81,7 @@ public class EnemyController : MonoBehaviour
                             body.velocity = Vector3.zero;
                         }
 
-                        if (BattleManager.Instance.EnemyPerformLMB(enemyParameters))
+                        if (BattleManager.Instance.EnemyPerformAction(enemyParameters, BattleManager.AttackButton.LMB))
                         {
                             Attack();
                         }

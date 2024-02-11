@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
             //Left Mouse Button
             if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
-                if (BattleManager.Instance.PlayerPerformLMB(playerData))
+                if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.LMB))
                 {
                     body.velocity = movementDirection * playerData.speed * 0.5f;
                     AttackWithLMB();
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
             //Right Mouse Button
             if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
             {
-                if (BattleManager.Instance.PlayerPerformRMB(playerData))
+                if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.RMB))
                 {
                     SetShield(true);
                 }

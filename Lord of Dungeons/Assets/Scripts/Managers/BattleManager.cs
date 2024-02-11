@@ -13,6 +13,8 @@ public class BattleManager : MonoBehaviour
     private List<AttackParameters> enemyAttackParameters = new List<AttackParameters>();
 
     private Dictionary<PlayerData.CharacterType, List<AttackParameters>> playerAttacksAll = new Dictionary<PlayerData.CharacterType, List<AttackParameters>>();
+    public List<AttackParameters.PlayerAction> playerActions = new List<AttackParameters.PlayerAction>();
+    public List<AttackParameters.EnemyAction> enemyActions = new List<AttackParameters.EnemyAction>();
 
     private Dictionary<PlayerData.CharacterType, Dictionary<AttackButton, AttackParameters>> playerAttacks = new Dictionary<PlayerData.CharacterType, Dictionary<AttackButton, AttackParameters>>();
     private Dictionary<EnemyParameters.EnemyType, Dictionary<AttackButton, AttackParameters>> enemyAttacks = new Dictionary<EnemyParameters.EnemyType, Dictionary<AttackButton, AttackParameters>>();
@@ -25,7 +27,7 @@ public class BattleManager : MonoBehaviour
     private ProjectileController projectileController;
 
     public enum AttackType { BASIC, SPECIAL }
-    public enum AttackButton { LMB, RMB, SHIFT }
+    public enum AttackButton { NONE, LMB, RMB, SHIFT }
 
     void Awake()
     {
@@ -39,23 +41,37 @@ public class BattleManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     private void Initialize()
     {
+        playerActions.Add(PlayerUseSword);
+        playerActions.Add(PlayerActivateShield);
+
+        enemyActions.Add(GuardUseSword);
+        enemyActions.Add(GuardUseSpecial);
+        enemyActions.Add(GhostShoot);
+
         foreach (string str in Enum.GetNames(typeof(PlayerData.CharacterType)))
         {
             List<AttackParameters> classAttacks = new List<AttackParameters>();
-            
+            Dictionary<AttackButton, AttackParameters> playerDict = new Dictionary<AttackButton, AttackParameters>();
+
             foreach (AttackParameters attackParameters in playerAttackParameters)
             {
                 if (attackParameters.characterType == (PlayerData.CharacterType)Enum.Parse(typeof(PlayerData.CharacterType), str))
                 {
-                    attackParameters.ResetValues();
+                    attackParameters.ResetValues(playerActions, null);
                     classAttacks.Add(attackParameters);
+
+                    if (attackParameters.attackButton != AttackButton.NONE)
+                    {
+                        playerDict.Add(attackParameters.attackButton, attackParameters);
+                    }
                 }
             }
 
             playerAttacksAll.Add((PlayerData.CharacterType)Enum.Parse(typeof(PlayerData.CharacterType), str), classAttacks);
-            playerAttacks.Add((PlayerData.CharacterType)Enum.Parse(typeof(PlayerData.CharacterType), str), new Dictionary<AttackButton, AttackParameters>());
+            playerAttacks.Add((PlayerData.CharacterType)Enum.Parse(typeof(PlayerData.CharacterType), str), playerDict);
         }
 
         foreach (string str in Enum.GetNames(typeof(EnemyParameters.EnemyType)))
@@ -66,7 +82,7 @@ public class BattleManager : MonoBehaviour
             {
                 if (attackParameters.enemyType == (EnemyParameters.EnemyType)Enum.Parse(typeof(EnemyParameters.EnemyType), str))
                 {
-                    attackParameters.ResetValues();
+                    attackParameters.ResetValues(null, enemyActions);
                     enemyDict.Add(attackParameters.attackButton, attackParameters);
                 }
             }
@@ -128,79 +144,24 @@ public class BattleManager : MonoBehaviour
         expiredRunningAttacks.Clear();
     }
 
-    //Performs an attack for LMB
-    public bool PlayerPerformLMB(PlayerData playerData)
+    public bool PlayerPerformAction(PlayerData playerData, AttackButton attackButton)
     {
-        attack = playerAttacks[playerData.type][AttackButton.LMB];
-
-        switch (playerData.type)
+        if (playerAttacks.ContainsKey(playerData.type) && playerAttacks[playerData.type].ContainsKey(attackButton))
         {
-            case PlayerData.CharacterType.WARRIOR://Simple attack with sword
-                if (attack.isReady && AffordAttack(playerData))
-                {
-                    PlayerUseSword(playerData);
-                }
-                else
-                {
-                    return false;
-                }
-                break;
-
-            case PlayerData.CharacterType.ARCHER:
-                if (attack.isReady && AffordAttack(playerData))
-                {
-
-                }
-                else
-                {
-                    return false;
-                }
-                break;
+            attack = playerAttacks[playerData.type][attackButton];
+        }
+        else
+        {
+            return false;
         }
 
-        if (attack.cooldown > 0)
+        if (attack.isReady && AffordAttack(playerData))
         {
-            StartCoroutine(Cooldown(attack));
+            attack.playerAction(playerData);
         }
-
-        return true;
-    }
-
-    //Performs an attack for RMB
-    public bool PlayerPerformRMB(PlayerData playerData)
-    {
-        attack = playerAttacks[playerData.type][AttackButton.RMB];
-
-        switch (playerData.type)
+        else
         {
-            case PlayerData.CharacterType.WARRIOR://Activate shield
-                if (attack.isReady && AffordAttack(playerData))
-                {
-                    playerData.defense *= 5;
-                    playerData.specialDefense *= 5;
-
-                    attack.playerData = playerData;
-                    attack.playerEndDelegate = PlayerDeactivateShield;
-
-                    StartCoroutine(StartAttack(attack));
-                    playerRunningAttacks.Add(attack);
-                }
-                else
-                {
-                    return false;
-                }
-                break;
-
-            case PlayerData.CharacterType.ARCHER:
-                if (attack.isReady && AffordAttack(playerData))
-                {
-
-                }
-                else
-                {
-                    return false;
-                }
-                break;
+            return false;
         }
 
         if (attack.cooldown > 0)
@@ -219,80 +180,24 @@ public class BattleManager : MonoBehaviour
         return AffordAttack(playerData, true);
     }
 
-    //Performs an enemy`s primary attack
-    public bool EnemyPerformLMB(EnemyParameters enemyParameters)
+    public bool EnemyPerformAction(EnemyParameters enemyParameters, AttackButton attackButton)
     {
-        attack = enemyAttacks[enemyParameters.type][AttackButton.LMB];
-
-        switch (enemyParameters.type)
+        if (enemyAttacks.ContainsKey(enemyParameters.type) && enemyAttacks[enemyParameters.type].ContainsKey(attackButton))
         {
-            case EnemyParameters.EnemyType.GUARD://Simple attack with sword
-                if (attack.isReady && AffordAttack(enemyParameters))
-                {
-                    DealDamage(enemyParameters, enemyParameters.playerData);
-                }
-                else
-                {
-                    return false;
-                }
-                break;
-
-            case EnemyParameters.EnemyType.GHOST://Launches ectoplasm
-                if (attack.isReady && AffordAttack(enemyParameters))
-                {
-                    projectileController = Instantiate(enemyParameters.projectilePrefab, enemyParameters.position, new Quaternion()).GetComponent<ProjectileController>();
-                    projectileController.Launch("Enemy", enemyParameters, enemyParameters.playerData, attack, enemyParameters.attackDirection);
-                }
-                else
-                {
-                    return false;
-                }
-                break;
+            attack = enemyAttacks[enemyParameters.type][attackButton];
+        }
+        else
+        {
+            return false;
         }
 
-        if (attack.cooldown > 0)
+        if (attack.isReady && AffordAttack(enemyParameters))
         {
-            StartCoroutine(Cooldown(attack));
+            attack.enemyAction(enemyParameters);
         }
-
-        return true;
-    }
-
-    //Performs an enemy`s secondary attack
-    public bool EnemyPerformRMB(EnemyParameters enemyParameters)
-    {
-        attack = enemyAttacks[enemyParameters.type][AttackButton.RMB];
-
-        switch (enemyParameters.type)
+        else
         {
-            case EnemyParameters.EnemyType.GUARD://Hits ground stunning player
-                if (attack.isReady && AffordAttack(enemyParameters))
-                {
-                    enemyParameters.playerData.isStunned = true;
-                    DealDamage(enemyParameters, enemyParameters.playerData);
-
-                    attack.playerData = enemyParameters.playerData;
-                    attack.playerEndDelegate = DisableStun;
-
-                    StartCoroutine(StartAttack(attack));
-                    playerRunningAttacks.Add(attack);
-                }
-                else
-                {
-                    return false;
-                }
-                break;
-
-            case EnemyParameters.EnemyType.GHOST:
-                if (attack.isReady && AffordAttack(enemyParameters))
-                {
-                    
-                }
-                else
-                {
-                    return false;
-                }
-                break;
+            return false;
         }
 
         if (attack.cooldown > 0)
@@ -405,7 +310,17 @@ public class BattleManager : MonoBehaviour
         attack.isRunning = false;
     }
 
-    private void PlayerUseSword(PlayerData playerData)
+    public float GetAttackRange(EnemyParameters.EnemyType enemyType, AttackButton attackButton)
+    {
+        if (enemyAttacks[enemyType].ContainsKey(attackButton))
+        {
+            return enemyAttacks[enemyType][attackButton].range;
+        }
+
+        return Mathf.Infinity;
+    }
+
+    public void PlayerUseSword(PlayerData playerData)
     {
         List<EnemyController> enemies = DetectTargets<EnemyController>(playerData);
         foreach (EnemyController enemy in enemies)
@@ -426,6 +341,41 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    public void PlayerActivateShield(PlayerData playerData)
+    {
+        playerData.defense *= 5;
+        playerData.specialDefense *= 5;
+
+        attack.playerData = playerData;
+        attack.playerEndDelegate = PlayerDeactivateShield;
+
+        StartCoroutine(StartAttack(attack));
+        playerRunningAttacks.Add(attack);
+    }
+
+    public void GuardUseSword(EnemyParameters enemyParameters)
+    {
+        DealDamage(enemyParameters, enemyParameters.playerData);
+    }
+
+    public void GuardUseSpecial(EnemyParameters enemyParameters)
+    {
+        enemyParameters.playerData.isStunned = true;
+        DealDamage(enemyParameters, enemyParameters.playerData);
+
+        attack.playerData = enemyParameters.playerData;
+        attack.playerEndDelegate = DisableStun;
+
+        StartCoroutine(StartAttack(attack));
+        playerRunningAttacks.Add(attack);
+    }
+
+    public void GhostShoot(EnemyParameters enemyParameters)
+    {
+        projectileController = Instantiate(enemyParameters.projectilePrefab, enemyParameters.position, new Quaternion()).GetComponent<ProjectileController>();
+        projectileController.Launch("Enemy", enemyParameters, enemyParameters.playerData, attack, enemyParameters.attackDirection);
+    }
+
     private void PlayerDeactivateShield(PlayerData playerData)
     {
         playerData.defense /= 5;
@@ -435,15 +385,5 @@ public class BattleManager : MonoBehaviour
     private void DisableStun(IDefenseObject defenseObject)
     {
         defenseObject.DisableStun();
-    }
-
-    public float GetAttackRange(EnemyParameters.EnemyType enemyType, AttackButton attackButton)
-    {
-        if (enemyAttacks[enemyType].ContainsKey(attackButton))
-        {
-            return enemyAttacks[enemyType][attackButton].range;
-        }
-
-        return Mathf.Infinity;
     }
 }
