@@ -32,11 +32,14 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        //SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Dungeon);
+        
         playerData.position = transform.position;
         animator.runtimeAnimatorController = playerData.animController;
     }
-
+    private void Start()
+    {
+        SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Dungeon);
+    }
     void Update()
     {
         playerData.position = transform.position;
