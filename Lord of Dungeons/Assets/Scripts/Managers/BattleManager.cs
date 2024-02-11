@@ -8,13 +8,15 @@ public class BattleManager : MonoBehaviour
     public static BattleManager Instance { get; private set; }
 
     [SerializeField]
+    private BattleData battleData;
+    [SerializeField]
     private List<AttackParameters> playerAttackParameters = new List<AttackParameters>();
     [SerializeField]
     private List<AttackParameters> enemyAttackParameters = new List<AttackParameters>();
 
     private Dictionary<PlayerData.CharacterType, List<AttackParameters>> playerAttacksAll = new Dictionary<PlayerData.CharacterType, List<AttackParameters>>();
-    public List<AttackParameters.PlayerAction> playerActions = new List<AttackParameters.PlayerAction>();
-    public List<AttackParameters.EnemyAction> enemyActions = new List<AttackParameters.EnemyAction>();
+    private List<AttackParameters.PlayerAction> playerActions = new List<AttackParameters.PlayerAction>();
+    private List<AttackParameters.EnemyAction> enemyActions = new List<AttackParameters.EnemyAction>();
 
     private Dictionary<PlayerData.CharacterType, Dictionary<AttackButton, AttackParameters>> playerAttacks = new Dictionary<PlayerData.CharacterType, Dictionary<AttackButton, AttackParameters>>();
     private Dictionary<EnemyParameters.EnemyType, Dictionary<AttackButton, AttackParameters>> enemyAttacks = new Dictionary<EnemyParameters.EnemyType, Dictionary<AttackButton, AttackParameters>>();
@@ -320,7 +322,7 @@ public class BattleManager : MonoBehaviour
         return Mathf.Infinity;
     }
 
-    public void PlayerUseSword(PlayerData playerData)
+    private void PlayerUseSword(PlayerData playerData)
     {
         List<EnemyController> enemies = DetectTargets<EnemyController>(playerData);
         foreach (EnemyController enemy in enemies)
@@ -341,8 +343,13 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void PlayerActivateShield(PlayerData playerData)
+    private void PlayerActivateShield(PlayerData playerData)
     {
+        GameObject shield = Instantiate(battleData.shieldPrefab, playerData.transform);
+        shield.transform.localPosition = new Vector3(0, 0.5f, 0);
+        shield.GetComponent<Animator>().SetBool("shieldActivated", true);
+        battleData.shieldsByCreatures.Add(playerData, shield);
+
         playerData.defense *= 5;
         playerData.specialDefense *= 5;
 
@@ -353,13 +360,28 @@ public class BattleManager : MonoBehaviour
         playerRunningAttacks.Add(attack);
     }
 
-    public void GuardUseSword(EnemyParameters enemyParameters)
+    private void PlayerDeactivateShield(PlayerData playerData)
+    {
+        GameObject shield = battleData.shieldsByCreatures[playerData];
+        shield.GetComponent<Animator>().SetBool("shieldActivated", false);
+        Destroy(shield, 0.5f);
+        battleData.shieldsByCreatures.Remove(playerData);
+
+        playerData.defense /= 5;
+        playerData.specialDefense /= 5;
+    }
+
+    private void GuardUseSword(EnemyParameters enemyParameters)
     {
         DealDamage(enemyParameters, enemyParameters.playerData);
     }
 
-    public void GuardUseSpecial(EnemyParameters enemyParameters)
+    private void GuardUseSpecial(EnemyParameters enemyParameters)
     {
+        GameObject area = Instantiate(battleData.superAttackAreaPrefab, enemyParameters.transform);
+        area.transform.localPosition = new Vector3(0, 0, 0);
+        Destroy(area, 0.75f);
+
         enemyParameters.playerData.isStunned = true;
         DealDamage(enemyParameters, enemyParameters.playerData);
 
@@ -370,16 +392,10 @@ public class BattleManager : MonoBehaviour
         playerRunningAttacks.Add(attack);
     }
 
-    public void GhostShoot(EnemyParameters enemyParameters)
+    private void GhostShoot(EnemyParameters enemyParameters)
     {
         projectileController = Instantiate(enemyParameters.projectilePrefab, enemyParameters.position, new Quaternion()).GetComponent<ProjectileController>();
         projectileController.Launch("Enemy", enemyParameters, enemyParameters.playerData, attack, enemyParameters.attackDirection);
-    }
-
-    private void PlayerDeactivateShield(PlayerData playerData)
-    {
-        playerData.defense /= 5;
-        playerData.specialDefense /= 5;
     }
 
     private void DisableStun(IDefenseObject defenseObject)
