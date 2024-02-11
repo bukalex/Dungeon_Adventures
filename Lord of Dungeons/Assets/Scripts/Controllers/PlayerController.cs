@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static BattleManager;
 
 public class PlayerController : MonoBehaviour
 {
@@ -33,7 +32,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Dungeon);
+        //SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Dungeon);
         playerData.position = transform.position;
         animator.runtimeAnimatorController = playerData.animController;
     }
@@ -44,7 +43,7 @@ public class PlayerController : MonoBehaviour
         playerData.isUsingMana = false;
         playerData.isUsingStamina = false;
         
-        if (playerData.IsAlive())
+        if (playerData.IsAlive() && !playerData.isStunned)
         {
             //Movement
             #region
@@ -89,7 +88,7 @@ public class PlayerController : MonoBehaviour
             //Left Mouse Button
             if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
-                if (BattleManager.Instance.PlayerPerformLMB(playerData))
+                if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.LMB))
                 {
                     body.velocity = movementDirection * playerData.speed * 0.5f;
                     AttackWithLMB();
@@ -100,7 +99,7 @@ public class PlayerController : MonoBehaviour
             //Right Mouse Button
             if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
             {
-                if (BattleManager.Instance.PlayerPerformRMB(playerData))
+                if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.RMB))
                 {
                     SetShield(true);
                 }
@@ -159,7 +158,7 @@ public class PlayerController : MonoBehaviour
             //Stats restore
             playerData.RestoreStats();
         }
-        else if (!alreadyDead)
+        else if (!alreadyDead && !playerData.isStunned)
         {
             Die();
 

@@ -15,18 +15,19 @@ MonoBehaviour:
   maxHealth: 200
   maxMana: 50
   maxStamina: 50
+  initialSpeed: 1.75
   initialAttack: 5
   initialSpecialAttack: 1
   initialDefense: 4
   initialSpecialDefense: 2
-  health: 200
+  health: 124.64603
   mana: 50
-  stamina: 40.229156
-  speed: 1.25
+  stamina: 50
+  speed: 1.75
   attack: 5
   specialAttack: 1
-  defense: 104
-  specialDefense: 102
+  defense: 4
+  specialDefense: 2
   healthRestoreRate: 5
   manaRestoreRate: 1
   staminaRestoreRate: 1
@@ -35,7 +36,8 @@ MonoBehaviour:
   npcDetectionRadius: 0.75
   lootableDetectionRadius: 0.75
   colliderRadius: 0.3
-  position: {x: 25.037632, y: -2.0990925, z: 0}
-  attackDirection: {x: 1, y: 0, z: 0}
+  position: {x: -11.06, y: -10.6, z: 0}
+  attackDirection: {x: 0, y: -1, z: 0}
+  isStunned: 0
   type: 0
   animController: {fileID: 9100000, guid: 830695f2cf9ff4e42b14d58fc0eefe19, type: 2}

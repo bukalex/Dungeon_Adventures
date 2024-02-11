@@ -9,6 +9,7 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     public float maxHealth = 100.0f;
     public float maxMana = 50.0f;
     public float maxStamina = 50.0f;
+    public float initialSpeed = 0.75f;
 
     public float initialAttack = 3.0f;
     public float initialSpecialAttack = 3.0f;
@@ -40,6 +41,7 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     public float colliderRadius = 1.0f;
     public Vector3 position = Vector3.zero;
     public Vector3 attackDirection = Vector3.down;
+    public bool isStunned = false;
 
     //Type
     public CharacterType type = CharacterType.WARRIOR;
@@ -63,6 +65,8 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
         specialAttack = initialSpecialAttack;
         defense = initialDefense;
         specialDefense = initialSpecialDefense;
+
+        speed = initialSpeed;
     }
 
     public void SetDictionaries()
@@ -180,6 +184,11 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     {
         yield return new WaitForSeconds(offset);
         health -= damage;
+    }
+
+    public void DisableStun()
+    {
+        isStunned = false;
     }
     #endregion
 }

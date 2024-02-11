@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,20 +13,44 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     public TMP_Text stats;
 
-    //[SerializeField]
-    //private TMP_Text coinCounter;
-    //
-    //[SerializeField]
-    //public Slider HealthBar;
-    //
-    //[SerializeField]
-    //public Slider ManaBar;
-    //
-    //[SerializeField]
-    //public Slider StaminaBar;
+    [SerializeField]
+    private TMP_Text coinCounter;
+    
+    [SerializeField]
+    public GameObject HealthBar;
+    
+    [SerializeField]
+    public GameObject ManaBar;
+    
+    [SerializeField]
+    public GameObject StaminaBar;
+
+    [SerializeField]
+    public GameObject internalInventory;
 
     [SerializeField]
     public GameObject inventory;
+
+    [SerializeField]
+    public GameObject toolbar;
+
+    //Assign Storage from Store Menu
+    [SerializeField]
+    public GameObject storage;
+
+    [SerializeField]
+    public GameObject sellSlots;
+
+    [SerializeField] 
+    public GameObject chestInventory;
+
+    [SerializeField]
+    public GameObject[] itemHolders;
+
+    [SerializeField]
+    private GameObject sellMenu, storeMenu;
+
+    public bool isPaused = false;
 
     public static UIManager Instance { get; private set; }
 
@@ -44,12 +69,10 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        ////Update values
-        //coinCounter.text = playerData.resources[Item.MaterialType.Coin].ToString();
+        //Update values
+        coinCounter.text = playerData.resources[Item.MaterialType.Coin].ToString();
         displayStats();
-        //SetMaxBarValue(playerData.maxHealth, HealthBar);
-
-        //SetBarValue(playerData.health, HealthBar);
+        InitializeBars();
 
 
         //Open inventory
@@ -62,11 +85,24 @@ public class UIManager : MonoBehaviour
         {
             inventory.SetActive(false);
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+            {
+                Time.timeScale = 1;
+            }
+            else
+            {
+                Time.timeScale = 0;
+            }
+
+        }
     }
 
     public void displayStats()
     {
-        string HPstats = "HP: " + playerData.maxHealth + "\n";
+        string HPstats = "HP: " + playerData.maxHealth + "\n"; 
         string ManaStats = "Mana: " + playerData.maxMana.ToString() + "\n";
         string StaminaStats = "Stamina: " + playerData.maxStamina.ToString() + "\n";
         string DamageStats = "Damage: " + playerData.attack.ToString() + "\n";
@@ -77,16 +113,32 @@ public class UIManager : MonoBehaviour
         stats.text = HPstats + ManaStats + StaminaStats + DamageStats + DefenseStats + SpeedStats;
     }
 
-    public void SetMaxBarValue(float health, Slider slider)
+    public void traderButtons()
     {
-        Debug.Log(health, slider);
-        slider.value = health;
-        slider.maxValue = health;
+        sellMenu.SetActive(!sellMenu.activeSelf);
+        storeMenu.SetActive(!storeMenu.activeSelf);
     }
 
-    public void SetBarValue(float health, Slider slider)
+    public void InitializeBars()
     {
-        slider.value = health;
+        SetMaxBarValue(playerData.maxHealth, HealthBar);
+        SetMaxBarValue(playerData.maxMana, ManaBar);
+        SetMaxBarValue(playerData.maxStamina, StaminaBar);
+
+        SetBarValue(playerData.health, HealthBar);
+        SetBarValue(playerData.mana, ManaBar);
+        SetBarValue(playerData.stamina, StaminaBar);
+    }
+
+    public void SetMaxBarValue(float health, GameObject Bar)
+    {
+        Bar.GetComponent<Slider>().value = health;
+        Bar.GetComponent<Slider>().maxValue = health;
+    }
+
+    public void SetBarValue(float health, GameObject Bar)
+    {
+        Bar.GetComponent<Slider>().value = health;
     }
 
 }

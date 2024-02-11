@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,53 +7,93 @@ public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance { get; private set; }
 
-    private Dictionary<PlayerData.CharacterType, Dictionary<AttackButton, Attack>> playerAttacks = new Dictionary<PlayerData.CharacterType, Dictionary<AttackButton, Attack>>();
-    private Dictionary<EnemyParameters.EnemyType, Dictionary<AttackButton, Attack>> enemyAttacks = new Dictionary<EnemyParameters.EnemyType, Dictionary<AttackButton, Attack>>();
+    [SerializeField]
+    private List<AttackParameters> playerAttackParameters = new List<AttackParameters>();
+    [SerializeField]
+    private List<AttackParameters> enemyAttackParameters = new List<AttackParameters>();
 
-    private List<Attack> playerRunningAttacks = new List<Attack>();
-    private List<Attack> enemyRunningAttacks = new List<Attack>();
-    private List<Attack> expiredRunningAttacks = new List<Attack>();
+    private Dictionary<PlayerData.CharacterType, List<AttackParameters>> playerAttacksAll = new Dictionary<PlayerData.CharacterType, List<AttackParameters>>();
+    public List<AttackParameters.PlayerAction> playerActions = new List<AttackParameters.PlayerAction>();
+    public List<AttackParameters.EnemyAction> enemyActions = new List<AttackParameters.EnemyAction>();
 
-    private Attack attack;
+    private Dictionary<PlayerData.CharacterType, Dictionary<AttackButton, AttackParameters>> playerAttacks = new Dictionary<PlayerData.CharacterType, Dictionary<AttackButton, AttackParameters>>();
+    private Dictionary<EnemyParameters.EnemyType, Dictionary<AttackButton, AttackParameters>> enemyAttacks = new Dictionary<EnemyParameters.EnemyType, Dictionary<AttackButton, AttackParameters>>();
+
+    private List<AttackParameters> playerRunningAttacks = new List<AttackParameters>();
+    private List<AttackParameters> enemyRunningAttacks = new List<AttackParameters>();
+    private List<AttackParameters> expiredRunningAttacks = new List<AttackParameters>();
+
+    private AttackParameters attack;
     private ProjectileController projectileController;
 
     public enum AttackType { BASIC, SPECIAL }
-    public enum AttackButton { LMB, RMB, SHIFT }
+    public enum AttackButton { NONE, LMB, RMB, SHIFT }
 
     void Awake()
     {
         if (Instance == null)
         {
             Initialize();
-
             Instance = this;
-            DontDestroyOnLoad(this);
         }
         else
         {
             Destroy(gameObject);
         }
     }
+
     private void Initialize()
     {
-        Dictionary<AttackButton, Attack> playerDict = new Dictionary<AttackButton, Attack>();
-        playerDict.Add(AttackButton.LMB, new Attack(AttackType.BASIC, 0.4f, 0.65f, 20.0f, 0.85f, 0.0f, 2.5f));
-        playerDict.Add(AttackButton.RMB, new Attack(AttackType.SPECIAL, 3.0f, 6.0f, 0.0f, 0.0f, 2.0f, 0.0f));
-        playerDict.Add(AttackButton.SHIFT, new Attack(AttackType.BASIC, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f));
-        playerAttacks.Add(PlayerData.CharacterType.WARRIOR, playerDict);
+        playerActions.Add(PlayerUseSword);
+        playerActions.Add(PlayerActivateShield);
 
-        Dictionary<AttackButton, Attack> guardLMBDict = new Dictionary<AttackButton, Attack>();
-        guardLMBDict.Add(AttackButton.LMB, new Attack(AttackType.BASIC, 0.45f, 0.75f, 20.0f, 0.85f, 0.0f, 2.5f));
-        enemyAttacks.Add(EnemyParameters.EnemyType.GUARD, guardLMBDict);
+        enemyActions.Add(GuardUseSword);
+        enemyActions.Add(GuardUseSpecial);
+        enemyActions.Add(GhostShoot);
 
-        Dictionary<AttackButton, Attack> ghostLMBDict = new Dictionary<AttackButton, Attack>();
-        ghostLMBDict.Add(AttackButton.LMB, new Attack(AttackType.SPECIAL, 0.0f, 1.5f, 10.0f, 5.0f, 5.0f, 0.0f));
-        enemyAttacks.Add(EnemyParameters.EnemyType.GHOST, ghostLMBDict);
+        foreach (string str in Enum.GetNames(typeof(PlayerData.CharacterType)))
+        {
+            List<AttackParameters> classAttacks = new List<AttackParameters>();
+            Dictionary<AttackButton, AttackParameters> playerDict = new Dictionary<AttackButton, AttackParameters>();
+
+            foreach (AttackParameters attackParameters in playerAttackParameters)
+            {
+                if (attackParameters.characterType == (PlayerData.CharacterType)Enum.Parse(typeof(PlayerData.CharacterType), str))
+                {
+                    attackParameters.ResetValues(playerActions, null);
+                    classAttacks.Add(attackParameters);
+
+                    if (attackParameters.attackButton != AttackButton.NONE)
+                    {
+                        playerDict.Add(attackParameters.attackButton, attackParameters);
+                    }
+                }
+            }
+
+            playerAttacksAll.Add((PlayerData.CharacterType)Enum.Parse(typeof(PlayerData.CharacterType), str), classAttacks);
+            playerAttacks.Add((PlayerData.CharacterType)Enum.Parse(typeof(PlayerData.CharacterType), str), playerDict);
+        }
+
+        foreach (string str in Enum.GetNames(typeof(EnemyParameters.EnemyType)))
+        {
+            Dictionary<AttackButton, AttackParameters> enemyDict = new Dictionary<AttackButton, AttackParameters>();
+
+            foreach (AttackParameters attackParameters in enemyAttackParameters)
+            {
+                if (attackParameters.enemyType == (EnemyParameters.EnemyType)Enum.Parse(typeof(EnemyParameters.EnemyType), str))
+                {
+                    attackParameters.ResetValues(null, enemyActions);
+                    enemyDict.Add(attackParameters.attackButton, attackParameters);
+                }
+            }
+
+            enemyAttacks.Add((EnemyParameters.EnemyType)Enum.Parse(typeof(EnemyParameters.EnemyType), str), enemyDict);
+        }
     }
 
     void Update()
     {
-        foreach (Attack runningAttack in playerRunningAttacks)
+        foreach (AttackParameters runningAttack in playerRunningAttacks)
         {
             //Calls functions for attacks that have continuous effect
             if (runningAttack.isRunning)
@@ -73,7 +114,7 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        foreach (Attack runningAttack in enemyRunningAttacks)
+        foreach (AttackParameters runningAttack in enemyRunningAttacks)
         {
             //Calls functions for attacks that have continuous effect
             if (runningAttack.isRunning)
@@ -95,7 +136,7 @@ public class BattleManager : MonoBehaviour
         }
 
         //Removes expired attack
-        foreach (Attack runningAttack in expiredRunningAttacks)
+        foreach (AttackParameters runningAttack in expiredRunningAttacks)
         {
             playerRunningAttacks.Remove(runningAttack);
             enemyRunningAttacks.Remove(runningAttack);
@@ -103,95 +144,24 @@ public class BattleManager : MonoBehaviour
         expiredRunningAttacks.Clear();
     }
 
-    //Performs an attack for LMB
-    public bool PlayerPerformLMB(PlayerData playerData)
+    public bool PlayerPerformAction(PlayerData playerData, AttackButton attackButton)
     {
-        attack = playerAttacks[playerData.type][AttackButton.LMB];
-
-        switch (playerData.type)
+        if (playerAttacks.ContainsKey(playerData.type) && playerAttacks[playerData.type].ContainsKey(attackButton))
         {
-            case PlayerData.CharacterType.WARRIOR://Simple attack with sword
-                if (attack.isReady && AffordAttack(playerData))
-                {
-                    List<EnemyController> enemies = DetectTargets<EnemyController>(playerData);
-                    foreach (EnemyController enemy in enemies)
-                    {
-                        if (enemy.IsAlive())
-                        {
-                            DealDamage(playerData, enemy.enemyParameters);
-                        }
-                    }
-
-                    List<ObjectController> breakables = DetectTargets<ObjectController>(playerData);
-                    foreach (ObjectController breakable in breakables)
-                    {
-                        if (breakable.IsIntact())
-                        {
-                            DealDamage(playerData, breakable.objectParameters);
-                        }
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-                break;
-
-            case PlayerData.CharacterType.ARCHER:
-                if (attack.isReady && AffordAttack(playerData))
-                {
-
-                }
-                else
-                {
-                    return false;
-                }
-                break;
+            attack = playerAttacks[playerData.type][attackButton];
+        }
+        else
+        {
+            return false;
         }
 
-        if (attack.cooldown > 0)
+        if (attack.isReady && AffordAttack(playerData))
         {
-            StartCoroutine(Cooldown(attack));
+            attack.playerAction(playerData);
         }
-
-        return true;
-    }
-
-    //Performs an attack for RMB
-    public bool PlayerPerformRMB(PlayerData playerData)
-    {
-        attack = playerAttacks[playerData.type][AttackButton.RMB];
-
-        switch (playerData.type)
+        else
         {
-            case PlayerData.CharacterType.WARRIOR://Activate shield
-                if (attack.isReady && AffordAttack(playerData))
-                {
-                    playerData.defense *= 5;
-                    playerData.specialDefense *= 5;
-
-                    attack.playerData = playerData;
-                    attack.playerEndDelegate = DeactivateShield;
-
-                    StartCoroutine(StartAttack(attack));
-                    playerRunningAttacks.Add(attack);
-                }
-                else
-                {
-                    return false;
-                }
-                break;
-
-            case PlayerData.CharacterType.ARCHER:
-                if (attack.isReady && AffordAttack(playerData))
-                {
-
-                }
-                else
-                {
-                    return false;
-                }
-                break;
+            return false;
         }
 
         if (attack.cooldown > 0)
@@ -210,35 +180,24 @@ public class BattleManager : MonoBehaviour
         return AffordAttack(playerData, true);
     }
 
-    //Performs an enemy`s primary attack
-    public bool EnemyPerformLMB(EnemyParameters enemyParameters)
+    public bool EnemyPerformAction(EnemyParameters enemyParameters, AttackButton attackButton)
     {
-        attack = enemyAttacks[enemyParameters.type][AttackButton.LMB];
-
-        switch (enemyParameters.type)
+        if (enemyAttacks.ContainsKey(enemyParameters.type) && enemyAttacks[enemyParameters.type].ContainsKey(attackButton))
         {
-            case EnemyParameters.EnemyType.GUARD://Simple attack with sword
-                if (attack.isReady && AffordAttack(enemyParameters))
-                {
-                    DealDamage(enemyParameters, enemyParameters.playerData);
-                }
-                else
-                {
-                    return false;
-                }
-                break;
+            attack = enemyAttacks[enemyParameters.type][attackButton];
+        }
+        else
+        {
+            return false;
+        }
 
-            case EnemyParameters.EnemyType.GHOST://Launches ectoplasm
-                if (attack.isReady && AffordAttack(enemyParameters))
-                {
-                    projectileController = Instantiate(enemyParameters.projectilePrefab, enemyParameters.position, new Quaternion()).GetComponent<ProjectileController>();
-                    projectileController.Launch("Enemy", enemyParameters, enemyParameters.playerData, attack, enemyParameters.attackDirection);
-                }
-                else
-                {
-                    return false;
-                }
-                break;
+        if (attack.isReady && AffordAttack(enemyParameters))
+        {
+            attack.enemyAction(enemyParameters);
+        }
+        else
+        {
+            return false;
         }
 
         if (attack.cooldown > 0)
@@ -250,7 +209,7 @@ public class BattleManager : MonoBehaviour
     }
 
     //Called be projectiles upon hit
-    public void ProjectileHit(IAttackObject attackObject, IDefenseObject defenseObject, Attack attack)
+    public void ProjectileHit(IAttackObject attackObject, IDefenseObject defenseObject, AttackParameters attack)
     {
         this.attack = attack;
         DealDamage(attackObject, defenseObject);
@@ -332,11 +291,11 @@ public class BattleManager : MonoBehaviour
             damage = 1.0f;
         }
         
-        StartCoroutine(defenseObject.DealDamage(damage, attack.duration));
+        StartCoroutine(defenseObject.DealDamage(damage, attack.timeOffset));
     }
 
     //Use this to recharge attacks
-    private IEnumerator Cooldown(Attack attack)
+    private IEnumerator Cooldown(AttackParameters attack)
     {
         attack.isReady = false;
         yield return new WaitForSeconds(attack.cooldown);
@@ -344,21 +303,87 @@ public class BattleManager : MonoBehaviour
     }
 
     //Use this to start continuous attacks
-    private IEnumerator StartAttack(Attack attack)
+    private IEnumerator StartAttack(AttackParameters attack)
     {
         attack.isRunning = true;
         yield return new WaitForSeconds(attack.duration);
         attack.isRunning = false;
     }
 
-    private void DeactivateShield(PlayerData playerData)
+    public float GetAttackRange(EnemyParameters.EnemyType enemyType, AttackButton attackButton)
+    {
+        if (enemyAttacks[enemyType].ContainsKey(attackButton))
+        {
+            return enemyAttacks[enemyType][attackButton].range;
+        }
+
+        return Mathf.Infinity;
+    }
+
+    public void PlayerUseSword(PlayerData playerData)
+    {
+        List<EnemyController> enemies = DetectTargets<EnemyController>(playerData);
+        foreach (EnemyController enemy in enemies)
+        {
+            if (enemy.IsAlive())
+            {
+                DealDamage(playerData, enemy.enemyParameters);
+            }
+        }
+
+        List<ObjectController> breakables = DetectTargets<ObjectController>(playerData);
+        foreach (ObjectController breakable in breakables)
+        {
+            if (breakable.IsIntact())
+            {
+                DealDamage(playerData, breakable.objectParameters);
+            }
+        }
+    }
+
+    public void PlayerActivateShield(PlayerData playerData)
+    {
+        playerData.defense *= 5;
+        playerData.specialDefense *= 5;
+
+        attack.playerData = playerData;
+        attack.playerEndDelegate = PlayerDeactivateShield;
+
+        StartCoroutine(StartAttack(attack));
+        playerRunningAttacks.Add(attack);
+    }
+
+    public void GuardUseSword(EnemyParameters enemyParameters)
+    {
+        DealDamage(enemyParameters, enemyParameters.playerData);
+    }
+
+    public void GuardUseSpecial(EnemyParameters enemyParameters)
+    {
+        enemyParameters.playerData.isStunned = true;
+        DealDamage(enemyParameters, enemyParameters.playerData);
+
+        attack.playerData = enemyParameters.playerData;
+        attack.playerEndDelegate = DisableStun;
+
+        StartCoroutine(StartAttack(attack));
+        playerRunningAttacks.Add(attack);
+    }
+
+    public void GhostShoot(EnemyParameters enemyParameters)
+    {
+        projectileController = Instantiate(enemyParameters.projectilePrefab, enemyParameters.position, new Quaternion()).GetComponent<ProjectileController>();
+        projectileController.Launch("Enemy", enemyParameters, enemyParameters.playerData, attack, enemyParameters.attackDirection);
+    }
+
+    private void PlayerDeactivateShield(PlayerData playerData)
     {
         playerData.defense /= 5;
         playerData.specialDefense /= 5;
     }
 
-    public float GetAttackRange(EnemyParameters.EnemyType enemyType, AttackButton attackButton)
+    private void DisableStun(IDefenseObject defenseObject)
     {
-        return enemyAttacks[enemyType][attackButton].range;
+        defenseObject.DisableStun();
     }
 }

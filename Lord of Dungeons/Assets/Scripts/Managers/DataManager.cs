@@ -19,9 +19,6 @@ public class DataManager : MonoBehaviour
     private List<NPCParameters> npcs;
 
     [SerializeField]
-    private TemporaryTradingSystem tradingSystem;
-
-    [SerializeField]
     private InventoryManager inventory;
 
     [SerializeField]
@@ -47,10 +44,6 @@ public class DataManager : MonoBehaviour
             npc.playerData = playerData;
         }
 
-        if (tradingSystem != null)
-        {
-            tradingSystem.playerData = playerData;
-        }
         if (inventory != null)
         {
             inventory.playerData = playerData;
