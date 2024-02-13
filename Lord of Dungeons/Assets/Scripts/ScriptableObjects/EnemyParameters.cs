@@ -42,6 +42,7 @@ public class EnemyParameters : ScriptableObject, IAttackObject, IDefenseObject
     public bool isStunned = false;
     public Vector3 position = Vector3.zero;
     public Vector3 attackDirection = Vector3.down;
+    public Transform transform;
 
     //Type
     public EnemyType type = EnemyType.GUARD;

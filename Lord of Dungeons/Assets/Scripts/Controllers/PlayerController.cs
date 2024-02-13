@@ -12,9 +12,6 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
 
     [SerializeField]
-    private Animator shield;
-
-    [SerializeField]
     private Rigidbody2D body;
 
     [SerializeField]
@@ -34,6 +31,7 @@ public class PlayerController : MonoBehaviour
     {
         
         playerData.position = transform.position;
+        playerData.transform = transform;
         animator.runtimeAnimatorController = playerData.animController;
     }
     private void Start()
@@ -104,7 +102,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.RMB))
                 {
-                    SetShield(true);
+                    
                 }
             }
             #endregion
@@ -168,8 +166,6 @@ public class PlayerController : MonoBehaviour
             capsuleCollider.enabled = false;
             body.velocity = Vector3.zero;
 
-            SetShield(false);
-
             alreadyDead = true;
         }
     }
@@ -214,12 +210,6 @@ public class PlayerController : MonoBehaviour
 
     //Animation
     #region
-    //Activate/deactivate shield
-    private void SetShield(bool isActive)
-    {
-        shield.SetBool("shieldActivated", isActive);
-    }
-
     //Change movement direction
     private void ChangeDirection(float angle)
     {

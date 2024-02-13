@@ -20,9 +20,6 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private CapsuleCollider2D capsuleCollider;
 
-    [SerializeField]
-    private GameObject superAttackArea;
-
     private DirectionName directionName = DirectionName.FRONT;
     private Vector3 movementDirection = Vector3.zero;
     private float targetDistance;
@@ -35,6 +32,7 @@ public class EnemyController : MonoBehaviour
         enemyParameters = Instantiate(enemyParametersOriginal);
 
         animator.runtimeAnimatorController = enemyParameters.animController;
+        enemyParameters.transform = transform;
     }
 
     void Update()
@@ -57,7 +55,6 @@ public class EnemyController : MonoBehaviour
                     BattleManager.Instance.EnemyPerformAction(enemyParameters, BattleManager.AttackButton.RMB))
                 {
                     SuperAttack();
-                    StartCoroutine(ShowArea());
                 }
                 else
                 {
@@ -179,14 +176,6 @@ public class EnemyController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.6f);
         Destroy(gameObject);
-    }
-
-    private IEnumerator ShowArea()
-    {
-        yield return new WaitForSeconds(0.7f);
-        superAttackArea.SetActive(true);
-        yield return new WaitForSeconds(0.5f);
-        superAttackArea.SetActive(false);
     }
 
     //Animation

@@ -41,6 +41,7 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     public float colliderRadius = 1.0f;
     public Vector3 position = Vector3.zero;
     public Vector3 attackDirection = Vector3.down;
+    public Transform transform;
     public bool isStunned = false;
 
     //Type
