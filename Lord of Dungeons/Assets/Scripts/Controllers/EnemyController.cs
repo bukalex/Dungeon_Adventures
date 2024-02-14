@@ -25,6 +25,10 @@ public class EnemyController : MonoBehaviour
     private float targetDistance;
     private bool alreadyDead = false;
 
+    private int spriteOrder;
+    private int enemyOrder;
+    private float angle;
+
     public enum DirectionName { FRONT, BACK, LEFT, RIGHT }
 
     void Awake()
@@ -41,6 +45,43 @@ public class EnemyController : MonoBehaviour
         enemyParameters.attackDirection = (enemyParameters.playerData.position - transform.position).normalized;
         enemyParameters.isUsingMana = false;
         enemyParameters.isUsingStamina = false;
+
+        List<SpriteRenderer> renderers = DetectSprites<SpriteRenderer>();
+        foreach (SpriteRenderer renderer in renderers)
+        {
+            if (renderer.sortingLayerName.Equals(spriteRenderer.sortingLayerName))
+            {
+                angle = Vector2.SignedAngle(Vector3.right, renderer.transform.parent.position - transform.position);
+                if (135 >= angle && angle > 45)
+                {
+                    spriteOrder = renderer.sortingOrder;
+                    enemyOrder = spriteRenderer.sortingOrder;
+                    if (spriteOrder > enemyOrder)
+                    {
+                        spriteRenderer.sortingOrder = spriteOrder;
+                        renderer.sortingOrder = enemyOrder;
+                    }
+                    else if (spriteOrder == enemyOrder)
+                    {
+                        spriteRenderer.sortingOrder += 1;
+                    }
+                }
+                else if (-135 <= angle && angle < -45)
+                {
+                    spriteOrder = renderer.sortingOrder;
+                    enemyOrder = spriteRenderer.sortingOrder;
+                    if (spriteOrder < enemyOrder)
+                    {
+                        spriteRenderer.sortingOrder = spriteOrder;
+                        renderer.sortingOrder = enemyOrder;
+                    }
+                    else if (spriteOrder == enemyOrder)
+                    {
+                        renderer.sortingOrder += 1;
+                    }
+                }
+            }
+        }
 
         if (IsAlive() && !enemyParameters.isStunned)
         {
@@ -107,7 +148,6 @@ public class EnemyController : MonoBehaviour
 
             alreadyDead = true;
         }
-
     }
 
     private void Seek()
@@ -176,6 +216,22 @@ public class EnemyController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.6f);
         Destroy(gameObject);
+    }
+
+    private List<T> DetectSprites<T>()
+    {
+        Collider2D[] possibleTargets = Physics2D.OverlapCircleAll(transform.position, enemyParameters.colliderRadius * 2);
+        List<T> targets = new List<T>();
+
+        foreach (Collider2D target in possibleTargets)
+        {
+            if (target.GetComponentInChildren<T>() != null)
+            {
+                targets.Add(target.GetComponentInChildren<T>());
+            }
+        }
+
+        return targets;
     }
 
     //Animation

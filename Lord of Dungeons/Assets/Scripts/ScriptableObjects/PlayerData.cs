@@ -43,6 +43,7 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     public Vector3 attackDirection = Vector3.down;
     public Transform transform;
     public bool isStunned = false;
+    public Dictionary<CharacterType, Dictionary<BattleManager.AttackButton, AttackParameters>> attacks = null;
 
     //Type
     public CharacterType type = CharacterType.WARRIOR;

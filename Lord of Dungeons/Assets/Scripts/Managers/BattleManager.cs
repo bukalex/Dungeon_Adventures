@@ -93,6 +93,23 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    private Dictionary<T, Dictionary<AttackButton, AttackParameters>> CloneDictionary<T>(Dictionary<T, Dictionary<AttackButton, AttackParameters>> originalDictionary)
+    {
+        Dictionary<T, Dictionary<AttackButton, AttackParameters>> copy = new Dictionary<T, Dictionary<AttackButton, AttackParameters>>();
+        
+        foreach (KeyValuePair<T, Dictionary<AttackButton, AttackParameters>> outPair in originalDictionary)
+        {
+            Dictionary<AttackButton, AttackParameters> inCopy = new Dictionary<AttackButton, AttackParameters>();
+            foreach (KeyValuePair<AttackButton, AttackParameters> inPair in outPair.Value)
+            {
+                inCopy.Add(inPair.Key, Instantiate(inPair.Value));
+            }
+            copy.Add(outPair.Key, inCopy);
+        }
+        
+        return copy;
+    }
+
     void Update()
     {
         foreach (AttackParameters runningAttack in playerRunningAttacks)
@@ -152,9 +169,15 @@ public class BattleManager : MonoBehaviour
 
     public bool PlayerPerformAction(PlayerData playerData, AttackButton attackButton)
     {
+        if (playerData.attacks == null)
+        {
+            playerData.attacks = CloneDictionary(playerAttacks);
+        }
+
         if (playerAttacks.ContainsKey(playerData.type) && playerAttacks[playerData.type].ContainsKey(attackButton))
         {
-            attack = playerAttacks[playerData.type][attackButton];
+            attack = playerData.attacks[playerData.type][attackButton];
+            attack.SetAction(playerAttacks[playerData.type][attackButton].playerAction, null);
         }
         else
         {
@@ -188,9 +211,15 @@ public class BattleManager : MonoBehaviour
 
     public bool EnemyPerformAction(EnemyParameters enemyParameters, AttackButton attackButton)
     {
+        if (enemyParameters.attacks == null)
+        {
+            enemyParameters.attacks = CloneDictionary(enemyAttacks);
+        }
+
         if (enemyAttacks.ContainsKey(enemyParameters.type) && enemyAttacks[enemyParameters.type].ContainsKey(attackButton))
         {
-            attack = enemyAttacks[enemyParameters.type][attackButton];
+            attack = enemyParameters.attacks[enemyParameters.type][attackButton];
+            attack.SetAction(null, enemyAttacks[enemyParameters.type][attackButton].enemyAction);
         }
         else
         {
@@ -392,7 +421,7 @@ public class BattleManager : MonoBehaviour
 
     private void GuardUseSword(EnemyParameters enemyParameters)
     {
-        List<PlayerController> players = DetectTargets<PlayerController>(enemyParameters.position, attack.range + enemyParameters.colliderRadius + 0.1f);
+        List<PlayerController> players = DetectTargets<PlayerController>(enemyParameters.position, attack.range + enemyParameters.colliderRadius + 0.25f);
         foreach (PlayerController player in players)
         {
             if (player.GetPlayerData().IsAlive())

@@ -54,6 +54,18 @@ public class AttackParameters : ScriptableObject
         isRunning = false;
     }
 
+    public void SetAction(PlayerAction playerAction, EnemyAction enemyAction)
+    {
+        if (playerAction != null)
+        {
+            this.playerAction = playerAction;
+        }
+        else
+        {
+            this.enemyAction = enemyAction;
+        }
+    }
+
     public delegate void PlayerAction(PlayerData playerData);
     public delegate void EnemyAction(EnemyParameters enemyParameters);
 

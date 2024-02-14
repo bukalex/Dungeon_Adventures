@@ -43,6 +43,7 @@ public class EnemyParameters : ScriptableObject, IAttackObject, IDefenseObject
     public Vector3 position = Vector3.zero;
     public Vector3 attackDirection = Vector3.down;
     public Transform transform;
+    public Dictionary<EnemyType, Dictionary<BattleManager.AttackButton, AttackParameters>> attacks = null;
 
     //Type
     public EnemyType type = EnemyType.GUARD;
