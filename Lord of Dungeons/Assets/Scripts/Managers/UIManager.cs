@@ -10,9 +10,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     public PlayerData playerData;
     [SerializeField]
-    public TMP_Text stats;
-    [SerializeField]
-    private TMP_Text coinCounter;
+    public TMP_Text stats, goldenCoinCounter, silverCoinCounter, copperCoinCounter;
     [SerializeField]
     public GameObject HealthBar;
     [SerializeField]
@@ -40,16 +38,13 @@ public class UIManager : MonoBehaviour
 
     public bool isPaused = false;
 
-     public GameObject[] spawnedEnemies;
+    public GameObject[] spawnedEnemies;
     public GameObject[] enemyHealthBars;
-    [SerializeField] private Canvas enemyUI;
 
     public static UIManager Instance { get; private set; }
 
     private void Awake()
     {
-        //HealthBar.SetMaxHealth(playerData.maxHealth);
-
         if (Instance == null)
         {
             Instance = this;
@@ -60,13 +55,12 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         //Update values
-        displayStats();
+        displayInventoryUI();
         InitializeBars();
 
         //Initializing all enemy health bars
         if(spawnedEnemies != null)
         {
-            //spawnedEnemies = GameObject.FindGameObjectsWithTag("Enemy");
             enemyHealthBars = GameObject.FindGameObjectsWithTag("EnemyHealthBar");
 
             for(int i = 0; i < spawnedEnemies.Length; i++)
@@ -101,17 +95,21 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void displayStats()
+    public void displayInventoryUI()
     {
+        //Display player stats
         string HPstats = "HP: " + playerData.maxHealth + "\n"; 
         string ManaStats = "Mana: " + playerData.maxMana.ToString() + "\n";
         string StaminaStats = "Stamina: " + playerData.maxStamina.ToString() + "\n";
         string DamageStats = "Damage: " + playerData.attack.ToString() + "\n";
         string DefenseStats = "Defense: " + playerData.defense.ToString() + "\n";
         string SpeedStats = "Speed: " + playerData.speed.ToString() + "\n";
-        
-
         stats.text = HPstats + ManaStats + StaminaStats + DamageStats + DefenseStats + SpeedStats;
+
+        //Display coins amount
+        goldenCoinCounter.text = playerData.resources[Item.MaterialType.GoldenCoin].ToString();
+        silverCoinCounter.text = playerData.resources[Item.MaterialType.SilverCoin].ToString();
+        copperCoinCounter.text = playerData.resources[Item.MaterialType.CopperCoin].ToString();
     }
 
     public void traderButtons()
