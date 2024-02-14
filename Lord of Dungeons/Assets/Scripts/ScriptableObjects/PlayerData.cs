@@ -43,6 +43,7 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     public Vector3 attackDirection = Vector3.down;
     public Transform transform;
     public bool isStunned = false;
+    public Dictionary<CharacterType, Dictionary<BattleManager.AttackButton, AttackParameters>> attacks = null;
 
     //Type
     public CharacterType type = CharacterType.WARRIOR;
@@ -181,9 +182,8 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
         return 0;
     }
 
-    public IEnumerator DealDamage(float damage, float offset)
+    public void DealDamage(float damage)
     {
-        yield return new WaitForSeconds(offset);
         health -= damage;
     }
 
