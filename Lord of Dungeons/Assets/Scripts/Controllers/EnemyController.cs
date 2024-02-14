@@ -88,7 +88,7 @@ public class EnemyController : MonoBehaviour
             //Movement and attack
             if (PlayerDetected())
             {
-                ChangeDirection(Vector2.SignedAngle(Vector3.right, enemyParameters.playerData.position - transform.position));
+                ChangeDirection();
 
                 if (enemyParameters.isBoss && 
                     enemyParameters.health <= enemyParameters.maxHealth * 0.5f && 
@@ -180,7 +180,7 @@ public class EnemyController : MonoBehaviour
         Vector2 whiskerDirection = Quaternion.Euler(0, 0, angle) * movementDirection;
         RaycastHit2D hit = Physics2D.Raycast(transform.position, whiskerDirection, enemyParameters.whiskerLength);
         Debug.DrawRay(transform.position, whiskerDirection, Color.red);
-        if (hit.collider != null)
+        if (hit.collider != null && !hit.collider.isTrigger)
         {
             return true;
         }
@@ -237,29 +237,18 @@ public class EnemyController : MonoBehaviour
     //Animation
     #region
     //Change movement direction
-    private void ChangeDirection(float angle)
+    private void ChangeDirection()
     {
-        if (Mathf.Abs(angle) > 135 && directionName != DirectionName.LEFT)
+        animator.SetFloat("Horizontal", enemyParameters.attackDirection.x);
+        animator.SetFloat("Vertical", enemyParameters.attackDirection.y);
+
+        if (Mathf.Abs(Vector2.SignedAngle(Vector3.right, enemyParameters.playerData.position - transform.position)) <= 45)
         {
-            directionName = DirectionName.LEFT;
-            animator.SetTrigger("side");
-            spriteRenderer.flipX = false;
-        }
-        else if (135 >= angle && angle > 45 && directionName != DirectionName.BACK)
-        {
-            directionName = DirectionName.BACK;
-            animator.SetTrigger("back");
-        }
-        else if (-135 <= angle && angle < -45 && directionName != DirectionName.FRONT)
-        {
-            directionName = DirectionName.FRONT;
-            animator.SetTrigger("front");
-        }
-        else if (Mathf.Abs(angle) <= 45 && directionName != DirectionName.RIGHT)
-        {
-            directionName = DirectionName.RIGHT;
-            animator.SetTrigger("side");
             spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
         }
     }
 
