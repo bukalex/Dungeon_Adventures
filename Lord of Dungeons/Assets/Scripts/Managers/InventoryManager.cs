@@ -8,7 +8,6 @@ public class InventoryManager : MonoBehaviour
     public Item[] startItems;
 
     public int maxStackCount = 16;
-    public InventorySlot[] inventorySlots;
     public InventorySlot[] internalInventorySlots;
     public InventorySlot[] toolBar;
     public InventorySlot[] Ability;
@@ -46,77 +45,20 @@ public class InventoryManager : MonoBehaviour
 
     private void InitializeSlots()
     {
-        //Initializing slots for the whole inventory
-        
-        //foreach (InventorySlot slot in inventorySlots)
-        //{
-        //    for (int i = 0; i < inventorySlots.Length; i++)
-        //    {
-        //        
-        //        inventorySlots[i] = UIManager.Instance.inventory.GetComponentInChildren<InventorySlot>();
-        //        
-        //    }
-        //}
-        inventorySlots = UIManager.Instance.inventory.GetComponentsInChildren<InventorySlot>();
 
         //Initializing slots for internal inventory
-        //foreach (InventorySlot slot in internalInventorySlots)
-        //{
-        //    for (int i = 0; i < internalInventorySlots.Length; i++)
-        //    {
-        //       
-        //        internalInventorySlots[i] = UIManager.Instance.internalInventory.GetComponentInChildren<InventorySlot>();
-        //       
-        //    }
-        //}
         internalInventorySlots = UIManager.Instance.inventory.GetComponentsInChildren<InventorySlot>();
         
         //Initializing slots for toolBar
-        //foreach (InventorySlot slot in toolBar)
-        //{
-        //    for (int i = 0; i < toolBar.Length; i++)
-        //    {
-        //        
-        //        toolBar[i] = UIManager.Instance.toolbar.GetComponentInChildren<InventorySlot>();
-        //        
-        //    }
-        //}
         toolBar = UIManager.Instance.toolbar.GetComponentsInChildren<InventorySlot>();
 
         //Initializing slots for selling menu
-        foreach (InventorySlot slot in sellSlots)
-        {
-            for (int i = 0; i < sellSlots.Length; i++)
-            {
-                
-                sellSlots[i] = UIManager.Instance.sellSlots.GetComponentInChildren<InventorySlot>();
-                
-            }
-        }
         sellSlots = UIManager.Instance.sellSlots.GetComponentsInChildren<InventorySlot>();
 
         //Initializing slots for purchase menu
-        foreach (InventorySlot slot in storageSlots)
-        {
-            for (int i = 0; i < storageSlots.Length; i++)
-            {
-               
-                storageSlots[i] = UIManager.Instance.storage.GetComponentInChildren<InventorySlot>();
-               
-            }
-        }
         storageSlots = UIManager.Instance.storage.GetComponentsInChildren<InventorySlot>(); 
 
-        ////Initializing slots for abilities
-        //foreach (InventorySlot slot in Ability)
-        //{
-        //    for (int i = 0; i < Ability.Length; i++)
-        //    {
-        //        {
-        //            Ability[i] = UIManager.Instance.storage.GetComponentInChildren<InventorySlot>();
-        //        }
-        //    }
-        //}
+        //Initializing slots for abilities
     }
 
     private void Update()
@@ -144,9 +86,9 @@ public class InventoryManager : MonoBehaviour
     public bool AddItem(Item item)
     {
         //check if any slot has the same item with count lower than max stack
-        for (int i = 0; i < inventorySlots.Length; i++)
+        for (int i = 0; i < toolBar.Length; i++)
         {
-            InventorySlot slot = inventorySlots[i];
+            InventorySlot slot = toolBar[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
             if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count < maxStackCount && itemInSlot.item.isStackable == true)
             {
@@ -154,17 +96,39 @@ public class InventoryManager : MonoBehaviour
                 itemInSlot.updateCount();
                 return true;
             }
+            for(int j = 0; j < internalInventorySlots.Length; j++)
+            {
+                InventorySlot intertalSlot = internalInventorySlots[i];
+                InventoryItem internalItemInSlot = intertalSlot.GetComponentInChildren<InventoryItem>();
+                if(internalItemInSlot != null && internalItemInSlot.item == item && internalItemInSlot.count < maxStackCount && internalItemInSlot.item.isStackable == true)
+                {
+                    internalItemInSlot.count++;
+                    internalItemInSlot.updateCount();
+                    return true;
+                }
+            }
         }
 
         //Check if any slot has the same item with count lower than max stack
-        for (int i = 0; i < inventorySlots.Length; i++)
+        for (int i = 0; i < toolBar.Length; i++)
         {
-            InventorySlot slot = inventorySlots[i];
+            InventorySlot slot = toolBar[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
             if(itemInSlot == null)
             {
                 spawnNewItem(item, slot);
                 return true;
+            }
+
+            for(int j = 0; j < internalInventorySlots.Length; j++)
+            {
+                InventorySlot internalSlots = internalInventorySlots[j];
+                InventoryItem internalItemInSlot = internalSlots.GetComponentInChildren<InventoryItem>();
+                if(internalItemInSlot != null && internalItemInSlot.count < maxStackCount && internalItemInSlot.item.isStackable == true && internalItemInSlot.item == item)
+                {
+                    spawnNewItem(item, slot);
+                    return true;
+                }
             }
         }
 
@@ -195,7 +159,7 @@ public class InventoryManager : MonoBehaviour
 
     public Item useSelectedItem()
     {
-        InventorySlot slot = inventorySlots[selectedSlot];
+        InventorySlot slot = toolBar[selectedSlot];
         InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
         if (itemInSlot != null) 
         {
