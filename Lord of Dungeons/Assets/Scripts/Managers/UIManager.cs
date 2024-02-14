@@ -40,7 +40,8 @@ public class UIManager : MonoBehaviour
 
     public bool isPaused = false;
 
-    [HideInInspector] public GameObject[] spawnedEnemies;
+     public GameObject[] spawnedEnemies;
+    public GameObject[] enemyHealthBars;
     [SerializeField] private Canvas enemyUI;
 
     public static UIManager Instance { get; private set; }
@@ -67,6 +68,11 @@ public class UIManager : MonoBehaviour
         if(spawnedEnemies != null)
         {
             spawnedEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+            enemyHealthBars = GameObject.FindGameObjectsWithTag("EnemyHealthBar");
+            for(int i = 0; i < spawnedEnemies.Length; i++)
+            {
+
+            }
             InitializeEnemiesHealthBar();
         }
 
@@ -118,11 +124,13 @@ public class UIManager : MonoBehaviour
     {
         foreach (GameObject spawnedEnemy in spawnedEnemies)
         {
-            if (spawnedEnemy != null) Debug.Log("There is an enemt spawned!");
-            EnemyController enemy = spawnedEnemy.GetComponent<EnemyController>();
-            GameObject enemyHealthBar = GameObject.FindGameObjectWithTag("EnemyHealthBar");
-            SetMaxBarValue(enemy.enemyParameters.maxHealth, enemyHealthBar);
-            SetBarValue(enemy.enemyParameters.health, enemyHealthBar);
+            foreach(GameObject enemyHealthBar in enemyHealthBars)
+            {
+                EnemyController enemy = spawnedEnemy.GetComponent<EnemyController>();
+
+                SetMaxBarValue(enemy.enemyParameters.maxHealth, enemyHealthBar);
+                SetBarValue(enemy.enemyParameters.health, enemyHealthBar);
+            }
         }
     }
 
