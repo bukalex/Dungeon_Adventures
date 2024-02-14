@@ -116,8 +116,6 @@ MonoBehaviour:
   spriteRenderer: {fileID: 3111650714437216042}
   body: {fileID: 9203432213145845901}
   capsuleCollider: {fileID: 4106667478172586409}
-  HealthBar: {fileID: 0}
-  superAttackArea: {fileID: 0}
 --- !u!1 &2808034764063338853
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,9 +211,10 @@ GameObject:
   - component: {fileID: 4141671326813006501}
   - component: {fileID: 3111650714437216042}
   - component: {fileID: 4858756477190837903}
-  m_Layer: 0
+  - component: {fileID: 4492657420221914188}
+  m_Layer: 2
   m_Name: Animation
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -308,6 +307,95 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!60 &4492657420221914188
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4915555467428413334}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.6, y: 2.89}
+    newSize: {x: 2.6, y: 2.89}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.13, y: -1.2149999}
+      - {x: -0.02, y: -1.255}
+      - {x: 0.049999997, y: -1.3149999}
+      - {x: 0.11, y: -1.3149999}
+      - {x: 0.19999999, y: -1.285}
+      - {x: 0.19999999, y: -1.165}
+      - {x: 0.31, y: -1.095}
+      - {x: 0.42999998, y: -1.0649999}
+      - {x: 0.48, y: -0.98499995}
+      - {x: 0.52, y: -0.805}
+      - {x: 0.66999996, y: -0.625}
+      - {x: 0.74, y: -0.53499997}
+      - {x: 0.74, y: -0.305}
+      - {x: 0.71, y: -0.13499999}
+      - {x: 0.65999997, y: 0.044999998}
+      - {x: 0.56, y: 0.185}
+      - {x: 0.53, y: 0.445}
+      - {x: 0.5, y: 0.545}
+      - {x: 0.42, y: 0.685}
+      - {x: 0.26, y: 0.835}
+      - {x: 0.12, y: 0.91499996}
+      - {x: 0.03, y: 0.935}
+      - {x: -0.24, y: 0.935}
+      - {x: -0.39, y: 0.885}
+      - {x: -0.51, y: 0.805}
+      - {x: -0.68, y: 0.60499996}
+      - {x: -0.71, y: 0.525}
+      - {x: -0.72999996, y: 0.42499998}
+      - {x: -0.74, y: 0.185}
+      - {x: -0.82, y: 0.065}
+      - {x: -0.85999995, y: -0.105}
+      - {x: -0.89, y: -0.285}
+      - {x: -0.89, y: -0.53499997}
+      - {x: -0.82, y: -0.635}
+      - {x: -0.68, y: -0.705}
+      - {x: -0.62, y: -0.935}
+      - {x: -0.58, y: -0.98499995}
+      - {x: -0.5, y: -0.98499995}
+      - {x: -0.39, y: -1.295}
+      - {x: -0.34, y: -1.3149999}
+      - {x: -0.26, y: -1.3149999}
+      - {x: -0.21, y: -1.2049999}
+      - {x: -0.21, y: -0.945}
+      - {x: -0.17, y: -0.98499995}
+  m_UseDelaunayMesh: 0
 --- !u!1 &7604129697991338290
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,7 +410,7 @@ GameObject:
   - component: {fileID: 4787841853723025714}
   m_Layer: 5
   m_Name: EnemyUI
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

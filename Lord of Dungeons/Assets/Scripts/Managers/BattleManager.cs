@@ -112,6 +112,8 @@ public class BattleManager : MonoBehaviour
                 {
                     runningAttack.playerEndDelegate(runningAttack.playerData);
                 }
+                runningAttack.playerRunningDelegate = null;
+                runningAttack.playerEndDelegate = null;
                 expiredRunningAttacks.Add(runningAttack);
             }
         }
@@ -121,7 +123,7 @@ public class BattleManager : MonoBehaviour
             //Calls functions for attacks that have continuous effect
             if (runningAttack.isRunning)
             {
-                if (runningAttack.playerRunningDelegate != null)
+                if (runningAttack.enemyRunningDelegate != null)
                 {
                     runningAttack.enemyRunningDelegate(runningAttack.enemyParameters);
                 }
@@ -129,10 +131,12 @@ public class BattleManager : MonoBehaviour
             //Calls functions for attacks that have effect upon end of their duration
             else
             {
-                if (runningAttack.playerEndDelegate != null)
+                if (runningAttack.enemyEndDelegate != null)
                 {
                     runningAttack.enemyEndDelegate(runningAttack.enemyParameters);
                 }
+                runningAttack.enemyRunningDelegate = null;
+                runningAttack.enemyEndDelegate = null;
                 expiredRunningAttacks.Add(runningAttack);
             }
         }
@@ -225,17 +229,17 @@ public class BattleManager : MonoBehaviour
 
         foreach (Collider2D target in possibleTargets)
         {
-            if (target.GetComponent<T>() != null)
+            if (target.isTrigger && target.GetComponentInParent<T>() != null)
             {
                 Vector2 targetDirection = target.transform.position - position;
 
                 if (!inSector)
                 {
-                    targets.Add(target.GetComponent<T>());
+                    targets.Add(target.GetComponentInParent<T>());
                 }
                 else if (Vector2.Angle(attackDirection, targetDirection) <= 45)
                 {
-                    targets.Add(target.GetComponent<T>());
+                    targets.Add(target.GetComponentInParent<T>());
                 }
             }
         }
