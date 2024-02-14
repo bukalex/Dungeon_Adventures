@@ -22,7 +22,6 @@ public class PlayerController : MonoBehaviour
     private bool alreadyDead = false;
     private bool isTalkingToNPC = false;
     private bool isLooting = false;
-    private bool isAttacking = false;
 
     private NPCController activeNPC = null;
     private LootableController activeLootable = null;
@@ -46,12 +45,8 @@ public class PlayerController : MonoBehaviour
             //Movement
             #region
             movementDirection = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0).normalized;
-            
-            //Orientation
-            if (DirectionWasChanged())
-            {
-                ChangeDirection(Vector2.SignedAngle(Vector3.right, movementDirection));
-            }
+
+            ChangeDirection();
 
             if (movementDirection.magnitude != 0)
             {
@@ -59,18 +54,12 @@ public class PlayerController : MonoBehaviour
 
                 if (Input.GetKey(KeyCode.LeftShift) && BattleManager.Instance.PlayerPerformShift(playerData))
                 {
-                    if (!isAttacking)
-                    {
-                        Run();
-                    }
+                    Run();
                     body.velocity = movementDirection * playerData.speed * 2;
                 }
                 else
                 {
-                    if (!isAttacking)
-                    {
-                        Walk();
-                    }
+                    Walk();
                     body.velocity = movementDirection * playerData.speed;
                 }
             }
@@ -90,7 +79,6 @@ public class PlayerController : MonoBehaviour
                 {
                     body.velocity = movementDirection * playerData.speed * 0.5f;
                     AttackWithLMB();
-                    isAttacking = true;
                 }
             }
 
@@ -193,18 +181,6 @@ public class PlayerController : MonoBehaviour
         return targets;
     }
 
-    private bool DirectionWasChanged()
-    {
-        return Input.GetKeyDown(KeyCode.W) || 
-            Input.GetKeyDown(KeyCode.A) || 
-            Input.GetKeyDown(KeyCode.S) || 
-            Input.GetKeyDown(KeyCode.D) || 
-            Input.GetKeyUp(KeyCode.W) || 
-            Input.GetKeyUp(KeyCode.A) || 
-            Input.GetKeyUp(KeyCode.S) || 
-            Input.GetKeyUp(KeyCode.D);
-    }
-
     public PlayerData GetPlayerData()
     {
         return playerData;
@@ -213,24 +189,10 @@ public class PlayerController : MonoBehaviour
     //Animation
     #region
     //Change movement direction
-    private void ChangeDirection(float angle)
+    private void ChangeDirection()
     {
-        if (Mathf.Abs(angle) > 135)
-        {
-            animator.SetTrigger("left");
-        }
-        else if (135 >= angle && angle > 45)
-        {
-            animator.SetTrigger("back");
-        }
-        else if (-135 <= angle && angle < -45)
-        {
-            animator.SetTrigger("front");
-        }
-        else if (Mathf.Abs(angle) <= 45)
-        {
-            animator.SetTrigger("right");
-        }
+        animator.SetFloat("Horizontal", playerData.attackDirection.x);
+        animator.SetFloat("Vertical", playerData.attackDirection.y);
     }
 
     //Stop walking and running
