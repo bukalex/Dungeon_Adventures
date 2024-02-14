@@ -67,8 +67,9 @@ public class UIManager : MonoBehaviour
         //Initializing all enemy health bars
         if(spawnedEnemies != null)
         {
-            spawnedEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+            //spawnedEnemies = GameObject.FindGameObjectsWithTag("Enemy");
             enemyHealthBars = GameObject.FindGameObjectsWithTag("EnemyHealthBar");
+
             for(int i = 0; i < spawnedEnemies.Length; i++)
             {
 
@@ -122,15 +123,12 @@ public class UIManager : MonoBehaviour
 
     public void InitializeEnemiesHealthBar()
     {
-        foreach (GameObject spawnedEnemy in spawnedEnemies)
+        foreach (GameObject enemyHealthBar in enemyHealthBars)
         {
-            foreach(GameObject enemyHealthBar in enemyHealthBars)
-            {
-                EnemyController enemy = spawnedEnemy.GetComponent<EnemyController>();
-
-                SetMaxBarValue(enemy.enemyParameters.maxHealth, enemyHealthBar);
-                SetBarValue(enemy.enemyParameters.health, enemyHealthBar);
-            }
+                EnemyController enemy = enemyHealthBar.transform.parent.GetComponentInParent<EnemyController>();
+                
+                enemyHealthBar.GetComponent<Slider>().value = enemy.enemyParameters.health;
+                enemyHealthBar.GetComponent<Slider>().maxValue = enemy.enemyParameters.maxHealth;
         }
     }
 
