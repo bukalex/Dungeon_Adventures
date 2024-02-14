@@ -159,7 +159,7 @@ public class BattleManager : MonoBehaviour
 
         if (attack.isReady && AffordAttack(playerData))
         {
-            attack.playerAction(playerData);
+            StartCoroutine(DelayAttack(attack, playerData, null));
         }
         else
         {
@@ -195,7 +195,7 @@ public class BattleManager : MonoBehaviour
 
         if (attack.isReady && AffordAttack(enemyParameters))
         {
-            attack.enemyAction(enemyParameters);
+            StartCoroutine(DelayAttack(attack, null, enemyParameters));
         }
         else
         {
@@ -218,22 +218,22 @@ public class BattleManager : MonoBehaviour
     }
 
     //Finds specified targets
-    private List<T> DetectTargets<T>(PlayerData playerData, bool inSector = true)
+    private List<T> DetectTargets<T>(Vector3 position, float radius, bool inSector = true, Vector3 attackDirection = new Vector3())
     {
-        Collider2D[] possibleTargets = Physics2D.OverlapCircleAll(playerData.position, attack.range + playerData.colliderRadius);
+        Collider2D[] possibleTargets = Physics2D.OverlapCircleAll(position, radius);
         List<T> targets = new List<T>();
 
         foreach (Collider2D target in possibleTargets)
         {
             if (target.GetComponent<T>() != null)
             {
-                Vector2 targetDirection = target.transform.position - playerData.position;
+                Vector2 targetDirection = target.transform.position - position;
 
                 if (!inSector)
                 {
                     targets.Add(target.GetComponent<T>());
                 }
-                else if (Vector2.Angle(playerData.attackDirection, targetDirection) <= 45)
+                else if (Vector2.Angle(attackDirection, targetDirection) <= 45)
                 {
                     targets.Add(target.GetComponent<T>());
                 }
@@ -293,7 +293,7 @@ public class BattleManager : MonoBehaviour
             damage = 1.0f;
         }
         
-        StartCoroutine(defenseObject.DealDamage(damage, attack.timeOffset));
+        defenseObject.DealDamage(damage);
     }
 
     //Use this to recharge attacks
@@ -312,6 +312,21 @@ public class BattleManager : MonoBehaviour
         attack.isRunning = false;
     }
 
+    //Use this for attack`s time offset
+    private IEnumerator DelayAttack(AttackParameters attack, PlayerData playerData, EnemyParameters enemyParameters)
+    {
+        yield return new WaitForSeconds(attack.timeOffset);
+
+        if (enemyParameters == null)
+        {
+            attack.playerAction(playerData);
+        }
+        else
+        {
+            attack.enemyAction(enemyParameters);
+        }
+    }
+
     public float GetAttackRange(EnemyParameters.EnemyType enemyType, AttackButton attackButton)
     {
         if (enemyAttacks[enemyType].ContainsKey(attackButton))
@@ -324,7 +339,7 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerUseSword(PlayerData playerData)
     {
-        List<EnemyController> enemies = DetectTargets<EnemyController>(playerData);
+        List<EnemyController> enemies = DetectTargets<EnemyController>(playerData.position, attack.range + playerData.colliderRadius);
         foreach (EnemyController enemy in enemies)
         {
             if (enemy.IsAlive())
@@ -333,7 +348,7 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        List<ObjectController> breakables = DetectTargets<ObjectController>(playerData);
+        List<ObjectController> breakables = DetectTargets<ObjectController>(playerData.position, attack.range + playerData.colliderRadius);
         foreach (ObjectController breakable in breakables)
         {
             if (breakable.IsIntact())
@@ -373,7 +388,14 @@ public class BattleManager : MonoBehaviour
 
     private void GuardUseSword(EnemyParameters enemyParameters)
     {
-        DealDamage(enemyParameters, enemyParameters.playerData);
+        List<PlayerController> players = DetectTargets<PlayerController>(enemyParameters.position, attack.range + enemyParameters.colliderRadius + 0.1f);
+        foreach (PlayerController player in players)
+        {
+            if (player.GetPlayerData().IsAlive())
+            {
+                DealDamage(enemyParameters, player.GetPlayerData());
+            }
+        }
     }
 
     private void GuardUseSpecial(EnemyParameters enemyParameters)

@@ -205,6 +205,11 @@ public class PlayerController : MonoBehaviour
             Input.GetKeyUp(KeyCode.D);
     }
 
+    public PlayerData GetPlayerData()
+    {
+        return playerData;
+    }
+
     //Animation
     #region
     //Change movement direction

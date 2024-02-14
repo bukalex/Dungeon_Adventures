@@ -181,9 +181,8 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
         return 0;
     }
 
-    public IEnumerator DealDamage(float damage, float offset)
+    public void DealDamage(float damage)
     {
-        yield return new WaitForSeconds(offset);
         health -= damage;
     }
 
