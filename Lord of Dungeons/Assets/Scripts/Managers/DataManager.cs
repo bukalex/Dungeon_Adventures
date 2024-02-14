@@ -20,7 +20,8 @@ public class DataManager : MonoBehaviour
 
     [SerializeField]
     private InventoryManager inventory;
-
+    [SerializeField]
+    private LevelManager levelManager;
     [SerializeField]
     private UIManager UI;
 

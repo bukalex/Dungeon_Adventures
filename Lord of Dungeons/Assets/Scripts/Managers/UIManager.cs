@@ -9,52 +9,41 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField]
     public PlayerData playerData;
-
     [SerializeField]
     public TMP_Text stats;
-
     [SerializeField]
     private TMP_Text coinCounter;
-    
     [SerializeField]
     public GameObject HealthBar;
-    
     [SerializeField]
     public GameObject ManaBar;
-    
     [SerializeField]
     public GameObject StaminaBar;
-
     [SerializeField]
     public GameObject internalInventory;
-
     [SerializeField]
     public GameObject inventory;
-
     [SerializeField]
     public GameObject toolbar;
 
     //Assign Storage from Store Menu
     [SerializeField]
     public GameObject storage;
-
     [SerializeField]
     public GameObject sellSlots;
-
     [SerializeField] 
     public GameObject chestInventory;
-
     [SerializeField]
     public GameObject[] itemHolders;
-
     [SerializeField]
     private GameObject sellMenu, storeMenu;
 
     public bool isPaused = false;
 
-    public static UIManager Instance { get; private set; }
+    [HideInInspector] public GameObject[] spawnedEnemies;
+    [SerializeField] private Canvas enemyUI;
 
-    public enum UIType { INVENTORY, HEALTHBAR}
+    public static UIManager Instance { get; private set; }
 
     private void Awake()
     {
@@ -74,6 +63,12 @@ public class UIManager : MonoBehaviour
         displayStats();
         InitializeBars();
 
+        //Initializing all enemy health bars
+        if(spawnedEnemies != null)
+        {
+            spawnedEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+            InitializeEnemiesHealthBar();
+        }
 
         //Open inventory
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -117,6 +112,18 @@ public class UIManager : MonoBehaviour
     {
         sellMenu.SetActive(!sellMenu.activeSelf);
         storeMenu.SetActive(!storeMenu.activeSelf);
+    }
+
+    public void InitializeEnemiesHealthBar()
+    {
+        foreach (GameObject spawnedEnemy in spawnedEnemies)
+        {
+            if (spawnedEnemy != null) Debug.Log("There is an enemt spawned!");
+            EnemyController enemy = spawnedEnemy.GetComponent<EnemyController>();
+            GameObject enemyHealthBar = GameObject.FindGameObjectWithTag("EnemyHealthBar");
+            SetMaxBarValue(enemy.enemyParameters.maxHealth, enemyHealthBar);
+            SetBarValue(enemy.enemyParameters.health, enemyHealthBar);
+        }
     }
 
     public void InitializeBars()
