@@ -178,11 +178,14 @@ public class EnemyController : MonoBehaviour
     private bool CastWhisker(float angle)
     {
         Vector2 whiskerDirection = Quaternion.Euler(0, 0, angle) * movementDirection;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, whiskerDirection, enemyParameters.whiskerLength);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, whiskerDirection, enemyParameters.whiskerLength);
         Debug.DrawRay(transform.position, whiskerDirection, Color.red);
-        if (hit.collider != null && !hit.collider.isTrigger)
+        foreach (RaycastHit2D hit in hits)
         {
-            return true;
+            if (hit.collider != null && !hit.collider.isTrigger && hit.collider.gameObject != gameObject && hit.transform.tag != "Player")
+            {
+                return true;
+            }
         }
 
         return false;
