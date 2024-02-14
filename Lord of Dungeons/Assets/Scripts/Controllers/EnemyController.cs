@@ -20,7 +20,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private CapsuleCollider2D capsuleCollider;
 
-    private DirectionName directionName = DirectionName.FRONT;
+    private Vector3 lastPlayerPosition;
     private Vector3 movementDirection = Vector3.zero;
     private float targetDistance;
     private bool alreadyDead = false;
@@ -35,6 +35,7 @@ public class EnemyController : MonoBehaviour
     {
         enemyParameters = Instantiate(enemyParametersOriginal);
 
+        lastPlayerPosition = transform.position;
         animator.runtimeAnimatorController = enemyParameters.animController;
         enemyParameters.transform = transform;
     }
@@ -89,6 +90,7 @@ public class EnemyController : MonoBehaviour
             if (PlayerDetected())
             {
                 ChangeDirection();
+                lastPlayerPosition = enemyParameters.playerData.position;
 
                 if (enemyParameters.isBoss && 
                     enemyParameters.health <= enemyParameters.maxHealth * 0.5f && 
@@ -126,10 +128,16 @@ public class EnemyController : MonoBehaviour
                     }
                 }
             }
-            else
+            else if ((lastPlayerPosition - transform.position).magnitude <= 0.1)
             {
                 Stop();
                 body.velocity = Vector3.zero;
+            }
+            else
+            {
+                Run();
+                Seek();
+                AvoidObstacles();
             }
 
             //Stats restore
@@ -152,7 +160,7 @@ public class EnemyController : MonoBehaviour
 
     private void Seek()
     {
-        movementDirection = (enemyParameters.playerData.position - transform.position).normalized;
+        movementDirection = (lastPlayerPosition - transform.position).normalized;
     }
 
     private void Flee()
@@ -193,7 +201,21 @@ public class EnemyController : MonoBehaviour
 
     private bool PlayerDetected()
     {
-        targetDistance = (enemyParameters.playerData.position - transform.position).magnitude - enemyParameters.playerData.colliderRadius - enemyParameters.colliderRadius;
+        targetDistance = (enemyParameters.playerData.position - transform.position).magnitude - 
+            enemyParameters.playerData.colliderRadius - 
+            enemyParameters.colliderRadius;
+
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, 
+            (enemyParameters.playerData.position - transform.position).normalized, 
+            (enemyParameters.playerData.position - transform.position).magnitude);
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.collider != null && !hit.collider.isTrigger && hit.collider.gameObject != gameObject && hit.transform.tag != "Player")
+            {
+                return false;
+            }
+        }
+
         return targetDistance <= enemyParameters.detectionRadius && enemyParameters.playerData.IsAlive();
     }
 
