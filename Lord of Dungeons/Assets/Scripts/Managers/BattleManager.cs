@@ -372,11 +372,14 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerUseSword(PlayerData playerData)
     {
+        bool shakeCamera = false;
+
         List<EnemyController> enemies = DetectTargets<EnemyController>(playerData.position, attack.range + playerData.colliderRadius);
         foreach (EnemyController enemy in enemies)
         {
             if (enemy.IsAlive())
             {
+                shakeCamera = true;
                 DealDamage(playerData, enemy.enemyParameters);
             }
         }
@@ -386,8 +389,14 @@ public class BattleManager : MonoBehaviour
         {
             if (breakable.IsIntact())
             {
+                shakeCamera = true;
                 DealDamage(playerData, breakable.objectParameters);
             }
+        }
+
+        if (shakeCamera)
+        {
+            Camera.main.GetComponent<Animator>().SetTrigger("shake");
         }
     }
 
