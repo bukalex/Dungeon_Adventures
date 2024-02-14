@@ -75,9 +75,9 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     {
         //Set resources
         resources.Clear();
-        resources.Add(Item.MaterialType.Coin, 0);
-        resources.Add(Item.MaterialType.Iron, 0);
-        resources.Add(Item.MaterialType.Rock, 0);
+        resources.Add(Item.MaterialType.GoldenCoin, 0);
+        resources.Add(Item.MaterialType.SilverCoin, 0);
+        resources.Add(Item.MaterialType.CopperCoin, 0);
     }
 
     public bool IsAlive()

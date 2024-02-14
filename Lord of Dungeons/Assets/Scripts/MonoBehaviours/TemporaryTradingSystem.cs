@@ -76,12 +76,12 @@ public class TemporaryTradingSystem : MonoBehaviour
     public void PickUpItem(int id)
     {
 
-        if (items2Pickup[id].price <= playerData.resources[Item.MaterialType.Coin])
-        {
-            InventoryManager.Instance.AddItem(items2Pickup[id]);
-
-            playerData.resources[Item.MaterialType.Coin] -= items2Pickup[id].price;
-        }
+        //if (items2Pickup[id].price <= playerData.resources[Item.MaterialType.Coin])
+        //{
+        //   //InventoryManager.Instance.AddItem(items2Pickup[id]);
+        //   //
+        //   //playerData.resources[Item.MaterialType.Coin] -= items2Pickup[id].price;
+        //}
     }
 
     public void sellItems()
@@ -98,7 +98,7 @@ public class TemporaryTradingSystem : MonoBehaviour
             }
         }
 
-        playerData.resources[Item.MaterialType.Coin] += coinsFromSale;
+        //playerData.resources[Item.MaterialType.Coin] += coinsFromSale;
     }
 
     public void estimateSale()

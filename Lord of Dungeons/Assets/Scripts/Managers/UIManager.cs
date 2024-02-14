@@ -60,7 +60,6 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         //Update values
-        coinCounter.text = playerData.resources[Item.MaterialType.Coin].ToString();
         displayStats();
         InitializeBars();
 

@@ -33,5 +33,5 @@ public class Item : ScriptableObject
     public RuntimeAnimatorController animController;
 
     public enum ItemType { Poison, Material, Gear, Weapons}
-    public enum MaterialType { Coin, Iron, Rock }
+    public enum MaterialType { GoldenCoin, SilverCoin, CopperCoin }
 }
