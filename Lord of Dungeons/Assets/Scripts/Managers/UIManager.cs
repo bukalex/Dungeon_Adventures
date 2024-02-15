@@ -24,6 +24,10 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     public GameObject toolbar;
 
+    //UI to open on a button
+    [SerializeField]
+    public GameObject InventorySlots, EquipmentSection;
+
     //Assign Storage from Store Menu
     [SerializeField]
     public GameObject storage;
@@ -74,11 +78,13 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             Debug.Log("Button TAB was pressed!");
-            inventory.SetActive(true);
+            InventorySlots.SetActive(true);
+            EquipmentSection.SetActive(true);
         }
         else if (Input.GetKeyUp(KeyCode.Tab))
         {
-            inventory.SetActive(false);
+            InventorySlots.SetActive(false);
+            EquipmentSection.SetActive(false);
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))

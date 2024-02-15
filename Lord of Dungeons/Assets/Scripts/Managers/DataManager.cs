@@ -22,7 +22,7 @@ public class DataManager : MonoBehaviour
     private InventoryManager inventory;
     [SerializeField]
     private LevelManager levelManager;
-    [SerializeField]
+    [HideInInspector]
     private UIManager UI;
 
     void Awake()
