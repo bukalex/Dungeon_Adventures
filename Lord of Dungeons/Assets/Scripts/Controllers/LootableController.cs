@@ -37,7 +37,8 @@ public class LootableController : MonoBehaviour
         {
             beingChecked = isLooted;
             chestInventory.SetActive(isLooted);
-            Debug.Log("Inventory should open.");
+            UIManager.Instance.inventory.SetActive(isLooted);
+            Debug.Log("Inventory chest should open.");
         }
         Open();
         beingChecked = false;
