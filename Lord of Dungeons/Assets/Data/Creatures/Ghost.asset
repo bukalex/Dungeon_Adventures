@@ -34,8 +34,11 @@ MonoBehaviour:
   playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
   colliderRadius: 0.4
   detectionRadius: 8
+  isBoss: 0
+  isStunned: 0
   position: {x: 0, y: 0, z: 0}
   attackDirection: {x: 0, y: -1, z: 0}
+  transform: {fileID: 0}
   type: 1
-  animController: {fileID: 9100000, guid: 37b36fa3a44e4a34db84f9bed843fd2d, type: 2}
+  animController: {fileID: 9100000, guid: 5f21ab75090f46a46b9dfaed7e803263, type: 2}
   projectilePrefab: {fileID: 4108418502657585399, guid: 4845562930ef995448a1503e38c4129b, type: 3}

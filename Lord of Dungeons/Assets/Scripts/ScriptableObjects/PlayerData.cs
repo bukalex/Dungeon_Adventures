@@ -21,6 +21,8 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     public float mana = 50.0f;
     public float stamina = 50.0f;
     public float speed = 0.75f;
+    public float sprintFactor = 1.5f;
+    public float slowWalkFactor = 0.75f;
 
     public float attack = 3.0f;
     public float specialAttack = 3.0f;

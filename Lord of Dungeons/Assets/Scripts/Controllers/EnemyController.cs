@@ -20,7 +20,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private CapsuleCollider2D capsuleCollider;
 
-    private DirectionName directionName = DirectionName.FRONT;
+    private Vector3 lastPlayerPosition;
     private Vector3 movementDirection = Vector3.zero;
     private float targetDistance;
     private bool alreadyDead = false;
@@ -35,6 +35,7 @@ public class EnemyController : MonoBehaviour
     {
         enemyParameters = Instantiate(enemyParametersOriginal);
 
+        lastPlayerPosition = transform.position;
         animator.runtimeAnimatorController = enemyParameters.animController;
         enemyParameters.transform = transform;
     }
@@ -88,7 +89,8 @@ public class EnemyController : MonoBehaviour
             //Movement and attack
             if (PlayerDetected())
             {
-                ChangeDirection(Vector2.SignedAngle(Vector3.right, enemyParameters.playerData.position - transform.position));
+                ChangeDirection();
+                lastPlayerPosition = enemyParameters.playerData.position;
 
                 if (enemyParameters.isBoss && 
                     enemyParameters.health <= enemyParameters.maxHealth * 0.5f && 
@@ -97,7 +99,7 @@ public class EnemyController : MonoBehaviour
                 {
                     SuperAttack();
                 }
-                else
+                else if (!enemyParameters.isAttacking)
                 {
                     if (targetDistance > BattleManager.Instance.GetAttackRange(enemyParameters.type, BattleManager.AttackButton.LMB))
                     {
@@ -126,10 +128,16 @@ public class EnemyController : MonoBehaviour
                     }
                 }
             }
-            else
+            else if ((lastPlayerPosition - transform.position).magnitude <= 0.1)
             {
                 Stop();
                 body.velocity = Vector3.zero;
+            }
+            else
+            {
+                Run();
+                Seek();
+                AvoidObstacles();
             }
 
             //Stats restore
@@ -152,7 +160,7 @@ public class EnemyController : MonoBehaviour
 
     private void Seek()
     {
-        movementDirection = (enemyParameters.playerData.position - transform.position).normalized;
+        movementDirection = (lastPlayerPosition - transform.position).normalized;
     }
 
     private void Flee()
@@ -178,11 +186,14 @@ public class EnemyController : MonoBehaviour
     private bool CastWhisker(float angle)
     {
         Vector2 whiskerDirection = Quaternion.Euler(0, 0, angle) * movementDirection;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, whiskerDirection, enemyParameters.whiskerLength);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, whiskerDirection, enemyParameters.whiskerLength);
         Debug.DrawRay(transform.position, whiskerDirection, Color.red);
-        if (hit.collider != null)
+        foreach (RaycastHit2D hit in hits)
         {
-            return true;
+            if (hit.collider != null && !hit.collider.isTrigger && hit.collider.gameObject != gameObject && hit.transform.tag != "Player")
+            {
+                return true;
+            }
         }
 
         return false;
@@ -190,7 +201,21 @@ public class EnemyController : MonoBehaviour
 
     private bool PlayerDetected()
     {
-        targetDistance = (enemyParameters.playerData.position - transform.position).magnitude - enemyParameters.playerData.colliderRadius - enemyParameters.colliderRadius;
+        targetDistance = (enemyParameters.playerData.position - transform.position).magnitude - 
+            enemyParameters.playerData.colliderRadius - 
+            enemyParameters.colliderRadius;
+
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, 
+            (enemyParameters.playerData.position - transform.position).normalized, 
+            (enemyParameters.playerData.position - transform.position).magnitude);
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.collider != null && !hit.collider.isTrigger && hit.collider.gameObject != gameObject && hit.transform.tag != "Player")
+            {
+                return false;
+            }
+        }
+
         return targetDistance <= enemyParameters.detectionRadius && enemyParameters.playerData.IsAlive();
     }
 
@@ -237,29 +262,18 @@ public class EnemyController : MonoBehaviour
     //Animation
     #region
     //Change movement direction
-    private void ChangeDirection(float angle)
+    private void ChangeDirection()
     {
-        if (Mathf.Abs(angle) > 135 && directionName != DirectionName.LEFT)
+        animator.SetFloat("Horizontal", enemyParameters.attackDirection.x);
+        animator.SetFloat("Vertical", enemyParameters.attackDirection.y);
+
+        if (Mathf.Abs(Vector2.SignedAngle(Vector3.right, enemyParameters.playerData.position - transform.position)) <= 45)
         {
-            directionName = DirectionName.LEFT;
-            animator.SetTrigger("side");
-            spriteRenderer.flipX = false;
-        }
-        else if (135 >= angle && angle > 45 && directionName != DirectionName.BACK)
-        {
-            directionName = DirectionName.BACK;
-            animator.SetTrigger("back");
-        }
-        else if (-135 <= angle && angle < -45 && directionName != DirectionName.FRONT)
-        {
-            directionName = DirectionName.FRONT;
-            animator.SetTrigger("front");
-        }
-        else if (Mathf.Abs(angle) <= 45 && directionName != DirectionName.RIGHT)
-        {
-            directionName = DirectionName.RIGHT;
-            animator.SetTrigger("side");
             spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
         }
     }
 
