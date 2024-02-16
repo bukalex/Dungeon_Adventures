@@ -99,7 +99,7 @@ public class EnemyController : MonoBehaviour
                 {
                     SuperAttack();
                 }
-                else
+                else if (!enemyParameters.isAttacking)
                 {
                     if (targetDistance > BattleManager.Instance.GetAttackRange(enemyParameters.type, BattleManager.AttackButton.LMB))
                     {

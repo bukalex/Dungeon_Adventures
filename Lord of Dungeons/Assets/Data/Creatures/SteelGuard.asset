@@ -18,7 +18,7 @@ MonoBehaviour:
   health: 100
   mana: 0
   stamina: 100
-  speed: 1.2
+  speed: 2
   attack: 6
   specialAttack: 3
   defense: 2
@@ -36,6 +36,7 @@ MonoBehaviour:
   detectionRadius: 6
   isBoss: 0
   isStunned: 0
+  isAttacking: 0
   position: {x: 0, y: 0, z: 0}
   attackDirection: {x: 0, y: -1, z: 0}
   transform: {fileID: 0}

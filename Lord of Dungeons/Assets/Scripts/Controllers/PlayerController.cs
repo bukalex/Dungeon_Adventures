@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
@@ -22,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private bool alreadyDead = false;
     private bool isTalkingToNPC = false;
     private bool isLooting = false;
+    private bool isGoingBackward = false;
 
     private NPCController activeNPC = null;
     private LootableController activeLootable = null;
@@ -46,16 +46,28 @@ public class PlayerController : MonoBehaviour
             #region
             movementDirection = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0).normalized;
 
-            ChangeDirection();
+            if (!isGoingBackward)
+            {
+                ChangeDirection();
+            }
 
             if (movementDirection.magnitude != 0)
             {
                 playerData.attackDirection = movementDirection;
+                isGoingBackward = false;
 
                 if (Input.GetKey(KeyCode.LeftShift) && BattleManager.Instance.PlayerPerformShift(playerData))
                 {
                     Run();
                     body.velocity = movementDirection * playerData.speed * playerData.sprintFactor;
+                }
+                else if (Input.GetKey(KeyCode.LeftControl))
+                {
+                    Walk();
+                    body.velocity = movementDirection * playerData.speed * playerData.slowWalkFactor;
+
+                    playerData.attackDirection = -movementDirection;
+                    isGoingBackward = true;
                 }
                 else
                 {
@@ -73,7 +85,7 @@ public class PlayerController : MonoBehaviour
             //Attacks
             #region
             //Left Mouse Button
-            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+            if (Input.GetMouseButton(0))
             {
                 if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.LMB))
                 {
@@ -83,7 +95,7 @@ public class PlayerController : MonoBehaviour
             }
 
             //Right Mouse Button
-            if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
+            if (Input.GetMouseButtonDown(1))
             {
                 if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.RMB))
                 {

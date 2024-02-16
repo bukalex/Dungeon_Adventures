@@ -40,6 +40,7 @@ public class EnemyParameters : ScriptableObject, IAttackObject, IDefenseObject
     public float detectionRadius = 3.5f;
     public bool isBoss = false;
     public bool isStunned = false;
+    public bool isAttacking = false;
     public Vector3 position = Vector3.zero;
     public Vector3 attackDirection = Vector3.down;
     public Transform transform;

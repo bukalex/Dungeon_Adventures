@@ -246,6 +246,7 @@ public class BattleManager : MonoBehaviour
 
         if (attack.isReady && AffordAttack(enemyParameters, attack))
         {
+            enemyParameters.isAttacking = true;
             StartCoroutine(DelayAttack(attack, null, enemyParameters));
         }
         else
@@ -386,6 +387,7 @@ public class BattleManager : MonoBehaviour
         else
         {
             attack.enemyAction(enemyParameters, attack);
+            enemyParameters.isAttacking = false;
         }
     }
 
@@ -397,6 +399,11 @@ public class BattleManager : MonoBehaviour
         }
 
         return Mathf.Infinity;
+    }
+
+    public bool AssingAbility(AttackParameters attack, AttackButton attackButton)
+    {
+        return true;
     }
 
     private void PlayerUseSword(PlayerData playerData, AttackParameters attack)
