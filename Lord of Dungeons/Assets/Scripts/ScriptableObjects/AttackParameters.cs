@@ -68,8 +68,8 @@ public class AttackParameters : ScriptableObject
         }
     }
 
-    public delegate void PlayerAction(PlayerData playerData);
-    public delegate void EnemyAction(EnemyParameters enemyParameters);
+    public delegate void PlayerAction(PlayerData playerData, AttackParameters attack);
+    public delegate void EnemyAction(EnemyParameters enemyParameters, AttackParameters attack);
 
     public delegate void PlayerRunningDelegate(PlayerData playerData);
     public delegate void PlayerEndDelegate(PlayerData playerData);
