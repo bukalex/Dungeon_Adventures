@@ -200,5 +200,10 @@ public class InventoryManager : MonoBehaviour
         return null;
     }
 
+    public Ability useSelectedAbility()
+    {
+        return null;
+    }
+
 }
 

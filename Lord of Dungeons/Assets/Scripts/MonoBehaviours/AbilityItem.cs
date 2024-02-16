@@ -12,7 +12,7 @@ public class AbilityItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     [HideInInspector]
     public Image image;
-    [HideInInspector]
+    [SerializeField]
     public Transform parentAfterDrag;
 
     public void InitializeAbility(Ability newAbility)
