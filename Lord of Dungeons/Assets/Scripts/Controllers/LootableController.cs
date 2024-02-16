@@ -9,7 +9,7 @@ public class LootableController : MonoBehaviour
     private LootableParameters lootableParameters;
 
     [SerializeField]
-    private GameObject chestInventory;
+    public GameObject chestInventory;
 
     [SerializeField]
     private Animator animator;

@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     public GameObject inventory;
     [SerializeField]
-    public GameObject toolbar;
+    public GameObject toolbar, abilitybar;
 
     //UI to open on a button
     [SerializeField]
@@ -33,12 +33,16 @@ public class UIManager : MonoBehaviour
     public GameObject storage;
     [SerializeField]
     public GameObject sellSlots;
-    [SerializeField] 
-    public GameObject chestInventory;
     [SerializeField]
     public GameObject[] itemHolders;
     [SerializeField]
     private GameObject sellMenu, storeMenu;
+
+    //Chest UI
+    [SerializeField] private GameObject ChestUI;
+    [SerializeField] private GameObject[] ChestUIs;
+    [SerializeField] private GameObject[] Chests;
+    [SerializeField] private Canvas playerCanvas;
 
     public bool isPaused = false;
 
@@ -58,6 +62,10 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
+        //Initialize chests UI
+        //ChestUIs = GameObject.FindGameObjectsWithTag("ChestUI");
+        
+        
         //Update values
         displayInventoryUI();
         InitializeBars();
@@ -66,13 +74,11 @@ public class UIManager : MonoBehaviour
         if(spawnedEnemies != null)
         {
             enemyHealthBars = GameObject.FindGameObjectsWithTag("EnemyHealthBar");
-
-            for(int i = 0; i < spawnedEnemies.Length; i++)
-            {
-
-            }
             InitializeEnemiesHealthBar();
         }
+
+        
+
 
         //Open inventory
         if (Input.GetKeyDown(KeyCode.Tab))

@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 6137473022038366186}
   - component: {fileID: 1612625396945822933}
   - component: {fileID: 1504143241945863097}
+  - component: {fileID: 126808614434087694}
   m_Layer: 5
   m_Name: AbilityItem
   m_TagString: Untagged
@@ -246,7 +247,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7e59111f6b3dcf441acc10bc4b38ed04, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -256,3 +257,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &126808614434087694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6450146266720545140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0be805d4a59c844488fe202184094e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ability: {fileID: 0}
+  image: {fileID: 0}
+  parentAfterDrag: {fileID: 0}

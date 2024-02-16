@@ -6,14 +6,15 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public Item[] startItems;
+    public Ability[] startAbilities;
 
     public int maxStackCount = 16;
     public InventorySlot[] internalInventorySlots;
     public InventorySlot[] toolBar;
-    public InventorySlot[] Ability;
     public InventorySlot[] sellSlots;
     public InventorySlot[] storageSlots;
-    public GameObject inventoryItemPrefab;
+    public AbilitySlot[] abilityBar;
+    public GameObject inventoryItemPrefab, abilityItemPrefab;
     public PlayerData playerData;
 
 
@@ -37,15 +38,16 @@ public class InventoryManager : MonoBehaviour
     private void Start()
     {
         InitializeSlots();
+
         foreach(var item in startItems)
-        {
             AddItem(item);
-        }
+
+        foreach(var ability in startAbilities)
+            AddAbility(ability);
     }
 
     private void InitializeSlots()
     {
-
         //Initializing slots for internal inventory
         internalInventorySlots = UIManager.Instance.inventory.GetComponentsInChildren<InventorySlot>();
         
@@ -59,8 +61,8 @@ public class InventoryManager : MonoBehaviour
         storageSlots = UIManager.Instance.storage.GetComponentsInChildren<InventorySlot>(); 
 
         //Initializing slots for abilities
+        abilityBar = UIManager.Instance.abilitybar.GetComponentsInChildren<AbilitySlot>();
     }
-
     private void Update()
     {
         if (Input.anyKeyDown)
@@ -82,7 +84,6 @@ public class InventoryManager : MonoBehaviour
             useSelectedItem();
         }
     }
-
     public bool AddItem(Item item)
     {
         //check if any slot has the same item with count lower than max stack
@@ -108,8 +109,7 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
-
-        //Check if any slot has the same item with count lower than max stack
+        //Check if any slot has the same item
         for (int i = 0; i < toolBar.Length; i++)
         {
             InventorySlot slot = toolBar[i];
@@ -124,7 +124,7 @@ public class InventoryManager : MonoBehaviour
             {
                 InventorySlot internalSlots = internalInventorySlots[j];
                 InventoryItem internalItemInSlot = internalSlots.GetComponentInChildren<InventoryItem>();
-                if(internalItemInSlot != null && internalItemInSlot.count < maxStackCount && internalItemInSlot.item.isStackable == true && internalItemInSlot.item == item)
+                if(internalItemInSlot == null)
                 {
                     spawnNewItem(item, slot);
                     return true;
@@ -134,14 +134,33 @@ public class InventoryManager : MonoBehaviour
 
         return false;
     }
-    
+
+    public bool AddAbility(Ability ability)
+    {
+        for(int i = 0; i  < abilityBar.Length; i++)
+        {
+            AbilitySlot abilitySlot = abilityBar[i];
+            AbilityItem abilityInSlot = abilitySlot.GetComponentInChildren<AbilityItem>();
+            if(abilityInSlot == null)
+            {
+                spawnNewAbility(ability, abilitySlot);
+                return true;
+            }
+        }
+        return false;
+    }
     public void spawnNewItem(Item item, InventorySlot slot)
     {
         GameObject newItemGo = Instantiate(inventoryItemPrefab, slot.transform);
         InventoryItem inventoryItem = newItemGo.GetComponent<InventoryItem>();
         inventoryItem.InitializeItem(item);
     }
-
+    public void spawnNewAbility(Ability ability, AbilitySlot slot)
+    {
+        GameObject newAbilityGo = Instantiate(abilityItemPrefab, slot.transform);
+        AbilityItem abilityItem = newAbilityGo.GetComponent<AbilityItem>();
+        abilityItem.InitializeAbility(ability); 
+    }
     public void itemIsUsed(Item item)
     {
         if (item.isUsable == true)
@@ -156,7 +175,6 @@ public class InventoryManager : MonoBehaviour
             playerData.health -= item.addStamina;
         }
     }
-
     public Item useSelectedItem()
     {
         InventorySlot slot = toolBar[selectedSlot];
