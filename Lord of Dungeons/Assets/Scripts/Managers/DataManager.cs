@@ -37,7 +37,7 @@ public class DataManager : MonoBehaviour
 
         foreach (Item item in items)
         {
-            item.playerData = playerData;
+            item.playerData = playerData;   
         }
 
         foreach (NPCParameters npc in npcs)

@@ -40,7 +40,7 @@ public class InventoryManager : MonoBehaviour
         InitializeSlots();
 
         foreach(var item in startItems)
-            AddItem(item);
+            //AddItem(item);
 
         foreach(var ability in startAbilities)
             AddAbility(ability);
@@ -84,12 +84,12 @@ public class InventoryManager : MonoBehaviour
             useSelectedItem();
         }
     }
-    public bool AddItem(Item item)
+    public bool AddItem(Item item, InventorySlot[] InventoryType1, InventorySlot[] InventoryType2)
     {
         //check if any slot has the same item with count lower than max stack
-        for (int i = 0; i < toolBar.Length; i++)
+        for (int i = 0; i < InventoryType1.Length; i++)
         {
-            InventorySlot slot = toolBar[i];
+            InventorySlot slot = InventoryType1[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
             if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count < maxStackCount && itemInSlot.item.isStackable == true)
             {
@@ -97,7 +97,7 @@ public class InventoryManager : MonoBehaviour
                 itemInSlot.updateCount();
                 return true;
             }
-            for(int j = 0; j < internalInventorySlots.Length; j++)
+            for(int j = 0; j < InventoryType2.Length; j++)
             {
                 InventorySlot intertalSlot = internalInventorySlots[i];
                 InventoryItem internalItemInSlot = intertalSlot.GetComponentInChildren<InventoryItem>();
@@ -166,13 +166,7 @@ public class InventoryManager : MonoBehaviour
         if (item.isUsable == true)
         {
             playerData.health += item.addHP;
-            playerData.speed += item.addSPD;
-            if (playerData.speed ==playerData.speed + item.addSPD)
-            {
-                new WaitForSeconds(item.cooldown);
-                playerData.speed -= item.addSPD;
-            }
-            playerData.health -= item.addStamina;
+            playerData.speed += item.addSPD;    
         }
     }
     public Item useSelectedItem()

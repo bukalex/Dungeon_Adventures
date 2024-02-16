@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ed05b4d375b5d24db9207e8e55202cb, type: 3}
-  m_Name: MediumHpPotion
+  m_Name: MediumMpPotion
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
-  name: Medium Health Potion
+  name: Medium Mana Potion
   description: 
   unitsPerStack: 16
   itemType: 0
   materialType: 0
-  addHP: 85
-  addMP: 0
+  addHP: 0
+  addMP: 20
   addSPD: 0
   addStamina: 0
   restoreHP: 0
@@ -32,10 +32,10 @@ MonoBehaviour:
   ability: {fileID: 0}
   items: []
   GoldenCoin: 0
-  SilverCoin: 25
-  CopperCoin: 10
+  SilverCoin: 39
+  CopperCoin: 99
   GoldenCoins: 0
-  SilverCoins: 5
+  SilverCoins: 0
   CopperCoins: 0
   isStackable: 1
   isUsable: 1
@@ -43,5 +43,5 @@ MonoBehaviour:
   isPurchasable: 0
   isCraftMaterial: 0
   isUpgradeMaterial: 0
-  image: {fileID: -991463193, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
+  image: {fileID: -1703672720, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
   animController: {fileID: 0}
