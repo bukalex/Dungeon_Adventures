@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static BattleManager;
 
 public class BattleManager : MonoBehaviour
 {
@@ -204,9 +205,21 @@ public class BattleManager : MonoBehaviour
     //Performs an attack for Shift
     public bool PlayerPerformShift(PlayerData playerData)
     {
+        if (playerData.attacks == null)
+        {
+            playerData.attacks = CloneDictionary(playerAttacks);
+        }
+
         //Run
-        attack = playerAttacks[playerData.type][AttackButton.SHIFT];
-        return AffordAttack(playerData, true);
+        if (playerAttacks.ContainsKey(playerData.type))
+        {
+            attack = playerData.attacks[playerData.type][AttackButton.SHIFT];
+            return AffordAttack(playerData, true);
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public bool EnemyPerformAction(EnemyParameters enemyParameters, AttackButton attackButton)
@@ -251,7 +264,7 @@ public class BattleManager : MonoBehaviour
     }
 
     //Finds specified targets
-    private List<T> DetectTargets<T>(Vector3 position, float radius, bool inSector = true, Vector3 attackDirection = new Vector3())
+    private List<T> DetectTargets<T>(Vector3 position, float radius, Vector3 attackDirection, bool inSector = true)
     {
         Collider2D[] possibleTargets = Physics2D.OverlapCircleAll(position, radius);
         List<T> targets = new List<T>();
@@ -260,8 +273,7 @@ public class BattleManager : MonoBehaviour
         {
             if (target.isTrigger && target.GetComponentInParent<T>() != null)
             {
-                Vector2 targetDirection = target.transform.position - position;
-
+                Vector2 targetDirection = target.transform.parent.position - position;
                 if (!inSector)
                 {
                     targets.Add(target.GetComponentInParent<T>());
@@ -296,9 +308,24 @@ public class BattleManager : MonoBehaviour
 
         if (attack.stamina != 0)
         {
+            if (attack.notEnoughStamina)
+            {
+                Debug.Log(attack.stamina);
+                Debug.Log(attackObject.GetStamina());
+                if (attack.stamina > attackObject.GetStamina())
+                {
+                    return false;
+                }
+                else
+                {
+                    attack.notEnoughStamina = false;
+                }
+            }
+
             attackObject.SetIsUsingStamina(attack.stamina * multiplier <= attackObject.GetStamina());
             if (!attackObject.GetIsUsingStamina())
             {
+                attack.notEnoughStamina = true;
                 return false;
             }
         }
@@ -373,8 +400,9 @@ public class BattleManager : MonoBehaviour
     private void PlayerUseSword(PlayerData playerData)
     {
         bool shakeCamera = false;
+        bool stopAnimation = false;
 
-        List<EnemyController> enemies = DetectTargets<EnemyController>(playerData.position, attack.range + playerData.colliderRadius);
+        List<EnemyController> enemies = DetectTargets<EnemyController>(playerData.position, attack.range + playerData.colliderRadius, playerData.attackDirection);
         foreach (EnemyController enemy in enemies)
         {
             if (enemy.IsAlive())
@@ -384,7 +412,7 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        List<ObjectController> breakables = DetectTargets<ObjectController>(playerData.position, attack.range + playerData.colliderRadius);
+        List<ObjectController> breakables = DetectTargets<ObjectController>(playerData.position, attack.range + playerData.colliderRadius, playerData.attackDirection);
         foreach (ObjectController breakable in breakables)
         {
             if (breakable.IsIntact())
@@ -397,6 +425,27 @@ public class BattleManager : MonoBehaviour
         if (shakeCamera)
         {
             Camera.main.GetComponent<Animator>().SetTrigger("shake");
+        }
+
+        foreach (EnemyController enemy in enemies)
+        {
+            if (enemy.IsAlive())
+            {
+                stopAnimation = true;
+            }
+        }
+
+        foreach (ObjectController breakable in breakables)
+        {
+            if (breakable.IsIntact())
+            {
+                stopAnimation = true;
+            }
+        }
+
+        if (stopAnimation)
+        {
+            playerData.transform.GetComponentInChildren<Animator>().Play("Idle");
         }
     }
 
@@ -430,7 +479,7 @@ public class BattleManager : MonoBehaviour
 
     private void GuardUseSword(EnemyParameters enemyParameters)
     {
-        List<PlayerController> players = DetectTargets<PlayerController>(enemyParameters.position, attack.range + enemyParameters.colliderRadius + 0.25f);
+        List<PlayerController> players = DetectTargets<PlayerController>(enemyParameters.position, attack.range + enemyParameters.colliderRadius + 0.25f, enemyParameters.attackDirection);
         foreach (PlayerController player in players)
         {
             if (player.GetPlayerData().IsAlive())

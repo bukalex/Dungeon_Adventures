@@ -35,6 +35,8 @@ public class AttackParameters : ScriptableObject
     public float stamina;
     public bool isReady = true;
     public bool isRunning = false;
+    public bool notEnoughMana = false;
+    public bool notEnoughStamina = false;
 
     public void ResetValues(List<PlayerAction> playerActions, List<EnemyAction> enemyActions)
     {

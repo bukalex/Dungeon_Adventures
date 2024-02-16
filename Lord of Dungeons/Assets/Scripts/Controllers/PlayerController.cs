@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
         playerData.position = transform.position;
         playerData.isUsingMana = false;
         playerData.isUsingStamina = false;
-        
+
         if (playerData.IsAlive() && !playerData.isStunned)
         {
             //Movement
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetKey(KeyCode.LeftShift) && BattleManager.Instance.PlayerPerformShift(playerData))
                 {
                     Run();
-                    body.velocity = movementDirection * playerData.speed * 2;
+                    body.velocity = movementDirection * playerData.speed * playerData.sprintFactor;
                 }
                 else
                 {
