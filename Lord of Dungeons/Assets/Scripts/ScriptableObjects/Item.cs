@@ -11,6 +11,7 @@ public class Item : ScriptableObject
     public PlayerData playerData;
     public string name;
     public string description;
+    public int unitsPerStack;
 
     [Header("Buffs")]
     //public TileBase tile;
