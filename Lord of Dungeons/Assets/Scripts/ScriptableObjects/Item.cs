@@ -31,7 +31,8 @@ public class Item : ScriptableObject
     public float increaseDamage;
 
     [Range(0f, 30f)]
-    public float cooldown;
+    [Header("Change the name of the variable to 'duration' later")]
+    public float cooldown; //duration
 
     [Header("Other")]
     [Tooltip("Ability for assigning to a book")]
@@ -52,12 +53,14 @@ public class Item : ScriptableObject
     [Header("Features")]
     public bool isStackable = false;
     public bool isUsable = false;
+    public bool isCraftMaterial = false;
+    public bool isUpgradeMater = false;
 
     [Header("Properties")]
     public Sprite image;
     public RuntimeAnimatorController animController;
 
-    public enum ItemType { Potion, CraftMaterials, UpgrageMaterials, Gear, Weapon, Gems, Artifacts, Treasures, Food, Trash, Spell, MonsterLoot}
-    public enum CoinType { GoldenCoin, SilverCoin, CopperCoin }
+    public enum ItemType { Potion, Material, Gear, Weapon, Gems, Artifacts, Treasures, Food, Trash, Spell, MonsterLoot}
+    public enum CoinType { OFF, GoldenCoin, SilverCoin, CopperCoin }
 
 }
