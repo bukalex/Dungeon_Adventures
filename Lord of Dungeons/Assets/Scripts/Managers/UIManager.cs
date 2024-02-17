@@ -119,9 +119,9 @@ public class UIManager : MonoBehaviour
         stats.text = HPstats + ManaStats + StaminaStats + DamageStats + DefenseStats + SpeedStats;
 
         //Display coins amount
-        goldenCoinCounter.text = playerData.resources[Item.MaterialType.GoldenCoin].ToString();
-        silverCoinCounter.text = playerData.resources[Item.MaterialType.SilverCoin].ToString();
-        copperCoinCounter.text = playerData.resources[Item.MaterialType.CopperCoin].ToString();
+        goldenCoinCounter.text = playerData.resources[Item.CoinType.GoldenCoin].ToString();
+        silverCoinCounter.text = playerData.resources[Item.CoinType.SilverCoin].ToString();
+        copperCoinCounter.text = playerData.resources[Item.CoinType.CopperCoin].ToString();
     }
 
     public void traderButtons()

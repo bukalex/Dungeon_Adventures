@@ -51,7 +51,7 @@ public class TemporaryTradingSystem : MonoBehaviour
                     itemInStore = result.gameObject.GetComponent<InventoryItem>();
                     for (int i = 0; i < itemPrice.Length; i++)
                     {
-                        itemPrice[i].text = itemInStore.item.price.ToString();
+                        //itemPrice[i].text = itemInStore.item.price.ToString();
                     }
                     itemName.text = itemInStore.item.name;
                     //itemDescription.text = itemInStore.item.description;
@@ -116,7 +116,7 @@ public class TemporaryTradingSystem : MonoBehaviour
 
         for (int i = 0; i < ItemInSlot.Length; i++)
         {
-            coinsFromSale = ItemInSlot[i].item.price;
+            //coinsFromSale = ItemInSlot[i].item.price;
         }
 
         priceDisplay.text = "You got " + coinsFromSale.ToString();

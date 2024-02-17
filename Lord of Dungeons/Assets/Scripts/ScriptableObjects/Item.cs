@@ -10,28 +10,48 @@ public class Item : ScriptableObject
     [Header("Data")]
     public PlayerData playerData;
 
-    [Header("Only Gameplay")]
-    public TileBase tile;
+    [Header("Buffs")]
+    //public TileBase tile;
     public ItemType itemType;
-    public MaterialType materialType;
-    public Vector2Int range = new Vector2Int(5, 4);
-    public int price;
-    public int addHP;
-    public int addSPD;
-    public int addStamina;
-    public int removeHP;
+    public CoinType materialType;
+    public float addHP;
+    public float addMP;
+    public float addSPD;
+    public float addStamina;
+
+    public float restoreHP;
+    public float restoreMP;
+    public float restoreSPD;
+    public float restoreStamina;
+
+    [Header("Multipliers")]
+    public float increseAttack;
+    public float increaseDamage;
+
     public string description;
     [Range(0f, 30f)]
     public float cooldown;
 
-    [Header("Only UI")]
+    [Header("Other")]
+    [Tooltip("Ability for assigning to a book")]
+    public Ability ability;
+    [Tooltip("Items array for lamp")]
+    public Item[] items;
+
+    [Header("Price")]
+    public int GoldenCoin;
+    public int SilverCoin;
+    public int CopperCoin;
+    
+
+    [Header("Features")]
     public bool isStackable = false;
     public bool isUsable = false;
 
-    [Header("Both")]
+    [Header("Properties")]
     public Sprite image;
     public RuntimeAnimatorController animController;
 
-    public enum ItemType { Poison, Material, Gear, Weapons}
-    public enum MaterialType { GoldenCoin, SilverCoin, CopperCoin }
+    public enum ItemType { Potion, CraftMaterials, UpgrageMaterials, Gear, Weapon, Gems, Artifacts, Treasures, Food, Trash, Spell, MonsterLoot}
+    public enum CoinType { GoldenCoin, SilverCoin, CopperCoin }
 }

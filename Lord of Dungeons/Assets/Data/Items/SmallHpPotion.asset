@@ -10,11 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ed05b4d375b5d24db9207e8e55202cb, type: 3}
-  m_Name: InventoryCoin
+  m_Name: SmallHpPotion
   m_EditorClassIdentifier: 
+  playerData: {fileID: 0}
   tile: {fileID: 0}
-  itemType: 1
+  itemType: 0
+  materialType: 0
   range: {x: 5, y: 4}
-  isStackable: 1
+  price: 0
+  addHP: 0
+  addSPD: 0
+  addStamina: 0
+  removeHP: 0
+  description: 
+  cooldown: 0
+  isStackable: 0
   isUsable: 0
-  image: {fileID: -1719298780, guid: b8738ba33536b654fa9538143e63bb2c, type: 3}
+  image: {fileID: 0}
+  animController: {fileID: 0}
