@@ -15,6 +15,7 @@ MonoBehaviour:
   playerData: {fileID: 0}
   name: 
   description: 
+  unitsPerStack: 16
   itemType: 0
   materialType: 0
   addHP: 10
@@ -35,8 +36,12 @@ MonoBehaviour:
   CopperCoin: 50
   GoldenCoins: 0
   SilverCoins: 0
-  CopperCoins: 0
+  CopperCoins: 10
   isStackable: 1
   isUsable: 1
+  isLootable: 0
+  isPurchasable: 0
+  isCraftMaterial: 0
+  isUpgradeMaterial: 0
   image: {fileID: -1053952808, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
   animController: {fileID: 0}
