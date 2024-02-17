@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SmallMpPotion
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
-  name: 
+  name: Small Mana Potion
   description: 
-  unitsPerStack: 0
+  unitsPerStack: 16
   itemType: 0
   materialType: 0
   addHP: 0
@@ -32,16 +32,16 @@ MonoBehaviour:
   ability: {fileID: 0}
   items: []
   GoldenCoin: 0
-  SilverCoin: 0
+  SilverCoin: 1
   CopperCoin: 0
   GoldenCoins: 0
   SilverCoins: 0
   CopperCoins: 0
-  isStackable: 0
-  isUsable: 0
+  isStackable: 1
+  isUsable: 1
   isLootable: 0
   isPurchasable: 0
   isCraftMaterial: 0
   isUpgradeMaterial: 0
-  image: {fileID: 0}
+  image: {fileID: -395945349, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
   animController: {fileID: 0}

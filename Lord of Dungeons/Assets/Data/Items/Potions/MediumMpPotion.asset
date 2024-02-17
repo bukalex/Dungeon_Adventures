@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: MediumMpPotion
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
-  name: 
+  name: Medium Mana Potion
   description: 
-  unitsPerStack: 0
+  unitsPerStack: 16
   itemType: 0
   materialType: 0
   addHP: 0
-  addMP: 0
+  addMP: 20
   addSPD: 0
   addStamina: 0
   restoreHP: 0
@@ -37,11 +37,11 @@ MonoBehaviour:
   GoldenCoins: 0
   SilverCoins: 0
   CopperCoins: 0
-  isStackable: 0
-  isUsable: 0
+  isStackable: 1
+  isUsable: 1
   isLootable: 0
   isPurchasable: 0
   isCraftMaterial: 0
   isUpgradeMaterial: 0
-  image: {fileID: 0}
+  image: {fileID: -1703672720, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
   animController: {fileID: 0}
