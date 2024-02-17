@@ -9,6 +9,8 @@ public class Item : ScriptableObject
 {
     [Header("Data")]
     public PlayerData playerData;
+    public string name;
+    public string description;
 
     [Header("Buffs")]
     //public TileBase tile;
@@ -28,7 +30,6 @@ public class Item : ScriptableObject
     public float increseAttack;
     public float increaseDamage;
 
-    public string description;
     [Range(0f, 30f)]
     public float cooldown;
 
@@ -38,11 +39,15 @@ public class Item : ScriptableObject
     [Tooltip("Items array for lamp")]
     public Item[] items;
 
-    [Header("Price")]
+    [Header("Store Price")]
     public int GoldenCoin;
     public int SilverCoin;
     public int CopperCoin;
-    
+
+    [Header("Selling Price")]
+    public int GoldenCoins;
+    public int SilverCoins;
+    public int CopperCoins;
 
     [Header("Features")]
     public bool isStackable = false;
@@ -54,4 +59,5 @@ public class Item : ScriptableObject
 
     public enum ItemType { Potion, CraftMaterials, UpgrageMaterials, Gear, Weapon, Gems, Artifacts, Treasures, Food, Trash, Spell, MonsterLoot}
     public enum CoinType { GoldenCoin, SilverCoin, CopperCoin }
+
 }

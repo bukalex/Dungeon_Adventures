@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ed05b4d375b5d24db9207e8e55202cb, type: 3}
-  m_Name: SmallHpPotion
+  m_Name: MediumHpPotion
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
   name: 
   description: 
   itemType: 0
   materialType: 0
-  addHP: 25
+  addHP: 85
   addMP: 0
   addSPD: 0
   addStamina: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
   GoldenCoin: 0
   SilverCoin: 0
   CopperCoin: 0
-  isStackable: 1
-  isUsable: 1
-  image: {fileID: -1053952808, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
+  isStackable: 0
+  isUsable: 0
+  image: {fileID: 0}
   animController: {fileID: 0}
