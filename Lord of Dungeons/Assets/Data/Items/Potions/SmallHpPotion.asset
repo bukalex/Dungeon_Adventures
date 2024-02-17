@@ -13,18 +13,26 @@ MonoBehaviour:
   m_Name: SmallHpPotion
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
-  tile: {fileID: 0}
   itemType: 0
   materialType: 0
-  range: {x: 5, y: 4}
-  price: 0
-  addHP: 0
+  addHP: 10
+  addMP: 0
   addSPD: 0
   addStamina: 0
-  removeHP: 0
+  restoreHP: 0
+  restoreMP: 0
+  restoreSPD: 0
+  restoreStamina: 0
+  increseAttack: 0
+  increaseDamage: 0
   description: 
   cooldown: 0
-  isStackable: 0
-  isUsable: 0
-  image: {fileID: 0}
+  ability: {fileID: 0}
+  items: []
+  GoldenCoin: 0
+  SilverCoin: 0
+  CopperCoin: 0
+  isStackable: 1
+  isUsable: 1
+  image: {fileID: -1053952808, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
   animController: {fileID: 0}
