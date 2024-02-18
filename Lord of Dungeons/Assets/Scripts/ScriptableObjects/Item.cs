@@ -13,10 +13,10 @@ public class Item : ScriptableObject
     public string description;
     public int unitsPerStack;
 
-    [Header("Buffs")]
-    //public TileBase tile;
+    public ItemTag tag;
     public ItemType itemType;
     public CoinType materialType;
+    [Header("Buffs")]
     public float addHP;
     public float addMP;
     public float addSPD;
@@ -64,6 +64,7 @@ public class Item : ScriptableObject
     public RuntimeAnimatorController animController;
 
     public enum ItemType { Potion, Material, Gear, Weapon, Gems, Artifacts, Treasures, Food, Trash, Spell, MonsterLoot}
+    public enum ItemTag { Item, Helmet, Chestplate, Gloves, Boots, Sword, Gem}
     public enum CoinType { OFF, GoldenCoin, SilverCoin, CopperCoin }
 
 }

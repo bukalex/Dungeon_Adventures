@@ -28,11 +28,52 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     {
         GameObject dropped = eventData.pointerDrag;
         InventoryItem inventoryItem = dropped.GetComponent<InventoryItem>();
-
-        if (transform.childCount == 0 && inventoryItem.InventoryItemPrefab.CompareTag("Item") && slotPrefab.CompareTag("Inventory"))
+        //Check if item and slot have the same tag
+        #region
+        //Inventory slots
+        if (transform.childCount == 0 && 
+            (inventoryItem.InventoryItemPrefab.CompareTag("Item") && slotPrefab.CompareTag("Inventory")) ||
+            (inventoryItem.InventoryItemPrefab.CompareTag("Gem") && slotPrefab.CompareTag("Gem"))||
+            (inventoryItem.InventoryItemPrefab.CompareTag("Gem") && slotPrefab.CompareTag("Inventory"))||
+            (inventoryItem.InventoryItemPrefab.CompareTag("Chestplate") && slotPrefab.CompareTag("Chesplate"))||
+            (inventoryItem.InventoryItemPrefab.CompareTag("Chestplate") && slotPrefab.CompareTag("Inventory"))||
+            (inventoryItem.InventoryItemPrefab.CompareTag("Helmet") && slotPrefab.CompareTag("Helmet"))||
+            (inventoryItem.InventoryItemPrefab.CompareTag("Helmet") && slotPrefab.CompareTag("Inventory"))||
+            (inventoryItem.InventoryItemPrefab.CompareTag("Sword") && slotPrefab.CompareTag("Sword"))||
+            (inventoryItem.InventoryItemPrefab.CompareTag("Sword") && slotPrefab.CompareTag("Inventory"))||
+            (inventoryItem.InventoryItemPrefab.CompareTag("Boots") && slotPrefab.CompareTag("Boots"))||
+            (inventoryItem.InventoryItemPrefab.CompareTag("Boots") && slotPrefab.CompareTag("Inventory"))||
+            (inventoryItem.InventoryItemPrefab.CompareTag("Gloves") && slotPrefab.CompareTag("Gloves"))||
+            (inventoryItem.InventoryItemPrefab.CompareTag("Gloves") && slotPrefab.CompareTag("Inventory"))
+            )
         {
             inventoryItem.parentAfterDrag = transform;
         }
+        ////Chestplate slot
+        //else if (transform.childCount == 0 && inventoryItem.InventoryItemPrefab.CompareTag("Chestplate") == true && slotPrefab.CompareTag("Chestplate") == true)
+        //{
+        //    inventoryItem.parentAfterDrag = transform;
+        //}
+        ////Helmet slot
+        //else if (transform.childCount == 0 && inventoryItem.itemTag == inventoryItem.item.tag.ToString() && slotPrefab.CompareTag("Helmet") == true)
+        //{
+        //    inventoryItem.parentAfterDrag = transform;
+        //}
+        ////Gem slot
+        //else if (transform.childCount == 0 && inventoryItem.InventoryItemPrefab.CompareTag("Boots") && slotPrefab.CompareTag("Boots"))
+        //{
+        //    inventoryItem.parentAfterDrag = transform;
+        //}
+        ////
+        //else if (transform.childCount == 0 && inventoryItem.InventoryItemPrefab.CompareTag("Sword") && slotPrefab.CompareTag("Sword"))
+        //{
+        //    inventoryItem.parentAfterDrag = transform;
+        //}
+        //else if (transform.childCount == 0 && inventoryItem.itemTag == inventoryItem.item.tag.ToString() && slotPrefab.CompareTag("Gem") == true)
+        //{
+        //    inventoryItem.parentAfterDrag = transform;
+        //}
+        #endregion
     }
 
 }

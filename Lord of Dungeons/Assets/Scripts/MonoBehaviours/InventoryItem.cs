@@ -27,6 +27,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         item = newItem;                                             
         image.sprite = newItem.image;
+        InventoryItemPrefab.tag = newItem.tag.ToString();
         
         updateCount();
     }

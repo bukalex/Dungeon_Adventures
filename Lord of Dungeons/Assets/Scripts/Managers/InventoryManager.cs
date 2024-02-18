@@ -163,7 +163,8 @@ public class InventoryManager : MonoBehaviour
         {
             InventorySlot slot = InventoryType[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            if( itemInSlot.item.isUsable == true && itemInSlot.count < itemInSlot.item.unitsPerStack)
+            if( itemInSlot.item.isStackable == true
+                && itemInSlot.count < itemInSlot.item.unitsPerStack)
             {
                 itemInSlot.count = itemInSlot.item.unitsPerStack;
                 itemInSlot.updateCount();
