@@ -11,6 +11,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public Item item;
     [SerializeField]
     public TMP_Text countText;
+    [SerializeField]
+    public GameObject InventoryItemPrefab;
 
     [HideInInspector]
     public Image image;
@@ -18,10 +20,14 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public int count = 1;
     [HideInInspector]
     public Transform parentAfterDrag;
+    [SerializeField]
+    public string itemTag;
+
     public void InitializeItem(Item newItem)
     {
         item = newItem;                                             
         image.sprite = newItem.image;
+        
         updateCount();
     }
     public void updateCount()
@@ -32,6 +38,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
+        itemTag = InventoryItemPrefab.tag;
         image.raycastTarget = false;
         parentAfterDrag = transform.parent;
         transform.SetParent(transform.root);

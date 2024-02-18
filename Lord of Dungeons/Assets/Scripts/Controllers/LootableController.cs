@@ -2,18 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LootableController : MonoBehaviour
 {
     [SerializeField]
     private LootableParameters lootableParameters;
-
     [SerializeField]
     public GameObject chestInventory;
-
     [SerializeField]
     private Animator animator;
-
     [SerializeField]
     private SpriteRenderer spriteRenderer;
 
@@ -22,13 +20,13 @@ public class LootableController : MonoBehaviour
     void Awake()
     {
         animator.runtimeAnimatorController = lootableParameters.animController;
+
     }
 
-    void Update()
+    private void Start()
     {
-
+        chestInventory.SetActive(false);
     }
-
     public void BeingLooted(bool isLooted)
     {
 
@@ -38,6 +36,7 @@ public class LootableController : MonoBehaviour
             beingChecked = isLooted;
             chestInventory.SetActive(isLooted);
             UIManager.Instance.InventorySlots.SetActive(isLooted);
+            
             Debug.Log("Inventory chest should open.");
         }
         Open();

@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
+    private InventorySlot[] emp;
     public Item[] startItems;
+    public Item[] allItems;
     public Ability[] startAbilities;
 
     public int maxStackCount = 16;
@@ -13,37 +15,47 @@ public class InventoryManager : MonoBehaviour
     public InventorySlot[] toolBar;
     public InventorySlot[] sellSlots;
     public InventorySlot[] storageSlots;
+    public InventorySlot[] cheatSlots;
     public AbilitySlot[] abilityBar;
     public GameObject inventoryItemPrefab, abilityItemPrefab;
     public PlayerData playerData;
 
 
     public int selectedSlot = -1;
+    public int[] intsd;
 
     public static InventoryManager Instance { get; private set; }
 
     public void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            DontDestroyOnLoad(gameObject);
-        }
 
-
+        if (Instance == null) Instance = this;
+        else DontDestroyOnLoad(gameObject);
     }
     private void Start()
     {
         InitializeSlots();
 
-        foreach(var item in startItems)
-            //AddItem(item);
+        //Create all items in a cheat chest
+        foreach (var item in allItems)
+            AddItem(item, cheatSlots, cheatSlots);
 
+        //Pick up items to correct inventory slot
+        foreach (var item in startItems)
+            AddItem(item, toolBar, internalInventorySlots);
+
+        //Create all items in a cheat chest
+        foreach (var item in allItems)
+            AddItem(item, cheatSlots, cheatSlots);
+
+        //Add bility to a abilitySlots
         foreach(var ability in startAbilities)
             AddAbility(ability);
+        
+        //Fill stacks of usable items in cheat chests
+        foreach (var item in allItems)
+            fillStacks(item, cheatSlots);
+
     }
 
     private void InitializeSlots()
@@ -62,12 +74,16 @@ public class InventoryManager : MonoBehaviour
 
         //Initializing slots for abilities
         abilityBar = UIManager.Instance.abilitybar.GetComponentsInChildren<AbilitySlot>();
+
+        //Initialize slots for cheat chests
+        cheatSlots = UIManager.Instance.cheatChestUIs.GetComponentsInChildren<InventorySlot>(true);
+
     }
     private void Update()
     {
         if (Input.anyKeyDown)
         {
-            string[] inputString = { "1", "2", "3", "4", "5", "6", "7", "8", "9"};  
+            string[] inputString = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};  
 
             for(int i = 0; i < inputString.Length; i++)
             {
@@ -79,7 +95,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(KeyCode.C))
+        if (Input.GetKeyUp(KeyCode.C))
         {
             useSelectedItem();
         }
@@ -97,41 +113,63 @@ public class InventoryManager : MonoBehaviour
                 itemInSlot.updateCount();
                 return true;
             }
-            for(int j = 0; j < InventoryType2.Length; j++)
+
+            if(InventoryType1 != InventoryType2)
             {
-                InventorySlot intertalSlot = internalInventorySlots[i];
-                InventoryItem internalItemInSlot = intertalSlot.GetComponentInChildren<InventoryItem>();
-                if(internalItemInSlot != null && internalItemInSlot.item == item && internalItemInSlot.count < maxStackCount && internalItemInSlot.item.isStackable == true)
+                for (int j = 0; j < InventoryType2.Length; j++)
                 {
-                    internalItemInSlot.count++;
-                    internalItemInSlot.updateCount();
-                    return true;
+                    InventorySlot intertalSlot = InventoryType2[j];
+                    InventoryItem internalItemInSlot = intertalSlot.GetComponentInChildren<InventoryItem>();
+                    if (internalItemInSlot != null && internalItemInSlot.item == item && internalItemInSlot.count < maxStackCount && internalItemInSlot.item.isStackable == true)
+                    {
+                        internalItemInSlot.count++;
+                        internalItemInSlot.updateCount();
+                        return true;
+                    }
                 }
             }
         }
         //Check if any slot has the same item
-        for (int i = 0; i < toolBar.Length; i++)
+        for (int i = 0; i < InventoryType1.Length; i++)
         {
-            InventorySlot slot = toolBar[i];
+            InventorySlot slot = InventoryType1[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
             if(itemInSlot == null)
             {
                 spawnNewItem(item, slot);
                 return true;
             }
-
-            for(int j = 0; j < internalInventorySlots.Length; j++)
+            if(InventoryType1 != InventoryType2)
             {
-                InventorySlot internalSlots = internalInventorySlots[j];
-                InventoryItem internalItemInSlot = internalSlots.GetComponentInChildren<InventoryItem>();
-                if(internalItemInSlot == null)
+                for (int j = 0; j < InventoryType2.Length; j++)
                 {
-                    spawnNewItem(item, slot);
-                    return true;
+                    InventorySlot internalSlots = InventoryType2[j];
+                    InventoryItem internalItemInSlot = internalSlots.GetComponentInChildren<InventoryItem>();
+                    if (internalItemInSlot == null)
+                    {
+                        spawnNewItem(item, slot);
+                        return true;
+                    }
                 }
             }
         }
 
+        return false;
+    }
+
+    public bool fillStacks(Item item, InventorySlot[] InventoryType)
+    {
+        for (int i = 0; i < InventoryType.Length; i++)
+        {
+            InventorySlot slot = InventoryType[i];
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+            if( itemInSlot.item.isUsable == true && itemInSlot.count < itemInSlot.item.unitsPerStack)
+            {
+                itemInSlot.count = itemInSlot.item.unitsPerStack;
+                itemInSlot.updateCount();
+                return true;
+            }
+        }
         return false;
     }
 

@@ -7,9 +7,9 @@ using UnityEngine.EventSystems;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
+    public GameObject slotPrefab;
     public Color selectedSlot, nonSelectedSlot;
     public Image image;
-
 
     private void Awake()
     {
@@ -26,10 +26,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     }
     public void OnDrop(PointerEventData eventData)
     {
-        if(transform.childCount == 0)
+        GameObject dropped = eventData.pointerDrag;
+        InventoryItem inventoryItem = dropped.GetComponent<InventoryItem>();
+
+        if (transform.childCount == 0 && inventoryItem.InventoryItemPrefab.CompareTag("Item") && slotPrefab.CompareTag("Inventory"))
         {
-            GameObject dropped = eventData.pointerDrag;
-            InventoryItem inventoryItem = dropped.GetComponent<InventoryItem>();
             inventoryItem.parentAfterDrag = transform;
         }
     }

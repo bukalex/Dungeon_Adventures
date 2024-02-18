@@ -12,17 +12,12 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     public TMP_Text stats, goldenCoinCounter, silverCoinCounter, copperCoinCounter;
     [SerializeField]
-    public GameObject HealthBar;
+    public GameObject HealthBar, ManaBar, StaminaBar;
     [SerializeField]
-    public GameObject ManaBar;
-    [SerializeField]
-    public GameObject StaminaBar;
-    [SerializeField]
-    public GameObject internalInventory;
-    [SerializeField]
-    public GameObject inventory;
-    [SerializeField]
-    public GameObject toolbar, abilitybar;
+    public GameObject internalInventory, inventory, toolbar, abilitybar;
+    [SerializeField] 
+    public GameObject cheatChestUIs;
+
 
     //UI to open on a button
     [SerializeField]
@@ -40,8 +35,7 @@ public class UIManager : MonoBehaviour
 
     //Chest UI
     [SerializeField] private GameObject ChestUI;
-    [SerializeField] private GameObject[] ChestUIs;
-    [SerializeField] private GameObject[] Chests;
+    [SerializeField] private GameObject[] ChestUIs, Chests;
     [SerializeField] private Canvas playerCanvas;
 
     public bool isPaused = false;

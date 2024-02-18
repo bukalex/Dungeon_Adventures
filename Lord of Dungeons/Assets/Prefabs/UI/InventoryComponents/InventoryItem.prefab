@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5447018004570397229}
   m_Layer: 5
   m_Name: InventoryItem
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,9 +91,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 0}
   countText: {fileID: 1766655230011171772}
+  InventoryItemPrefab: {fileID: 159804929545523315}
   image: {fileID: 6401939253833724709}
   count: 1
   parentAfterDrag: {fileID: 0}
+  itemTag: 
 --- !u!1 &8505259184442528335
 GameObject:
   m_ObjectHideFlags: 0
