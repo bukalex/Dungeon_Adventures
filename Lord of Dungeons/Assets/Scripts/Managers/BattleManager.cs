@@ -160,6 +160,8 @@ public class BattleManager : MonoBehaviour
         if (attack.isReady && AffordAttack(playerData))
         {
             attack.playerAction(playerData);
+            //Swoard sound effect
+            SoundManager.Instance.PlaySE(SESoundData.SE.Attack); 
         }
         else
         {
@@ -345,11 +347,12 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerActivateShield(PlayerData playerData)
     {
+       
         GameObject shield = Instantiate(battleData.shieldPrefab, playerData.transform);
         shield.transform.localPosition = new Vector3(0, 0.5f, 0);
         shield.GetComponent<Animator>().SetBool("shieldActivated", true);
         battleData.shieldsByCreatures.Add(playerData, shield);
-
+        
         playerData.defense *= 5;
         playerData.specialDefense *= 5;
 
@@ -358,6 +361,8 @@ public class BattleManager : MonoBehaviour
 
         StartCoroutine(StartAttack(attack));
         playerRunningAttacks.Add(attack);
+        //Sound effect
+        SoundManager.Instance.PlaySE(SESoundData.SE.Shield); 
     }
 
     private void PlayerDeactivateShield(PlayerData playerData)
@@ -396,6 +401,7 @@ public class BattleManager : MonoBehaviour
     {
         projectileController = Instantiate(enemyParameters.projectilePrefab, enemyParameters.position, new Quaternion()).GetComponent<ProjectileController>();
         projectileController.Launch("Enemy", enemyParameters, enemyParameters.playerData, attack, enemyParameters.attackDirection);
+        SoundManager.Instance.PlaySE(SESoundData.SE.GhoastProjectile); 
     }
 
     private void DisableStun(IDefenseObject defenseObject)

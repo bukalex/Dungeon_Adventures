@@ -69,8 +69,8 @@ public class SESoundData
     public enum SE
     {
         Attack,
-        Damage,
-        Hoge,
+        Shield,
+        GhoastProjectile,
     }
 
     public SE se;
@@ -78,3 +78,5 @@ public class SESoundData
     [Range(0, 1)]
     public float volume = 1;
 }
+//SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Title);
+//SoundManager.Instance.PlaySE(SESoundData.SE.Title);
