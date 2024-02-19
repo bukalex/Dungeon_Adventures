@@ -14,7 +14,6 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private List<AttackParameters> enemyAttackParameters = new List<AttackParameters>();
 
-    private Dictionary<PlayerData.CharacterType, List<AttackParameters>> playerAttacksAll = new Dictionary<PlayerData.CharacterType, List<AttackParameters>>();
     private List<AttackParameters.PlayerAction> playerActions = new List<AttackParameters.PlayerAction>();
     private List<AttackParameters.EnemyAction> enemyActions = new List<AttackParameters.EnemyAction>();
 
@@ -61,7 +60,6 @@ public class BattleManager : MonoBehaviour
             {
                 if (attackParameters.characterType == (PlayerData.CharacterType)Enum.Parse(typeof(PlayerData.CharacterType), str))
                 {
-                    attackParameters.ResetValues(playerActions, null);
                     classAttacks.Add(attackParameters);
 
                     if (attackParameters.attackButton != AttackButton.NONE)
@@ -71,7 +69,6 @@ public class BattleManager : MonoBehaviour
                 }
             }
 
-            playerAttacksAll.Add((PlayerData.CharacterType)Enum.Parse(typeof(PlayerData.CharacterType), str), classAttacks);
             playerAttacks.Add((PlayerData.CharacterType)Enum.Parse(typeof(PlayerData.CharacterType), str), playerDict);
         }
 
@@ -83,7 +80,6 @@ public class BattleManager : MonoBehaviour
             {
                 if (attackParameters.enemyType == (EnemyParameters.EnemyType)Enum.Parse(typeof(EnemyParameters.EnemyType), str))
                 {
-                    attackParameters.ResetValues(null, enemyActions);
                     enemyDict.Add(attackParameters.attackButton, attackParameters);
                 }
             }
@@ -178,7 +174,7 @@ public class BattleManager : MonoBehaviour
         if (playerData.attacks.ContainsKey(playerData.type) && playerData.attacks[playerData.type].ContainsKey(attackButton))
         {
             attack = playerData.attacks[playerData.type][attackButton];
-            attack.SetAction(playerAttacks[playerData.type][attackButton].playerAction, null);
+            attack.SetAction(playerActions, null);
         }
         else
         {
@@ -236,7 +232,7 @@ public class BattleManager : MonoBehaviour
         if (enemyParameters.attacks.ContainsKey(enemyParameters.type) && enemyParameters.attacks[enemyParameters.type].ContainsKey(attackButton))
         {
             attack = enemyParameters.attacks[enemyParameters.type][attackButton];
-            attack.SetAction(null, enemyAttacks[enemyParameters.type][attackButton].enemyAction);
+            attack.SetAction(null, enemyActions);
         }
         else
         {
@@ -416,7 +412,7 @@ public class BattleManager : MonoBehaviour
 
         if (currentAttackButton == AttackButton.NONE && currentAttack == null)//New key in the dictionary
         {
-            playerData.attacks[playerData.type].Add(attackButton, attack);
+            playerData.attacks[playerData.type].Add(attackButton, Instantiate(attack));
         }
         else if (currentAttackButton != AttackButton.NONE && currentAttack == null)//Remove key in the dictionary
         {
@@ -424,7 +420,7 @@ public class BattleManager : MonoBehaviour
         }
         else if (currentAttack != null)//Swap the attacks
         {
-            playerData.attacks[playerData.type][attackButton] = attack;
+            playerData.attacks[playerData.type][attackButton] = Instantiate(attack);
             if (currentAttackButton != AttackButton.NONE)
             {
                 playerData.attacks[playerData.type][currentAttackButton] = currentAttack;
@@ -504,10 +500,13 @@ public class BattleManager : MonoBehaviour
     private void PlayerDeactivateShield(PlayerData playerData)
     {
         GameObject shield = battleData.shieldsByCreatures[playerData];
-        shield.GetComponent<Animator>().SetBool("shieldActivated", false);
-        Destroy(shield, 0.5f);
-        battleData.shieldsByCreatures.Remove(playerData);
-
+        if (shield != null)
+        {
+            shield.GetComponent<Animator>().SetBool("shieldActivated", false);
+            Destroy(shield, 0.5f);
+            battleData.shieldsByCreatures.Remove(playerData);
+        }
+        
         playerData.defense /= 5;
         playerData.specialDefense /= 5;
     }

@@ -39,7 +39,7 @@ public class AttackParameters : ScriptableObject
     public bool notEnoughMana = false;
     public bool notEnoughStamina = false;
 
-    public void ResetValues(List<PlayerAction> playerActions, List<EnemyAction> enemyActions)
+    public void SetAction(List<PlayerAction> playerActions, List<EnemyAction> enemyActions)
     {
         if (functionIndex != -1)
         {
@@ -51,21 +51,6 @@ public class AttackParameters : ScriptableObject
             {
                 enemyAction = enemyActions[functionIndex];
             }
-        }
-        
-        isReady = true;
-        isRunning = false;
-    }
-
-    public void SetAction(PlayerAction playerAction, EnemyAction enemyAction)
-    {
-        if (playerAction != null)
-        {
-            this.playerAction = playerAction;
-        }
-        else
-        {
-            this.enemyAction = enemyAction;
         }
     }
 
