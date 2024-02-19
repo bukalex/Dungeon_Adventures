@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Attack Parameters", menuName = "ScriptableObjects/Attack parameters")]
 public class AttackParameters : ScriptableObject
 {
+    public string attackName;
     public PlayerData.CharacterType characterType;
     public EnemyParameters.EnemyType enemyType;
     public BattleManager.AttackButton attackButton = BattleManager.AttackButton.NONE;

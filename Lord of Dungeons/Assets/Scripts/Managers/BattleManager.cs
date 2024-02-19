@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static BattleManager;
 
 public class BattleManager : MonoBehaviour
 {
@@ -176,7 +175,7 @@ public class BattleManager : MonoBehaviour
             playerData.attacks = CloneDictionary(playerAttacks);
         }
 
-        if (playerAttacks.ContainsKey(playerData.type) && playerAttacks[playerData.type].ContainsKey(attackButton))
+        if (playerData.attacks.ContainsKey(playerData.type) && playerData.attacks[playerData.type].ContainsKey(attackButton))
         {
             attack = playerData.attacks[playerData.type][attackButton];
             attack.SetAction(playerAttacks[playerData.type][attackButton].playerAction, null);
@@ -214,7 +213,7 @@ public class BattleManager : MonoBehaviour
         }
 
         //Run
-        if (playerAttacks.ContainsKey(playerData.type))
+        if (playerData.attacks.ContainsKey(playerData.type))
         {
             attack = playerData.attacks[playerData.type][AttackButton.SHIFT];
             return AffordAttack(playerData, attack, true);
@@ -234,7 +233,7 @@ public class BattleManager : MonoBehaviour
             enemyParameters.attacks = CloneDictionary(enemyAttacks);
         }
 
-        if (enemyAttacks.ContainsKey(enemyParameters.type) && enemyAttacks[enemyParameters.type].ContainsKey(attackButton))
+        if (enemyParameters.attacks.ContainsKey(enemyParameters.type) && enemyParameters.attacks[enemyParameters.type].ContainsKey(attackButton))
         {
             attack = enemyParameters.attacks[enemyParameters.type][attackButton];
             attack.SetAction(null, enemyAttacks[enemyParameters.type][attackButton].enemyAction);
@@ -401,9 +400,36 @@ public class BattleManager : MonoBehaviour
         return Mathf.Infinity;
     }
 
-    public bool AssingAbility(AttackParameters attack, AttackButton attackButton)
+    public void AssingAbility(PlayerData playerData, AttackParameters attack, AttackButton attackButton)
     {
-        return true;
+        //Find current AttackButton and AttackParameters
+        AttackButton currentAttackButton = AttackButton.NONE;
+        foreach (KeyValuePair<AttackButton, AttackParameters> pair in playerData.attacks[playerData.type])
+        {
+            if (pair.Value.attackName.Equals(attack.attackName))
+            {
+                currentAttackButton = pair.Key;
+                break;
+            }
+        }
+        playerData.attacks[playerData.type].TryGetValue(attackButton, out AttackParameters currentAttack);
+
+        if (currentAttackButton == AttackButton.NONE && currentAttack == null)//New key in the dictionary
+        {
+            playerData.attacks[playerData.type].Add(attackButton, attack);
+        }
+        else if (currentAttackButton != AttackButton.NONE && currentAttack == null)//Remove key in the dictionary
+        {
+            playerData.attacks[playerData.type].Remove(currentAttackButton);
+        }
+        else if (currentAttack != null)//Swap the attacks
+        {
+            playerData.attacks[playerData.type][attackButton] = attack;
+            if (currentAttackButton != AttackButton.NONE)
+            {
+                playerData.attacks[playerData.type][currentAttackButton] = currentAttack;
+            }
+        }
     }
 
     private void PlayerUseSword(PlayerData playerData, AttackParameters attack)
