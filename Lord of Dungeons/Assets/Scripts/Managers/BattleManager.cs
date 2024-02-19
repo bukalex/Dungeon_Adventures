@@ -27,7 +27,7 @@ public class BattleManager : MonoBehaviour
     private ProjectileController projectileController;
 
     public enum AttackType { BASIC, SPECIAL }
-    public enum AttackButton { NONE, LMB, RMB, SHIFT }
+    public enum AttackButton { NONE, LMB, RMB, SHIFT, R, F, C, V }
 
     void Awake()
     {

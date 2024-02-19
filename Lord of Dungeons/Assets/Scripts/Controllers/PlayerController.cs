@@ -102,6 +102,42 @@ public class PlayerController : MonoBehaviour
                     
                 }
             }
+
+            //R Button
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.R))
+                {
+
+                }
+            }
+
+            //F Button
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.F))
+                {
+
+                }
+            }
+
+            //C Button
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.C))
+                {
+
+                }
+            }
+
+            //V Button
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.V))
+                {
+
+                }
+            }
             #endregion
 
             //NPC interaction
