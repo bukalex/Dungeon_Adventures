@@ -9,7 +9,6 @@ public class BattleData : ScriptableObject
     public Dictionary<ScriptableObject, GameObject> shieldsByCreatures = new Dictionary<ScriptableObject, GameObject>();
 
     public GameObject superAttackAreaPrefab;
-
     public GameObject boomerangPrefab;
-    public Dictionary<ScriptableObject, GameObject> boomerangsByCreatures = new Dictionary<ScriptableObject, GameObject>();
+    public Dictionary<ScriptableObject, Vector3> attackDirections = new Dictionary<ScriptableObject, Vector3>();
 }

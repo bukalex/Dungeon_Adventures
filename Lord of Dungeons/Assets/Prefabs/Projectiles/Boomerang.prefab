@@ -43,14 +43,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 686439564707158325}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_AngularDrag: 0
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -61,7 +61,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 4
+  m_Constraints: 0
 --- !u!58 &8445458863056811521
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -109,8 +109,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb7ce6e65093df44486c343e4ff8cb0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1.5
-  body: {fileID: 0}
+  speed: 720
+  body: {fileID: 8796803342999291150}
+  type: 1
 --- !u!1 &6329270492711957371
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,7 +185,7 @@ SpriteRenderer:
   m_SortingLayerID: 1507275025
   m_SortingLayer: 11
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95327a1cf4b2c4b4d94b2115053e2790, type: 3}
   m_Name: GhostEctoplasm
   m_EditorClassIdentifier: 
+  attackName: 
   characterType: 0
   enemyType: 1
   attackButton: 1
@@ -24,5 +25,7 @@ MonoBehaviour:
   range: 5
   mana: 5
   stamina: 0
-  isReady: 0
+  isReady: 1
   isRunning: 0
+  notEnoughMana: 0
+  notEnoughStamina: 0

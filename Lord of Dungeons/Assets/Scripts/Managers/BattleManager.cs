@@ -25,8 +25,6 @@ public class BattleManager : MonoBehaviour
     private List<AttackParameters> runningAttacks = new List<AttackParameters>();
     private List<AttackParameters> expiredAttacks = new List<AttackParameters>();
 
-    private ProjectileController projectileController;
-
     public enum AttackType { BASIC, SPECIAL }
     public enum AttackButton { NONE, LMB, RMB, SHIFT, R, F, C, V }
 
@@ -49,6 +47,7 @@ public class BattleManager : MonoBehaviour
         playerActions.Add(PlayerActivateShield);
         playerActions.Add(PlayerLeap);
         playerActions.Add(PlayerBoomerang);
+        playerActions.Add(PlayerDash);
 
         enemyActions.Add(GuardUseSword);
         enemyActions.Add(GuardUseSpecial);
@@ -237,9 +236,9 @@ public class BattleManager : MonoBehaviour
     }
 
     //Called be projectiles upon hit
-    public void ProjectileHit(IAttackObject attackObject, IDefenseObject defenseObject, AttackParameters attack)
+    public void ProjectileHit(IAttackObject attackObject, IDefenseObject defenseObject, AttackParameters attack, bool isPerFrame = false)
     {
-        DealDamage(attackObject, defenseObject, attack);
+        DealDamage(attackObject, defenseObject, attack, isPerFrame);
     }
 
     //Finds specified targets
@@ -353,8 +352,14 @@ public class BattleManager : MonoBehaviour
     }
 
     //Deals damage from attackObject to defenseObject
-    private void DealDamage(IAttackObject attackObject, IDefenseObject defenseObject, AttackParameters attack)
+    private void DealDamage(IAttackObject attackObject, IDefenseObject defenseObject, AttackParameters attack, bool isPerFrame = false)
     {
+        float multiplier = 1.0f;
+        if (isPerFrame)
+        {
+            multiplier = Time.deltaTime;
+        }
+
         float damage = attack.damage;
         damage *= 1.0f + (attackObject.GetAttackValue(attack.attackType) - defenseObject.GetDefenseValue(attack.attackType)) * 0.05f;
 
@@ -363,7 +368,7 @@ public class BattleManager : MonoBehaviour
             damage = 1.0f;
         }
         
-        defenseObject.DealDamage(damage);
+        defenseObject.DealDamage(damage * multiplier);
     }
 
     //Use this to recharge attacks
@@ -530,7 +535,6 @@ public class BattleManager : MonoBehaviour
         EnemyController enemy = GetNearestTarget<EnemyController>(playerData.position, attack.range + playerData.colliderRadius, playerData.attackDirection, false);
         if (enemy != null)
         {
-            playerData.attackDirection = (enemy.enemyParameters.position - playerData.position).normalized;
             attack.enemyParameters = enemy.enemyParameters;
         }
         else
@@ -552,6 +556,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
+            attack.playerData.attackDirection = (attack.enemyParameters.position - attack.playerData.position).normalized;
             attack.playerData.transform.GetComponent<Rigidbody2D>().velocity = (attack.enemyParameters.position - attack.playerData.position) / attack.timeOffset;
         }
     }
@@ -569,23 +574,52 @@ public class BattleManager : MonoBehaviour
     private void PlayerBoomerang(PlayerData playerData, AttackParameters attack)
     {
         GameObject boomerang = Instantiate(battleData.boomerangPrefab, playerData.position, Quaternion.identity);
-        battleData.boomerangsByCreatures.Add(playerData, boomerang);
+        boomerang.GetComponent<ProjectileController>().Launch("Player", playerData, attack, Vector3.zero);
+        Destroy(boomerang, attack.duration);
+    }
+
+    private void PlayerDash(PlayerData playerData, AttackParameters attack)
+    {
+        Vector3 attackDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - new Vector3(0, 0, Camera.main.transform.position.z) - playerData.position).normalized * attack.range;
+        playerData.attackDirection = attackDirection.normalized;
+        battleData.attackDirections.Add(playerData, attackDirection);
+        playerData.transform.GetComponent<Rigidbody2D>().excludeLayers = LayerMask.GetMask(new string[] { "Creatures" });
 
         attack.playerData = playerData;
-
-        attack.endDelegate = PlayerBoomerangDestroy;
+        attack.runningDelegate = PlayerDashRunning;
+        attack.endDelegate = PlayerDashEnd;
         StartCoroutine(StartAttack(attack));
         runningAttacks.Add(attack);
     }
 
-    private void PlayerBoomerangDestroy(AttackParameters attack)
+    private void PlayerDashRunning(AttackParameters attack)
     {
-        GameObject boomerang = battleData.boomerangsByCreatures[attack.playerData];
-        if (boomerang != null)
+        attack.playerData.attackDirection = battleData.attackDirections[attack.playerData].normalized;
+        attack.playerData.transform.GetComponent<Rigidbody2D>().velocity = battleData.attackDirections[attack.playerData] / attack.timeOffset;
+
+        List<EnemyController> enemies = DetectTargets<EnemyController>(attack.playerData.position, attack.playerData.colliderRadius + 0.25f, attack.playerData.attackDirection, false);
+        foreach (EnemyController enemy in enemies)
         {
-            Destroy(boomerang);
-            battleData.boomerangsByCreatures.Remove(attack.playerData);
+            if (enemy.IsAlive())
+            {
+                DealDamage(attack.playerData, enemy.enemyParameters, attack, true);
+            }
         }
+
+        List<ObjectController> breakables = DetectTargets<ObjectController>(attack.playerData.position, attack.playerData.colliderRadius * 2, attack.playerData.attackDirection, false);
+        foreach (ObjectController breakable in breakables)
+        {
+            if (breakable.IsIntact())
+            {
+                DealDamage(attack.playerData, breakable.objectParameters, attack, true);
+            }
+        }
+    }
+
+    private void PlayerDashEnd(AttackParameters attack)
+    {
+        attack.playerData.transform.GetComponent<Rigidbody2D>().excludeLayers = LayerMask.GetMask(new string[] { "Nothing" });
+        battleData.attackDirections.Remove(attack.playerData);
     }
 
     private void GuardUseSword(EnemyParameters enemyParameters, AttackParameters attack)
@@ -618,8 +652,8 @@ public class BattleManager : MonoBehaviour
 
     private void GhostShoot(EnemyParameters enemyParameters, AttackParameters attack)
     {
-        projectileController = Instantiate(enemyParameters.projectilePrefab, enemyParameters.position, new Quaternion()).GetComponent<ProjectileController>();
-        projectileController.Launch("Enemy", enemyParameters, enemyParameters.playerData, attack, enemyParameters.attackDirection);
+        ProjectileController projectileController = Instantiate(enemyParameters.projectilePrefab, enemyParameters.position, new Quaternion()).GetComponent<ProjectileController>();
+        projectileController.Launch("Enemy", enemyParameters, attack, enemyParameters.attackDirection);
     }
 
     private void DisableStun(AttackParameters attack)
