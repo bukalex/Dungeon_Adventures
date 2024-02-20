@@ -63,8 +63,33 @@ public class Item : ScriptableObject
     public Sprite image;
     public RuntimeAnimatorController animController;
 
-    public enum ItemType { Potion, Material, Gear, Weapon, Gems, Artifacts, Treasures, Food, Trash, Spell, MonsterLoot}
+    public enum ItemType { Potion, Material, Gear, Weapon, Artifact, Treasure, Food, Trash, Spell, MonsterLoot}
     public enum ItemTag { Item, Helmet, Chestplate, Gloves, Boots, Sword, Gem}
     public enum CoinType { OFF, GoldenCoin, SilverCoin, CopperCoin }
 
+    public string GetItemType(ItemType itemType)
+    {
+        switch (itemType)
+        {
+            case ItemType.Potion:
+                return "Potion";
+
+            case ItemType.Spell:
+                return ItemType.Spell.ToString();
+
+            case ItemType.MonsterLoot: 
+                return "Monster Loot";
+
+            case ItemType.Material:
+                return "Material";
+
+            case ItemType.Gear:
+                return "Gear";
+
+            case ItemType.Treasure:
+                return "Treasure";
+        }
+
+        return null;
+    }
 }

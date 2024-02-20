@@ -31,38 +31,15 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         //Check if item and slot have the same tag
         #region
         //Inventory slots
-        if (transform.childCount == 0 && 
-            (inventoryItem.InventoryItemPrefab.CompareTag("Item") && slotPrefab.CompareTag("Inventory")) ||
-            (inventoryItem.InventoryItemPrefab.CompareTag("Gem") && slotPrefab.CompareTag("Gem"))||
-            (inventoryItem.InventoryItemPrefab.CompareTag("Gem") && slotPrefab.CompareTag("Inventory"))
+        if ( (inventoryItem.InventoryItemPrefab.CompareTag("Item") && slotPrefab.CompareTag("Inventory") && transform.childCount == 0) ||
+            (inventoryItem.InventoryItemPrefab.CompareTag("Gem") && slotPrefab.CompareTag("Gem") && transform.childCount == 0) ||
+            (inventoryItem.InventoryItemPrefab.CompareTag("Gem") && slotPrefab.CompareTag("Inventory") && transform.childCount == 0) ||
+            (inventoryItem.InventoryItemPrefab.CompareTag("Sword") && slotPrefab.CompareTag("Sword") && transform.childCount == 0) ||
+            (inventoryItem.InventoryItemPrefab.CompareTag("Sword") && slotPrefab.CompareTag("Inventory") && transform.childCount == 0)
             )
         {
             inventoryItem.parentAfterDrag = transform;
         }
-        ////Chestplate slot
-        //else if (transform.childCount == 0 && inventoryItem.InventoryItemPrefab.CompareTag("Chestplate") == true && slotPrefab.CompareTag("Chestplate") == true)
-        //{
-        //    inventoryItem.parentAfterDrag = transform;
-        //}
-        ////Helmet slot
-        //else if (transform.childCount == 0 && inventoryItem.itemTag == inventoryItem.item.tag.ToString() && slotPrefab.CompareTag("Helmet") == true)
-        //{
-        //    inventoryItem.parentAfterDrag = transform;
-        //}
-        ////Gem slot
-        //else if (transform.childCount == 0 && inventoryItem.InventoryItemPrefab.CompareTag("Boots") && slotPrefab.CompareTag("Boots"))
-        //{
-        //    inventoryItem.parentAfterDrag = transform;
-        //}
-        ////
-        //else if (transform.childCount == 0 && inventoryItem.InventoryItemPrefab.CompareTag("Sword") && slotPrefab.CompareTag("Sword"))
-        //{
-        //    inventoryItem.parentAfterDrag = transform;
-        //}
-        //else if (transform.childCount == 0 && inventoryItem.itemTag == inventoryItem.item.tag.ToString() && slotPrefab.CompareTag("Gem") == true)
-        //{
-        //    inventoryItem.parentAfterDrag = transform;
-        //}
         #endregion
     }
 

@@ -9,33 +9,36 @@ public class InventoryManager : MonoBehaviour
     public Item[] startItems;
     public Item[] allItems;
     public Ability[] startAbilities;
-
     public int maxStackCount = 16;
+    [Header("Slots")]
     public InventorySlot[] internalInventorySlots;
     public InventorySlot[] toolBar;
     public InventorySlot[] sellSlots;
     public InventorySlot[] storageSlots;
     public InventorySlot[] cheatSlots;
     public AbilitySlot[] abilityBar;
+    [Header("Icon prefabs")]
     public GameObject inventoryItemPrefab, abilityItemPrefab;
     public PlayerData playerData;
-
+    [Header("EquipmentSlots")]
+    public GameObject helmetSlot;
+    public GameObject glovesSlot;
+    public GameObject chestplateSlot;
+    public GameObject legginsSlot;
+    public GameObject gemSlot;
+    public GameObject swordSlot;
 
     public int selectedSlot = -1;
     public int[] intsd;
-
     public static InventoryManager Instance { get; private set; }
-
     public void Awake()
     {
-
         if (Instance == null) Instance = this;
         else DontDestroyOnLoad(gameObject);
     }
     private void Start()
     {
         InitializeSlots();
-
         //Create all items in a cheat chest
         foreach (var item in allItems)
             AddItem(item, cheatSlots, cheatSlots);
@@ -55,9 +58,7 @@ public class InventoryManager : MonoBehaviour
         //Fill stacks of usable items in cheat chests
         foreach (var item in allItems)
             fillStacks(item, cheatSlots);
-
     }
-
     private void InitializeSlots()
     {
         //Initializing slots for internal inventory
@@ -94,7 +95,6 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
-
         if (Input.GetKeyUp(KeyCode.C))
         {
             useSelectedItem();
@@ -113,7 +113,6 @@ public class InventoryManager : MonoBehaviour
                 itemInSlot.updateCount();
                 return true;
             }
-
             if(InventoryType1 != InventoryType2)
             {
                 for (int j = 0; j < InventoryType2.Length; j++)
@@ -153,10 +152,8 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
-
         return false;
     }
-
     public bool fillStacks(Item item, InventorySlot[] InventoryType)
     {
         for (int i = 0; i < InventoryType.Length; i++)
@@ -202,10 +199,12 @@ public class InventoryManager : MonoBehaviour
     }
     public void itemIsUsed(Item item)
     {
-        if (item.isUsable == true)
+        if (item.GetItemType(item.itemType) == "Potion")
         {
             playerData.health += item.addHP;
-            playerData.speed += item.addSPD;    
+            playerData.mana += item.addMP;
+            playerData.speed += item.addSPD;   
+            playerData.stamina += item.addStamina;
         }
     }
     public Item useSelectedItem()
@@ -232,7 +231,6 @@ public class InventoryManager : MonoBehaviour
         }
         return null;
     }
-
     public Ability useSelectedAbility()
     {
         return null;
