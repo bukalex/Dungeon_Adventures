@@ -71,6 +71,7 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
         specialDefense = initialSpecialDefense;
 
         speed = initialSpeed;
+        isStunned = false;
     }
 
     public void SetDictionaries()

@@ -146,6 +146,7 @@ public class EnemyController : MonoBehaviour
         else if (!alreadyDead && !enemyParameters.isStunned)
         {
             capsuleCollider.enabled = false;
+            GetComponentInChildren<PolygonCollider2D>().enabled = false;
             body.velocity = Vector3.zero;
             Die();
 

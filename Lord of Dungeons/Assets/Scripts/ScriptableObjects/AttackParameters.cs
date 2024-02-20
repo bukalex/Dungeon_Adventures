@@ -13,12 +13,10 @@ public class AttackParameters : ScriptableObject
     //For continuous attacks
     #region
     public PlayerData playerData { get; set; }
-    public PlayerRunningDelegate playerRunningDelegate { get; set; }
-    public PlayerEndDelegate playerEndDelegate { get; set; }
-
     public EnemyParameters enemyParameters { get; set; }
-    public EnemyRunningDelegate enemyRunningDelegate { get; set; }
-    public EnemyEndDelegate enemyEndDelegate { get; set; }
+
+    public RunningDelegate runningDelegate { get; set; }
+    public EndDelegate endDelegate { get; set; }
     #endregion
 
     [SerializeField]
@@ -57,8 +55,6 @@ public class AttackParameters : ScriptableObject
     public delegate void PlayerAction(PlayerData playerData, AttackParameters attack);
     public delegate void EnemyAction(EnemyParameters enemyParameters, AttackParameters attack);
 
-    public delegate void PlayerRunningDelegate(PlayerData playerData);
-    public delegate void PlayerEndDelegate(PlayerData playerData);
-    public delegate void EnemyRunningDelegate(EnemyParameters enemyParameters);
-    public delegate void EnemyEndDelegate(EnemyParameters enemyParameters);
+    public delegate void RunningDelegate(AttackParameters attack);
+    public delegate void EndDelegate(AttackParameters attack);
 }

@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
+using static UnityEngine.GraphicsBuffer;
 
 public class BattleManager : MonoBehaviour
 {
@@ -20,9 +22,8 @@ public class BattleManager : MonoBehaviour
     private Dictionary<PlayerData.CharacterType, Dictionary<AttackButton, AttackParameters>> playerAttacks = new Dictionary<PlayerData.CharacterType, Dictionary<AttackButton, AttackParameters>>();
     private Dictionary<EnemyParameters.EnemyType, Dictionary<AttackButton, AttackParameters>> enemyAttacks = new Dictionary<EnemyParameters.EnemyType, Dictionary<AttackButton, AttackParameters>>();
 
-    private List<AttackParameters> playerRunningAttacks = new List<AttackParameters>();
-    private List<AttackParameters> enemyRunningAttacks = new List<AttackParameters>();
-    private List<AttackParameters> expiredRunningAttacks = new List<AttackParameters>();
+    private List<AttackParameters> runningAttacks = new List<AttackParameters>();
+    private List<AttackParameters> expiredAttacks = new List<AttackParameters>();
 
     private ProjectileController projectileController;
 
@@ -46,6 +47,7 @@ public class BattleManager : MonoBehaviour
     {
         playerActions.Add(PlayerUseSword);
         playerActions.Add(PlayerActivateShield);
+        playerActions.Add(PlayerLeap);
 
         enemyActions.Add(GuardUseSword);
         enemyActions.Add(GuardUseSpecial);
@@ -105,61 +107,37 @@ public class BattleManager : MonoBehaviour
         return copy;
     }
 
-    void Update()
+    void LateUpdate()
     {
-        foreach (AttackParameters runningAttack in playerRunningAttacks)
+        foreach (AttackParameters attack in runningAttacks)
         {
             //Calls functions for attacks that have continuous effect
-            if (runningAttack.isRunning)
+            if (attack.isRunning)
             {
-                if (runningAttack.playerRunningDelegate != null)
+                if (attack.runningDelegate != null)
                 {
-                    runningAttack.playerRunningDelegate(runningAttack.playerData);
+                    attack.runningDelegate(attack);
                 }
             }
             //Calls functions for attacks that have effect upon end of their duration
             else
             {
-                if (runningAttack.playerEndDelegate != null)
+                if (attack.endDelegate != null)
                 {
-                    runningAttack.playerEndDelegate(runningAttack.playerData);
+                    attack.endDelegate(attack);
                 }
-                runningAttack.playerRunningDelegate = null;
-                runningAttack.playerEndDelegate = null;
-                expiredRunningAttacks.Add(runningAttack);
-            }
-        }
-
-        foreach (AttackParameters runningAttack in enemyRunningAttacks)
-        {
-            //Calls functions for attacks that have continuous effect
-            if (runningAttack.isRunning)
-            {
-                if (runningAttack.enemyRunningDelegate != null)
-                {
-                    runningAttack.enemyRunningDelegate(runningAttack.enemyParameters);
-                }
-            }
-            //Calls functions for attacks that have effect upon end of their duration
-            else
-            {
-                if (runningAttack.enemyEndDelegate != null)
-                {
-                    runningAttack.enemyEndDelegate(runningAttack.enemyParameters);
-                }
-                runningAttack.enemyRunningDelegate = null;
-                runningAttack.enemyEndDelegate = null;
-                expiredRunningAttacks.Add(runningAttack);
+                attack.runningDelegate = null;
+                attack.endDelegate = null;
+                expiredAttacks.Add(attack);
             }
         }
 
         //Removes expired attack
-        foreach (AttackParameters runningAttack in expiredRunningAttacks)
+        foreach (AttackParameters attack in expiredAttacks)
         {
-            playerRunningAttacks.Remove(runningAttack);
-            enemyRunningAttacks.Remove(runningAttack);
+            runningAttacks.Remove(attack);
         }
-        expiredRunningAttacks.Clear();
+        expiredAttacks.Clear();
     }
 
     public bool PlayerPerformAction(PlayerData playerData, AttackButton attackButton)
@@ -274,11 +252,7 @@ public class BattleManager : MonoBehaviour
             if (target.isTrigger && target.GetComponentInParent<T>() != null)
             {
                 Vector2 targetDirection = target.transform.parent.position - position;
-                if (!inSector)
-                {
-                    targets.Add(target.GetComponentInParent<T>());
-                }
-                else if (Vector2.Angle(attackDirection, targetDirection) <= 45)
+                if (!inSector || Vector2.Angle(attackDirection, targetDirection) <= 45)
                 {
                     targets.Add(target.GetComponentInParent<T>());
                 }
@@ -286,6 +260,43 @@ public class BattleManager : MonoBehaviour
         }
 
         return targets;
+    }
+
+    //Finds nearest target
+    private T GetNearestTarget<T>(Vector3 position, float radius, Vector3 attackDirection, bool inSector = true) where T : MonoBehaviour
+    {
+        Collider2D[] possibleTargets = Physics2D.OverlapCircleAll(position, radius);
+        RaycastHit2D[] hits;
+        T target = null;
+
+        foreach (Collider2D collider in possibleTargets)
+        {
+            if (collider.isTrigger && collider.GetComponentInParent<T>() != null)
+            {
+                bool isVisible = true;
+                Vector2 targetDirection = collider.transform.parent.position - position;
+                
+                if (!inSector || Vector2.Angle(attackDirection, targetDirection) <= 45)
+                {
+                    if (target == null || (target.transform.position - position).magnitude > targetDirection.magnitude)
+                    {
+                        hits = Physics2D.RaycastAll(position, targetDirection.normalized, targetDirection.magnitude);
+                        foreach (RaycastHit2D hit in hits)
+                        {
+                            if (hit.transform.tag == "Wall")
+                            {
+                                isVisible = false;
+                                break;
+                            }
+                        }
+
+                        if (isVisible) target = collider.GetComponentInParent<T>();
+                    }
+                }
+            }
+        }
+
+        return target;
     }
 
     //Checks if attack can be performed and takes the required amount of mana or stamina if returns true
@@ -491,24 +502,66 @@ public class BattleManager : MonoBehaviour
         playerData.specialDefense *= 5;
 
         attack.playerData = playerData;
-        attack.playerEndDelegate = PlayerDeactivateShield;
+        attack.endDelegate = PlayerDeactivateShield;
 
         StartCoroutine(StartAttack(attack));
-        playerRunningAttacks.Add(attack);
+        runningAttacks.Add(attack);
     }
 
-    private void PlayerDeactivateShield(PlayerData playerData)
+    private void PlayerDeactivateShield(AttackParameters attack)
     {
-        GameObject shield = battleData.shieldsByCreatures[playerData];
+        GameObject shield = battleData.shieldsByCreatures[attack.playerData];
         if (shield != null)
         {
             shield.GetComponent<Animator>().SetBool("shieldActivated", false);
             Destroy(shield, 0.5f);
-            battleData.shieldsByCreatures.Remove(playerData);
+            battleData.shieldsByCreatures.Remove(attack.playerData);
         }
+
+        attack.playerData.defense /= 5;
+        attack.playerData.specialDefense /= 5;
+    }
+
+    private void PlayerLeap(PlayerData playerData, AttackParameters attack)
+    {
+        attack.playerData = playerData;
         
-        playerData.defense /= 5;
-        playerData.specialDefense /= 5;
+        EnemyController enemy = GetNearestTarget<EnemyController>(playerData.position, attack.range + playerData.colliderRadius, playerData.attackDirection, false);
+        if (enemy != null)
+        {
+            playerData.attackDirection = (enemy.enemyParameters.position - playerData.position).normalized;
+            attack.enemyParameters = enemy.enemyParameters;
+        }
+        else
+        {
+            attack.enemyParameters = null;
+        }
+
+        attack.runningDelegate = PlayerLeapRunning;
+        attack.endDelegate = PlayerLeapEnd;
+        StartCoroutine(StartAttack(attack));
+        runningAttacks.Add(attack);
+    }
+
+    private void PlayerLeapRunning(AttackParameters attack)
+    {
+        if (attack.enemyParameters == null)
+        {
+            attack.playerData.transform.GetComponent<Rigidbody2D>().velocity = attack.playerData.attackDirection.normalized * attack.range / attack.timeOffset;
+        }
+        else
+        {
+            attack.playerData.transform.GetComponent<Rigidbody2D>().velocity = (attack.enemyParameters.position - attack.playerData.position) / attack.timeOffset;
+        }
+    }
+
+    private void PlayerLeapEnd(AttackParameters attack)
+    {
+        if (attack.enemyParameters != null)
+        {
+            Camera.main.GetComponent<Animator>().SetTrigger("shake");
+            DealDamage(attack.playerData, attack.enemyParameters, attack);
+        }
     }
 
     private void GuardUseSword(EnemyParameters enemyParameters, AttackParameters attack)
@@ -533,10 +586,10 @@ public class BattleManager : MonoBehaviour
         DealDamage(enemyParameters, enemyParameters.playerData, attack);
 
         attack.playerData = enemyParameters.playerData;
-        attack.playerEndDelegate = DisableStun;
+        attack.endDelegate = DisableStun;
 
         StartCoroutine(StartAttack(attack));
-        playerRunningAttacks.Add(attack);
+        runningAttacks.Add(attack);
     }
 
     private void GhostShoot(EnemyParameters enemyParameters, AttackParameters attack)
@@ -545,8 +598,9 @@ public class BattleManager : MonoBehaviour
         projectileController.Launch("Enemy", enemyParameters, enemyParameters.playerData, attack, enemyParameters.attackDirection);
     }
 
-    private void DisableStun(IDefenseObject defenseObject)
+    private void DisableStun(AttackParameters attack)
     {
-        defenseObject.DisableStun();
+        if (attack.playerData != null) attack.playerData.DisableStun();
+        if (attack.playerData != null) attack.enemyParameters.DisableStun();
     }
 }

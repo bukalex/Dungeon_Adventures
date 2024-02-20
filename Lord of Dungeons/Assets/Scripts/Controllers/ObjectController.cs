@@ -89,6 +89,7 @@ public class ObjectController : MonoBehaviour
         Instantiate(objectParametersOriginal.dropPrefab, transform.position, new Quaternion());
         animator.SetTrigger("isBroken");
         capsuleCollider.enabled = false;
+        GetComponentInChildren<PolygonCollider2D>().enabled = false;
     }
 
     private List<T> DetectSprites<T>()
