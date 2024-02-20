@@ -48,6 +48,7 @@ public class BattleManager : MonoBehaviour
         playerActions.Add(PlayerUseSword);
         playerActions.Add(PlayerActivateShield);
         playerActions.Add(PlayerLeap);
+        playerActions.Add(PlayerBoomerang);
 
         enemyActions.Add(GuardUseSword);
         enemyActions.Add(GuardUseSpecial);
@@ -502,8 +503,8 @@ public class BattleManager : MonoBehaviour
         playerData.specialDefense *= 5;
 
         attack.playerData = playerData;
-        attack.endDelegate = PlayerDeactivateShield;
 
+        attack.endDelegate = PlayerDeactivateShield;
         StartCoroutine(StartAttack(attack));
         runningAttacks.Add(attack);
     }
@@ -557,10 +558,33 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerLeapEnd(AttackParameters attack)
     {
-        if (attack.enemyParameters != null)
+        EnemyController enemy = GetNearestTarget<EnemyController>(attack.playerData.position, attack.playerData.colliderRadius + 0.25f, attack.playerData.attackDirection, false);
+        if (enemy != null)
         {
             Camera.main.GetComponent<Animator>().SetTrigger("shake");
-            DealDamage(attack.playerData, attack.enemyParameters, attack);
+            DealDamage(attack.playerData, enemy.enemyParameters, attack);
+        }
+    }
+
+    private void PlayerBoomerang(PlayerData playerData, AttackParameters attack)
+    {
+        GameObject boomerang = Instantiate(battleData.boomerangPrefab, playerData.position, Quaternion.identity);
+        battleData.boomerangsByCreatures.Add(playerData, boomerang);
+
+        attack.playerData = playerData;
+
+        attack.endDelegate = PlayerBoomerangDestroy;
+        StartCoroutine(StartAttack(attack));
+        runningAttacks.Add(attack);
+    }
+
+    private void PlayerBoomerangDestroy(AttackParameters attack)
+    {
+        GameObject boomerang = battleData.boomerangsByCreatures[attack.playerData];
+        if (boomerang != null)
+        {
+            Destroy(boomerang);
+            battleData.boomerangsByCreatures.Remove(attack.playerData);
         }
     }
 
