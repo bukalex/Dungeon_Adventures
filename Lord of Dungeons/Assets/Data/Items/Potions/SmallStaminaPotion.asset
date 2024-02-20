@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: SmallStaminaPotion
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
-  name: 
+  name: Small Stamina Potion
   description: 
-  unitsPerStack: 0
+  unitsPerStack: 16
   tag: 0
   itemType: 0
   materialType: 0
   addHP: 0
   addMP: 0
   addSPD: 0
-  addStamina: 0
+  addStamina: 10
   restoreHP: 0
   restoreMP: 0
   restoreSPD: 0
@@ -34,15 +34,15 @@ MonoBehaviour:
   items: []
   GoldenCoin: 0
   SilverCoin: 0
-  CopperCoin: 0
+  CopperCoin: 20
   GoldenCoins: 0
   SilverCoins: 0
-  CopperCoins: 0
-  isStackable: 0
-  isUsable: 0
+  CopperCoins: 4
+  isStackable: 1
+  isUsable: 1
   isLootable: 0
   isPurchasable: 0
   isCraftMaterial: 0
   isUpgradeMaterial: 0
-  image: {fileID: 0}
+  image: {fileID: -1389879371, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
   animController: {fileID: 0}

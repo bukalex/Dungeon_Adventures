@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Wing
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
-  name: 
+  name: Wing
   description: 
-  unitsPerStack: 0
+  unitsPerStack: 32
   tag: 0
-  itemType: 0
+  itemType: 10
   materialType: 0
   addHP: 0
   addMP: 0
@@ -37,12 +37,12 @@ MonoBehaviour:
   CopperCoin: 0
   GoldenCoins: 0
   SilverCoins: 0
-  CopperCoins: 0
-  isStackable: 0
+  CopperCoins: 50
+  isStackable: 1
   isUsable: 0
-  isLootable: 0
+  isLootable: 1
   isPurchasable: 0
   isCraftMaterial: 0
   isUpgradeMaterial: 0
-  image: {fileID: 0}
+  image: {fileID: -2021243087, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
   animController: {fileID: 0}
