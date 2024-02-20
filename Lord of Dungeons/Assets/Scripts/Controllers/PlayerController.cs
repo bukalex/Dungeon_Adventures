@@ -28,12 +28,15 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
 
     void Awake()
     {
-        //SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Dungeon);
+        
         playerData.position = transform.position;
         playerData.transform = transform;
         animator.runtimeAnimatorController = playerData.animController;
     }
-
+    private void Start()
+    {
+        SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Dungeon);
+    }
     void Update()
     {
         playerData.position = transform.position;
