@@ -71,6 +71,7 @@ public class SESoundData
         Attack,
         Shield,
         GhoastProjectile,
+        Swing,
     }
 
     public SE se;

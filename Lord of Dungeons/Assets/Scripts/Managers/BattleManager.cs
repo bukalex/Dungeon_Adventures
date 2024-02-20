@@ -151,6 +151,8 @@ public class BattleManager : MonoBehaviour
         if (playerAttacks.ContainsKey(playerData.type) && playerAttacks[playerData.type].ContainsKey(attackButton))
         {
             attack = playerAttacks[playerData.type][attackButton];
+           
+
         }
         else
         {
@@ -161,7 +163,7 @@ public class BattleManager : MonoBehaviour
         {
             attack.playerAction(playerData);
             //Swoard sound effect
-            SoundManager.Instance.PlaySE(SESoundData.SE.Attack); 
+            SoundManager.Instance.PlaySE(SESoundData.SE.Swing); 
         }
         else
         {
@@ -379,6 +381,7 @@ public class BattleManager : MonoBehaviour
     private void GuardUseSword(EnemyParameters enemyParameters)
     {
         DealDamage(enemyParameters, enemyParameters.playerData);
+        SoundManager.Instance.PlaySE(SESoundData.SE.Attack);
     }
 
     private void GuardUseSpecial(EnemyParameters enemyParameters)
