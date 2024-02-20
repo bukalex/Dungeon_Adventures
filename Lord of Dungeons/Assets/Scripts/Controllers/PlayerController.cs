@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
     }
     private void Start()
     {
-        SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Dungeon);
+        //SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Dungeon);
     }
     void Update()
     {
