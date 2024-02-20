@@ -34,17 +34,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         if (transform.childCount == 0 && 
             (inventoryItem.InventoryItemPrefab.CompareTag("Item") && slotPrefab.CompareTag("Inventory")) ||
             (inventoryItem.InventoryItemPrefab.CompareTag("Gem") && slotPrefab.CompareTag("Gem"))||
-            (inventoryItem.InventoryItemPrefab.CompareTag("Gem") && slotPrefab.CompareTag("Inventory"))||
-            (inventoryItem.InventoryItemPrefab.CompareTag("Chestplate") && slotPrefab.CompareTag("Chesplate"))||
-            (inventoryItem.InventoryItemPrefab.CompareTag("Chestplate") && slotPrefab.CompareTag("Inventory"))||
-            (inventoryItem.InventoryItemPrefab.CompareTag("Helmet") && slotPrefab.CompareTag("Helmet"))||
-            (inventoryItem.InventoryItemPrefab.CompareTag("Helmet") && slotPrefab.CompareTag("Inventory"))||
-            (inventoryItem.InventoryItemPrefab.CompareTag("Sword") && slotPrefab.CompareTag("Sword"))||
-            (inventoryItem.InventoryItemPrefab.CompareTag("Sword") && slotPrefab.CompareTag("Inventory"))||
-            (inventoryItem.InventoryItemPrefab.CompareTag("Boots") && slotPrefab.CompareTag("Boots"))||
-            (inventoryItem.InventoryItemPrefab.CompareTag("Boots") && slotPrefab.CompareTag("Inventory"))||
-            (inventoryItem.InventoryItemPrefab.CompareTag("Gloves") && slotPrefab.CompareTag("Gloves"))||
-            (inventoryItem.InventoryItemPrefab.CompareTag("Gloves") && slotPrefab.CompareTag("Inventory"))
+            (inventoryItem.InventoryItemPrefab.CompareTag("Gem") && slotPrefab.CompareTag("Inventory"))
             )
         {
             inventoryItem.parentAfterDrag = transform;

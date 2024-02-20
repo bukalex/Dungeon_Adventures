@@ -20,7 +20,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public int count = 1;
     [HideInInspector]
     public Transform parentAfterDrag;
-    [SerializeField]
+    [HideInInspector]
     public string itemTag;
 
     public void InitializeItem(Item newItem)
