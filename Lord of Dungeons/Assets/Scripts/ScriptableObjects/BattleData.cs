@@ -10,4 +10,5 @@ public class BattleData : ScriptableObject
 
     public GameObject superAttackAreaPrefab;
     public GameObject boomerangPrefab;
+    public Dictionary<ScriptableObject, Vector3> attackDirections = new Dictionary<ScriptableObject, Vector3>();
 }

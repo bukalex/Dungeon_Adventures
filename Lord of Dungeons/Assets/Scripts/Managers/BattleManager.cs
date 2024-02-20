@@ -47,6 +47,7 @@ public class BattleManager : MonoBehaviour
         playerActions.Add(PlayerActivateShield);
         playerActions.Add(PlayerLeap);
         playerActions.Add(PlayerBoomerang);
+        playerActions.Add(PlayerDash);
 
         enemyActions.Add(GuardUseSword);
         enemyActions.Add(GuardUseSpecial);
@@ -534,7 +535,6 @@ public class BattleManager : MonoBehaviour
         EnemyController enemy = GetNearestTarget<EnemyController>(playerData.position, attack.range + playerData.colliderRadius, playerData.attackDirection, false);
         if (enemy != null)
         {
-            playerData.attackDirection = (enemy.enemyParameters.position - playerData.position).normalized;
             attack.enemyParameters = enemy.enemyParameters;
         }
         else
@@ -556,6 +556,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
+            attack.playerData.attackDirection = (attack.enemyParameters.position - attack.playerData.position).normalized;
             attack.playerData.transform.GetComponent<Rigidbody2D>().velocity = (attack.enemyParameters.position - attack.playerData.position) / attack.timeOffset;
         }
     }
@@ -575,6 +576,50 @@ public class BattleManager : MonoBehaviour
         GameObject boomerang = Instantiate(battleData.boomerangPrefab, playerData.position, Quaternion.identity);
         boomerang.GetComponent<ProjectileController>().Launch("Player", playerData, attack, Vector3.zero);
         Destroy(boomerang, attack.duration);
+    }
+
+    private void PlayerDash(PlayerData playerData, AttackParameters attack)
+    {
+        Vector3 attackDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - new Vector3(0, 0, Camera.main.transform.position.z) - playerData.position).normalized * attack.range;
+        playerData.attackDirection = attackDirection.normalized;
+        battleData.attackDirections.Add(playerData, attackDirection);
+        playerData.transform.GetComponent<Rigidbody2D>().excludeLayers = LayerMask.GetMask(new string[] { "Creatures" });
+
+        attack.playerData = playerData;
+        attack.runningDelegate = PlayerDashRunning;
+        attack.endDelegate = PlayerDashEnd;
+        StartCoroutine(StartAttack(attack));
+        runningAttacks.Add(attack);
+    }
+
+    private void PlayerDashRunning(AttackParameters attack)
+    {
+        attack.playerData.attackDirection = battleData.attackDirections[attack.playerData].normalized;
+        attack.playerData.transform.GetComponent<Rigidbody2D>().velocity = battleData.attackDirections[attack.playerData] / attack.timeOffset;
+
+        List<EnemyController> enemies = DetectTargets<EnemyController>(attack.playerData.position, attack.playerData.colliderRadius + 0.25f, attack.playerData.attackDirection, false);
+        foreach (EnemyController enemy in enemies)
+        {
+            if (enemy.IsAlive())
+            {
+                DealDamage(attack.playerData, enemy.enemyParameters, attack, true);
+            }
+        }
+
+        List<ObjectController> breakables = DetectTargets<ObjectController>(attack.playerData.position, attack.playerData.colliderRadius * 2, attack.playerData.attackDirection, false);
+        foreach (ObjectController breakable in breakables)
+        {
+            if (breakable.IsIntact())
+            {
+                DealDamage(attack.playerData, breakable.objectParameters, attack, true);
+            }
+        }
+    }
+
+    private void PlayerDashEnd(AttackParameters attack)
+    {
+        attack.playerData.transform.GetComponent<Rigidbody2D>().excludeLayers = LayerMask.GetMask(new string[] { "Nothing" });
+        battleData.attackDirections.Remove(attack.playerData);
     }
 
     private void GuardUseSword(EnemyParameters enemyParameters, AttackParameters attack)

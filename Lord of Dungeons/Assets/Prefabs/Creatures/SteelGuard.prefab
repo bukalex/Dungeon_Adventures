@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2658918253878892655}
   - component: {fileID: 5378221302062796106}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 5965241633063302086}
   - component: {fileID: 8810905020771586454}
   - component: {fileID: 1033650342991500364}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SteelGuard
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 5242332719883193909}
   - component: {fileID: 9064870504344109426}
   - component: {fileID: 7411275467175981837}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: EnemyUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,7 +314,7 @@ GameObject:
   - component: {fileID: 8155789756617482204}
   - component: {fileID: 9050633706751259815}
   - component: {fileID: 1065281713056723311}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Animation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -571,6 +571,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7646982250108765703}
     m_Modifications:
+    - target: {fileID: 7784956624216322292, guid: 28bb9fdcb43ec2146aa055159b869d0f, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7784956624216322293, guid: 28bb9fdcb43ec2146aa055159b869d0f, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -578,6 +582,14 @@ PrefabInstance:
     - target: {fileID: 7784956624216322293, guid: 28bb9fdcb43ec2146aa055159b869d0f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7784956624470527015, guid: 28bb9fdcb43ec2146aa055159b869d0f, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7784956625313266991, guid: 28bb9fdcb43ec2146aa055159b869d0f, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7784956625589597732, guid: 28bb9fdcb43ec2146aa055159b869d0f, type: 3}
       propertyPath: m_Pivot.x
@@ -674,6 +686,10 @@ PrefabInstance:
     - target: {fileID: 7784956625589597735, guid: 28bb9fdcb43ec2146aa055159b869d0f, type: 3}
       propertyPath: m_Name
       value: RedHpBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 7784956625589597735, guid: 28bb9fdcb43ec2146aa055159b869d0f, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7784956625589597735, guid: 28bb9fdcb43ec2146aa055159b869d0f, type: 3}
       propertyPath: m_TagString
