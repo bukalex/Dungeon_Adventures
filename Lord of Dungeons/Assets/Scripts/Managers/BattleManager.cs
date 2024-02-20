@@ -25,8 +25,6 @@ public class BattleManager : MonoBehaviour
     private List<AttackParameters> runningAttacks = new List<AttackParameters>();
     private List<AttackParameters> expiredAttacks = new List<AttackParameters>();
 
-    private ProjectileController projectileController;
-
     public enum AttackType { BASIC, SPECIAL }
     public enum AttackButton { NONE, LMB, RMB, SHIFT, R, F, C, V }
 
@@ -237,9 +235,9 @@ public class BattleManager : MonoBehaviour
     }
 
     //Called be projectiles upon hit
-    public void ProjectileHit(IAttackObject attackObject, IDefenseObject defenseObject, AttackParameters attack)
+    public void ProjectileHit(IAttackObject attackObject, IDefenseObject defenseObject, AttackParameters attack, bool isPerFrame = false)
     {
-        DealDamage(attackObject, defenseObject, attack);
+        DealDamage(attackObject, defenseObject, attack, isPerFrame);
     }
 
     //Finds specified targets
@@ -353,8 +351,14 @@ public class BattleManager : MonoBehaviour
     }
 
     //Deals damage from attackObject to defenseObject
-    private void DealDamage(IAttackObject attackObject, IDefenseObject defenseObject, AttackParameters attack)
+    private void DealDamage(IAttackObject attackObject, IDefenseObject defenseObject, AttackParameters attack, bool isPerFrame = false)
     {
+        float multiplier = 1.0f;
+        if (isPerFrame)
+        {
+            multiplier = Time.deltaTime;
+        }
+
         float damage = attack.damage;
         damage *= 1.0f + (attackObject.GetAttackValue(attack.attackType) - defenseObject.GetDefenseValue(attack.attackType)) * 0.05f;
 
@@ -363,7 +367,7 @@ public class BattleManager : MonoBehaviour
             damage = 1.0f;
         }
         
-        defenseObject.DealDamage(damage);
+        defenseObject.DealDamage(damage * multiplier);
     }
 
     //Use this to recharge attacks
@@ -569,23 +573,8 @@ public class BattleManager : MonoBehaviour
     private void PlayerBoomerang(PlayerData playerData, AttackParameters attack)
     {
         GameObject boomerang = Instantiate(battleData.boomerangPrefab, playerData.position, Quaternion.identity);
-        battleData.boomerangsByCreatures.Add(playerData, boomerang);
-
-        attack.playerData = playerData;
-
-        attack.endDelegate = PlayerBoomerangDestroy;
-        StartCoroutine(StartAttack(attack));
-        runningAttacks.Add(attack);
-    }
-
-    private void PlayerBoomerangDestroy(AttackParameters attack)
-    {
-        GameObject boomerang = battleData.boomerangsByCreatures[attack.playerData];
-        if (boomerang != null)
-        {
-            Destroy(boomerang);
-            battleData.boomerangsByCreatures.Remove(attack.playerData);
-        }
+        boomerang.GetComponent<ProjectileController>().Launch("Player", playerData, attack, Vector3.zero);
+        Destroy(boomerang, attack.duration);
     }
 
     private void GuardUseSword(EnemyParameters enemyParameters, AttackParameters attack)
@@ -618,8 +607,8 @@ public class BattleManager : MonoBehaviour
 
     private void GhostShoot(EnemyParameters enemyParameters, AttackParameters attack)
     {
-        projectileController = Instantiate(enemyParameters.projectilePrefab, enemyParameters.position, new Quaternion()).GetComponent<ProjectileController>();
-        projectileController.Launch("Enemy", enemyParameters, enemyParameters.playerData, attack, enemyParameters.attackDirection);
+        ProjectileController projectileController = Instantiate(enemyParameters.projectilePrefab, enemyParameters.position, new Quaternion()).GetComponent<ProjectileController>();
+        projectileController.Launch("Enemy", enemyParameters, attack, enemyParameters.attackDirection);
     }
 
     private void DisableStun(AttackParameters attack)

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
 {
     [SerializeField]
     private PlayerData playerData;
@@ -230,6 +230,11 @@ public class PlayerController : MonoBehaviour
     }
 
     public PlayerData GetPlayerData()
+    {
+        return playerData;
+    }
+
+    public IDefenseObject GetDefenseObject()
     {
         return playerData;
     }

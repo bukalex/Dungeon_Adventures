@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
 {
     [SerializeField]
     private EnemyParameters enemyParametersOriginal;
@@ -258,6 +258,11 @@ public class EnemyController : MonoBehaviour
         }
 
         return targets;
+    }
+
+    public IDefenseObject GetDefenseObject()
+    {
+        return enemyParameters;
     }
 
     //Animation

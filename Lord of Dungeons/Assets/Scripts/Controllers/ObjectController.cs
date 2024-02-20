@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ObjectController : MonoBehaviour
+public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour
 {
     [SerializeField]
     private ObjectParameters objectParametersOriginal;
@@ -106,5 +106,10 @@ public class ObjectController : MonoBehaviour
         }
 
         return targets;
+    }
+
+    public IDefenseObject GetDefenseObject()
+    {
+        return objectParameters;
     }
 }
