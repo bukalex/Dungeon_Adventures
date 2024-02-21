@@ -10,10 +10,11 @@ public class TemporaryTradingSystem : MonoBehaviour
     public InventorySlot sellSlot;
     public PlayerData playerData;
     public Item[] items2Pickup;
-    public InventoryItem itemInStore;
-    public TMP_Text priceDisplay;
-    public TMP_Text itemName;
-    public TMP_Text itemDescription;
+    public static InventoryItem itemInStore;
+    public InventoryItem itemInWizardStore;
+    public TMP_Text traderPriceDisplay, wizardPriceDisplay;
+    public TMP_Text traderItemName, wizardItemName;
+    public TMP_Text traderItemDescription, wizardItemDescription;
     public TMP_Text[] itemPrice;
     private int[] coinsFromSell;
 
@@ -45,8 +46,12 @@ public class TemporaryTradingSystem : MonoBehaviour
 
                     itemInStore = result.gameObject.GetComponentInChildren<InventorySlot>().GetComponentInChildren<InventoryItem>();
                     itemInStore.GetComponentInParent<InventorySlot>().selectSlot();
-                    itemName.text = itemInStore.item.name;
-                    itemDescription.text = itemInStore.item.description.Replace("\\n", "\n");
+
+                    traderItemName.text = itemInStore.item.name;
+                    traderItemDescription.text = itemInStore.item.description.Replace("\\n", "\n");
+
+                    wizardItemName.text = itemInStore.item.name;
+                    wizardItemDescription.text = itemInStore.item.description.Replace("\\n", "\n");
                     break;
                 }
             }
@@ -100,25 +105,25 @@ public class TemporaryTradingSystem : MonoBehaviour
         playerData.resources[Item.CoinType.SilverCoin] += coinsFromSell[1];
         playerData.resources[Item.CoinType.CopperCoin] += coinsFromSell[2];
 
-        priceDisplay.text = "";
+        traderPriceDisplay.text = "";
         StartCoroutine(ChangeLabel());
     }
 
     private IEnumerator ChangeLabel()
     {
-        priceDisplay.text = "";
-        for (int i = 0; i < priceDisplay.transform.childCount; i++)
+        traderPriceDisplay.text = "";
+        for (int i = 0; i < traderPriceDisplay.transform.childCount; i++)
         {
-            priceDisplay.transform.GetChild(i).gameObject.SetActive(true);
-            if (i % 2 == 1) priceDisplay.GetComponentsInChildren<TMP_Text>()[1 + i / 2].text = coinsFromSell[i / 2].ToString();
+            traderPriceDisplay.transform.GetChild(i).gameObject.SetActive(true);
+            if (i % 2 == 1) traderPriceDisplay.GetComponentsInChildren<TMP_Text>()[1 + i / 2].text = coinsFromSell[i / 2].ToString();
         }
 
         yield return new WaitForSeconds(5.0f);
 
-        priceDisplay.text = "Place items that you want to sell";
-        for (int i = 0; i < priceDisplay.transform.childCount; i++)
+        traderPriceDisplay.text = "Place items that you want to sell";
+        for (int i = 0; i < traderPriceDisplay.transform.childCount; i++)
         {
-            priceDisplay.transform.GetChild(i).gameObject.SetActive(false);
+            traderPriceDisplay.transform.GetChild(i).gameObject.SetActive(false);
         }
     }
 

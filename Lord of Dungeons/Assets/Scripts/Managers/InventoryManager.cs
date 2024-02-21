@@ -71,7 +71,7 @@ public class InventoryManager : MonoBehaviour
         sellSlots = UIManager.Instance.sellSlots.GetComponentsInChildren<InventorySlot>();
 
         //Initializing slots for purchase menu
-        storageSlots = UIManager.Instance.storage.GetComponentsInChildren<InventorySlot>(); 
+        storageSlots = UIManager.Instance.traderStorage.GetComponentsInChildren<InventorySlot>(); 
 
         //Initializing slots for abilities
         abilityBar = UIManager.Instance.abilitybar.GetComponentsInChildren<AbilitySlot>();
