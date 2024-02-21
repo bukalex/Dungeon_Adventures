@@ -97,7 +97,7 @@ public class InventoryManager : MonoBehaviour
                 }
             }
 
-            toolBar[selectedSlot].selectSlot();
+            if (selectedSlot != -1) toolBar[selectedSlot].selectSlot();
         }
         if (Input.GetKeyUp(KeyCode.Q))
         {
