@@ -18,7 +18,7 @@ public class ObjectParameters : ScriptableObject, IDefenseObject
     [Header("Others")]
     public PlayerData playerData;
     public float colliderRadius = 1.0f;
-    public GameObject dropPrefab;
+    //public GameObject dropPrefab;
     public RuntimeAnimatorController animController;
 
     public enum ObjectType { POT, CHEST}

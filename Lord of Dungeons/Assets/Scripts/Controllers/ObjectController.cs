@@ -86,7 +86,7 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour
 
     private void Bust()
     {
-        Instantiate(objectParametersOriginal.dropPrefab, transform.position, new Quaternion());
+        //Instantiate(objectParametersOriginal.dropPrefab, transform.position, new Quaternion());
         animator.SetTrigger("isBroken");
         capsuleCollider.enabled = false;
         GetComponentInChildren<PolygonCollider2D>().enabled = false;
