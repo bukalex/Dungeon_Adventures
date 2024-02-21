@@ -39,6 +39,8 @@ public class NPCController : MonoBehaviour
         {
             dialogWindow.SetActive(isActive);
         }
+
+        UIManager.Instance.npcWindowActive = isActive;
     }
 
     public float GetColliderRadius()

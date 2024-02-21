@@ -422,10 +422,6 @@ public class BattleManager : MonoBehaviour
 
         //Find current AttackButton and AttackParameters
         AttackButton currentAttackButton = AttackButton.NONE;
-        Debug.Log(playerData);
-        Debug.Log(playerData.attacks);
-        Debug.Log(attackButton);
-        Debug.Log(attack);
         foreach (KeyValuePair<AttackButton, AttackParameters> pair in playerData.attacks[playerData.type])
         {
             if (pair.Value.attackName.Equals(attack.attackName))
@@ -518,7 +514,7 @@ public class BattleManager : MonoBehaviour
     {
         GameObject shield = Instantiate(battleData.shieldPrefab, playerData.transform);
         shield.transform.localPosition = new Vector3(0, 0.5f, 0);
-        shield.GetComponent<Animator>().SetBool("shieldActivated", true);
+        shield.GetComponent<ParticleSystem>().Play(battleData.shieldPrefab);
         battleData.shieldsByCreatures.Add(playerData, shield);
 
         playerData.defense *= 5;
@@ -536,7 +532,7 @@ public class BattleManager : MonoBehaviour
         GameObject shield = battleData.shieldsByCreatures[attack.playerData];
         if (shield != null)
         {
-            shield.GetComponent<Animator>().SetBool("shieldActivated", false);
+            shield.GetComponent<ParticleSystem>().Stop();
             Destroy(shield, 0.5f);
             battleData.shieldsByCreatures.Remove(attack.playerData);
         }
