@@ -422,10 +422,6 @@ public class BattleManager : MonoBehaviour
 
         //Find current AttackButton and AttackParameters
         AttackButton currentAttackButton = AttackButton.NONE;
-        Debug.Log(playerData);
-        Debug.Log(playerData.attacks);
-        Debug.Log(attackButton);
-        Debug.Log(attack);
         foreach (KeyValuePair<AttackButton, AttackParameters> pair in playerData.attacks[playerData.type])
         {
             if (pair.Value.attackName.Equals(attack.attackName))

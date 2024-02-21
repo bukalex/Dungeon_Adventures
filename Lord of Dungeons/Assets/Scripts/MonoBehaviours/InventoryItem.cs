@@ -22,6 +22,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public Transform parentAfterDrag;
     [HideInInspector]
     public string itemTag;
+    [HideInInspector]
+    public bool isLocked = false;
 
     public void InitializeItem(Item newItem)
     {
@@ -39,18 +41,27 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        itemTag = InventoryItemPrefab.tag;
-        image.raycastTarget = false;
-        parentAfterDrag = transform.parent;
-        transform.SetParent(transform.root);
+        if (!isLocked)
+        {
+            itemTag = InventoryItemPrefab.tag;
+            image.raycastTarget = false;
+            parentAfterDrag = transform.parent;
+            transform.SetParent(transform.root);
+        }
     }
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = Input.mousePosition;
+        if (!isLocked)
+        {
+            transform.position = Input.mousePosition;
+        }
     }
     public void OnEndDrag(PointerEventData eventData)
     {
-        image.raycastTarget = true;
-        transform.SetParent(parentAfterDrag);
+        if (!isLocked)
+        {
+            image.raycastTarget = true;
+            transform.SetParent(parentAfterDrag);
+        }
     }
 }
