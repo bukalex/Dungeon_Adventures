@@ -471,6 +471,10 @@ public class BattleManager : MonoBehaviour
                 shakeCamera = true;
                 DealDamage(playerData, enemy.enemyParameters, attack);
             }
+            if (enemy.enemyParameters.type == EnemyParameters.EnemyType.GUARD)
+            {
+                Instantiate(battleData.Sparks, enemy.transform.position + new Vector3(0f, 0.75f), Quaternion.identity);
+            }
         }
 
         List<ObjectController> breakables = DetectTargets<ObjectController>(playerData.position, attack.range + playerData.colliderRadius, playerData.attackDirection);
