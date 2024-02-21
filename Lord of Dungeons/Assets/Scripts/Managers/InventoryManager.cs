@@ -27,6 +27,11 @@ public class InventoryManager : MonoBehaviour
     public GameObject legginsSlot;
     public GameObject gemSlot;
     public GameObject swordSlot;
+    [Header("Particles for usable items")]
+
+    public GameObject HPPotion;
+    public GameObject MPPotion;
+    public GameObject StaminaPotion;
 
     public int selectedSlot = -1;
     public int[] intsd;
@@ -204,12 +209,18 @@ public class InventoryManager : MonoBehaviour
     }
     public void itemIsUsed(Item item)
     {
-        if (item.GetItemType(item.itemType) == "Potion")
+        if (item.itemType == Item.ItemType.Potion)
         {
             playerData.health += item.addHP;
+            if (item.addHP > 0)
+                Instantiate(HPPotion, playerData.position + new Vector3(0f, 0.35f), Quaternion.identity);
             playerData.mana += item.addMP;
+            if (item.addMP > 0)
+                Instantiate(MPPotion, playerData.position + new Vector3(0f, 0.35f), Quaternion.identity);
             playerData.speed += item.addSPD;
-            playerData.stamina += item.addStamina;
+            playerData.stamina += item.addStamina ;
+            if(item.addStamina > 0)
+                Instantiate(StaminaPotion, playerData.transform.position + new Vector3(0f, 0.35f), Quaternion.identity);
         }
         else if (item.itemType == Item.ItemType.Spell)
         {
@@ -226,10 +237,10 @@ public class InventoryManager : MonoBehaviour
             if (item.isUsable == true)
             {
                     itemInSlot.count--;
+                    itemIsUsed(item);
                     if(itemInSlot.count <= 0)
-                    {
+                {
                         Destroy(itemInSlot.gameObject);
-                        itemIsUsed(item);
                     }
                     else
                     {
