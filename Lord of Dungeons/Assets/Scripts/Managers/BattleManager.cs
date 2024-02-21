@@ -415,8 +415,17 @@ public class BattleManager : MonoBehaviour
 
     public void AssingAbility(PlayerData playerData, AttackParameters attack, AttackButton attackButton)
     {
+        if (playerData.attacks == null)
+        {
+            playerData.attacks = CloneDictionary(playerAttacks);
+        }
+
         //Find current AttackButton and AttackParameters
         AttackButton currentAttackButton = AttackButton.NONE;
+        Debug.Log(playerData);
+        Debug.Log(playerData.attacks);
+        Debug.Log(attackButton);
+        Debug.Log(attack);
         foreach (KeyValuePair<AttackButton, AttackParameters> pair in playerData.attacks[playerData.type])
         {
             if (pair.Value.attackName.Equals(attack.attackName))
@@ -434,6 +443,10 @@ public class BattleManager : MonoBehaviour
         else if (currentAttackButton != AttackButton.NONE && currentAttack == null)//Remove key in the dictionary
         {
             playerData.attacks[playerData.type].Remove(currentAttackButton);
+            if (attackButton != AttackButton.NONE)
+            {
+                playerData.attacks[playerData.type][attackButton] = Instantiate(attack);
+            }
         }
         else if (currentAttack != null)//Swap the attacks
         {

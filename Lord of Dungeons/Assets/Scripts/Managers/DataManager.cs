@@ -7,7 +7,7 @@ public class DataManager : MonoBehaviour
 {
 
     [SerializeField]
-    private PlayerData playerData;
+    public PlayerData playerData;
 
     [SerializeField]
     private List<EnemyParameters> enemies;
@@ -25,8 +25,13 @@ public class DataManager : MonoBehaviour
     [HideInInspector]
     private UIManager UI;
 
+    public static DataManager Instance { get; private set; }
+
     void Awake()
     {
+        if(Instance == null)
+            Instance = this;
+
         playerData.SetStats();
         playerData.SetDictionaries();
 

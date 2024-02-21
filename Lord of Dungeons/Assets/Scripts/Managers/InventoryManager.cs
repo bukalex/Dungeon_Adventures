@@ -95,7 +95,7 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
-        if (Input.GetKeyUp(KeyCode.C))
+        if (Input.GetKeyUp(KeyCode.Q))
         {
             useSelectedItem();
         }
@@ -180,6 +180,7 @@ public class InventoryManager : MonoBehaviour
             if(abilityInSlot == null)
             {
                 spawnNewAbility(ability, abilitySlot);
+                BattleManager.Instance.AssingAbility(DataManager.Instance.playerData, ability.attackParameters, abilitySlot.attackButton);
                 return true;
             }
         }
@@ -203,8 +204,12 @@ public class InventoryManager : MonoBehaviour
         {
             playerData.health += item.addHP;
             playerData.mana += item.addMP;
-            playerData.speed += item.addSPD;   
+            playerData.speed += item.addSPD;
             playerData.stamina += item.addStamina;
+        }
+        else if (item.itemType == Item.ItemType.Spell)
+        {
+            AddAbility(item.ability);
         }
     }
     public Item useSelectedItem()

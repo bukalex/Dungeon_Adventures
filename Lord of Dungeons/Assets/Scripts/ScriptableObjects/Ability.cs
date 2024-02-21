@@ -6,6 +6,9 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "Ability", menuName = "ScriptableObjects/Ability")]
 public class Ability : ScriptableObject
 {
+    [Header("Data")]
+    public AttackParameters attackParameters;
+
     [Header("Visual properties")]
     public Sprite maskSprite;
     public Sprite backgroundSprite;
