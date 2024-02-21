@@ -15,7 +15,7 @@ public class TemporaryTradingSystem : MonoBehaviour
     public TMP_Text itemName;
     public TMP_Text itemDescription;
     public TMP_Text[] itemPrice;
-    public int coinsFromSale;
+    private int[] coinsFromSell;
 
     public GraphicRaycaster graphicRaycaster;
     public EventSystem eventSystem;
@@ -23,17 +23,7 @@ public class TemporaryTradingSystem : MonoBehaviour
 
     private void Start()
     {
-        // for (int i = 0; i < UIManager.Instance.itemHolders.Length; i++)
-        // {
-        //     InventorySlot storeSlot = UIManager.Instance.itemHolders[i].GetComponentInChildren<InventorySlot>();
-        //     InventorySlot[] storeSlots = new InventorySlot[UIManager.Instance.itemHolders.Length];
-        //     storeSlots[i] = storeSlot;
-        // 
-        //     InventoryItem itemInSlot = storeSlots[i].GetComponentInChildren<InventoryItem>();
-        //     InventoryItem[] itemInSlots = new InventoryItem[storeSlots.Length];
-        // 
-        //     //itemPrice[i].text = itemInSlots[i].item.price.ToString();
-        // }
+        
     }
 
     void Update()
@@ -46,31 +36,36 @@ public class TemporaryTradingSystem : MonoBehaviour
             graphicRaycaster.Raycast(eventData, results);
             foreach (RaycastResult result in results)
             {
-                if (result.gameObject.GetComponent<InventoryItem>() != null)
+                if (result.gameObject.tag == "ItemHolder")
                 {
-                    itemInStore = result.gameObject.GetComponent<InventoryItem>();
-                    for (int i = 0; i < itemPrice.Length; i++)
+                    if (itemInStore != null)
                     {
-                        //itemPrice[i].text = itemInStore.item.price.ToString();
+                        itemInStore.GetComponentInParent<InventorySlot>().unselectSlot();
                     }
+
+                    itemInStore = result.gameObject.GetComponentInChildren<InventorySlot>().GetComponentInChildren<InventoryItem>();
+                    itemInStore.GetComponentInParent<InventorySlot>().selectSlot();
                     itemName.text = itemInStore.item.name;
-                    //itemDescription.text = itemInStore.item.description;
+                    itemDescription.text = itemInStore.item.description.Replace("\\n", "\n");
                     break;
                 }
             }
         }
+    }
 
-        //for (int i = 0; i < UIManager.Instance.itemHolders.Length; i++)
-        //{
-        //    InventorySlot storeSlot = UIManager.Instance.itemHolders[i].GetComponentInChildren<InventorySlot>();
-        //    InventorySlot[] storeSlots = new InventorySlot[UIManager.Instance.itemHolders.Length];
-        //    storeSlots[i] = storeSlot;
-        //
-        //    InventoryItem itemInSlot = storeSlots[i].GetComponentInChildren<InventoryItem>();
-        //    InventoryItem[] itemInSlots = new InventoryItem[storeSlots.Length];
-        //
-        //    itemPrice[i].text = itemInSlots[i].item.price.ToString();
-        //}
+    public void Purchase()
+    {
+        if (itemInStore != null && 
+            itemInStore.item.GoldenCoin <= playerData.resources[Item.CoinType.GoldenCoin] &&
+            itemInStore.item.SilverCoin <= playerData.resources[Item.CoinType.SilverCoin] &&
+            itemInStore.item.CopperCoin <= playerData.resources[Item.CoinType.CopperCoin])
+        {
+            playerData.resources[Item.CoinType.GoldenCoin] -= itemInStore.item.GoldenCoin;
+            playerData.resources[Item.CoinType.SilverCoin] -= itemInStore.item.SilverCoin;
+            playerData.resources[Item.CoinType.CopperCoin] -= itemInStore.item.CopperCoin;
+
+            InventoryManager.Instance.AddItem(itemInStore.item, InventoryManager.Instance.toolBar, InventoryManager.Instance.internalInventorySlots);
+        }
     }
 
     public void PickUpItem(int id)
@@ -86,40 +81,45 @@ public class TemporaryTradingSystem : MonoBehaviour
 
     public void sellItems()
     {
-        estimateSale();
-        InventoryItem[] ItemInSlot = new InventoryItem[InventoryManager.Instance.sellSlots.Length];
+        coinsFromSell = new int[] { 0, 0, 0 };
 
-        for (int i = 0; i < InventoryManager.Instance.sellSlots.Length; i++)
+        foreach (InventorySlot sellSlot in InventoryManager.Instance.sellSlots)
         {
-            foreach (InventorySlot sellSlot in InventoryManager.Instance.sellSlots)
+            InventoryItem inventoryItem = sellSlot.GetComponentInChildren<InventoryItem>();
+            if (inventoryItem != null)
             {
-                ItemInSlot[i] = sellSlot.GetComponentInChildren<InventoryItem>();
-                Destroy(ItemInSlot[i]);
+                coinsFromSell[0] += inventoryItem.item.GoldenCoins * inventoryItem.count;
+                coinsFromSell[1] += inventoryItem.item.SilverCoins * inventoryItem.count;
+                coinsFromSell[2] += inventoryItem.item.CopperCoins * inventoryItem.count;
+
+                Destroy(inventoryItem.gameObject);
             }
         }
 
-        //playerData.resources[Item.MaterialType.Coin] += coinsFromSale;
+        playerData.resources[Item.CoinType.GoldenCoin] += coinsFromSell[0];
+        playerData.resources[Item.CoinType.SilverCoin] += coinsFromSell[1];
+        playerData.resources[Item.CoinType.CopperCoin] += coinsFromSell[2];
+
+        priceDisplay.text = "";
+        StartCoroutine(ChangeLabel());
     }
 
-    public void estimateSale()
+    private IEnumerator ChangeLabel()
     {
-        InventorySlot slot = GetComponent<InventorySlot>();
-        InventoryItem[] ItemInSlot = new InventoryItem[InventoryManager.Instance.sellSlots.Length];
-
-        for (int i = 0; i < InventoryManager.Instance.sellSlots.Length; i++)
+        priceDisplay.text = "";
+        for (int i = 0; i < priceDisplay.transform.childCount; i++)
         {
-            foreach(InventorySlot sellSlot in InventoryManager.Instance.sellSlots)
-            {
-                ItemInSlot[i] = sellSlot.GetComponentInChildren<InventoryItem>();
-            }
+            priceDisplay.transform.GetChild(i).gameObject.SetActive(true);
+            if (i % 2 == 1) priceDisplay.GetComponentsInChildren<TMP_Text>()[1 + i / 2].text = coinsFromSell[i / 2].ToString();
         }
 
-        for (int i = 0; i < ItemInSlot.Length; i++)
-        {
-            //coinsFromSale = ItemInSlot[i].item.price;
-        }
+        yield return new WaitForSeconds(5.0f);
 
-        priceDisplay.text = "You got " + coinsFromSale.ToString();
+        priceDisplay.text = "Place items that you want to sell";
+        for (int i = 0; i < priceDisplay.transform.childCount; i++)
+        {
+            priceDisplay.transform.GetChild(i).gameObject.SetActive(false);
+        }
     }
 
     private bool isSlotEmpty()

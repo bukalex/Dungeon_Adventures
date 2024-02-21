@@ -31,14 +31,17 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         //Check if item and slot have the same tag
         #region
         //Inventory slots
-        if ( (inventoryItem.InventoryItemPrefab.CompareTag("Item") && slotPrefab.CompareTag("Inventory") && transform.childCount == 0) ||
+        if (!inventoryItem.isLocked)
+        {
+            if ((inventoryItem.InventoryItemPrefab.CompareTag("Item") && slotPrefab.CompareTag("Inventory") && transform.childCount == 0) ||
             (inventoryItem.InventoryItemPrefab.CompareTag("Gem") && slotPrefab.CompareTag("Gem") && transform.childCount == 0) ||
             (inventoryItem.InventoryItemPrefab.CompareTag("Gem") && slotPrefab.CompareTag("Inventory") && transform.childCount == 0) ||
             (inventoryItem.InventoryItemPrefab.CompareTag("Sword") && slotPrefab.CompareTag("Sword") && transform.childCount == 0) ||
             (inventoryItem.InventoryItemPrefab.CompareTag("Sword") && slotPrefab.CompareTag("Inventory") && transform.childCount == 0)
             )
-        {
-            inventoryItem.parentAfterDrag = transform;
+            {
+                inventoryItem.parentAfterDrag = transform;
+            }
         }
         #endregion
     }

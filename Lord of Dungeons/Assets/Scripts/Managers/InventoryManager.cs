@@ -7,7 +7,7 @@ public class InventoryManager : MonoBehaviour
 {
     private InventorySlot[] emp;
     public Item[] startItems;
-    public Item[] allItems;
+    public Item[] allItems; 
     public Ability[] startAbilities;
     public int maxStackCount = 16;
     [Header("Slots")]
@@ -84,6 +84,8 @@ public class InventoryManager : MonoBehaviour
     {
         if (Input.anyKeyDown)
         {
+            if(selectedSlot != -1) toolBar[selectedSlot].unselectSlot();
+
             string[] inputString = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};  
 
             for(int i = 0; i < inputString.Length; i++)
@@ -94,6 +96,8 @@ public class InventoryManager : MonoBehaviour
                     selectedSlot -= 1;
                 }
             }
+
+            toolBar[selectedSlot].selectSlot();
         }
         if (Input.GetKeyUp(KeyCode.Q))
         {

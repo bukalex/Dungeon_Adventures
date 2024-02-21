@@ -27,11 +27,15 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     public GameObject storage;
     [SerializeField]
+    private GameObject itemHolderPrefab;
+    [SerializeField]
     public GameObject sellSlots;
     [SerializeField]
-    public GameObject[] itemHolders;
-    [SerializeField]
     private GameObject sellMenu, storeMenu;
+    [SerializeField]
+    private Button sellButton, storeButton;
+    [SerializeField]
+    private Item[] traderItems;
 
     //Chest UI
     [SerializeField] private GameObject ChestUI;
@@ -39,6 +43,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Canvas playerCanvas;
 
     public bool isPaused = false;
+    public bool npcWindowActive = false;
 
     public GameObject[] spawnedEnemies;
     public GameObject[] enemyHealthBars;
@@ -51,6 +56,8 @@ public class UIManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(this);
+
+            InitializeTraderItems();
         }
     }
 
@@ -71,20 +78,23 @@ public class UIManager : MonoBehaviour
             InitializeEnemiesHealthBar();
         }
 
-        
+
 
 
         //Open inventory
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (!npcWindowActive)
         {
-            Debug.Log("Button TAB was pressed!");
-            InventorySlots.SetActive(true);
-            EquipmentSection.SetActive(true);
-        }
-        else if (Input.GetKeyUp(KeyCode.Tab))
-        {
-            InventorySlots.SetActive(false);
-            EquipmentSection.SetActive(false);
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                Debug.Log("Button TAB was pressed!");
+                InventorySlots.SetActive(true);
+                EquipmentSection.SetActive(true);
+            }
+            else if (Input.GetKeyUp(KeyCode.Tab))
+            {
+                InventorySlots.SetActive(false);
+                EquipmentSection.SetActive(false);
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -120,8 +130,31 @@ public class UIManager : MonoBehaviour
 
     public void traderButtons()
     {
+        sellButton.interactable = !sellButton.interactable;
+        storeButton.interactable = !storeButton.interactable;
+
         sellMenu.SetActive(!sellMenu.activeSelf);
         storeMenu.SetActive(!storeMenu.activeSelf);
+
+        InventorySlots.SetActive(sellMenu.activeSelf);
+    }
+
+    private void InitializeTraderItems()
+    {
+        foreach (Item item in traderItems)
+        {
+            Transform itemHolder = Instantiate(itemHolderPrefab, storage.transform).transform;
+            InventoryItem inventoryItem = itemHolder.GetComponentInChildren<InventorySlot>().GetComponentInChildren<InventoryItem>();
+            inventoryItem.item = item;
+            inventoryItem.GetComponent<Image>().sprite = item.image;
+            inventoryItem.transform.GetChild(0).gameObject.SetActive(false);
+
+            itemHolder.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = item.GoldenCoin.ToString();
+            itemHolder.GetChild(0).GetChild(3).GetComponent<TMP_Text>().text = item.SilverCoin.ToString();
+            itemHolder.GetChild(0).GetChild(5).GetComponent<TMP_Text>().text = item.CopperCoin.ToString();
+
+            inventoryItem.isLocked = true;
+        }
     }
 
     public void InitializeEnemiesHealthBar()
