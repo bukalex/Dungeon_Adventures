@@ -49,7 +49,7 @@ public class InventoryManager : MonoBehaviour
     {
         InitializeSlots();
 
-        //Create Random Loot Table
+        //Create Random Loot Table from all items in the game
         foreach (var item in allItems)
             FillRandomLootTable(item);
 
@@ -57,8 +57,9 @@ public class InventoryManager : MonoBehaviour
         foreach (var item in allItems)
             AddItem(item, cheatSlots, cheatSlots);
         
-        foreach (var item in randomLootTable)
-            AddItem(item, toolBar, internalInventorySlots);
+        //adds random items from all items in the game to the inventory of the player
+        //foreach (var item in randomLootTable)
+        //    AddItem(item, toolBar, internalInventorySlots);
 
         //Pick up items to correct inventory slot
         foreach (var item in startItems)
