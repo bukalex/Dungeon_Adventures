@@ -11,12 +11,13 @@ public class TemporaryTradingSystem : MonoBehaviour
     public PlayerData playerData;
     public Item[] items2Pickup;
     public static InventoryItem itemInStore;
-    public InventoryItem itemInWizardStore;
     public TMP_Text traderPriceDisplay, wizardPriceDisplay;
     public TMP_Text traderItemName, wizardItemName;
     public TMP_Text traderItemDescription, wizardItemDescription;
     public TMP_Text[] itemPrice;
     private int[] coinsFromSell;
+    private float wizardLuck = 100.0f;
+    public List<Ability> wizardAbilities;
 
     public GraphicRaycaster graphicRaycaster;
     public EventSystem eventSystem;
@@ -84,46 +85,103 @@ public class TemporaryTradingSystem : MonoBehaviour
         //}
     }
 
-    public void sellItems()
+    public void sellItems(int npcIndex)
     {
-        coinsFromSell = new int[] { 0, 0, 0 };
-
-        foreach (InventorySlot sellSlot in InventoryManager.Instance.sellSlots)
+        switch (npcIndex)
         {
-            InventoryItem inventoryItem = sellSlot.GetComponentInChildren<InventoryItem>();
-            if (inventoryItem != null)
-            {
-                coinsFromSell[0] += inventoryItem.item.GoldenCoins * inventoryItem.count;
-                coinsFromSell[1] += inventoryItem.item.SilverCoins * inventoryItem.count;
-                coinsFromSell[2] += inventoryItem.item.CopperCoins * inventoryItem.count;
+            case 0:
+                coinsFromSell = new int[] { 0, 0, 0 };
 
-                Destroy(inventoryItem.gameObject);
-            }
+                foreach (InventorySlot sellSlot in InventoryManager.Instance.traderSellSlots)
+                {
+                    InventoryItem inventoryItem = sellSlot.GetComponentInChildren<InventoryItem>();
+                    if (inventoryItem != null)
+                    {
+                        coinsFromSell[0] += inventoryItem.item.GoldenCoins * inventoryItem.count;
+                        coinsFromSell[1] += inventoryItem.item.SilverCoins * inventoryItem.count;
+                        coinsFromSell[2] += inventoryItem.item.CopperCoins * inventoryItem.count;
+
+                        Destroy(inventoryItem.gameObject);
+                    }
+                }
+
+                playerData.resources[Item.CoinType.GoldenCoin] += coinsFromSell[0];
+                playerData.resources[Item.CoinType.SilverCoin] += coinsFromSell[1];
+                playerData.resources[Item.CoinType.CopperCoin] += coinsFromSell[2];
+
+                StartCoroutine(ChangeLabel(npcIndex, "Place items that you want to sell", ""));
+                break;
+
+            case 1:
+                bool canExchange = false;
+                foreach (InventorySlot sellSlot in InventoryManager.Instance.wizardSellSlots)
+                {
+                    InventoryItem inventoryItem = sellSlot.GetComponentInChildren<InventoryItem>();
+                    if (inventoryItem != null)
+                    {
+                        canExchange = true;
+                        wizardLuck += 0.1f;
+
+                        Destroy(inventoryItem.gameObject);
+                    }
+                }
+
+                if (canExchange)
+                {
+                    if (wizardAbilities.Count == 0) return;
+
+                    if (Random.Range(0.0f, 100.0f) <= wizardLuck)
+                    {
+                        Ability ability = wizardAbilities[Random.Range(0, wizardAbilities.Count)];
+                        wizardAbilities.Remove(ability);
+                        InventoryManager.Instance.AddAbility(ability);
+                        wizardLuck = 0;
+
+                        if (wizardAbilities.Count != 0)
+                        {
+                            StartCoroutine(ChangeLabel(npcIndex, "Place artifacts that you want to exchange", "Congratulations! You got new ability"));
+                        }
+                        else
+                        {
+                            StartCoroutine(ChangeLabel(npcIndex, "Now you know everything", "Congratulations! You got new ability"));
+                        }
+                    }
+                    else
+                    {
+                        StartCoroutine(ChangeLabel(npcIndex, "Your chance to get new ability: " + wizardLuck.ToString("F1") + "%", "You got nothing"));
+                    }
+                }
+
+                break;
         }
-
-        playerData.resources[Item.CoinType.GoldenCoin] += coinsFromSell[0];
-        playerData.resources[Item.CoinType.SilverCoin] += coinsFromSell[1];
-        playerData.resources[Item.CoinType.CopperCoin] += coinsFromSell[2];
-
-        traderPriceDisplay.text = "";
-        StartCoroutine(ChangeLabel());
     }
 
-    private IEnumerator ChangeLabel()
+    private IEnumerator ChangeLabel(int npcIndex, string defaultText, string temporaryText)
     {
-        traderPriceDisplay.text = "";
-        for (int i = 0; i < traderPriceDisplay.transform.childCount; i++)
+        switch (npcIndex)
         {
-            traderPriceDisplay.transform.GetChild(i).gameObject.SetActive(true);
-            if (i % 2 == 1) traderPriceDisplay.GetComponentsInChildren<TMP_Text>()[1 + i / 2].text = coinsFromSell[i / 2].ToString();
-        }
+            case 0:
+                traderPriceDisplay.text = temporaryText;
+                for (int i = 0; i < traderPriceDisplay.transform.childCount; i++)
+                {
+                    traderPriceDisplay.transform.GetChild(i).gameObject.SetActive(true);
+                    if (i % 2 == 1) traderPriceDisplay.GetComponentsInChildren<TMP_Text>()[1 + i / 2].text = coinsFromSell[i / 2].ToString();
+                }
 
-        yield return new WaitForSeconds(5.0f);
+                yield return new WaitForSeconds(5.0f);
 
-        traderPriceDisplay.text = "Place items that you want to sell";
-        for (int i = 0; i < traderPriceDisplay.transform.childCount; i++)
-        {
-            traderPriceDisplay.transform.GetChild(i).gameObject.SetActive(false);
+                traderPriceDisplay.text = defaultText;
+                for (int i = 0; i < traderPriceDisplay.transform.childCount; i++)
+                {
+                    traderPriceDisplay.transform.GetChild(i).gameObject.SetActive(false);
+                }
+                break;
+
+            case 1:
+                wizardPriceDisplay.text = temporaryText;
+                yield return new WaitForSeconds(3.0f);
+                wizardPriceDisplay.text = defaultText;
+                break;
         }
     }
 

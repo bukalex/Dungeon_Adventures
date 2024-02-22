@@ -13,7 +13,8 @@ public class InventoryManager : MonoBehaviour
     [Header("Slots")]
     public InventorySlot[] internalInventorySlots;
     public InventorySlot[] toolBar;
-    public InventorySlot[] sellSlots;
+    public InventorySlot[] traderSellSlots;
+    public InventorySlot[] wizardSellSlots;
     public InventorySlot[] storageSlots;
     public InventorySlot[] cheatSlots;
     public AbilitySlot[] abilityBar;
@@ -68,7 +69,8 @@ public class InventoryManager : MonoBehaviour
         toolBar = UIManager.Instance.toolbar.GetComponentsInChildren<InventorySlot>();
 
         //Initializing slots for selling menu
-        sellSlots = UIManager.Instance.sellSlots.GetComponentsInChildren<InventorySlot>();
+        traderSellSlots = UIManager.Instance.sellSlots.GetComponentsInChildren<InventorySlot>();
+        wizardSellSlots = UIManager.Instance.wizardSellSlots.GetComponentsInChildren<InventorySlot>();
 
         //Initializing slots for purchase menu
         storageSlots = UIManager.Instance.traderStorage.GetComponentsInChildren<InventorySlot>(); 
