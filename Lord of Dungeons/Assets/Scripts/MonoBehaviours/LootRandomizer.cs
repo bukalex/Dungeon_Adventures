@@ -2,23 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class LootRandomizer : MonoBehaviour
 {
     public GameObject InventoryItemPref;
     public Item[] items;
+
+    private InventoryManager inventoryManager;
+
     // Start is called before the first frame update
     public void Update()
     {
-        int ranK = Random.Range(0, 3);
-        int ranM = Random.Range(0, 5);
+        int randomN = Random.Range(0, 101);
+        foreach (Item item in items)
+        {
 
-       //for (int i = 0; i < InventoryManager.Instance.chestSlots.Length; i++)
-       //{
-       //    if (ranK % ranM == 0 || ranK % ranM == 2)
-       //    {
-       //        spawnNewItem(items[ranK], InventoryManager.Instance.chestSlots[i]);
-       //    }
-       //}
+        }
+
+
+       
     }
 
     public void spawnNewItem(Item item, InventorySlot slot)
