@@ -801,6 +801,41 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &2734443607683401434
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3376950577063292555}
+  m_Layer: 5
+  m_Name: TeleportWindow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3376950577063292555
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2734443607683401434}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5392814799733813274}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2840743272400297693
 GameObject:
   m_ObjectHideFlags: 0
@@ -999,6 +1034,7 @@ RectTransform:
   m_Children:
   - {fileID: 823951995707784758}
   - {fileID: 6777757244459523266}
+  - {fileID: 3376950577063292555}
   m_Father: {fileID: 898734376274631258}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -13283,9 +13319,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2204441712220587, guid: 9031f2174cee6af4485eec35ea6e80c8, type: 3}
+      propertyPath: npcs.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2204441712220587, guid: 9031f2174cee6af4485eec35ea6e80c8, type: 3}
       propertyPath: items.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2204441712220587, guid: 9031f2174cee6af4485eec35ea6e80c8, type: 3}
+      propertyPath: npcs.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 1c33677d2067d4f4b9da05d06e18f9fe, type: 2}
     - target: {fileID: 3849842800858218163, guid: 9031f2174cee6af4485eec35ea6e80c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -960
