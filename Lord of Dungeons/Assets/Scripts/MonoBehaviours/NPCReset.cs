@@ -16,6 +16,8 @@ public class NPCReset : MonoBehaviour
 
     private void OnDisable()
     {
+        TemporaryTradingSystem.itemInStore = null;
+
         if (traderPurchaseMenu != null && traderSellMenu != null)
         {
             storeButton.interactable = false;

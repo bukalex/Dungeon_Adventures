@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     public GameObject HealthBar, ManaBar, StaminaBar;
     [SerializeField]
-    public GameObject internalInventory, inventory, toolbar, abilitybar;
+    public GameObject inventory, toolbar, abilitybar;
     [SerializeField] 
     public GameObject cheatChestUIs;
 
@@ -25,17 +25,23 @@ public class UIManager : MonoBehaviour
 
     //Assign Storage from Store Menu
     [SerializeField]
-    public GameObject storage;
+    public GameObject traderStorage;
+    [SerializeField]
+    public GameObject wizardStorage;
     [SerializeField]
     private GameObject itemHolderPrefab;
     [SerializeField]
     public GameObject sellSlots;
     [SerializeField]
-    private GameObject sellMenu, storeMenu;
+    public GameObject wizardSellSlots;
     [SerializeField]
-    private Button sellButton, storeButton;
+    private GameObject traderSellMenu, traderStoreMenu, wizardSellMenu, wizardStoreMenu;
+    [SerializeField]
+    private Button traderSellButton, traderStoreButton, wizardSellButton, wizardStoreButton;
     [SerializeField]
     private Item[] traderItems;
+    [SerializeField]
+    private Item[] wizardItems;
 
     //Chest UI
     [SerializeField] private GameObject ChestUI;
@@ -57,7 +63,8 @@ public class UIManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(this);
 
-            InitializeTraderItems();
+            InitializeNPCItems(traderItems, traderStorage);
+            InitializeNPCItems(wizardItems, wizardStorage);
         }
     }
 
@@ -128,20 +135,35 @@ public class UIManager : MonoBehaviour
         copperCoinCounter.text = playerData.resources[Item.CoinType.CopperCoin].ToString();
     }
 
-    public void traderButtons()
+    public void traderButtons(int npcIndex)
     {
-        sellButton.interactable = !sellButton.interactable;
-        storeButton.interactable = !storeButton.interactable;
+        switch (npcIndex)
+        {
+            case 0:
+                traderSellButton.interactable = !traderSellButton.interactable;
+                traderStoreButton.interactable = !traderStoreButton.interactable;
 
-        sellMenu.SetActive(!sellMenu.activeSelf);
-        storeMenu.SetActive(!storeMenu.activeSelf);
+                traderSellMenu.SetActive(!traderSellMenu.activeSelf);
+                traderStoreMenu.SetActive(!traderStoreMenu.activeSelf);
 
-        InventorySlots.SetActive(sellMenu.activeSelf);
+                InventorySlots.SetActive(traderSellMenu.activeSelf);
+                break;
+
+            case 1:
+                wizardSellButton.interactable = !wizardSellButton.interactable;
+                wizardStoreButton.interactable = !wizardStoreButton.interactable;
+
+                wizardSellMenu.SetActive(!wizardSellMenu.activeSelf);
+                wizardStoreMenu.SetActive(!wizardStoreMenu.activeSelf);
+
+                InventorySlots.SetActive(wizardSellMenu.activeSelf);
+                break;
+        }
     }
 
-    private void InitializeTraderItems()
+    private void InitializeNPCItems(Item[] items, GameObject storage)
     {
-        foreach (Item item in traderItems)
+        foreach (Item item in items)
         {
             Transform itemHolder = Instantiate(itemHolderPrefab, storage.transform).transform;
             InventoryItem inventoryItem = itemHolder.GetComponentInChildren<InventorySlot>().GetComponentInChildren<InventoryItem>();
