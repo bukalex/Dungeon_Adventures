@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,14 +6,8 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     private InventorySlot[] emp;
-    [Header("Loot Tables")]
     public Item[] startItems;
-    public Item[] allItems;
-    public Item[] materialLootTable;
-    public Item[] weaponLootTable;
-    public Item[] consumableLootTable;
-    public Item[] uniqueLootTable;
-    public List<Item> randomLootTable = new List<Item>();
+    public Item[] allItems; 
     public Ability[] startAbilities;
     public int maxStackCount = 16;
     [Header("Slots")]
@@ -24,7 +17,6 @@ public class InventoryManager : MonoBehaviour
     public InventorySlot[] wizardSellSlots;
     public InventorySlot[] storageSlots;
     public InventorySlot[] cheatSlots;
-    public InventorySlot[] randomSlots;
     public AbilitySlot[] abilityBar;
     [Header("Icon prefabs")]
     public GameObject inventoryItemPrefab, abilityItemPrefab;
@@ -36,7 +28,6 @@ public class InventoryManager : MonoBehaviour
     public GameObject legginsSlot;
     public GameObject gemSlot;
     public GameObject swordSlot;
-    
 
     public int selectedSlot = -1;
     public int[] intsd;
@@ -49,18 +40,9 @@ public class InventoryManager : MonoBehaviour
     private void Start()
     {
         InitializeSlots();
-
-        //Create Random Loot Table from all items in the game
-        foreach (var item in allItems)
-            FillRandomLootTable(item);
-
         //Create all items in a cheat chest
         foreach (var item in allItems)
             AddItem(item, cheatSlots, cheatSlots);
-        
-        //adds random items from all items in the game to the inventory of the player
-        //foreach (var item in randomLootTable)
-        //    AddItem(item, toolBar, internalInventorySlots);
 
         //Pick up items to correct inventory slot
         foreach (var item in startItems)
@@ -102,9 +84,10 @@ public class InventoryManager : MonoBehaviour
     }
     private void Update()
     {
-
         if (Input.anyKeyDown)
         {
+            if(selectedSlot != -1) toolBar[selectedSlot].unselectSlot();
+
             string[] inputString = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};  
 
             for(int i = 0; i < inputString.Length; i++)
@@ -177,8 +160,6 @@ public class InventoryManager : MonoBehaviour
         }
         return false;
     }
-
-    
     public bool fillStacks(Item item, InventorySlot[] InventoryType)
     {
         for (int i = 0; i < InventoryType.Length; i++)
@@ -264,25 +245,6 @@ public class InventoryManager : MonoBehaviour
     public Ability useSelectedAbility()
     {
         return null;
-    }
-
-    public bool FillRandomLootTable(Item item)
-    {
-        List<Item> exampleLootPool = new List<Item>();
-        int randomNum = Random.Range(0, 101);
-        
-
-            if (randomNum <= item.rarity)
-            {
-                randomLootTable.Add(item);
-                
-                Debug.Log("Rolled: " + randomNum + ". And added: " + item + ". which has a rarity of: " + item.rarity);
-            }
-            else
-            {
-                Debug.Log("Rolled: " + randomNum + ". And thus could not add:" + item + ". which has a rarity of: " + item.rarity);
-            }
-        return false;
     }
 
 }

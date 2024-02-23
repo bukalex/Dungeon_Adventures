@@ -514,7 +514,7 @@ public class BattleManager : MonoBehaviour
     {
         GameObject shield = Instantiate(battleData.shieldPrefab, playerData.transform);
         shield.transform.localPosition = new Vector3(0, 0.5f, 0);
-        shield.GetComponent<ParticleSystem>().Play(battleData.shieldPrefab);
+        shield.GetComponent<Animator>().SetBool("shieldActivated", true);
         battleData.shieldsByCreatures.Add(playerData, shield);
 
         playerData.defense *= 5;
@@ -532,7 +532,7 @@ public class BattleManager : MonoBehaviour
         GameObject shield = battleData.shieldsByCreatures[attack.playerData];
         if (shield != null)
         {
-            shield.GetComponent<ParticleSystem>().Stop();
+            shield.GetComponent<Animator>().SetBool("shieldActivated", false);
             Destroy(shield, 0.5f);
             battleData.shieldsByCreatures.Remove(attack.playerData);
         }

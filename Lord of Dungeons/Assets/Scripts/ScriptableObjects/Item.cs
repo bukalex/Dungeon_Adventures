@@ -40,9 +40,6 @@ public class Item : ScriptableObject
     public Ability ability;
     [Tooltip("Items array for lamp")]
     public Item[] items;
-    [Range(0f, 101f)]
-    [Tooltip("A rarity scale for randomizer, 0 is unobtainable. 101 is guranteed")]
-    public float rarity;
 
     [Header("Store Price")]
     public int GoldenCoin;
