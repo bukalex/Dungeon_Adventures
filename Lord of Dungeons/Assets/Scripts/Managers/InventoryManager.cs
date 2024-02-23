@@ -20,8 +20,7 @@ public class InventoryManager : MonoBehaviour
     [Header("Slots")]
     public InventorySlot[] internalInventorySlots;
     public InventorySlot[] toolBar;
-    public InventorySlot[] traderSellSlots;
-    public InventorySlot[] wizardSellSlots;
+    public InventorySlot[] sellSlots;
     public InventorySlot[] storageSlots;
     public InventorySlot[] cheatSlots;
     public InventorySlot[] randomSlots;
@@ -87,11 +86,10 @@ public class InventoryManager : MonoBehaviour
         toolBar = UIManager.Instance.toolbar.GetComponentsInChildren<InventorySlot>();
 
         //Initializing slots for selling menu
-        traderSellSlots = UIManager.Instance.sellSlots.GetComponentsInChildren<InventorySlot>();
-        wizardSellSlots = UIManager.Instance.wizardSellSlots.GetComponentsInChildren<InventorySlot>();
+        sellSlots = UIManager.Instance.sellSlots.GetComponentsInChildren<InventorySlot>();
 
         //Initializing slots for purchase menu
-        storageSlots = UIManager.Instance.traderStorage.GetComponentsInChildren<InventorySlot>(); 
+        storageSlots = UIManager.Instance.storage.GetComponentsInChildren<InventorySlot>(); 
 
         //Initializing slots for abilities
         abilityBar = UIManager.Instance.abilitybar.GetComponentsInChildren<AbilitySlot>();
@@ -115,8 +113,6 @@ public class InventoryManager : MonoBehaviour
                     selectedSlot -= 1;
                 }
             }
-
-            if (selectedSlot != -1) toolBar[selectedSlot].selectSlot();
         }
         if (Input.GetKeyUp(KeyCode.Q))
         {

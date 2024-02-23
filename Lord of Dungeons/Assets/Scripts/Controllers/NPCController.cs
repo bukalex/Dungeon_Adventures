@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class NPCController : MonoBehaviour
@@ -18,67 +17,23 @@ public class NPCController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     private DirectionName directionName = DirectionName.FRONT;
-    private int spriteOrder;
-    private int enemyOrder;
-    private float angle;
 
     public enum DirectionName { FRONT, BACK, LEFT, RIGHT }
 
     void Awake()
     {
-        if (npcParameters.type != NPCParameters.NPCType.TELEPORT)
-        {
-            animator.runtimeAnimatorController = npcParameters.animController;
-        }
+        animator.runtimeAnimatorController = npcParameters.animController;
     }
 
     void Update()
     {
-        List<SpriteRenderer> renderers = DetectSprites<SpriteRenderer>();
-        foreach (SpriteRenderer renderer in renderers)
-        {
-            if (renderer.sortingLayerName.Equals(spriteRenderer.sortingLayerName))
-            {
-                angle = Vector2.SignedAngle(Vector3.right, renderer.transform.parent.position - transform.position);
-                if (135 >= angle && angle > 45)
-                {
-                    spriteOrder = renderer.sortingOrder;
-                    enemyOrder = spriteRenderer.sortingOrder;
-                    if (spriteOrder > enemyOrder)
-                    {
-                        spriteRenderer.sortingOrder = spriteOrder;
-                        renderer.sortingOrder = enemyOrder;
-                    }
-                    else if (spriteOrder == enemyOrder)
-                    {
-                        spriteRenderer.sortingOrder += 1;
-                    }
-                }
-                else if (-135 <= angle && angle < -45)
-                {
-                    spriteOrder = renderer.sortingOrder;
-                    enemyOrder = spriteRenderer.sortingOrder;
-                    if (spriteOrder < enemyOrder)
-                    {
-                        spriteRenderer.sortingOrder = spriteOrder;
-                        renderer.sortingOrder = enemyOrder;
-                    }
-                    else if (spriteOrder == enemyOrder)
-                    {
-                        renderer.sortingOrder += 1;
-                    }
-                }
-            }
-        }
+
     }
 
     public void InteractWithPlayer(bool isActive)
     {
-        if (npcParameters.type != NPCParameters.NPCType.TELEPORT)
-        {
-            ChangeDirection(Vector2.SignedAngle(Vector3.right, npcParameters.playerData.position - transform.position));
-            Greeting();
-        }
+        ChangeDirection(Vector2.SignedAngle(Vector3.right, npcParameters.playerData.position - transform.position));
+        Greeting();
 
         if (dialogWindow != null)
         {
@@ -91,22 +46,6 @@ public class NPCController : MonoBehaviour
     public float GetColliderRadius()
     {
         return npcParameters.colliderRadius;
-    }
-
-    private List<T> DetectSprites<T>()
-    {
-        Collider2D[] possibleTargets = Physics2D.OverlapCircleAll(transform.position, npcParameters.colliderRadius * 2);
-        List<T> targets = new List<T>();
-
-        foreach (Collider2D target in possibleTargets)
-        {
-            if (target.GetComponentInChildren<T>() != null)
-            {
-                targets.Add(target.GetComponentInChildren<T>());
-            }
-        }
-
-        return targets;
     }
 
     //Animation

@@ -593,7 +593,9 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerDash(PlayerData playerData, AttackParameters attack)
     {
-        battleData.attackDirections.Add(playerData, playerData.attackDirection);
+        Vector3 attackDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - new Vector3(0, 0, Camera.main.transform.position.z) - playerData.position).normalized * attack.range;
+        playerData.attackDirection = attackDirection.normalized;
+        battleData.attackDirections.Add(playerData, attackDirection);
         playerData.transform.GetComponent<Rigidbody2D>().excludeLayers = LayerMask.GetMask(new string[] { "Creatures" });
 
         attack.playerData = playerData;
@@ -606,7 +608,7 @@ public class BattleManager : MonoBehaviour
     private void PlayerDashRunning(AttackParameters attack)
     {
         attack.playerData.attackDirection = battleData.attackDirections[attack.playerData].normalized;
-        attack.playerData.transform.GetComponent<Rigidbody2D>().velocity = battleData.attackDirections[attack.playerData].normalized * attack.range / attack.timeOffset;
+        attack.playerData.transform.GetComponent<Rigidbody2D>().velocity = battleData.attackDirections[attack.playerData] / attack.timeOffset;
 
         List<EnemyController> enemies = DetectTargets<EnemyController>(attack.playerData.position, attack.playerData.colliderRadius + 0.25f, attack.playerData.attackDirection, false);
         foreach (EnemyController enemy in enemies)
