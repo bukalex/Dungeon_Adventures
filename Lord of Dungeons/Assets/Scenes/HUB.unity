@@ -5508,11 +5508,6 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
---- !u!1 &119850768 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5200368187087313359, guid: 3ab176f16fdca084fb71c619cac364ce, type: 3}
-  m_PrefabInstance: {fileID: 428565432}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &136822171
 GameObject:
   m_ObjectHideFlags: 0
@@ -16431,7 +16426,7 @@ PrefabInstance:
     - target: {fileID: 8676339428913989359, guid: cdf3e3b7ddad60141bd8349c100f88a5, type: 3}
       propertyPath: chestInventory
       value: 
-      objectReference: {fileID: 1393522240}
+      objectReference: {fileID: 1019675848}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -21267,6 +21262,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!1 &1019675848 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4883560879205948693, guid: 3ab176f16fdca084fb71c619cac364ce, type: 3}
+  m_PrefabInstance: {fileID: 428565432}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1051330797
 GameObject:
   m_ObjectHideFlags: 0
@@ -23343,7 +23343,7 @@ PrefabInstance:
     - target: {fileID: 173605579500432063, guid: 09b40470022585540ab86add4c2e63f2, type: 3}
       propertyPath: dialogWindow
       value: 
-      objectReference: {fileID: 119850768}
+      objectReference: {fileID: 0}
     - target: {fileID: 5790246729030208149, guid: 09b40470022585540ab86add4c2e63f2, type: 3}
       propertyPath: m_Name
       value: Trader
@@ -24159,9 +24159,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ced0f4bf360aac24eb57a4cb1ab757fe, type: 3}
---- !u!1 &1393522240 stripped
+--- !u!1 &1513691194 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 4883560879205948693, guid: 3ab176f16fdca084fb71c619cac364ce, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3953399490513174624, guid: 3ab176f16fdca084fb71c619cac364ce, type: 3}
   m_PrefabInstance: {fileID: 428565432}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1515583513
@@ -33961,11 +33961,6 @@ Transform:
   - {fileID: 2006574968}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2143994521 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3953399490513174624, guid: 3ab176f16fdca084fb71c619cac364ce, type: 3}
-  m_PrefabInstance: {fileID: 428565432}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1203759742369304772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34078,7 +34073,7 @@ PrefabInstance:
     - target: {fileID: 8676339428913989359, guid: cdf3e3b7ddad60141bd8349c100f88a5, type: 3}
       propertyPath: chestInventory
       value: 
-      objectReference: {fileID: 2143994521}
+      objectReference: {fileID: 1513691194}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
