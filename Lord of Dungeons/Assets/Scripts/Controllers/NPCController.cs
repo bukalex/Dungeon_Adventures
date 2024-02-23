@@ -22,7 +22,10 @@ public class NPCController : MonoBehaviour
 
     void Awake()
     {
-        animator.runtimeAnimatorController = npcParameters.animController;
+        if (npcParameters.type != NPCParameters.NPCType.TELEPORT)
+        {
+            animator.runtimeAnimatorController = npcParameters.animController;
+        }
     }
 
     void Update()
@@ -32,8 +35,11 @@ public class NPCController : MonoBehaviour
 
     public void InteractWithPlayer(bool isActive)
     {
-        ChangeDirection(Vector2.SignedAngle(Vector3.right, npcParameters.playerData.position - transform.position));
-        Greeting();
+        if (npcParameters.type != NPCParameters.NPCType.TELEPORT)
+        {
+            ChangeDirection(Vector2.SignedAngle(Vector3.right, npcParameters.playerData.position - transform.position));
+            Greeting();
+        }
 
         if (dialogWindow != null)
         {
