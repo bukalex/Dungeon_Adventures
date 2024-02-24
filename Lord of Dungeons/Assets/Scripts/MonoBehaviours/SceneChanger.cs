@@ -9,6 +9,7 @@ public class SceneChanger : MonoBehaviour
         if (collision.tag == "Player")
         {
             SceneManager.LoadScene(SceneToChange);
+            CheckpointManager.Instance.ChangeLevel(SceneToChange);
         }
     }
 }

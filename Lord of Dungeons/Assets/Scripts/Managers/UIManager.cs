@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -31,6 +31,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject itemHolderPrefab;
     [SerializeField]
+    private GameObject teleportButtonPrefab;
+    [SerializeField]
     public GameObject sellSlots;
     [SerializeField]
     public GameObject wizardSellSlots;
@@ -38,6 +40,10 @@ public class UIManager : MonoBehaviour
     private GameObject traderSellMenu, traderStoreMenu, wizardSellMenu, wizardStoreMenu;
     [SerializeField]
     private Button traderSellButton, traderStoreButton, wizardSellButton, wizardStoreButton;
+    [SerializeField]
+    private GameObject teleportWindow;
+    [SerializeField]
+    private GameObject teleportContent;
     [SerializeField]
     private Item[] traderItems;
     [SerializeField]
@@ -176,6 +182,32 @@ public class UIManager : MonoBehaviour
             itemHolder.GetChild(0).GetChild(5).GetComponent<TMP_Text>().text = item.CopperCoin.ToString();
 
             inventoryItem.isLocked = true;
+        }
+    }
+
+    public void InitializeTeleportWindow(int checkpoints, int period)
+    {
+        teleportContent.GetComponentInChildren<Button>().onClick.AddListener(delegate { GoToCheckpoint(0); });
+
+        for (int i = 0; i < checkpoints; i++)
+        {
+            UpdateTeleportWindow(i + 1, period);
+        }
+    }
+
+    public void UpdateTeleportWindow(int checkpoints, int period)
+    {
+        GameObject teleportButton = Instantiate(teleportButtonPrefab, teleportContent.transform);
+        teleportButton.GetComponent<Button>().onClick.AddListener(delegate { GoToCheckpoint(checkpoints * period); });
+        teleportButton.GetComponentInChildren<TMP_Text>().text = (checkpoints * period).ToString();
+    }
+
+    public void GoToCheckpoint(int checkpoint)
+    {
+        if (checkpoint != SceneManager.GetActiveScene().buildIndex)
+        {
+            teleportWindow.SetActive(false);
+            SceneManager.LoadScene(checkpoint);
         }
     }
 
