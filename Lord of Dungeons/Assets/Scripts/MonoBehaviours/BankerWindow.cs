@@ -30,6 +30,7 @@ public class BankerWindow : MonoBehaviour
     {
         UIManager.Instance.InventorySlots.SetActive(true);
         UIManager.Instance.npcWindowActive = true;
+        depositButton.interactable = InventoryManager.Instance.HasCoins();
         UpdateText();
     }
 
@@ -106,7 +107,28 @@ public class BankerWindow : MonoBehaviour
 
     public void Deposit()
     {
+        foreach (InventorySlot slot in InventoryManager.Instance.toolBar)
+        {
+            InventoryItem inventoryItem = slot.GetComponentInChildren<InventoryItem>();
+            if (inventoryItem != null && inventoryItem.item.itemType == Item.ItemType.Coin)
+            {
+                playerData.resources[inventoryItem.item.materialType] += inventoryItem.count;
+                Destroy(inventoryItem.gameObject);
+            }
+        }
 
+        foreach (InventorySlot slot in InventoryManager.Instance.internalInventorySlots)
+        {
+            InventoryItem inventoryItem = slot.GetComponentInChildren<InventoryItem>();
+            if (inventoryItem != null && inventoryItem.item.itemType == Item.ItemType.Coin)
+            {
+                playerData.resources[inventoryItem.item.materialType] += inventoryItem.count;
+                Destroy(inventoryItem.gameObject);
+            }
+        }
+
+        depositButton.interactable = false;
+        UpdateText();
     }
 
     private void UpdateText()
