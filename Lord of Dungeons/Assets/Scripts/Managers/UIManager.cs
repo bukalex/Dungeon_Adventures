@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using static SESoundData;
 
 public class UIManager : MonoBehaviour
 {
@@ -19,11 +20,16 @@ public class UIManager : MonoBehaviour
     public GameObject cheatChestUIs;
 
 
+    public bool isPaused = false;
+    public bool npcWindowActive = false;
+
+    public GameObject[] spawnedEnemies;
+    public GameObject[] enemyHealthBars;
     //UI to open on a button
     [SerializeField]
     public GameObject InventorySlots, EquipmentSection;
 
-    //Assign Storage from Store Menu
+    [Header("Storage Properties")]
     [SerializeField]
     public GameObject traderStorage;
     [SerializeField]
@@ -43,16 +49,16 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Item[] wizardItems;
 
-    //Chest UI
+
+    [Header("Chest Properties")]
     [SerializeField] private GameObject ChestUI;
     [SerializeField] private GameObject[] ChestUIs, Chests;
     [SerializeField] private Canvas playerCanvas;
 
-    public bool isPaused = false;
-    public bool npcWindowActive = false;
+    [Header("Escape Button Properties")]
 
-    public GameObject[] spawnedEnemies;
-    public GameObject[] enemyHealthBars;
+    [SerializeField] private GameObject escapeUI, escapeButtons, settingUI;
+    [SerializeField] private Button resumeButton, settingButton, exitButton;
 
     public static UIManager Instance { get; private set; }
 
@@ -104,19 +110,39 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKey(KeyCode.Escape))
         {
-            if (isPaused)
-            {
-                Time.timeScale = 1;
-            }
-            else
-            {
-                Time.timeScale = 0;
-            }
+            Time.timeScale = 0f;
+            escapeUI.SetActive(true);
 
+            resumeButton.onClick.AddListener(() => Resume());
+            settingButton.onClick.AddListener(() => Setting());
+            exitButton.onClick.AddListener(() => Exit());
         }
     }
+
+
+    //Escape Functions
+    #region
+    private void Resume()
+    {
+        Time.timeScale = 1f;
+        escapeUI.SetActive(false);
+    }
+    private void Setting()
+    {
+        settingUI.SetActive(!settingUI.activeSelf);
+
+        if (settingUI.activeSelf == true)
+            escapeButtons.transform.position = new Vector3(560f, 540f, 0f);
+        else
+            escapeButtons.transform.position = new Vector3(960f, 540f, 0f);
+    }
+    private void Exit()
+    {
+        Application.Quit();
+    }
+    #endregion
 
     public void displayInventoryUI()
     {
@@ -184,7 +210,7 @@ public class UIManager : MonoBehaviour
         foreach (GameObject enemyHealthBar in enemyHealthBars)
         {
                 EnemyController enemy = enemyHealthBar.transform.parent.GetComponentInParent<EnemyController>();
-                
+
                 enemyHealthBar.GetComponent<Slider>().value = enemy.enemyParameters.health;
                 enemyHealthBar.GetComponent<Slider>().maxValue = enemy.enemyParameters.maxHealth;
         }
