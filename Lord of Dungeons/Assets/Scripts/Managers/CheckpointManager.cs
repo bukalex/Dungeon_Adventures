@@ -48,10 +48,8 @@ public class CheckpointManager : MonoBehaviour
 
     public void LoadData()
     {
-        Debug.Log("2");
         if (File.Exists(filePath))
         {
-            Debug.Log("3");
             string jsonData = File.ReadAllText(filePath);
             Debug.Log(jsonData);
 

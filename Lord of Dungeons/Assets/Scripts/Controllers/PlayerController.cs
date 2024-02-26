@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
 {
@@ -28,7 +29,6 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
 
     void Awake()
     {
-        
         playerData.position = transform.position;
         playerData.transform = transform;
         animator.runtimeAnimatorController = playerData.animController;
@@ -203,6 +203,8 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
             body.velocity = Vector3.zero;
 
             alreadyDead = true;
+            playerData.isDead = true;
+            StartCoroutine(Respawn());
         }
     }
 
@@ -235,6 +237,13 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
     public PlayerData GetPlayerData()
     {
         return playerData;
+    }
+
+    private IEnumerator Respawn()
+    {
+        yield return new WaitForSeconds(2);
+        InventoryManager.Instance.LoseInventory();
+        SceneManager.LoadScene(0);
     }
 
     public IDefenseObject GetDefenseObject()
