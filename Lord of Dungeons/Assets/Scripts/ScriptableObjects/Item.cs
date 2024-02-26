@@ -66,7 +66,7 @@ public class Item : ScriptableObject
     public Sprite image;
     public RuntimeAnimatorController animController;
 
-    public enum ItemType { Potion, Material, Gear, Weapon, Artifact, Treasure, Food, Trash, Spell, MonsterLoot}
+    public enum ItemType { Potion, Material, Gear, Weapon, Artifact, Treasure, Food, Trash, Spell, MonsterLoot, Coin}
     public enum ItemTag { Item, Helmet, Chestplate, Gloves, Boots, Sword, Gem}
     public enum CoinType { OFF, GoldenCoin, SilverCoin, CopperCoin }
 
