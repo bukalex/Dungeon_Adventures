@@ -50,6 +50,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11c0632a21ea64343ad4640a7ad11b95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battleData: {fileID: 0}
+  playerAttackParameters: []
+  enemyAttackParameters: []
 --- !u!114 &8558935698856120550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,7 +104,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4d64d2c9acd401f46ab0ef1e16f5f6b5, type: 2}
   - {fileID: 11400000, guid: 00af137e8f6b0994c897d703d3f6d797, type: 2}
   inventory: {fileID: 3948006788618800794}
-  UI: {fileID: 599049274143858474}
+  levelManager: {fileID: 0}
 --- !u!114 &3948006788618800794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,16 +121,66 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2b698833b242a8b49a73616c048bcc8c, type: 2}
   - {fileID: 11400000, guid: 2f17d659d2812c64fb7f335195cee143, type: 2}
   - {fileID: 11400000, guid: c5987065a81e66c4d90f8f2e6a125ce9, type: 2}
+  allItems: []
+  materialLootTable:
+  - {fileID: 11400000, guid: c5987065a81e66c4d90f8f2e6a125ce9, type: 2}
+  - {fileID: 11400000, guid: 0bbfbf40e8fae4d47b821ab3801e52e7, type: 2}
+  - {fileID: 11400000, guid: 3eee096bbe593c74288446833e0a75fd, type: 2}
+  - {fileID: 11400000, guid: b30fd890fa269b6439e207262062f5d3, type: 2}
+  - {fileID: 11400000, guid: 811095b1b8a36564ba334a6f2d31154a, type: 2}
+  - {fileID: 11400000, guid: 5c6d302094a9f054c8801f760271dc62, type: 2}
+  - {fileID: 11400000, guid: bbababbfb783d584c82ed83da09b9c36, type: 2}
+  weaponLootTable:
+  - {fileID: 11400000, guid: ce007f3e70cda2f40ba5715f5ff3ec66, type: 2}
+  consumableLootTable:
+  - {fileID: 11400000, guid: 7fafd69d431cb244b86293fd9e812b42, type: 2}
+  - {fileID: 11400000, guid: cab03d358a5cc804e910ee4876032f91, type: 2}
+  - {fileID: 11400000, guid: 5ac67e2d00a1baf42b08f68af1e64d08, type: 2}
+  - {fileID: 11400000, guid: f41e0bd9f9ea81b42870fbdda9862917, type: 2}
+  - {fileID: 11400000, guid: b137b508eac00a64d8cab85cf7177fa7, type: 2}
+  - {fileID: 11400000, guid: 707f4fe667c802846b2b1424ef5e9f60, type: 2}
+  - {fileID: 11400000, guid: bf46bc0dcbddfc446ad028247273ef8d, type: 2}
+  - {fileID: 11400000, guid: 86777c7b46d63c54bb9b2b89086be26a, type: 2}
+  - {fileID: 11400000, guid: 84b223635351fbd4cb0318bc4569f848, type: 2}
+  uniqueLootTable:
+  - {fileID: 11400000, guid: a405114b991980e4c9dd1577068c707b, type: 2}
+  - {fileID: 11400000, guid: a4b31bb92c7b30343aa8fc402826bd44, type: 2}
+  - {fileID: 11400000, guid: bf9120cd10a71cd4eaa82cff3c311b36, type: 2}
+  - {fileID: 11400000, guid: 2212d09ff4e7c1740b8fd74244f55de6, type: 2}
+  - {fileID: 11400000, guid: db17b498abf1080418ac339b68efc5b5, type: 2}
+  - {fileID: 11400000, guid: 89b74cfcdfc533042aa0df65b639d02f, type: 2}
+  - {fileID: 11400000, guid: 8c9b712342b8b654b8d118fed919e5fe, type: 2}
+  - {fileID: 11400000, guid: e8d8f635ad1c4a34189d8748233e8eba, type: 2}
+  - {fileID: 11400000, guid: 9f9ed0d842c1a0f4ebf66f19b15fa7a0, type: 2}
+  - {fileID: 11400000, guid: a6ac2d8c8da39414cb4f8aa6235f2f74, type: 2}
+  - {fileID: 11400000, guid: 4d2bb16cb63d5cd43bcc3429033eb33c, type: 2}
+  - {fileID: 11400000, guid: b86127de963feef4d8bb557c72a7dcee, type: 2}
+  - {fileID: 11400000, guid: 019669ddb898db9469b01b143a87aaa3, type: 2}
+  - {fileID: 11400000, guid: a702b8db0f80b0141bb9dc40dbbda700, type: 2}
+  - {fileID: 11400000, guid: 7361f36c700a6644388cdebf8d7630b9, type: 2}
+  - {fileID: 11400000, guid: a38d2270adb8ddd4fa22c5d6d2af9d30, type: 2}
+  - {fileID: 11400000, guid: 9f93bc71da94b3d4c93857d97909c0a4, type: 2}
+  randomLootTable: []
+  startAbilities: []
   maxStackCount: 16
-  inventorySlots: []
   internalInventorySlots: []
   toolBar: []
-  Ability: []
-  sellSlots: []
+  traderSellSlots: []
+  wizardSellSlots: []
   storageSlots: []
+  cheatSlots: []
+  abilityBar: []
   inventoryItemPrefab: {fileID: 159804929545523315, guid: ab5ace27967924246992b3b786f35ad5, type: 3}
+  abilityItemPrefab: {fileID: 0}
   playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
+  helmetSlot: {fileID: 0}
+  glovesSlot: {fileID: 0}
+  chestplateSlot: {fileID: 0}
+  legginsSlot: {fileID: 0}
+  gemSlot: {fileID: 0}
+  swordSlot: {fileID: 0}
   selectedSlot: -1
+  intsd: 
 --- !u!114 &29912239325030050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,6 +193,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 526f0dfe768ebc244b252059f9909060, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bgmAudioSource: {fileID: 0}
+  seAudioSource: {fileID: 0}
+  bgmSoundDatas: []
+  seSoundDatas: []
+  masterVolume: 1
+  bgmMasterVolume: 1
+  seMasterVolume: 1
 --- !u!114 &599049274143858474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,17 +214,44 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
   stats: {fileID: 0}
-  coinCounter: {fileID: 0}
+  goldenCoinCounter: {fileID: 0}
+  silverCoinCounter: {fileID: 0}
+  copperCoinCounter: {fileID: 0}
   HealthBar: {fileID: 0}
   ManaBar: {fileID: 0}
   StaminaBar: {fileID: 0}
-  internalInventory: {fileID: 0}
   inventory: {fileID: 0}
   toolbar: {fileID: 0}
-  storage: {fileID: 0}
-  sellSlots: {fileID: 0}
-  chestInventory: {fileID: 0}
-  itemHolders: []
-  sellMenu: {fileID: 0}
-  storeMenu: {fileID: 0}
+  abilitybar: {fileID: 0}
+  cheatChestUIs: {fileID: 0}
   isPaused: 0
+  npcWindowActive: 0
+  spawnedEnemies: []
+  enemyHealthBars: []
+  InventorySlots: {fileID: 0}
+  EquipmentSection: {fileID: 0}
+  traderStorage: {fileID: 0}
+  wizardStorage: {fileID: 0}
+  itemHolderPrefab: {fileID: 0}
+  sellSlots: {fileID: 0}
+  wizardSellSlots: {fileID: 0}
+  traderSellMenu: {fileID: 0}
+  traderStoreMenu: {fileID: 0}
+  wizardSellMenu: {fileID: 0}
+  wizardStoreMenu: {fileID: 0}
+  traderSellButton: {fileID: 0}
+  traderStoreButton: {fileID: 0}
+  wizardSellButton: {fileID: 0}
+  wizardStoreButton: {fileID: 0}
+  traderItems: []
+  wizardItems: []
+  ChestUI: {fileID: 0}
+  ChestUIs: []
+  Chests: []
+  playerCanvas: {fileID: 0}
+  escapeUI: {fileID: 0}
+  escapeButtons: {fileID: 0}
+  settingUI: {fileID: 0}
+  resumeButton: {fileID: 0}
+  settingButton: {fileID: 0}
+  exitButton: {fileID: 0}

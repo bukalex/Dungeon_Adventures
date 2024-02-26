@@ -6,8 +6,18 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     private InventorySlot[] emp;
+    [Header("Loot Tables")]  
     public Item[] startItems;
-    public Item[] allItems; 
+    public Item[] allItems;
+    public Item[] materialLootTable;
+    public Item[] weaponLootTable;
+    public Item[] consumableLootTable;
+    public Item[] uniqueLootTable;
+    public List<Item> randomLootTable = new List<Item>();
+    public List<Item> randomMaterialLootTable = new List<Item>();
+    public List<Item> randomWeaponLootTable = new List<Item>();
+    public List<Item> randomConsumableLootTable = new List<Item>();
+    public List<Item> randomUniqueLootTable = new List<Item>();
     public Ability[] startAbilities;
     public int maxStackCount = 16;
     [Header("Slots")]
@@ -44,9 +54,17 @@ public class InventoryManager : MonoBehaviour
         foreach (var item in allItems)
             AddItem(item, cheatSlots, cheatSlots);
 
+        //Create Random Loot Table from all items in the game
+        //foreach (var item in allItems)
+        //    FillRandomLootTable(item);
+
         //Pick up items to correct inventory slot
         foreach (var item in startItems)
             AddItem(item, toolBar, internalInventorySlots);
+
+        //adds random items from all items in the game to the inventory of the player
+        //foreach (var item in randomLootTable)
+        //   AddItem(item, cheatSlots, cheatSlots);
 
         //Create all items in a cheat chest
         foreach (var item in allItems)
@@ -245,6 +263,24 @@ public class InventoryManager : MonoBehaviour
     public Ability useSelectedAbility()
     {
         return null;
+    }
+    public bool FillRandomLootTable(Item item)
+    {
+        List<Item> exampleLootPool = new List<Item>();
+        int randomNum = Random.Range(0, 101);
+
+
+        if (randomNum <= item.rarity)
+        {
+            randomLootTable.Add(item);
+
+            Debug.Log("Rolled: " + randomNum + ". And added: " + item + ". which has a rarity of: " + item.rarity);
+        }
+        else
+        {
+            Debug.Log("Rolled: " + randomNum + ". And thus could not add:" + item + ". which has a rarity of: " + item.rarity);
+        }
+        return false;
     }
 
 }
