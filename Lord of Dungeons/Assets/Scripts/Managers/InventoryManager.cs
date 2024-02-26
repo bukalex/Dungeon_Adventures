@@ -195,6 +195,29 @@ public class InventoryManager : MonoBehaviour
         return false;
     }
 
+    public bool HasCoins()
+    {
+        foreach (InventorySlot slot in toolBar)
+        {
+            InventoryItem inventoryItem = slot.GetComponentInChildren<InventoryItem>();
+            if (inventoryItem != null && inventoryItem.item.itemType == Item.ItemType.Coin)
+            {
+                return true;
+            }
+        }
+
+        foreach (InventorySlot slot in internalInventorySlots)
+        {
+            InventoryItem inventoryItem = slot.GetComponentInChildren<InventoryItem>();
+            if (inventoryItem != null && inventoryItem.item.itemType == Item.ItemType.Coin)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public bool AddAbility(Ability ability)
     {
         for(int i = 0; i  < abilityBar.Length; i++)

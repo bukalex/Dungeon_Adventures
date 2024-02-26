@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Unity.VisualScripting;
-using static SESoundData;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -20,22 +19,19 @@ public class UIManager : MonoBehaviour
     public GameObject cheatChestUIs;
 
 
-    public bool isPaused = false;
-    public bool npcWindowActive = false;
-
-    public GameObject[] spawnedEnemies;
-    public GameObject[] enemyHealthBars;
     //UI to open on a button
     [SerializeField]
     public GameObject InventorySlots, EquipmentSection;
 
-    [Header("Storage Properties")]
+    //Assign Storage from Store Menu
     [SerializeField]
     public GameObject traderStorage;
     [SerializeField]
     public GameObject wizardStorage;
     [SerializeField]
     private GameObject itemHolderPrefab;
+    [SerializeField]
+    private GameObject teleportButtonPrefab;
     [SerializeField]
     public GameObject sellSlots;
     [SerializeField]
@@ -45,20 +41,24 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Button traderSellButton, traderStoreButton, wizardSellButton, wizardStoreButton;
     [SerializeField]
+    private GameObject teleportWindow;
+    [SerializeField]
+    private GameObject teleportContent;
+    [SerializeField]
     private Item[] traderItems;
     [SerializeField]
     private Item[] wizardItems;
 
-
-    [Header("Chest Properties")]
+    //Chest UI
     [SerializeField] private GameObject ChestUI;
     [SerializeField] private GameObject[] ChestUIs, Chests;
     [SerializeField] private Canvas playerCanvas;
 
-    [Header("Escape Button Properties")]
+    public bool isPaused = false;
+    public bool npcWindowActive = false;
 
-    [SerializeField] private GameObject escapeUI, escapeButtons, settingUI;
-    [SerializeField] private Button resumeButton, settingButton, exitButton;
+    public GameObject[] spawnedEnemies;
+    public GameObject[] enemyHealthBars;
 
     public static UIManager Instance { get; private set; }
 
@@ -110,39 +110,19 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Time.timeScale = 0f;
-            escapeUI.SetActive(true);
+            if (isPaused)
+            {
+                Time.timeScale = 1;
+            }
+            else
+            {
+                Time.timeScale = 0;
+            }
 
-            resumeButton.onClick.AddListener(() => Resume());
-            settingButton.onClick.AddListener(() => Setting());
-            exitButton.onClick.AddListener(() => Exit());
         }
     }
-
-
-    //Escape Functions
-    #region
-    private void Resume()
-    {
-        Time.timeScale = 1f;
-        escapeUI.SetActive(false);
-    }
-    private void Setting()
-    {
-        settingUI.SetActive(!settingUI.activeSelf);
-
-        if (settingUI.activeSelf == true)
-            escapeButtons.transform.position = new Vector3(560f, 540f, 0f);
-        else
-            escapeButtons.transform.position = new Vector3(960f, 540f, 0f);
-    }
-    private void Exit()
-    {
-        Application.Quit();
-    }
-    #endregion
 
     public void displayInventoryUI()
     {
@@ -205,12 +185,38 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void InitializeTeleportWindow(int checkpoints, int period)
+    {
+        teleportContent.GetComponentInChildren<Button>().onClick.AddListener(delegate { GoToCheckpoint(0); });
+
+        for (int i = 0; i < checkpoints; i++)
+        {
+            UpdateTeleportWindow(i + 1, period);
+        }
+    }
+
+    public void UpdateTeleportWindow(int checkpoints, int period)
+    {
+        GameObject teleportButton = Instantiate(teleportButtonPrefab, teleportContent.transform);
+        teleportButton.GetComponent<Button>().onClick.AddListener(delegate { GoToCheckpoint(checkpoints * period); });
+        teleportButton.GetComponentInChildren<TMP_Text>().text = (checkpoints * period).ToString();
+    }
+
+    public void GoToCheckpoint(int checkpoint)
+    {
+        if (checkpoint != SceneManager.GetActiveScene().buildIndex)
+        {
+            teleportWindow.SetActive(false);
+            SceneManager.LoadScene(checkpoint);
+        }
+    }
+
     public void InitializeEnemiesHealthBar()
     {
         foreach (GameObject enemyHealthBar in enemyHealthBars)
         {
                 EnemyController enemy = enemyHealthBar.transform.parent.GetComponentInParent<EnemyController>();
-
+                
                 enemyHealthBar.GetComponent<Slider>().value = enemy.enemyParameters.health;
                 enemyHealthBar.GetComponent<Slider>().maxValue = enemy.enemyParameters.maxHealth;
         }
