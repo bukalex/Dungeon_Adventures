@@ -22,13 +22,9 @@ public class SoundManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
     }
-
     public void PlayBGM(BGMSoundData.BGM bgm)
     {
         BGMSoundData data = bgmSoundDatas.Find(data => data.bgm == bgm);
@@ -72,6 +68,8 @@ public class SESoundData
         Shield,
         GhoastProjectile,
         Swing,
+        Run,
+        WarriorBoomerang,
     }
 
     public SE se;

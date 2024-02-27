@@ -40,7 +40,6 @@ public class BattleManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
     private void Initialize()
     {
         playerActions.Add(PlayerUseSword);
@@ -185,12 +184,13 @@ public class BattleManager : MonoBehaviour
         {
             playerData.attacks = CloneDictionary(playerAttacks);
         }
-
+        
         //Run
         if (playerData.attacks.ContainsKey(playerData.type))
         {
             attack = playerData.attacks[playerData.type][AttackButton.SHIFT];
             return AffordAttack(playerData, attack, true);
+            SoundManager.Instance.PlaySE(SESoundData.SE.Run);
         }
         else
         {
@@ -456,6 +456,7 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerUseSword(PlayerData playerData, AttackParameters attack)
     {
+        SoundManager.Instance.PlaySE(SESoundData.SE.Attack);
         bool shakeCamera = false;
         bool stopAnimation = false;
 
@@ -525,6 +526,7 @@ public class BattleManager : MonoBehaviour
         attack.endDelegate = PlayerDeactivateShield;
         StartCoroutine(StartAttack(attack));
         runningAttacks.Add(attack);
+        SoundManager.Instance.PlaySE(SESoundData.SE.Shield);
     }
 
     private void PlayerDeactivateShield(AttackParameters attack)
@@ -586,6 +588,7 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerBoomerang(PlayerData playerData, AttackParameters attack)
     {
+        //SoundManager.Instance.PlaySE(SESoundData.SE.WarriorBoomerang);
         GameObject boomerang = Instantiate(battleData.boomerangPrefab, playerData.position, Quaternion.identity);
         boomerang.GetComponent<ProjectileController>().Launch("Player", playerData, attack, Vector3.zero);
         Destroy(boomerang, attack.duration);

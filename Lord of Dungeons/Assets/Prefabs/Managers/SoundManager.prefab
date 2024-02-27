@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 295564415048511307}
   - component: {fileID: 1328392645993931972}
   m_Layer: 0
-  m_Name: SondManager
+  m_Name: SoundManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53,14 +53,17 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: f917a1379f0167047903303d71da3f8c, type: 3}
     volume: 1
   seSoundDatas:
-  - se: 1
-    audioClip: {fileID: 8300000, guid: b31d74e130b869440bd754b8dca8af03, type: 3}
+  - se: 4
+    audioClip: {fileID: 8300000, guid: 5aeb470ec099e9b45a5141c536731cb0, type: 3}
     volume: 1
   - se: 0
     audioClip: {fileID: 8300000, guid: 3155850a79548f042a819cd0bf66cd43, type: 3}
     volume: 1
   - se: 2
     audioClip: {fileID: 8300000, guid: a1100a899a72cb84291bd4e7c770b1f8, type: 3}
+    volume: 1
+  - se: 3
+    audioClip: {fileID: 8300000, guid: 3f38084175316134ba32595a45019bdf, type: 3}
     volume: 1
   - se: 3
     audioClip: {fileID: 8300000, guid: 3f38084175316134ba32595a45019bdf, type: 3}
