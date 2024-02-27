@@ -7,17 +7,17 @@ public class LootRandomizer : MonoBehaviour
 {
     public GameObject InventoryItemPref;
     [Header("Loot Tables")]
-    public Item[] totalItems;
-    public Item[] materialLootTable;
-    public Item[] weaponLootTable;
-    public Item[] consumableLootTable;
-    public Item[] uniqueLootTable;
+    public ItemParam[] totalItems;
+    public ItemParam[] materialLootTable;
+    public ItemParam[] weaponLootTable;
+    public ItemParam[] consumableLootTable;
+    public ItemParam[] uniqueLootTable;
     // You can fill out these loot tables manually so that only specific drops are there for specific enemies. check inventory manager for template loot tables
-    public List<Item> randomLootTable = new List<Item>();
-    public List<Item> randomMaterialLootTable = new List<Item>();
-    public List<Item> randomWeaponLootTable = new List<Item>();
-    public List<Item> randomConsumableLootTable = new List<Item>();
-    public List<Item> randomUniqueLootTable = new List<Item>();
+    public List<ItemParam> randomLootTable = new List<ItemParam>();
+    public List<ItemParam> randomMaterialLootTable = new List<ItemParam>();
+    public List<ItemParam> randomWeaponLootTable = new List<ItemParam>();
+    public List<ItemParam> randomConsumableLootTable = new List<ItemParam>();
+    public List<ItemParam> randomUniqueLootTable = new List<ItemParam>();
     // These are filled via the function below, this is what the enemy/chest will drop. no need to manually go through these.
 
     // Start is called before the first frame update
@@ -42,7 +42,7 @@ public class LootRandomizer : MonoBehaviour
 
     }
 
-    public bool FillRandomLootTable(Item item, List<Item> lootTable)
+    public bool FillRandomLootTable(ItemParam item, List<ItemParam> lootTable)
     {
         
         int randomNum = Random.Range(0, 101);

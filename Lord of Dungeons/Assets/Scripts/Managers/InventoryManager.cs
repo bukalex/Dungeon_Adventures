@@ -7,17 +7,17 @@ public class InventoryManager : MonoBehaviour
 {
     private InventorySlot[] emp;
     [Header("Loot Tables")]  
-    public Item[] startItems;
-    public Item[] allItems;
-    public Item[] materialLootTable;
-    public Item[] weaponLootTable;
-    public Item[] consumableLootTable;
-    public Item[] uniqueLootTable;
-    public List<Item> randomLootTable = new List<Item>();
-    public List<Item> randomMaterialLootTable = new List<Item>();
-    public List<Item> randomWeaponLootTable = new List<Item>();
-    public List<Item> randomConsumableLootTable = new List<Item>();
-    public List<Item> randomUniqueLootTable = new List<Item>();
+    public ItemParam[] startItems;
+    public ItemParam[] allItems;
+    public ItemParam[] materialLootTable;
+    public ItemParam[] weaponLootTable;
+    public ItemParam[] consumableLootTable;
+    public ItemParam[] uniqueLootTable;
+    public List<ItemParam> randomLootTable = new List<ItemParam>();
+    public List<ItemParam> randomMaterialLootTable = new List<ItemParam>();
+    public List<ItemParam> randomWeaponLootTable = new List<ItemParam>();
+    public List<ItemParam> randomConsumableLootTable = new List<ItemParam>();
+    public List<ItemParam> randomUniqueLootTable = new List<ItemParam>();
     public Ability[] startAbilities;
     public int maxStackCount = 16;
     [Header("Slots")]
@@ -124,7 +124,7 @@ public class InventoryManager : MonoBehaviour
             useSelectedItem();
         }
     }
-    public bool AddItem(Item item, InventorySlot[] InventoryType1, InventorySlot[] InventoryType2)
+    public bool AddItem(ItemParam item, InventorySlot[] InventoryType1, InventorySlot[] InventoryType2)
     {
         //check if any slot has the same item with count lower than max stack
         for (int i = 0; i < InventoryType1.Length; i++)
@@ -178,7 +178,7 @@ public class InventoryManager : MonoBehaviour
         }
         return false;
     }
-    public bool fillStacks(Item item, InventorySlot[] InventoryType)
+    public bool fillStacks(ItemParam item, InventorySlot[] InventoryType)
     {
         for (int i = 0; i < InventoryType.Length; i++)
         {
@@ -200,7 +200,7 @@ public class InventoryManager : MonoBehaviour
         foreach (InventorySlot slot in toolBar)
         {
             InventoryItem inventoryItem = slot.GetComponentInChildren<InventoryItem>();
-            if (inventoryItem != null && inventoryItem.item.itemType == Item.ItemType.Coin)
+            if (inventoryItem != null && inventoryItem.item.itemType == ItemParam.ItemType.Coin)
             {
                 return true;
             }
@@ -209,7 +209,7 @@ public class InventoryManager : MonoBehaviour
         foreach (InventorySlot slot in internalInventorySlots)
         {
             InventoryItem inventoryItem = slot.GetComponentInChildren<InventoryItem>();
-            if (inventoryItem != null && inventoryItem.item.itemType == Item.ItemType.Coin)
+            if (inventoryItem != null && inventoryItem.item.itemType == ItemParam.ItemType.Coin)
             {
                 return true;
             }
@@ -233,7 +233,7 @@ public class InventoryManager : MonoBehaviour
         }
         return false;
     }
-    public void spawnNewItem(Item item, InventorySlot slot)
+    public void spawnNewItem(ItemParam item, InventorySlot slot)
     {
         GameObject newItemGo = Instantiate(inventoryItemPrefab, slot.transform);
         InventoryItem inventoryItem = newItemGo.GetComponent<InventoryItem>();
@@ -245,7 +245,7 @@ public class InventoryManager : MonoBehaviour
         AbilityItem abilityItem = newAbilityGo.GetComponent<AbilityItem>();
         abilityItem.InitializeAbility(ability); 
     }
-    public void itemIsUsed(Item item)
+    public void itemIsUsed(ItemParam item)
     {
         if (item.GetItemType(item.itemType) == "Potion")
         {
@@ -254,18 +254,18 @@ public class InventoryManager : MonoBehaviour
             playerData.speed += item.addSPD;
             playerData.stamina += item.addStamina;
         }
-        else if (item.itemType == Item.ItemType.Spell)
+        else if (item.itemType == ItemParam.ItemType.Spell)
         {
             AddAbility(item.ability);
         }
     }
-    public Item useSelectedItem()
+    public ItemParam useSelectedItem()
     {
         InventorySlot slot = toolBar[selectedSlot];
         InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
         if (itemInSlot != null) 
         {
-            Item item = itemInSlot.item;
+            ItemParam item = itemInSlot.item;
             if (item.isUsable == true)
             {
                     itemInSlot.count--;
@@ -287,9 +287,9 @@ public class InventoryManager : MonoBehaviour
     {
         return null;
     }
-    public bool FillRandomLootTable(Item item)
+    public bool FillRandomLootTable(ItemParam item)
     {
-        List<Item> exampleLootPool = new List<Item>();
+        List<ItemParam> exampleLootPool = new List<ItemParam>();
         int randomNum = Random.Range(0, 101);
 
 

@@ -55,7 +55,7 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     public RuntimeAnimatorController animController;
 
     //Resources
-    public Dictionary<Item.CoinType, int> resources = new Dictionary<Item.CoinType, int>();
+    public Dictionary<ItemParam.CoinType, int> resources = new Dictionary<ItemParam.CoinType, int>();
 
     //Enums
     public enum CharacterType { WARRIOR, ARCHER, WIZARD }
@@ -87,9 +87,9 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     {
         //Set resources
         resources.Clear();
-        resources.Add(Item.CoinType.GoldenCoin, 0);
-        resources.Add(Item.CoinType.SilverCoin, 0);
-        resources.Add(Item.CoinType.CopperCoin, 0);
+        resources.Add(ItemParam.CoinType.GoldenCoin, 0);
+        resources.Add(ItemParam.CoinType.SilverCoin, 0);
+        resources.Add(ItemParam.CoinType.CopperCoin, 0);
     }
 
     public bool IsAlive()

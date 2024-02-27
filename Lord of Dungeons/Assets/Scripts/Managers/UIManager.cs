@@ -45,9 +45,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject teleportContent;
     [SerializeField]
-    private Item[] traderItems;
+    private ItemParam[] traderItems;
     [SerializeField]
-    private Item[] wizardItems;
+    private ItemParam[] wizardItems;
 
     //Chest UI
     [SerializeField] private GameObject ChestUI;
@@ -136,9 +136,9 @@ public class UIManager : MonoBehaviour
         stats.text = HPstats + ManaStats + StaminaStats + DamageStats + DefenseStats + SpeedStats;
 
         //Display coins amount
-        goldenCoinCounter.text = playerData.resources[Item.CoinType.GoldenCoin].ToString();
-        silverCoinCounter.text = playerData.resources[Item.CoinType.SilverCoin].ToString();
-        copperCoinCounter.text = playerData.resources[Item.CoinType.CopperCoin].ToString();
+        goldenCoinCounter.text = playerData.resources[ItemParam.CoinType.GoldenCoin].ToString();
+        silverCoinCounter.text = playerData.resources[ItemParam.CoinType.SilverCoin].ToString();
+        copperCoinCounter.text = playerData.resources[ItemParam.CoinType.CopperCoin].ToString();
     }
 
     public void traderButtons(int npcIndex)
@@ -167,9 +167,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void InitializeNPCItems(Item[] items, GameObject storage)
+    private void InitializeNPCItems(ItemParam[] items, GameObject storage)
     {
-        foreach (Item item in items)
+        foreach (ItemParam item in items)
         {
             Transform itemHolder = Instantiate(itemHolderPrefab, storage.transform).transform;
             InventoryItem inventoryItem = itemHolder.GetComponentInChildren<InventorySlot>().GetComponentInChildren<InventoryItem>();

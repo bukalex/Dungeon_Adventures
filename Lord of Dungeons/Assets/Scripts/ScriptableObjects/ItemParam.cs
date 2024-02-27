@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Item")]
-public class Item : ScriptableObject
+public class ItemParam : ScriptableObject
 {
     [Header("Data")]
     public PlayerData playerData;
@@ -39,7 +39,7 @@ public class Item : ScriptableObject
     [Tooltip("Ability for assigning to a book")]
     public Ability ability;
     [Tooltip("Items array for lamp")]
-    public Item[] items;
+    public ItemParam[] items;
     [Range(0f, 101f)]
     [Tooltip("A rarity scale for randomizer, 0 is unobtainable. 101 is guranteed")]
     public float rarity;

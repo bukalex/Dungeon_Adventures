@@ -9,7 +9,7 @@ public class TemporaryTradingSystem : MonoBehaviour
 {
     public InventorySlot sellSlot;
     public PlayerData playerData;
-    public Item[] items2Pickup;
+    public ItemParam[] items2Pickup;
     public static InventoryItem itemInStore;
     public TMP_Text traderPriceDisplay, wizardPriceDisplay;
     public TMP_Text traderItemName, wizardItemName;
@@ -62,13 +62,13 @@ public class TemporaryTradingSystem : MonoBehaviour
     public void Purchase()
     {
         if (itemInStore != null && 
-            itemInStore.item.GoldenCoin <= playerData.resources[Item.CoinType.GoldenCoin] &&
-            itemInStore.item.SilverCoin <= playerData.resources[Item.CoinType.SilverCoin] &&
-            itemInStore.item.CopperCoin <= playerData.resources[Item.CoinType.CopperCoin])
+            itemInStore.item.GoldenCoin <= playerData.resources[ItemParam.CoinType.GoldenCoin] &&
+            itemInStore.item.SilverCoin <= playerData.resources[ItemParam.CoinType.SilverCoin] &&
+            itemInStore.item.CopperCoin <= playerData.resources[ItemParam.CoinType.CopperCoin])
         {
-            playerData.resources[Item.CoinType.GoldenCoin] -= itemInStore.item.GoldenCoin;
-            playerData.resources[Item.CoinType.SilverCoin] -= itemInStore.item.SilverCoin;
-            playerData.resources[Item.CoinType.CopperCoin] -= itemInStore.item.CopperCoin;
+            playerData.resources[ItemParam.CoinType.GoldenCoin] -= itemInStore.item.GoldenCoin;
+            playerData.resources[ItemParam.CoinType.SilverCoin] -= itemInStore.item.SilverCoin;
+            playerData.resources[ItemParam.CoinType.CopperCoin] -= itemInStore.item.CopperCoin;
 
             InventoryManager.Instance.AddItem(itemInStore.item, InventoryManager.Instance.toolBar, InventoryManager.Instance.internalInventorySlots);
         }
@@ -105,9 +105,9 @@ public class TemporaryTradingSystem : MonoBehaviour
                     }
                 }
 
-                playerData.resources[Item.CoinType.GoldenCoin] += coinsFromSell[0];
-                playerData.resources[Item.CoinType.SilverCoin] += coinsFromSell[1];
-                playerData.resources[Item.CoinType.CopperCoin] += coinsFromSell[2];
+                playerData.resources[ItemParam.CoinType.GoldenCoin] += coinsFromSell[0];
+                playerData.resources[ItemParam.CoinType.SilverCoin] += coinsFromSell[1];
+                playerData.resources[ItemParam.CoinType.CopperCoin] += coinsFromSell[2];
 
                 StartCoroutine(ChangeLabel(npcIndex, "Place items that you want to sell", ""));
                 break;

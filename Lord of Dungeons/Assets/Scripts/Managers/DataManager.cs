@@ -13,7 +13,7 @@ public class DataManager : MonoBehaviour
     private List<EnemyParameters> enemies;
 
     [SerializeField]
-    private List<Item> items;
+    private List<ItemParam> items;
 
     [SerializeField]
     private List<NPCParameters> npcs;
@@ -40,7 +40,7 @@ public class DataManager : MonoBehaviour
             enemy.playerData = playerData;
         }
 
-        foreach (Item item in items)
+        foreach (ItemParam item in items)
         {
             item.playerData = playerData;   
         }

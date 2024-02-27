@@ -8,7 +8,7 @@ using TMPro;
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField]
-    public Item item;
+    public ItemParam item;
     [SerializeField]
     public TMP_Text countText;
     [SerializeField]
@@ -25,7 +25,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [HideInInspector]
     public bool isLocked = false;
 
-    public void InitializeItem(Item newItem)
+    public void InitializeItem(ItemParam newItem)
     {
         item = newItem;                                             
         image.sprite = newItem.image;
