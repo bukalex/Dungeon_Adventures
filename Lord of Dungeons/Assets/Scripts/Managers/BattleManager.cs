@@ -48,6 +48,11 @@ public class BattleManager : MonoBehaviour
         playerActions.Add(PlayerLeap);
         playerActions.Add(PlayerBoomerang);
         playerActions.Add(PlayerDash);
+        playerActions.Add(PlayerExplosionClosest);
+        playerActions.Add(PlayerPushingWave);
+        playerActions.Add(PlayerGuisonKnife);
+        playerActions.Add(PlayerTeleportForward);
+        playerActions.Add(PlayerMindControl);
 
         enemyActions.Add(GuardUseSword);
         enemyActions.Add(GuardUseSpecial);
@@ -565,12 +570,12 @@ public class BattleManager : MonoBehaviour
     {
         if (attack.enemyParameters == null)
         {
-            attack.playerData.transform.GetComponent<Rigidbody2D>().velocity = attack.playerData.attackDirection.normalized * attack.range / attack.timeOffset;
+            attack.playerData.transform.GetComponent<Rigidbody2D>().velocity = attack.playerData.attackDirection.normalized * attack.range / attack.duration;
         }
         else
         {
             attack.playerData.attackDirection = (attack.enemyParameters.position - attack.playerData.position).normalized;
-            attack.playerData.transform.GetComponent<Rigidbody2D>().velocity = (attack.enemyParameters.position - attack.playerData.position) / attack.timeOffset;
+            attack.playerData.transform.GetComponent<Rigidbody2D>().velocity = (attack.enemyParameters.position - attack.playerData.position) / attack.duration;
         }
     }
 
@@ -606,7 +611,7 @@ public class BattleManager : MonoBehaviour
     private void PlayerDashRunning(AttackParameters attack)
     {
         attack.playerData.attackDirection = battleData.attackDirections[attack.playerData].normalized;
-        attack.playerData.transform.GetComponent<Rigidbody2D>().velocity = battleData.attackDirections[attack.playerData].normalized * attack.range / attack.timeOffset;
+        attack.playerData.transform.GetComponent<Rigidbody2D>().velocity = battleData.attackDirections[attack.playerData].normalized * attack.range / attack.duration;
 
         List<EnemyController> enemies = DetectTargets<EnemyController>(attack.playerData.position, attack.playerData.colliderRadius + 0.25f, attack.playerData.attackDirection, false);
         foreach (EnemyController enemy in enemies)
@@ -631,6 +636,31 @@ public class BattleManager : MonoBehaviour
     {
         attack.playerData.transform.GetComponent<Rigidbody2D>().excludeLayers = LayerMask.GetMask(new string[] { "Nothing" });
         battleData.attackDirections.Remove(attack.playerData);
+    }
+
+    private void PlayerExplosionClosest(PlayerData playerData, AttackParameters attack)
+    {
+
+    }
+
+    private void PlayerPushingWave(PlayerData playerData, AttackParameters attack)
+    {
+
+    }
+
+    private void PlayerGuisonKnife(PlayerData playerData, AttackParameters attack)
+    {
+
+    }
+
+    private void PlayerTeleportForward(PlayerData playerData, AttackParameters attack)
+    {
+
+    }
+
+    private void PlayerMindControl(PlayerData playerData, AttackParameters attack)
+    {
+
     }
 
     private void GuardUseSword(EnemyParameters enemyParameters, AttackParameters attack)
