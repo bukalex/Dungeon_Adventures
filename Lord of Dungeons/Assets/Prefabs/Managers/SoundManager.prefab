@@ -51,23 +51,14 @@ MonoBehaviour:
   bgmSoundDatas:
   - bgm: 1
     audioClip: {fileID: 8300000, guid: f917a1379f0167047903303d71da3f8c, type: 3}
-    volume: 1
+    volume: 0
   seSoundDatas:
-  - se: 4
-    audioClip: {fileID: 8300000, guid: 5aeb470ec099e9b45a5141c536731cb0, type: 3}
-    volume: 1
   - se: 0
     audioClip: {fileID: 8300000, guid: 3155850a79548f042a819cd0bf66cd43, type: 3}
-    volume: 1
-  - se: 2
-    audioClip: {fileID: 8300000, guid: a1100a899a72cb84291bd4e7c770b1f8, type: 3}
-    volume: 1
-  - se: 3
-    audioClip: {fileID: 8300000, guid: 3f38084175316134ba32595a45019bdf, type: 3}
-    volume: 1
-  - se: 3
-    audioClip: {fileID: 8300000, guid: 3f38084175316134ba32595a45019bdf, type: 3}
-    volume: 1
+    volume: 0.993
+  - se: 1
+    audioClip: {fileID: 8300000, guid: 3c1683d79c2d4d048999b37d19ee27bb, type: 3}
+    volume: 0.943
   masterVolume: 1
   bgmMasterVolume: 1
   seMasterVolume: 1
@@ -89,7 +80,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 108
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

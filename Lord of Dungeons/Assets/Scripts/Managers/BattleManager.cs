@@ -178,6 +178,7 @@ public class BattleManager : MonoBehaviour
     //Performs an attack for Shift
     public bool PlayerPerformShift(PlayerData playerData)
     {
+        SoundManager.Instance.PlaySE(SESoundData.SE.Run);
         AttackParameters attack;
 
         if (playerData.attacks == null)
@@ -190,7 +191,6 @@ public class BattleManager : MonoBehaviour
         {
             attack = playerData.attacks[playerData.type][AttackButton.SHIFT];
             return AffordAttack(playerData, attack, true);
-            SoundManager.Instance.PlaySE(SESoundData.SE.Run);
         }
         else
         {
@@ -513,6 +513,7 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerActivateShield(PlayerData playerData, AttackParameters attack)
     {
+        SoundManager.Instance.PlaySE(SESoundData.SE.Shield);
         GameObject shield = Instantiate(battleData.shieldPrefab, playerData.transform);
         shield.transform.localPosition = new Vector3(0, 0.5f, 0);
         shield.GetComponent<ParticleSystem>().Play(battleData.shieldPrefab);
@@ -526,7 +527,6 @@ public class BattleManager : MonoBehaviour
         attack.endDelegate = PlayerDeactivateShield;
         StartCoroutine(StartAttack(attack));
         runningAttacks.Add(attack);
-        SoundManager.Instance.PlaySE(SESoundData.SE.Shield);
     }
 
     private void PlayerDeactivateShield(AttackParameters attack)
@@ -545,6 +545,7 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerLeap(PlayerData playerData, AttackParameters attack)
     {
+        SoundManager.Instance.PlaySE(SESoundData.SE.Leap);
         attack.playerData = playerData;
         
         EnemyController enemy = GetNearestTarget<EnemyController>(playerData.position, attack.range + playerData.colliderRadius, playerData.attackDirection, false);
@@ -588,7 +589,7 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerBoomerang(PlayerData playerData, AttackParameters attack)
     {
-        //SoundManager.Instance.PlaySE(SESoundData.SE.WarriorBoomerang);
+        SoundManager.Instance.PlaySE(SESoundData.SE.WarriorBoomerang);
         GameObject boomerang = Instantiate(battleData.boomerangPrefab, playerData.position, Quaternion.identity);
         boomerang.GetComponent<ProjectileController>().Launch("Player", playerData, attack, Vector3.zero);
         Destroy(boomerang, attack.duration);
@@ -596,6 +597,7 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerDash(PlayerData playerData, AttackParameters attack)
     {
+        SoundManager.Instance.PlaySE(SESoundData.SE.Dash);
         Vector3 attackDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - new Vector3(0, 0, Camera.main.transform.position.z) - playerData.position).normalized * attack.range;
         playerData.attackDirection = attackDirection.normalized;
         battleData.attackDirections.Add(playerData, attackDirection);

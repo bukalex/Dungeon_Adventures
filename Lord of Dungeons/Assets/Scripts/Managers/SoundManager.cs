@@ -22,7 +22,6 @@ public class SoundManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            //DontDestroyOnLoad(gameObject);
         }
     }
     public void PlayBGM(BGMSoundData.BGM bgm)
@@ -36,6 +35,16 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySE(SESoundData.SE se)
     {
+        //SESoundData data = seSoundDatas.Find(data => data.se == se);
+        //if (data != null) // ここでnullチェックを追加
+        //{
+        //    seAudioSource.volume = data.volume * seMasterVolume * masterVolume;
+        //    seAudioSource.PlayOneShot(data.audioClip);
+        //}
+        //else
+        //{
+        //    Debug.LogWarning($"SE data not found for: {se}");
+        //}
         SESoundData data = seSoundDatas.Find(data => data.se == se);
         seAudioSource.volume = data.volume * seMasterVolume * masterVolume;
         seAudioSource.PlayOneShot(data.audioClip);
@@ -67,7 +76,8 @@ public class SESoundData
         Attack,
         Shield,
         GhoastProjectile,
-        Swing,
+        Leap,
+        Dash,
         Run,
         WarriorBoomerang,
     }
