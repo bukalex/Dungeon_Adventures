@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
@@ -88,7 +89,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
             //Attacks
             #region
             //Left Mouse Button
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.LMB))
                 {
@@ -98,7 +99,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
             }
 
             //Right Mouse Button
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
             {
                 if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.RMB))
                 {
