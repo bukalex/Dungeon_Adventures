@@ -51,7 +51,6 @@ public class CheckpointManager : MonoBehaviour
         if (File.Exists(filePath))
         {
             string jsonData = File.ReadAllText(filePath);
-            Debug.Log(jsonData);
 
             gameData = JsonUtility.FromJson<GameData>(jsonData);
             checkpointsReached = gameData.checkpointsReached;

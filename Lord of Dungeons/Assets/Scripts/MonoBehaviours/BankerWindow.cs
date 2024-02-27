@@ -42,31 +42,29 @@ public class BankerWindow : MonoBehaviour
 
     public void OnGSSliderValueChanged(float value)
     {
-        int result = (int)((playerData.resources[Item.CoinType.GoldenCoin] * 100 + playerData.resources[Item.CoinType.SilverCoin]) * (1 - value));
-        playerData.resources[Item.CoinType.GoldenCoin] += (playerData.resources[Item.CoinType.SilverCoin] - result) / 100;
-        playerData.resources[Item.CoinType.SilverCoin] = result + (playerData.resources[Item.CoinType.SilverCoin] - result) % 100;
-
-        UpdateText();
+        depositButton.interactable = false;
+        silverCopperSlider.interactable = false;
+        goldInput.SetTextWithoutNotify((playerData.resources[Item.CoinType.GoldenCoin] + (int)value).ToString());
+        silverInput.SetTextWithoutNotify((playerData.resources[Item.CoinType.SilverCoin] - (int)value * 100).ToString());
+        silverInput1.text = silverInput.text;
     }
 
     public void OnSCSliderValueChanged(float value)
     {
-        int result = (int)((playerData.resources[Item.CoinType.SilverCoin] * 100 + playerData.resources[Item.CoinType.CopperCoin]) * (1 - value));
-        playerData.resources[Item.CoinType.SilverCoin] += (playerData.resources[Item.CoinType.CopperCoin] - result) / 100;
-        playerData.resources[Item.CoinType.CopperCoin] = result + (playerData.resources[Item.CoinType.CopperCoin] - result) % 100;
-
-        UpdateText();
+        depositButton.interactable = false;
+        goldSilverSlider.interactable = false;
+        silverInput1.SetTextWithoutNotify((playerData.resources[Item.CoinType.SilverCoin] + (int)value).ToString());
+        silverInput.text = silverInput1.text;
+        copperInput.SetTextWithoutNotify((playerData.resources[Item.CoinType.CopperCoin] - (int)value * 100).ToString());
     }
 
     public void OnGInput(string text)
     {
         if (int.TryParse(text, out int result))
         {
-            result = Mathf.Clamp(result, 0, playerData.resources[Item.CoinType.GoldenCoin] + playerData.resources[Item.CoinType.SilverCoin] / 100);
-            playerData.resources[Item.CoinType.SilverCoin] += (playerData.resources[Item.CoinType.GoldenCoin] - result) * 100;
-            playerData.resources[Item.CoinType.GoldenCoin] = result;
-
-            UpdateText();
+            result = Mathf.Clamp(result, playerData.resources[Item.CoinType.GoldenCoin], playerData.resources[Item.CoinType.GoldenCoin] + (int)goldSilverSlider.maxValue);
+            goldSilverSlider.SetValueWithoutNotify(result - playerData.resources[Item.CoinType.GoldenCoin]);
+            OnGSSliderValueChanged(goldSilverSlider.value);
         }
     }
 
@@ -74,22 +72,18 @@ public class BankerWindow : MonoBehaviour
     {
         if (int.TryParse(text, out int result))
         {
-            result = Mathf.Clamp(result, 0, playerData.resources[Item.CoinType.GoldenCoin] * 100 + playerData.resources[Item.CoinType.SilverCoin]);
-            playerData.resources[Item.CoinType.GoldenCoin] += (playerData.resources[Item.CoinType.SilverCoin] - result) / 100;
-            playerData.resources[Item.CoinType.SilverCoin] = result + (playerData.resources[Item.CoinType.SilverCoin] - result) % 100;
-
-            UpdateText();
+            result = Mathf.Clamp(result, 0, playerData.resources[Item.CoinType.SilverCoin]);
+            goldSilverSlider.SetValueWithoutNotify((playerData.resources[Item.CoinType.SilverCoin] - result) / 100);
+            OnGSSliderValueChanged(goldSilverSlider.value);
         }
     }
     public void OnS1Input(string text)
     {
         if (int.TryParse(text, out int result))
         {
-            result = Mathf.Clamp(result, 0, playerData.resources[Item.CoinType.SilverCoin] + playerData.resources[Item.CoinType.CopperCoin] / 100);
-            playerData.resources[Item.CoinType.CopperCoin] += (playerData.resources[Item.CoinType.SilverCoin] - result) * 100;
-            playerData.resources[Item.CoinType.SilverCoin] = result;
-
-            UpdateText();
+            result = Mathf.Clamp(result, playerData.resources[Item.CoinType.SilverCoin], playerData.resources[Item.CoinType.SilverCoin] + (int)silverCopperSlider.maxValue);
+            silverCopperSlider.SetValueWithoutNotify(result - playerData.resources[Item.CoinType.SilverCoin]);
+            OnSCSliderValueChanged(silverCopperSlider.value);
         }
     }
 
@@ -97,12 +91,27 @@ public class BankerWindow : MonoBehaviour
     {
         if (int.TryParse(text, out int result))
         {
-            result = Mathf.Clamp(result, 0, playerData.resources[Item.CoinType.SilverCoin] * 100 + playerData.resources[Item.CoinType.CopperCoin]);
-            playerData.resources[Item.CoinType.SilverCoin] += (playerData.resources[Item.CoinType.CopperCoin] - result) / 100;
-            playerData.resources[Item.CoinType.CopperCoin] = result + (playerData.resources[Item.CoinType.CopperCoin] - result) % 100;
-
-            UpdateText();
+            result = Mathf.Clamp(result, 0, playerData.resources[Item.CoinType.CopperCoin]);
+            silverCopperSlider.SetValueWithoutNotify((playerData.resources[Item.CoinType.CopperCoin] - result) / 100);
+            OnSCSliderValueChanged(silverCopperSlider.value);
         }
+    }
+
+    public void Convert()
+    {
+        playerData.resources[Item.CoinType.GoldenCoin] = int.Parse(goldInput.text);
+        playerData.resources[Item.CoinType.SilverCoin] = int.Parse(silverInput.text);
+        playerData.resources[Item.CoinType.CopperCoin] = int.Parse(copperInput.text);
+
+        depositButton.interactable = InventoryManager.Instance.HasCoins();
+        goldSilverSlider.interactable = true;
+        goldSilverSlider.SetValueWithoutNotify(0);
+        goldSilverSlider.maxValue = playerData.resources[Item.CoinType.SilverCoin] / 100;
+        silverCopperSlider.interactable = true;
+        silverCopperSlider.SetValueWithoutNotify(0);
+        silverCopperSlider.maxValue = playerData.resources[Item.CoinType.CopperCoin] / 100;
+
+        UpdateText();
     }
 
     public void Deposit()
@@ -138,22 +147,7 @@ public class BankerWindow : MonoBehaviour
         silverInput1.text = playerData.resources[Item.CoinType.SilverCoin].ToString();
         copperInput.text = playerData.resources[Item.CoinType.CopperCoin].ToString();
 
-        if (playerData.resources[Item.CoinType.GoldenCoin] + playerData.resources[Item.CoinType.SilverCoin] != 0)
-        {
-            goldSilverSlider.SetValueWithoutNotify(playerData.resources[Item.CoinType.GoldenCoin] * 100.0f / (playerData.resources[Item.CoinType.GoldenCoin] * 100.0f + playerData.resources[Item.CoinType.SilverCoin]));
-        }
-        else
-        {
-            goldSilverSlider.SetValueWithoutNotify(0);
-        }
-
-        if (playerData.resources[Item.CoinType.SilverCoin] + playerData.resources[Item.CoinType.CopperCoin] != 0)
-        {
-            silverCopperSlider.SetValueWithoutNotify(playerData.resources[Item.CoinType.SilverCoin] * 100.0f / (playerData.resources[Item.CoinType.SilverCoin] * 100.0f + playerData.resources[Item.CoinType.CopperCoin]));
-        }
-        else
-        {
-            silverCopperSlider.SetValueWithoutNotify(0);
-        }
+        goldSilverSlider.maxValue = playerData.resources[Item.CoinType.SilverCoin] / 100;
+        silverCopperSlider.maxValue = playerData.resources[Item.CoinType.CopperCoin] / 100;
     }
 }
