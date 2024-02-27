@@ -40,6 +40,10 @@ public class BattleManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    private void Start()
+    {
+        SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Dungeon);
+    }
     private void Initialize()
     {
         playerActions.Add(PlayerUseSword);

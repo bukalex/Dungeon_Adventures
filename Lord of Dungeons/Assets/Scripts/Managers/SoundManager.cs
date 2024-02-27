@@ -24,6 +24,7 @@ public class SoundManager : MonoBehaviour
             Instance = this;
         }
     }
+    
     public void PlayBGM(BGMSoundData.BGM bgm)
     {
         BGMSoundData data = bgmSoundDatas.Find(data => data.bgm == bgm);
