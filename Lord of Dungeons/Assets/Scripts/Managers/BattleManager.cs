@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.GraphicsBuffer;
@@ -153,7 +154,7 @@ public class BattleManager : MonoBehaviour
         {
             playerData.attacks = CloneDictionary(playerAttacks);
         }
-
+        
         if (playerData.attacks.ContainsKey(playerData.type) && playerData.attacks[playerData.type].ContainsKey(attackButton))
         {
             attack = playerData.attacks[playerData.type][attackButton];
@@ -163,7 +164,7 @@ public class BattleManager : MonoBehaviour
         {
             return false;
         }
-
+        
         if (attack.isReady && AffordAttack(playerData, attack))
         {
             StartCoroutine(DelayAttack(attack, playerData, null));
@@ -172,7 +173,7 @@ public class BattleManager : MonoBehaviour
         {
             return false;
         }
-
+        
         if (attack.cooldown > 0)
         {
             StartCoroutine(Cooldown(attack));
@@ -645,17 +646,61 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerPushingWave(PlayerData playerData, AttackParameters attack)
     {
+        attack.enemyParametersList = new List<EnemyParameters>();
+        List<EnemyController> enemies = DetectTargets<EnemyController>(playerData.position, attack.range + playerData.colliderRadius, playerData.attackDirection, false);
+        foreach (EnemyController enemy in enemies)
+        {
+            if (enemy.IsAlive())
+            {
+                attack.enemyParametersList.Add(enemy.enemyParameters);
+            }
+        }
 
+        attack.playerData = playerData;
+        attack.runningDelegate = PlayerPushingWaveRunning;
+        attack.endDelegate = PlayerPushingWaveEnd;
+        StartCoroutine(StartAttack(attack));
+        runningAttacks.Add(attack);
+    }
+
+    private void PlayerPushingWaveRunning(AttackParameters attack)
+    {
+        foreach (EnemyParameters enemy in attack.enemyParametersList)
+        {
+            enemy.transform.GetComponent<Rigidbody2D>().velocity = (enemy.position - attack.playerData.position).normalized * 8.0f;
+        }
+    }
+
+    private void PlayerPushingWaveEnd(AttackParameters attack)
+    {
+        foreach (EnemyParameters enemy in attack.enemyParametersList)
+        {
+            enemy.transform.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        }
     }
 
     private void PlayerGuisonKnife(PlayerData playerData, AttackParameters attack)
+    {
+        attack.playerData = playerData;
+        attack.runningDelegate = PlayerGuisonKnifeRunning;
+        attack.endDelegate = PlayerGuisonKnifeEnd;
+        StartCoroutine(StartAttack(attack));
+        runningAttacks.Add(attack);
+    }
+
+    private void PlayerGuisonKnifeRunning(AttackParameters attack)
+    {
+
+    }
+
+    private void PlayerGuisonKnifeEnd(AttackParameters attack)
     {
 
     }
 
     private void PlayerTeleportForward(PlayerData playerData, AttackParameters attack)
     {
-
+        playerData.transform.Translate(playerData.attackDirection.normalized * attack.range);
     }
 
     private void PlayerMindControl(PlayerData playerData, AttackParameters attack)
