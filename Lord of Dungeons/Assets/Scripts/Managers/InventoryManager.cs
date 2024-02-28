@@ -6,7 +6,7 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     private InventorySlot[] emp;
-    [Header("Loot Tables")]  
+    [Header("Loot Tables")]
     public ItemParam[] startItems;
     public ItemParam[] allItems;
     public ItemParam[] materialLootTable;
@@ -71,9 +71,9 @@ public class InventoryManager : MonoBehaviour
             AddItem(item, cheatSlots, cheatSlots);
 
         //Add bility to a abilitySlots
-        foreach(var ability in startAbilities)
+        foreach (var ability in startAbilities)
             AddAbility(ability);
-        
+
         //Fill stacks of usable items in cheat chests
         foreach (var item in allItems)
             fillStacks(item, cheatSlots);
@@ -82,7 +82,7 @@ public class InventoryManager : MonoBehaviour
     {
         //Initializing slots for internal inventory
         internalInventorySlots = UIManager.Instance.inventory.GetComponentsInChildren<InventorySlot>();
-        
+
         //Initializing slots for toolBar
         toolBar = UIManager.Instance.toolbar.GetComponentsInChildren<InventorySlot>();
 
@@ -91,7 +91,7 @@ public class InventoryManager : MonoBehaviour
         wizardSellSlots = UIManager.Instance.wizardSellSlots.GetComponentsInChildren<InventorySlot>();
 
         //Initializing slots for purchase menu
-        storageSlots = UIManager.Instance.traderStorage.GetComponentsInChildren<InventorySlot>(); 
+        storageSlots = UIManager.Instance.traderStorage.GetComponentsInChildren<InventorySlot>();
 
         //Initializing slots for abilities
         abilityBar = UIManager.Instance.abilitybar.GetComponentsInChildren<AbilitySlot>();
@@ -104,11 +104,11 @@ public class InventoryManager : MonoBehaviour
     {
         if (Input.anyKeyDown)
         {
-            if(selectedSlot != -1) toolBar[selectedSlot].unselectSlot();
+            if (selectedSlot != -1) toolBar[selectedSlot].unselectSlot();
 
-            string[] inputString = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};  
+            string[] inputString = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
-            for(int i = 0; i < inputString.Length; i++)
+            for (int i = 0; i < inputString.Length; i++)
             {
                 if (Input.inputString == inputString[i])
                 {
@@ -137,7 +137,7 @@ public class InventoryManager : MonoBehaviour
                 itemInSlot.updateCount();
                 return true;
             }
-            if(InventoryType1 != InventoryType2)
+            if (InventoryType1 != InventoryType2)
             {
                 for (int j = 0; j < InventoryType2.Length; j++)
                 {
@@ -157,12 +157,12 @@ public class InventoryManager : MonoBehaviour
         {
             InventorySlot slot = InventoryType1[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            if(itemInSlot == null)
+            if (itemInSlot == null)
             {
                 spawnNewItem(item, slot);
                 return true;
             }
-            if(InventoryType1 != InventoryType2)
+            if (InventoryType1 != InventoryType2)
             {
                 for (int j = 0; j < InventoryType2.Length; j++)
                 {
@@ -184,7 +184,7 @@ public class InventoryManager : MonoBehaviour
         {
             InventorySlot slot = InventoryType[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            if( itemInSlot.item.isStackable == true
+            if (itemInSlot.item.isStackable == true
                 && itemInSlot.count < itemInSlot.item.unitsPerStack)
             {
                 itemInSlot.count = itemInSlot.item.unitsPerStack;
@@ -220,11 +220,11 @@ public class InventoryManager : MonoBehaviour
 
     public bool AddAbility(Ability ability)
     {
-        for(int i = 0; i  < abilityBar.Length; i++)
+        for (int i = 0; i < abilityBar.Length; i++)
         {
             AbilitySlot abilitySlot = abilityBar[i];
             AbilityItem abilityInSlot = abilitySlot.GetComponentInChildren<AbilityItem>();
-            if(abilityInSlot == null)
+            if (abilityInSlot == null)
             {
                 spawnNewAbility(ability, abilitySlot);
                 BattleManager.Instance.AssingAbility(DataManager.Instance.playerData, ability.attackParameters, abilitySlot.attackButton);
@@ -243,18 +243,11 @@ public class InventoryManager : MonoBehaviour
     {
         GameObject newAbilityGo = Instantiate(abilityItemPrefab, slot.transform);
         AbilityItem abilityItem = newAbilityGo.GetComponent<AbilityItem>();
-        abilityItem.InitializeAbility(ability); 
+        abilityItem.InitializeAbility(ability);
     }
     public void itemIsUsed(ItemParam item)
     {
-        if (item.GetItemType(item.itemType) == "Potion")
-        {
-            playerData.health += item.addHP;
-            playerData.mana += item.addMP;
-            playerData.speed += item.addSPD;
-            playerData.stamina += item.addStamina;
-        }
-        else if (item.itemType == ItemParam.ItemType.Spell)
+        if (item.itemType == ItemParam.ItemType.Spell)
         {
             AddAbility(item.ability);
         }
