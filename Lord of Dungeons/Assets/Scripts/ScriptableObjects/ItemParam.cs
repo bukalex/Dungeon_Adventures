@@ -35,14 +35,6 @@ public class ItemParam : ScriptableObject
     public int SilverCoins;
     public int CopperCoins;
     
-    [Header("Features")]
-    public bool isStackable = false;
-    public bool isUsable = false;
-    public bool isLootable = false;
-    public bool isPurchasable = false;
-    public bool isCraftMaterial = false;
-    public bool isUpgradeMaterial = false;
-    
     [Header("Properties")]
     public Sprite image;
     public RuntimeAnimatorController animController;

@@ -16,6 +16,7 @@ namespace Assets.Scripts.InventoryElements
         public Sprite sprite;
         public ItemType ItemType;
         public PropertyID Modifier;
+        
         public Item(int id, ItemType itemType)
         {
             Id = id;
@@ -26,7 +27,7 @@ namespace Assets.Scripts.InventoryElements
         {
             Id = id;
             Count = count;
-            ItemType = ItemType;
+            ItemType = itemType;
         }
         public Item(int id, int count, PropertyID modifier)
         {
