@@ -25,7 +25,7 @@ public class ProjectileController : MonoBehaviour
         initialPosition = transform.position;
     }
 
-    public enum ProjectileType { BULLET, BOOMERANG, GUISON_KNIFE }
+    public enum ProjectileType { BULLET, BOOMERANG }
 
     void Update()
     {

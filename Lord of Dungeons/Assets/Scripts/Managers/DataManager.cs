@@ -62,7 +62,6 @@ public class DataManager : MonoBehaviour
 
     private void Update()
     {
-
     }
 
     //Getting player position where he changed scene
@@ -76,41 +75,5 @@ public class DataManager : MonoBehaviour
     {
         var activeScene = SceneManager.GetActiveScene();
         currentSceneName = activeScene.name;
-    }
-
-    public List<Vector2> GetNPCTimers()
-    {
-        List<Vector2> timers = new List<Vector2>();
-        foreach (NPCParameters parameters in npcs)
-        {
-            timers.Add(new Vector2((int)parameters.type, parameters.timer));
-        }
-
-        return timers;
-    }
-
-    public void SetNPCTimers(List<Vector2> timers)
-    {
-        foreach (NPCParameters parameters in npcs)
-        {
-            foreach (Vector2 timer in timers)
-            {
-                if ((int)parameters.type == timer.x)
-                {
-                    parameters.timer = timer.y;
-                    break;
-                }
-            }
-        }
-    }
-
-    public float GetNPCTimer(int index)
-    {
-        return npcs[index].timer;
-    }
-
-    public void SetNPCTimer(int index, float time)
-    {
-        npcs[index].timer = time;
     }
 }

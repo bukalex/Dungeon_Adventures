@@ -14,7 +14,6 @@ public class AttackParameters : ScriptableObject
     #region
     public PlayerData playerData { get; set; }
     public EnemyParameters enemyParameters { get; set; }
-    public List<EnemyParameters> enemyParametersList { get; set; }
 
     public RunningDelegate runningDelegate { get; set; }
     public EndDelegate endDelegate { get; set; }

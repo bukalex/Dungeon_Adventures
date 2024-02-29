@@ -7,7 +7,6 @@ public class NPCParameters : ScriptableObject
 {
     public PlayerData playerData;
     public float colliderRadius = 1.0f;
-    public float timer = 0;
 
     //Type
     public NPCType type = NPCType.TRADER;

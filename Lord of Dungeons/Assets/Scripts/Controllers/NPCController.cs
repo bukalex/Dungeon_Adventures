@@ -8,7 +8,6 @@ public class NPCController : MonoBehaviour
     private NPCParameters npcParameters;
 
     [SerializeField]
-    private string dialogWindowTag;
     private GameObject dialogWindow;
 
     [SerializeField]
@@ -29,26 +28,9 @@ public class NPCController : MonoBehaviour
         }
     }
 
-    void Start()
+    void Update()
     {
-        switch (npcParameters.type)
-        {
-            case NPCParameters.NPCType.TRADER:
-                dialogWindow = UIManager.Instance.traderWindow;
-                break;
-            case NPCParameters.NPCType.WIZARD:
-                dialogWindow = UIManager.Instance.wizardWindow;
-                break;
-            case NPCParameters.NPCType.TELEPORT:
-                dialogWindow = UIManager.Instance.teleportWindow;
-                break;
-            case NPCParameters.NPCType.BANKER:
-                dialogWindow = UIManager.Instance.bankerWindow;
-                break;
-            case NPCParameters.NPCType.BLACKSMITH:
-                dialogWindow = UIManager.Instance.blacksmithWindow;
-                break;
-        }
+
     }
 
     public void InteractWithPlayer(bool isActive)

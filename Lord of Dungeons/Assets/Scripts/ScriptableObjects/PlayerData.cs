@@ -45,7 +45,6 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     public Vector3 attackDirection = Vector3.down;
     public Transform transform;
     public bool isStunned = false;
-    public bool isDead = false;
     public Dictionary<CharacterType, Dictionary<BattleManager.AttackButton, AttackParameters>> attacks = null;
 
     //Type
@@ -62,15 +61,7 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
 
     public void SetStats()
     {
-        if (isDead)
-        {
-            health = 1;
-            isDead = false;
-        }
-        else
-        {
-            health = maxHealth;
-        }
+        health = maxHealth;
         mana = maxMana;
         stamina = maxStamina;
 

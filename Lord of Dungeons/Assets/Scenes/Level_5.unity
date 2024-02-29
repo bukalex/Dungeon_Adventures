@@ -172,7 +172,7 @@ Transform:
   - {fileID: 1066607298}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!43 &343605930
+--- !u!43 &414758883
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2913,63 +2913,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1001 &653982698
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1368584279053965024, guid: b25b057556e29dd4c8845244aee11527, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 24.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1368584279053965024, guid: b25b057556e29dd4c8845244aee11527, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -3.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 1368584279053965024, guid: b25b057556e29dd4c8845244aee11527, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1368584279053965024, guid: b25b057556e29dd4c8845244aee11527, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1368584279053965024, guid: b25b057556e29dd4c8845244aee11527, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1368584279053965024, guid: b25b057556e29dd4c8845244aee11527, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1368584279053965024, guid: b25b057556e29dd4c8845244aee11527, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1368584279053965024, guid: b25b057556e29dd4c8845244aee11527, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1368584279053965024, guid: b25b057556e29dd4c8845244aee11527, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1368584279053965024, guid: b25b057556e29dd4c8845244aee11527, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6985106062953519425, guid: b25b057556e29dd4c8845244aee11527, type: 3}
-      propertyPath: m_Name
-      value: Portal
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b25b057556e29dd4c8845244aee11527, type: 3}
 --- !u!1001 &713833451
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5866,8 +5809,8 @@ MonoBehaviour:
   - {x: 42.15834, y: 16.110437, z: 0}
   - {x: 42.15834, y: -14.552662, z: 0}
   m_ShapePathHash: -611520723
-  m_Mesh: {fileID: 343605930}
-  m_InstanceId: 46768
+  m_Mesh: {fileID: 414758883}
+  m_InstanceId: 42634
   m_LocalBounds:
     m_Center: {x: 33.84118, y: -12.24478, z: 0}
     m_Extent: {x: 30.95893, y: 28.355219, z: 0}
@@ -6360,4 +6303,3 @@ SceneRoots:
   - {fileID: 227889877}
   - {fileID: 713833451}
   - {fileID: 1686777773}
-  - {fileID: 653982698}

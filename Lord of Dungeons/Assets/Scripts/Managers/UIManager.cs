@@ -41,7 +41,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Button traderSellButton, traderStoreButton, wizardSellButton, wizardStoreButton;
     [SerializeField]
-    public GameObject traderWindow, wizardWindow, teleportWindow, bankerWindow, blacksmithWindow;
+    private GameObject teleportWindow;
     [SerializeField]
     private GameObject teleportContent;
     [SerializeField]
@@ -71,15 +71,10 @@ public class UIManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            tag = "MainCanvas";
             DontDestroyOnLoad(this);
 
             InitializeNPCItems(traderItems, traderStorage);
             InitializeNPCItems(wizardItems, wizardStorage);
-        }
-        else if (tag != "MainCanvas")
-        {
-            Destroy(gameObject);
         }
     }
 
