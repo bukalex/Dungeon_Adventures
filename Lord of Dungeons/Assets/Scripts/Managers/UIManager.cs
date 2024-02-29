@@ -49,10 +49,14 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Item[] wizardItems;
 
-    //Chest UI
+    [Header("Chest UI Properties")]
     [SerializeField] private GameObject ChestUI;
     [SerializeField] private GameObject[] ChestUIs, Chests;
     [SerializeField] private Canvas playerCanvas;
+
+    [Header("Escape Menu Properties")]
+    [SerializeField] private GameObject escapeUI, escapeButtons, settingUI;
+    [SerializeField] private Button resumeButton, settingButton, quitButton;
 
     public bool isPaused = false;
     public bool npcWindowActive = false;
@@ -117,17 +121,39 @@ public class UIManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isPaused)
-            {
-                Time.timeScale = 1;
-            }
-            else
-            {
-                Time.timeScale = 0;
-            }
+            escapeUI.SetActive(!escapeUI.activeSelf);
+            if (escapeUI.activeSelf)
+                Time.timeScale = 0f;
+            if (!escapeUI.activeSelf)
+                Time.timeScale = 1.0f;
 
+            resumeButton.onClick.AddListener(() => Resume());
+            settingButton.onClick.AddListener(() => Setting());
+            quitButton.onClick.AddListener(() => Quit());
         }
+
     }
+
+    //Escape Menu Functions
+    #region
+    public void Resume()
+    {
+        Time.timeScale = 1.0f;
+        escapeUI.SetActive(false);
+    }
+    public void Setting() 
+    { 
+        settingUI.SetActive(!settingUI.activeSelf);
+        if (settingUI.activeSelf)
+            escapeButtons.transform.position = new Vector3(460f, 560f);
+        else
+            escapeButtons.transform.position = new Vector3(960f, 540f);
+    }
+    public void Quit()
+    {
+        Application.Quit();
+    }
+    #endregion
 
     public void displayInventoryUI()
     {
