@@ -306,5 +306,25 @@ public class InventoryManager : MonoBehaviour
         return false;
     }
 
+    public void LoseInventory()
+    {
+        foreach (InventorySlot slot in toolBar)
+        {
+            InventoryItem inventoryItem = slot.GetComponentInChildren<InventoryItem>();
+            if (inventoryItem != null)
+            {
+                Destroy(inventoryItem.gameObject);
+            }
+        }
+
+        foreach (InventorySlot slot in internalInventorySlots)
+        {
+            InventoryItem inventoryItem = slot.GetComponentInChildren<InventoryItem>();
+            if (inventoryItem != null)
+            {
+                Destroy(inventoryItem.gameObject);
+            }
+        }
+    }
 }
 
