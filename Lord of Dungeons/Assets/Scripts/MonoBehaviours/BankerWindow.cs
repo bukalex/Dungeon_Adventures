@@ -21,34 +21,58 @@ public class BankerWindow : MonoBehaviour
     [SerializeField]
     private Slider slider;
     [SerializeField]
+    private TMP_Text timer;
+    [SerializeField]
     private TMP_Text multiplier;
     [SerializeField]
     private Button depositButton;
     [SerializeField]
     private Button convertButton;
 
+    [SerializeField]
+    private int vaultCapacity = 10;
+    [SerializeField]
+    private Transform vault;
+    [SerializeField]
+    private GameObject slotPrefab;
+    [SerializeField]
+    private int gold, silver, copper;
+
     private int rateMultiplier = 0;
     private int rate;
-    private float time = 0;
     private bool goingUp = false;
+    private int ratePeriod = 120;
+
+    void Start()
+    {
+        for (int i = 0; i < vaultCapacity; i++)
+        {
+            Instantiate(slotPrefab, vault).transform.SetSiblingIndex(i);
+        }
+    }
 
     void Update()
     {
-        time += Time.deltaTime;
+        timer.text = "New rate in " + (ratePeriod - DataManager.Instance.GetNPCTimer(0)).ToString("F1");
+        depositButton.interactable = InventoryManager.Instance.HasCoins();
+        if (DataManager.Instance.GetNPCTimer(0) > ratePeriod)
+        {
+            OnEnable();
+        }
     }
 
-    private void OnEnable()
+    public void OnEnable()
     {
         UIManager.Instance.InventorySlots.SetActive(true);
         UIManager.Instance.npcWindowActive = true;
-        depositButton.interactable = InventoryManager.Instance.HasCoins();
 
         if (rateMultiplier == 0) rateMultiplier = UnityEngine.Random.Range(1, 11);
-        if (time > 120)
+        if (DataManager.Instance.GetNPCTimer(0) > ratePeriod)
         {
             rateMultiplier = UnityEngine.Random.Range(1, 11);
-            time = 0;
+            DataManager.Instance.SetNPCTimer(0, 0);
         }
+
         goingUp = dropdownRight.value < dropdownLeft.value;
         rate = (int)(rateMultiplier * Mathf.Abs(dropdownRight.value - dropdownLeft.value) * Mathf.Pow(2, System.Convert.ToInt32(dropdownRight.value < dropdownLeft.value)));
 
@@ -167,7 +191,6 @@ public class BankerWindow : MonoBehaviour
             }
         }
 
-        depositButton.interactable = false;
         UpdateText();
     }
 
@@ -191,6 +214,24 @@ public class BankerWindow : MonoBehaviour
             multiplier.text = "1 / "+ rate;
             slider.maxValue = leftValue;
             if (leftValue == 0) slider.interactable = false;
+        }
+    }
+
+    public void ExpandVault()
+    {
+        if (playerData.resources[Item.CoinType.GoldenCoin] >= gold &&
+            playerData.resources[Item.CoinType.SilverCoin] >= silver &&
+            playerData.resources[Item.CoinType.CopperCoin] >= copper)
+        {
+            playerData.resources[Item.CoinType.GoldenCoin] -= gold;
+            playerData.resources[Item.CoinType.SilverCoin] -= silver;
+            playerData.resources[Item.CoinType.CopperCoin] -= copper;
+
+            for (int i = 0; i < 5; i++)
+            {
+                Instantiate(slotPrefab, vault).transform.SetSiblingIndex(vaultCapacity + i);
+            }
+            vaultCapacity += 5;
         }
     }
 }

@@ -103,4 +103,14 @@ public class DataManager : MonoBehaviour
             }
         }
     }
+
+    public float GetNPCTimer(int index)
+    {
+        return npcs[index].timer;
+    }
+
+    public void SetNPCTimer(int index, float time)
+    {
+        npcs[index].timer = time;
+    }
 }

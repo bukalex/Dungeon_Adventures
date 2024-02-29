@@ -51,6 +51,15 @@ public class NPCController : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (npcParameters.type == NPCParameters.NPCType.BANKER)
+        {
+            npcParameters.timer += Time.deltaTime;
+            npcParameters.timer %= 240;
+        }
+    }
+
     public void InteractWithPlayer(bool isActive)
     {
         if (npcParameters.type != NPCParameters.NPCType.TELEPORT)
