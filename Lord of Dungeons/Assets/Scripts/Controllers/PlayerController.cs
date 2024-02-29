@@ -60,12 +60,12 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
                 playerData.attackDirection = movementDirection;
                 isGoingBackward = false;
 
-                if (Input.GetKey(KeyCode.LeftShift) && BattleManager.Instance.PlayerPerformShift(playerData))
+                if (Input.GetKey(UIManager.Instance.keyCodes[4]) && BattleManager.Instance.PlayerPerformShift(playerData))
                 {
                     Run();
                     body.velocity = movementDirection * playerData.speed * playerData.sprintFactor;
                 }
-                else if (Input.GetKey(KeyCode.LeftControl))
+                else if (Input.GetKey(UIManager.Instance.keyCodes[5]))
                 {
                     Walk();
                     body.velocity = movementDirection * playerData.speed * playerData.slowWalkFactor;
@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
             //Attacks
             #region
             //Left Mouse Button
-            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+            if (Input.GetKey(UIManager.Instance.keyCodes[6]) && !EventSystem.current.IsPointerOverGameObject())
             {
                 if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.LMB))
                 {
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
             }
 
             //Right Mouse Button
-            if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[7]) && !EventSystem.current.IsPointerOverGameObject())
             {
                 if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.RMB))
                 {
@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
             }
 
             //R Button
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[8]))
             {
                 if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.R))
                 {
@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
             }
 
             //F Button
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[9]))
             {
                 if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.F))
                 {
@@ -126,7 +126,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
             }
 
             //C Button
-            if (Input.GetKeyDown(KeyCode.C))
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[10]))
             {
                 if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.C))
                 {
@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
             }
 
             //V Button
-            if (Input.GetKeyDown(KeyCode.V))
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[11]))
             {
                 if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.V))
                 {
@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
 
             //NPC interaction
             #region
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[15]))
             {
                 if (activeNPC == null)
                 {

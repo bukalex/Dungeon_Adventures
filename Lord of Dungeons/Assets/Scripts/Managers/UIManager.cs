@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System;
 
 public class UIManager : MonoBehaviour
 {
@@ -57,6 +58,10 @@ public class UIManager : MonoBehaviour
     [Header("Escape Menu Properties")]
     [SerializeField] private GameObject escapeUI, escapeButtons, settingUI;
     [SerializeField] private Button resumeButton, settingButton, quitButton;
+    [SerializeField] private Button[] changeButtons;
+    [SerializeField] private TMP_Text[] textKeys;
+    public KeyCode[] keyCodes;
+    private int chosenIndex = -1;
 
     public bool isPaused = false;
     public bool npcWindowActive = false;
@@ -76,6 +81,7 @@ public class UIManager : MonoBehaviour
 
             InitializeNPCItems(traderItems, traderStorage);
             InitializeNPCItems(wizardItems, wizardStorage);
+            InitializeKeyCodeSettings();
         }
         else if (tag != "MainCanvas")
         {
@@ -100,32 +106,88 @@ public class UIManager : MonoBehaviour
             InitializeEnemiesHealthBar();
         }
 
+        if (chosenIndex != -1 && Input.anyKeyDown)
+        {
+            string newText = "";
+            KeyCode newCode = KeyCode.None;
+            int existingIndex;
+            if (Input.GetMouseButtonDown(0) && chosenIndex != 12)
+            {
+                newText = "LMB";
+                newCode = KeyCode.Mouse0;
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                newText = "RMB";
+                newCode = KeyCode.Mouse1;
+            }
+            else if (Input.GetKeyDown(KeyCode.Escape) && chosenIndex != 6)
+            {
+                newText = "ESC";
+                newCode = KeyCode.Escape;
+            }
+            else if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                newText = "TAB";
+                newCode = KeyCode.Tab;
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                newText = "SHIFT";
+                newCode = KeyCode.LeftShift;
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftControl))
+            {
+                newText = "CTRL";
+                newCode = KeyCode.LeftControl;
+            }
+            else if (!int.TryParse(Input.inputString, out int result) &&  Enum.TryParse(Input.inputString, true, out newCode))
+            {
+                newText = Input.inputString;
+            }
 
+            if (newCode != KeyCode.None)
+            {
+                existingIndex = Array.IndexOf(keyCodes, newCode);
+                if (existingIndex != -1)
+                {
+                    textKeys[existingIndex].text = textKeys[chosenIndex].text;
+                    keyCodes[existingIndex] = keyCodes[chosenIndex];
+                }
+                textKeys[chosenIndex].text = newText;
+                keyCodes[chosenIndex] = newCode;
+                chosenIndex = -1;
+            }
+        }
 
 
         //Open inventory
         if (!npcWindowActive)
         {
-            if (Input.GetKeyDown(KeyCode.Tab))
+            if (Input.GetKeyDown(keyCodes[13]))
             {
                 Debug.Log("Button TAB was pressed!");
                 InventorySlots.SetActive(true);
                 EquipmentSection.SetActive(true);
             }
-            else if (Input.GetKeyUp(KeyCode.Tab))
+            else if (Input.GetKeyUp(keyCodes[13]))
             {
                 InventorySlots.SetActive(false);
                 EquipmentSection.SetActive(false);
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(keyCodes[12]))
         {
             escapeUI.SetActive(!escapeUI.activeSelf);
             if (escapeUI.activeSelf)
                 Time.timeScale = 0f;
             if (!escapeUI.activeSelf)
+            {
                 Time.timeScale = 1.0f;
+                chosenIndex = -1;
+            }
+                
 
             resumeButton.onClick.AddListener(() => Resume());
             settingButton.onClick.AddListener(() => Setting());
@@ -139,19 +201,32 @@ public class UIManager : MonoBehaviour
     public void Resume()
     {
         Time.timeScale = 1.0f;
+        chosenIndex = -1;
         escapeUI.SetActive(false);
     }
     public void Setting() 
     { 
         settingUI.SetActive(!settingUI.activeSelf);
         if (settingUI.activeSelf)
-            escapeButtons.transform.position = new Vector3(460f, 560f);
+            escapeButtons.transform.position = new Vector3(560f, 600f);
         else
-            escapeButtons.transform.position = new Vector3(960f, 540f);
+            escapeButtons.transform.position = new Vector3(960f, 600f);
     }
     public void Quit()
     {
         Application.Quit();
+    }
+
+    private void ChangeKey(int index)
+    {
+        if (chosenIndex == -1)
+        {
+            chosenIndex = index;
+        }
+        else
+        {
+            chosenIndex = -1;
+        }
     }
     #endregion
 
@@ -262,6 +337,19 @@ public class UIManager : MonoBehaviour
         SetBarValue(playerData.health, HealthBar);
         SetBarValue(playerData.mana, ManaBar);
         SetBarValue(playerData.stamina, StaminaBar);
+    }
+
+    private void InitializeKeyCodeSettings()
+    {
+        for (int i = 0; i < changeButtons.Length; i++)
+        {
+            AssignIndex(i);
+        }
+    }
+
+    private void AssignIndex(int index)
+    {
+        changeButtons[index].onClick.AddListener(delegate { ChangeKey(index); });
     }
 
     public void SetMaxBarValue(float health, GameObject Bar)
