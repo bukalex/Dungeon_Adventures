@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class BankerWindow : MonoBehaviour
 {
@@ -10,27 +11,47 @@ public class BankerWindow : MonoBehaviour
     private PlayerData playerData;
 
     [SerializeField]
-    private TMP_InputField goldInput;
+    private TMP_Dropdown dropdownLeft;
     [SerializeField]
-    private TMP_InputField silverInput;
+    private TMP_Dropdown dropdownRight;
     [SerializeField]
-    private TMP_InputField silverInput1;
+    private TMP_InputField inputLeft;
     [SerializeField]
-    private TMP_InputField copperInput;
-
+    private TMP_InputField inputRight;
     [SerializeField]
-    private Slider goldSilverSlider;
+    private Slider slider;
     [SerializeField]
-    private Slider silverCopperSlider;
-
+    private TMP_Text multiplier;
     [SerializeField]
     private Button depositButton;
+    [SerializeField]
+    private Button convertButton;
+
+    private int rateMultiplier = 0;
+    private int rate;
+    private float time = 0;
+    private bool goingUp = false;
+
+    void Update()
+    {
+        time += Time.deltaTime;
+    }
 
     private void OnEnable()
     {
         UIManager.Instance.InventorySlots.SetActive(true);
         UIManager.Instance.npcWindowActive = true;
         depositButton.interactable = InventoryManager.Instance.HasCoins();
+
+        if (rateMultiplier == 0) rateMultiplier = UnityEngine.Random.Range(1, 11);
+        if (time > 120)
+        {
+            rateMultiplier = UnityEngine.Random.Range(1, 11);
+            time = 0;
+        }
+        goingUp = dropdownRight.value < dropdownLeft.value;
+        rate = (int)(rateMultiplier * Mathf.Abs(dropdownRight.value - dropdownLeft.value) * Mathf.Pow(2, System.Convert.ToInt32(dropdownRight.value < dropdownLeft.value)));
+
         UpdateText();
     }
 
@@ -40,77 +61,87 @@ public class BankerWindow : MonoBehaviour
         UIManager.Instance.npcWindowActive = false;
     }
 
-    public void OnGSSliderValueChanged(float value)
+    public void OnLeftCoinChanged(int value)
     {
-        depositButton.interactable = false;
-        silverCopperSlider.interactable = false;
-        goldInput.SetTextWithoutNotify((playerData.resources[Item.CoinType.GoldenCoin] + (int)value).ToString());
-        silverInput.SetTextWithoutNotify((playerData.resources[Item.CoinType.SilverCoin] - (int)value * 100).ToString());
-        silverInput1.text = silverInput.text;
+        if (value == dropdownRight.value)
+        {
+            dropdownRight.SetValueWithoutNotify((value + 1) % 3);
+        }
+        goingUp = dropdownRight.value < dropdownLeft.value;
+        rate = (int)(rateMultiplier * Mathf.Abs(dropdownRight.value - dropdownLeft.value) * Mathf.Pow(2, System.Convert.ToInt32(dropdownRight.value < dropdownLeft.value)));
+
+        UpdateText();
     }
 
-    public void OnSCSliderValueChanged(float value)
+    public void OnRightCoinChanged(int value)
     {
-        depositButton.interactable = false;
-        goldSilverSlider.interactable = false;
-        silverInput1.SetTextWithoutNotify((playerData.resources[Item.CoinType.SilverCoin] + (int)value).ToString());
-        silverInput.text = silverInput1.text;
-        copperInput.SetTextWithoutNotify((playerData.resources[Item.CoinType.CopperCoin] - (int)value * 100).ToString());
+        if (value == dropdownLeft.value)
+        {
+            dropdownLeft.SetValueWithoutNotify((value + 1) % 3);
+        }
+        goingUp = dropdownRight.value < dropdownLeft.value;
+        rate = (int)(rateMultiplier * Mathf.Abs(dropdownRight.value - dropdownLeft.value) * Mathf.Pow(2, System.Convert.ToInt32(dropdownRight.value < dropdownLeft.value)));
+
+        UpdateText();
     }
 
-    public void OnGInput(string text)
+    public void OnLeftInput(string value)
     {
-        if (int.TryParse(text, out int result))
+        int result;
+        if (goingUp)
         {
-            result = Mathf.Clamp(result, playerData.resources[Item.CoinType.GoldenCoin], playerData.resources[Item.CoinType.GoldenCoin] + (int)goldSilverSlider.maxValue);
-            goldSilverSlider.SetValueWithoutNotify(result - playerData.resources[Item.CoinType.GoldenCoin]);
-            OnGSSliderValueChanged(goldSilverSlider.value);
+            result = (int)Mathf.Clamp(int.Parse(value), 
+                playerData.resources[Enum.Parse<Item.CoinType>(Enum.GetName(typeof(Item.CoinType), dropdownLeft.value + 1))] - slider.maxValue * rate, 
+                playerData.resources[Enum.Parse<Item.CoinType>(Enum.GetName(typeof(Item.CoinType), dropdownLeft.value + 1))]);
+            result = playerData.resources[Enum.Parse<Item.CoinType>(Enum.GetName(typeof(Item.CoinType), dropdownLeft.value + 1))] - result;
+            result /= rate;
         }
+        else
+        {
+            result = playerData.resources[Enum.Parse<Item.CoinType>(Enum.GetName(typeof(Item.CoinType), dropdownLeft.value + 1))] - (int)Mathf.Clamp(int.Parse(value), 0, slider.maxValue);
+        }
+        slider.SetValueWithoutNotify(result);
+        OnSliderChanged(result);
     }
 
-    public void OnSInput(string text)
+    public void OnRightInput(string value)
     {
-        if (int.TryParse(text, out int result))
+        int result;
+        if (goingUp)
         {
-            result = Mathf.Clamp(result, 0, playerData.resources[Item.CoinType.SilverCoin]);
-            goldSilverSlider.SetValueWithoutNotify((playerData.resources[Item.CoinType.SilverCoin] - result) / 100);
-            OnGSSliderValueChanged(goldSilverSlider.value);
+            result = (int)Mathf.Clamp(int.Parse(value), 0, slider.maxValue);
         }
-    }
-    public void OnS1Input(string text)
-    {
-        if (int.TryParse(text, out int result))
+        else
         {
-            result = Mathf.Clamp(result, playerData.resources[Item.CoinType.SilverCoin], playerData.resources[Item.CoinType.SilverCoin] + (int)silverCopperSlider.maxValue);
-            silverCopperSlider.SetValueWithoutNotify(result - playerData.resources[Item.CoinType.SilverCoin]);
-            OnSCSliderValueChanged(silverCopperSlider.value);
+            result = (int)Mathf.Clamp(int.Parse(value), 0, slider.maxValue * rate);
         }
+        slider.SetValueWithoutNotify(result);
+        OnSliderChanged(result);
     }
 
-    public void OnCInput(string text)
+    public void OnSliderChanged(float value)
     {
-        if (int.TryParse(text, out int result))
+        convertButton.interactable = true;
+        int leftValue = playerData.resources[Enum.Parse<Item.CoinType>(Enum.GetName(typeof(Item.CoinType), dropdownLeft.value + 1))];
+        int rightValue = 0;
+        if (goingUp)
         {
-            result = Mathf.Clamp(result, 0, playerData.resources[Item.CoinType.CopperCoin]);
-            silverCopperSlider.SetValueWithoutNotify((playerData.resources[Item.CoinType.CopperCoin] - result) / 100);
-            OnSCSliderValueChanged(silverCopperSlider.value);
+            leftValue -= (int)value * rate;
+            rightValue += (int)value;
         }
+        else
+        {
+            leftValue -= (int)value;
+            rightValue += (int)value * rate;
+        }
+        inputLeft.SetTextWithoutNotify(leftValue.ToString());
+        inputRight.SetTextWithoutNotify(rightValue.ToString());
     }
 
     public void Convert()
     {
-        playerData.resources[Item.CoinType.GoldenCoin] = int.Parse(goldInput.text);
-        playerData.resources[Item.CoinType.SilverCoin] = int.Parse(silverInput.text);
-        playerData.resources[Item.CoinType.CopperCoin] = int.Parse(copperInput.text);
-
-        depositButton.interactable = InventoryManager.Instance.HasCoins();
-        goldSilverSlider.interactable = true;
-        goldSilverSlider.SetValueWithoutNotify(0);
-        goldSilverSlider.maxValue = playerData.resources[Item.CoinType.SilverCoin] / 100;
-        silverCopperSlider.interactable = true;
-        silverCopperSlider.SetValueWithoutNotify(0);
-        silverCopperSlider.maxValue = playerData.resources[Item.CoinType.CopperCoin] / 100;
-
+        playerData.resources[Enum.Parse<Item.CoinType>(Enum.GetName(typeof(Item.CoinType), dropdownLeft.value + 1))] = int.Parse(inputLeft.text);
+        playerData.resources[Enum.Parse<Item.CoinType>(Enum.GetName(typeof(Item.CoinType), dropdownRight.value + 1))] += int.Parse(inputRight.text);
         UpdateText();
     }
 
@@ -142,12 +173,24 @@ public class BankerWindow : MonoBehaviour
 
     private void UpdateText()
     {
-        goldInput.text = playerData.resources[Item.CoinType.GoldenCoin].ToString();
-        silverInput.text = playerData.resources[Item.CoinType.SilverCoin].ToString();
-        silverInput1.text = playerData.resources[Item.CoinType.SilverCoin].ToString();
-        copperInput.text = playerData.resources[Item.CoinType.CopperCoin].ToString();
+        convertButton.interactable = false;
+        int leftValue = playerData.resources[Enum.Parse<Item.CoinType>(Enum.GetName(typeof(Item.CoinType), dropdownLeft.value + 1))];
+        inputLeft.SetTextWithoutNotify(leftValue.ToString());
+        inputRight.SetTextWithoutNotify("0");
 
-        goldSilverSlider.maxValue = playerData.resources[Item.CoinType.SilverCoin] / 100;
-        silverCopperSlider.maxValue = playerData.resources[Item.CoinType.CopperCoin] / 100;
+        slider.SetValueWithoutNotify(0);
+        slider.interactable = true;
+        if (goingUp)
+        {
+            multiplier.text = rate + " / 1";
+            slider.maxValue = leftValue / rate;
+            if (leftValue / rate == 0) slider.interactable = false;
+        }
+        else
+        {
+            multiplier.text = "1 / "+ rate;
+            slider.maxValue = leftValue;
+            if (leftValue == 0) slider.interactable = false;
+        }
     }
 }

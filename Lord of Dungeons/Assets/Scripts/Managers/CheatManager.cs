@@ -13,9 +13,9 @@ public class CheatManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.O))
             {
-                playerData.resources[Item.CoinType.GoldenCoin] += 1000;
-                playerData.resources[Item.CoinType.SilverCoin] += 1000;
-                playerData.resources[Item.CoinType.CopperCoin] += 1000;
+                playerData.resources[Item.CoinType.GoldenCoin] += 100;
+                playerData.resources[Item.CoinType.SilverCoin] += 100;
+                playerData.resources[Item.CoinType.CopperCoin] += 100;
             }
 
             if (Input.GetKeyDown(KeyCode.L))
