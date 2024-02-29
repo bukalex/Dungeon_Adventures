@@ -53,7 +53,7 @@ public class BankerWindow : MonoBehaviour
 
     void Update()
     {
-        timer.text = "New rate in " + (ratePeriod - DataManager.Instance.GetNPCTimer(0)).ToString("F1");
+        timer.text = "New rate in\n" + (ratePeriod - DataManager.Instance.GetNPCTimer(0)).ToString("F1");
         depositButton.interactable = InventoryManager.Instance.HasCoins();
         if (DataManager.Instance.GetNPCTimer(0) > ratePeriod)
         {
