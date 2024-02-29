@@ -21,8 +21,6 @@ public class BankerWindow : MonoBehaviour
     [SerializeField]
     private Slider slider;
     [SerializeField]
-    private TMP_Text timer;
-    [SerializeField]
     private TMP_Text multiplier;
     [SerializeField]
     private Button depositButton;
@@ -40,8 +38,8 @@ public class BankerWindow : MonoBehaviour
 
     private int rateMultiplier = 0;
     private int rate;
+    private int rateOffset = 25;
     private bool goingUp = false;
-    private int ratePeriod = 120;
 
     void Start()
     {
@@ -53,12 +51,7 @@ public class BankerWindow : MonoBehaviour
 
     void Update()
     {
-        timer.text = "New rate in\n" + (ratePeriod - DataManager.Instance.GetNPCTimer(0)).ToString("F1");
         depositButton.interactable = InventoryManager.Instance.HasCoins();
-        if (DataManager.Instance.GetNPCTimer(0) > ratePeriod)
-        {
-            OnEnable();
-        }
     }
 
     public void OnEnable()
@@ -67,14 +60,11 @@ public class BankerWindow : MonoBehaviour
         UIManager.Instance.npcWindowActive = true;
 
         if (rateMultiplier == 0) rateMultiplier = UnityEngine.Random.Range(1, 11);
-        if (DataManager.Instance.GetNPCTimer(0) > ratePeriod)
-        {
-            rateMultiplier = UnityEngine.Random.Range(1, 11);
-            DataManager.Instance.SetNPCTimer(0, 0);
-        }
+        rateMultiplier = UnityEngine.Random.Range(1, 11);
+        //rateMultiplier = 10 * (1 + abilityCount);
 
         goingUp = dropdownRight.value < dropdownLeft.value;
-        rate = (int)(rateMultiplier * Mathf.Abs(dropdownRight.value - dropdownLeft.value) * Mathf.Pow(2, System.Convert.ToInt32(dropdownRight.value < dropdownLeft.value)));
+        rate = rateOffset + (int)(rateMultiplier * Mathf.Abs(dropdownRight.value - dropdownLeft.value) * Mathf.Pow(2, System.Convert.ToInt32(dropdownRight.value < dropdownLeft.value)));
 
         UpdateText();
     }
@@ -92,7 +82,7 @@ public class BankerWindow : MonoBehaviour
             dropdownRight.SetValueWithoutNotify((value + 1) % 3);
         }
         goingUp = dropdownRight.value < dropdownLeft.value;
-        rate = (int)(rateMultiplier * Mathf.Abs(dropdownRight.value - dropdownLeft.value) * Mathf.Pow(2, System.Convert.ToInt32(dropdownRight.value < dropdownLeft.value)));
+        rate = rateOffset + (int)(rateMultiplier * Mathf.Abs(dropdownRight.value - dropdownLeft.value) * Mathf.Pow(2, System.Convert.ToInt32(dropdownRight.value < dropdownLeft.value)));
 
         UpdateText();
     }
@@ -104,7 +94,7 @@ public class BankerWindow : MonoBehaviour
             dropdownLeft.SetValueWithoutNotify((value + 1) % 3);
         }
         goingUp = dropdownRight.value < dropdownLeft.value;
-        rate = (int)(rateMultiplier * Mathf.Abs(dropdownRight.value - dropdownLeft.value) * Mathf.Pow(2, System.Convert.ToInt32(dropdownRight.value < dropdownLeft.value)));
+        rate = rateOffset + (int)(rateMultiplier * Mathf.Abs(dropdownRight.value - dropdownLeft.value) * Mathf.Pow(2, System.Convert.ToInt32(dropdownRight.value < dropdownLeft.value)));
 
         UpdateText();
     }
