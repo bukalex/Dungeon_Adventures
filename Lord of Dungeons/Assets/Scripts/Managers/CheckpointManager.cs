@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System;
 
 public class CheckpointManager : MonoBehaviour
 {
@@ -41,6 +42,12 @@ public class CheckpointManager : MonoBehaviour
     {
         gameData.checkpointsReached = checkpointsReached;
         gameData.timers = DataManager.Instance.GetNPCTimers();
+        List<int> intKeyCodes = new List<int>();
+        foreach (KeyCode keyCode in UIManager.Instance.keyCodes)
+        {
+            intKeyCodes.Add((int)keyCode);
+        }
+        gameData.intKeyCodes = intKeyCodes;
 
         string jsonData = JsonUtility.ToJson(gameData);
         File.WriteAllText(filePath, jsonData);
@@ -55,6 +62,11 @@ public class CheckpointManager : MonoBehaviour
             gameData = JsonUtility.FromJson<GameData>(jsonData);
             checkpointsReached = gameData.checkpointsReached;
             DataManager.Instance.SetNPCTimers(gameData.timers);
+            for (int i = 0; i < gameData.intKeyCodes.Count; i++)
+            {
+                UIManager.Instance.keyCodes[i] = Enum.Parse<KeyCode>(Enum.GetName(typeof(KeyCode), gameData.intKeyCodes[i]));
+            }
+            UIManager.Instance.InitializeKeyCodeSettings();
         }
     }
 
@@ -69,12 +81,14 @@ public class GameData
 {
     public int checkpointsReached;
     public List<Vector2> timers;
+    public List<int> intKeyCodes;
     public List<Vector2> items;
 
     public GameData()
     {
         checkpointsReached = 0;
         timers = new List<Vector2>();
+        intKeyCodes = new List<int>();
         items = new List<Vector2>();
     }
 }

@@ -339,16 +339,44 @@ public class UIManager : MonoBehaviour
         SetBarValue(playerData.stamina, StaminaBar);
     }
 
-    private void InitializeKeyCodeSettings()
+    public void InitializeKeyCodeSettings()
     {
         for (int i = 0; i < changeButtons.Length; i++)
         {
             AssignIndex(i);
+            KeyCode newCode = keyCodes[i];
+            string newText = "";
+            switch (newCode)
+            {
+                case KeyCode.Mouse0:
+                    newText = "LMB";
+                    break;
+                case KeyCode.Mouse1:
+                    newText = "RMB";
+                    break;
+                case KeyCode.Escape:
+                    newText = "ESC";
+                    break;
+                case KeyCode.Tab:
+                    newText = "TAB";
+                    break;
+                case KeyCode.LeftShift:
+                    newText = "SHIFT";
+                    break;
+                case KeyCode.LeftControl:
+                    newText = "CTRL";
+                    break;
+                default:
+                    newText = Enum.GetName(typeof(KeyCode), newCode);
+                    break;
+            }
+            textKeys[i].text = newText;
         }
     }
 
     private void AssignIndex(int index)
     {
+        changeButtons[index].onClick.RemoveAllListeners();
         changeButtons[index].onClick.AddListener(delegate { ChangeKey(index); });
     }
 
