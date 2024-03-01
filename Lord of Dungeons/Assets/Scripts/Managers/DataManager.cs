@@ -12,8 +12,8 @@ public class DataManager : MonoBehaviour
     [SerializeField]
     private List<EnemyParameters> enemies;
 
-    [SerializeField]
-    private List<ItemParam> items;
+    //[SerializeField]
+    //private List<ItemParam> items;
 
     [SerializeField]
     private List<NPCParameters> npcs;
@@ -27,38 +27,38 @@ public class DataManager : MonoBehaviour
 
     public static DataManager Instance { get; private set; }
 
-    void Awake()
-    {
-        if(Instance == null)
-            Instance = this;
-
-        playerData.SetStats();
-        playerData.SetDictionaries();
-
-        foreach (EnemyParameters enemy in enemies)
-        {
-            enemy.playerData = playerData;
-        }
-
-        foreach (ItemParam item in items)
-        {
-            item.playerData = playerData;   
-        }
-
-        foreach (NPCParameters npc in npcs)
-        {
-            npc.playerData = playerData;
-        }
-
-        if (inventory != null)
-        {
-            inventory.playerData = playerData;
-        }
-        if (UI != null)
-        {
-            UI.playerData = playerData; 
-        }
-    }
+    //void Awake()
+    //{
+    //    if(Instance == null)
+    //        Instance = this;
+    //
+    //    playerData.SetStats();
+    //    playerData.SetDictionaries();
+    //
+    //    foreach (EnemyParameters enemy in enemies)
+    //    {
+    //        enemy.playerData = playerData;
+    //    }
+    //
+    //    foreach (ItemParam item in items)
+    //    {
+    //        item.playerData = playerData;   
+    //    }
+    //
+    //    foreach (NPCParameters npc in npcs)
+    //    {
+    //        npc.playerData = playerData;
+    //    }
+    //
+    //    //if (inventory != null)
+    //    //{
+    //    //    inventory.playerData = playerData;
+    //    //}
+    //    if (UI != null)
+    //    {
+    //        UI.playerData = playerData; 
+    //    }
+    //}
 
     private void Update()
     {

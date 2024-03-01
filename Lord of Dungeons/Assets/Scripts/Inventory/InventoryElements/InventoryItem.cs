@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using Assets.Scripts.Enums;
 
 namespace Assets.Scripts.InventoryElements
 {
@@ -13,6 +14,10 @@ namespace Assets.Scripts.InventoryElements
         public TMP_Text countText;
         [SerializeField]
         public GameObject InventoryItemPrefab;
+        [SerializeField]
+        private int Id;
+        [SerializeField]
+        public Dictionary<int, List<ModifierID>> itemModifiers;
 
         [HideInInspector]
         public Item item;
@@ -29,9 +34,22 @@ namespace Assets.Scripts.InventoryElements
         {
             Item item = newItem;
             image.sprite = newItem.sprite;
+            Id = item.Id;
+            itemModifiers.Add(newItem.Id, newItem.Modifier);
 
             updateCount(newItem);
         }
+
+        public int GetItemID(Item item)
+        {
+            return item.Id;
+        }
+
+        public List<ModifierID> GetItemModifiers(Item item)
+        {
+            return itemModifiers[item.Id];
+        }
+
         public void updateCount(Item item)
         {
             countText.text = item.Count.ToString();

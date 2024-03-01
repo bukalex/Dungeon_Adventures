@@ -44,10 +44,10 @@ public class UIManager : MonoBehaviour
     private GameObject teleportWindow;
     [SerializeField]
     private GameObject teleportContent;
-    [SerializeField]
-    private ItemParam[] traderItems;
-    [SerializeField]
-    private ItemParam[] wizardItems;
+    //[SerializeField]
+    //private ItemParam[] traderItems;
+    //[SerializeField]
+    //private ItemParam[] wizardItems;
 
     //Chest UI
     [SerializeField] private GameObject ChestUI;
@@ -62,17 +62,17 @@ public class UIManager : MonoBehaviour
 
     public static UIManager Instance { get; private set; }
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(this);
-
-            InitializeNPCItems(traderItems, traderStorage);
-            InitializeNPCItems(wizardItems, wizardStorage);
-        }
-    }
+    //private void Awake()
+    //{
+    //    if (Instance == null)
+    //    {
+    //        Instance = this;
+    //        DontDestroyOnLoad(this);
+    //
+    //        InitializeNPCItems(traderItems, traderStorage);
+    //        InitializeNPCItems(wizardItems, wizardStorage);
+    //    }
+    //}
 
     void Update()
     {
@@ -81,7 +81,7 @@ public class UIManager : MonoBehaviour
         
         
         //Update values
-        displayInventoryUI();
+        //displayInventoryUI();
         InitializeBars();
 
         //Initializing all enemy health bars
@@ -124,22 +124,22 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void displayInventoryUI()
-    {
-        //Display player stats
-        string HPstats = "HP: " + playerData.maxHealth + "\n"; 
-        string ManaStats = "Mana: " + playerData.maxMana.ToString() + "\n";
-        string StaminaStats = "Stamina: " + playerData.maxStamina.ToString() + "\n";
-        string DamageStats = "Damage: " + playerData.attack.ToString() + "\n";
-        string DefenseStats = "Defense: " + playerData.defense.ToString() + "\n";
-        string SpeedStats = "Speed: " + playerData.speed.ToString() + "\n";
-        stats.text = HPstats + ManaStats + StaminaStats + DamageStats + DefenseStats + SpeedStats;
-
-        //Display coins amount
-        goldenCoinCounter.text = playerData.resources[ItemParam.CoinType.GoldenCoin].ToString();
-        silverCoinCounter.text = playerData.resources[ItemParam.CoinType.SilverCoin].ToString();
-        copperCoinCounter.text = playerData.resources[ItemParam.CoinType.CopperCoin].ToString();
-    }
+    //public void displayInventoryUI()
+    //{
+    //    //Display player stats
+    //    string HPstats = "HP: " + playerData.maxHealth + "\n"; 
+    //    string ManaStats = "Mana: " + playerData.maxMana.ToString() + "\n";
+    //    string StaminaStats = "Stamina: " + playerData.maxStamina.ToString() + "\n";
+    //    string DamageStats = "Damage: " + playerData.attack.ToString() + "\n";
+    //    string DefenseStats = "Defense: " + playerData.defense.ToString() + "\n";
+    //    string SpeedStats = "Speed: " + playerData.speed.ToString() + "\n";
+    //    stats.text = HPstats + ManaStats + StaminaStats + DamageStats + DefenseStats + SpeedStats;
+    //
+    //    //Display coins amount
+    //    goldenCoinCounter.text = playerData.resources[ItemParam.CoinType.GoldenCoin].ToString();
+    //    silverCoinCounter.text = playerData.resources[ItemParam.CoinType.SilverCoin].ToString();
+    //    copperCoinCounter.text = playerData.resources[ItemParam.CoinType.CopperCoin].ToString();
+    //}
 
     public void traderButtons(int npcIndex)
     {
@@ -167,23 +167,23 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void InitializeNPCItems(ItemParam[] items, GameObject storage)
-    {
-        foreach (ItemParam item in items)
-        {
-            Transform itemHolder = Instantiate(itemHolderPrefab, storage.transform).transform;
-            InventoryItem inventoryItem = itemHolder.GetComponentInChildren<InventorySlot>().GetComponentInChildren<InventoryItem>();
-            inventoryItem.item = item;
-            inventoryItem.GetComponent<Image>().sprite = item.image;
-            inventoryItem.transform.GetChild(0).gameObject.SetActive(false);
-
-            itemHolder.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = item.GoldenCoin.ToString();
-            itemHolder.GetChild(0).GetChild(3).GetComponent<TMP_Text>().text = item.SilverCoin.ToString();
-            itemHolder.GetChild(0).GetChild(5).GetComponent<TMP_Text>().text = item.CopperCoin.ToString();
-
-            inventoryItem.isLocked = true;
-        }
-    }
+    //private void InitializeNPCItems(ItemParam[] items, GameObject storage)
+    //{
+    //    foreach (ItemParam item in items)
+    //    {
+    //        Transform itemHolder = Instantiate(itemHolderPrefab, storage.transform).transform;
+    //        InventoryItem inventoryItem = itemHolder.GetComponentInChildren<InventorySlot>().GetComponentInChildren<InventoryItem>();
+    //        inventoryItem.item = item;
+    //        inventoryItem.GetComponent<Image>().sprite = item.image;
+    //        inventoryItem.transform.GetChild(0).gameObject.SetActive(false);
+    //
+    //        itemHolder.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = item.GoldenCoin.ToString();
+    //        itemHolder.GetChild(0).GetChild(3).GetComponent<TMP_Text>().text = item.SilverCoin.ToString();
+    //        itemHolder.GetChild(0).GetChild(5).GetComponent<TMP_Text>().text = item.CopperCoin.ToString();
+    //
+    //        inventoryItem.isLocked = true;
+    //    }
+    //}
 
     public void InitializeTeleportWindow(int checkpoints, int period)
     {

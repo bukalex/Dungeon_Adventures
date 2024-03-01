@@ -4,13 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using Assets.Scripts.InventoryElements;
 
 public class TemporaryTradingSystem : MonoBehaviour
 {
     public InventorySlot sellSlot;
     public PlayerData playerData;
-    public ItemParam[] items2Pickup;
-    public static InventoryItem itemInStore;
+    //public ItemParam[] items2Pickup;
+    public InventoryItem itemInStore;
     public TMP_Text traderPriceDisplay, wizardPriceDisplay;
     public TMP_Text traderItemName, wizardItemName;
     public TMP_Text traderItemDescription, wizardItemDescription;
@@ -28,133 +29,133 @@ public class TemporaryTradingSystem : MonoBehaviour
         
     }
 
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            eventData = new PointerEventData(eventSystem);
-            eventData.position = Input.mousePosition;
-            List<RaycastResult> results = new List<RaycastResult>();
-            graphicRaycaster.Raycast(eventData, results);
-            foreach (RaycastResult result in results)
-            {
-                if (result.gameObject.tag == "ItemHolder")
-                {
-                    if (itemInStore != null)
-                    {
-                        itemInStore.GetComponentInParent<InventorySlot>().unselectSlot();
-                    }
+    //void Update()
+    //{
+    //    if (Input.GetMouseButtonDown(0))
+    //    {
+    //        eventData = new PointerEventData(eventSystem);
+    //        eventData.position = Input.mousePosition;
+    //        List<RaycastResult> results = new List<RaycastResult>();
+    //        graphicRaycaster.Raycast(eventData, results);
+    //        foreach (RaycastResult result in results)
+    //        {
+    //            if (result.gameObject.tag == "ItemHolder")
+    //            {
+    //                if (itemInStore != null)
+    //                {
+    //                    itemInStore.GetComponentInParent<InventorySlot>().unselectSlot();
+    //                }
+    //
+    //                itemInStore = result.gameObject.GetComponentInChildren<InventorySlot>().GetComponentInChildren<InventoryItem>();
+    //                itemInStore.GetComponentInParent<InventorySlot>().selectSlot();
+    //
+    //                traderItemName.text = itemInStore.item.name;
+    //                traderItemDescription.text = itemInStore.item.description.Replace("\\n", "\n");
+    //
+    //                wizardItemName.text = itemInStore.item.name;
+    //                wizardItemDescription.text = itemInStore.item.description.Replace("\\n", "\n");
+    //                break;
+    //            }
+    //        }
+    //    }
+    //}
 
-                    itemInStore = result.gameObject.GetComponentInChildren<InventorySlot>().GetComponentInChildren<InventoryItem>();
-                    itemInStore.GetComponentInParent<InventorySlot>().selectSlot();
-
-                    traderItemName.text = itemInStore.item.name;
-                    traderItemDescription.text = itemInStore.item.description.Replace("\\n", "\n");
-
-                    wizardItemName.text = itemInStore.item.name;
-                    wizardItemDescription.text = itemInStore.item.description.Replace("\\n", "\n");
-                    break;
-                }
-            }
-        }
-    }
-
-    public void Purchase()
-    {
-        if (itemInStore != null && 
-            itemInStore.item.GoldenCoin <= playerData.resources[ItemParam.CoinType.GoldenCoin] &&
-            itemInStore.item.SilverCoin <= playerData.resources[ItemParam.CoinType.SilverCoin] &&
-            itemInStore.item.CopperCoin <= playerData.resources[ItemParam.CoinType.CopperCoin])
-        {
-            playerData.resources[ItemParam.CoinType.GoldenCoin] -= itemInStore.item.GoldenCoin;
-            playerData.resources[ItemParam.CoinType.SilverCoin] -= itemInStore.item.SilverCoin;
-            playerData.resources[ItemParam.CoinType.CopperCoin] -= itemInStore.item.CopperCoin;
-
-            InventoryManager.Instance.AddItem(itemInStore.item, InventoryManager.Instance.toolBar, InventoryManager.Instance.internalInventorySlots);
-        }
-    }
-
-    public void PickUpItem(int id)
-    {
-
-        //if (items2Pickup[id].price <= playerData.resources[Item.MaterialType.Coin])
-        //{
-        //   //InventoryManager.Instance.AddItem(items2Pickup[id]);
-        //   //
-        //   //playerData.resources[Item.MaterialType.Coin] -= items2Pickup[id].price;
-        //}
-    }
-
-    public void sellItems(int npcIndex)
-    {
-        switch (npcIndex)
-        {
-            case 0:
-                coinsFromSell = new int[] { 0, 0, 0 };
-
-                foreach (InventorySlot sellSlot in InventoryManager.Instance.traderSellSlots)
-                {
-                    InventoryItem inventoryItem = sellSlot.GetComponentInChildren<InventoryItem>();
-                    if (inventoryItem != null)
-                    {
-                        coinsFromSell[0] += inventoryItem.item.GoldenCoins * inventoryItem.count;
-                        coinsFromSell[1] += inventoryItem.item.SilverCoins * inventoryItem.count;
-                        coinsFromSell[2] += inventoryItem.item.CopperCoins * inventoryItem.count;
-
-                        Destroy(inventoryItem.gameObject);
-                    }
-                }
-
-                playerData.resources[ItemParam.CoinType.GoldenCoin] += coinsFromSell[0];
-                playerData.resources[ItemParam.CoinType.SilverCoin] += coinsFromSell[1];
-                playerData.resources[ItemParam.CoinType.CopperCoin] += coinsFromSell[2];
-
-                StartCoroutine(ChangeLabel(npcIndex, "Place items that you want to sell", ""));
-                break;
-
-            case 1:
-                bool canExchange = false;
-                foreach (InventorySlot sellSlot in InventoryManager.Instance.wizardSellSlots)
-                {
-                    InventoryItem inventoryItem = sellSlot.GetComponentInChildren<InventoryItem>();
-                    if (inventoryItem != null)
-                    {
-                        canExchange = true;
-                        wizardLuck += 0.1f;
-
-                        Destroy(inventoryItem.gameObject);
-                    }
-                }
-
-                if (canExchange)
-                {
-                    if (wizardAbilities.Count == 0) return;
-
-                    if (Random.Range(0.0f, 100.0f) <= wizardLuck)
-                    {
-                        Ability ability = wizardAbilities[Random.Range(0, wizardAbilities.Count)];
-                        wizardAbilities.Remove(ability);
-                        InventoryManager.Instance.AddAbility(ability);
-                        wizardLuck = 0;
-
-                        if (wizardAbilities.Count != 0)
-                        {
-                            StartCoroutine(ChangeLabel(npcIndex, "Place artifacts that you want to exchange", "Congratulations! You got new ability"));
-                        }
-                        else
-                        {
-                            StartCoroutine(ChangeLabel(npcIndex, "Now you know everything", "Congratulations! You got new ability"));
-                        }
-                    }
-                    else
-                    {
-                        StartCoroutine(ChangeLabel(npcIndex, "Your chance to get new ability: " + wizardLuck.ToString("F1") + "%", "You got nothing"));
-                    }
-                }
-
-                break;
-        }
-    }
+    //public void Purchase()
+    //{
+    //    if (itemInStore != null && 
+    //        itemInStore.item.GoldenCoin <= playerData.resources[ItemParam.CoinType.GoldenCoin] &&
+    //        itemInStore.item.SilverCoin <= playerData.resources[ItemParam.CoinType.SilverCoin] &&
+    //        itemInStore.item.CopperCoin <= playerData.resources[ItemParam.CoinType.CopperCoin])
+    //    {
+    //        playerData.resources[ItemParam.CoinType.GoldenCoin] -= itemInStore.item.GoldenCoin;
+    //        playerData.resources[ItemParam.CoinType.SilverCoin] -= itemInStore.item.SilverCoin;
+    //        playerData.resources[ItemParam.CoinType.CopperCoin] -= itemInStore.item.CopperCoin;
+    //
+    //        InventoryManager.Instance.AddItem(itemInStore.item, InventoryManager.Instance.toolBar, InventoryManager.Instance.internalInventorySlots);
+    //    }
+    //}
+    //
+    //public void PickUpItem(int id)
+    //{
+    //
+    //    //if (items2Pickup[id].price <= playerData.resources[Item.MaterialType.Coin])
+    //    //{
+    //    //   //InventoryManager.Instance.AddItem(items2Pickup[id]);
+    //    //   //
+    //    //   //playerData.resources[Item.MaterialType.Coin] -= items2Pickup[id].price;
+    //    //}
+    //}
+    //
+    //public void sellItems(int npcIndex)
+    //{
+    //    switch (npcIndex)
+    //    {
+    //        case 0:
+    //            coinsFromSell = new int[] { 0, 0, 0 };
+    //
+    //            foreach (InventorySlot sellSlot in InventoryManager.Instance.traderSellSlots)
+    //            {
+    //                InventoryItem inventoryItem = sellSlot.GetComponentInChildren<InventoryItem>();
+    //                if (inventoryItem != null)
+    //                {
+    //                    coinsFromSell[0] += inventoryItem.item.GoldenCoins * inventoryItem.count;
+    //                    coinsFromSell[1] += inventoryItem.item.SilverCoins * inventoryItem.count;
+    //                    coinsFromSell[2] += inventoryItem.item.CopperCoins * inventoryItem.count;
+    //
+    //                    Destroy(inventoryItem.gameObject);
+    //                }
+    //            }
+    //
+    //            playerData.resources[ItemParam.CoinType.GoldenCoin] += coinsFromSell[0];
+    //            playerData.resources[ItemParam.CoinType.SilverCoin] += coinsFromSell[1];
+    //            playerData.resources[ItemParam.CoinType.CopperCoin] += coinsFromSell[2];
+    //
+    //            StartCoroutine(ChangeLabel(npcIndex, "Place items that you want to sell", ""));
+    //            break;
+    //
+    //        case 1:
+    //            bool canExchange = false;
+    //            foreach (InventorySlot sellSlot in InventoryManager.Instance.wizardSellSlots)
+    //            {
+    //                InventoryItem inventoryItem = sellSlot.GetComponentInChildren<InventoryItem>();
+    //                if (inventoryItem != null)
+    //                {
+    //                    canExchange = true;
+    //                    wizardLuck += 0.1f;
+    //
+    //                    Destroy(inventoryItem.gameObject);
+    //                }
+    //            }
+    //
+    //            if (canExchange)
+    //            {
+    //                if (wizardAbilities.Count == 0) return;
+    //
+    //                if (Random.Range(0.0f, 100.0f) <= wizardLuck)
+    //                {
+    //                    Ability ability = wizardAbilities[Random.Range(0, wizardAbilities.Count)];
+    //                    wizardAbilities.Remove(ability);
+    //                    InventoryManager.Instance.AddAbility(ability);
+    //                    wizardLuck = 0;
+    //
+    //                    if (wizardAbilities.Count != 0)
+    //                    {
+    //                        StartCoroutine(ChangeLabel(npcIndex, "Place artifacts that you want to exchange", "Congratulations! You got new ability"));
+    //                    }
+    //                    else
+    //                    {
+    //                        StartCoroutine(ChangeLabel(npcIndex, "Now you know everything", "Congratulations! You got new ability"));
+    //                    }
+    //                }
+    //                else
+    //                {
+    //                    StartCoroutine(ChangeLabel(npcIndex, "Your chance to get new ability: " + wizardLuck.ToString("F1") + "%", "You got nothing"));
+    //                }
+    //            }
+    //
+    //            break;
+    //    }
+    //}
 
     private IEnumerator ChangeLabel(int npcIndex, string defaultText, string temporaryText)
     {

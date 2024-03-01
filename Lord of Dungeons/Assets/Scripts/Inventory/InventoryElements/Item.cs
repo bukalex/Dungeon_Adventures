@@ -15,7 +15,7 @@ namespace Assets.Scripts.InventoryElements
         public int Count;
         public Sprite sprite;
         public ItemType ItemType;
-        public PropertyID Modifier;
+        public List<ModifierID> Modifier;
         
         public Item(int id, ItemType itemType)
         {
@@ -29,10 +29,11 @@ namespace Assets.Scripts.InventoryElements
             Count = count;
             ItemType = itemType;
         }
-        public Item(int id, int count, PropertyID modifier)
+        public Item(int id, int count, ItemType itemType, List<ModifierID> modifier)
         {
             Id = id;
             Count = count;
+            ItemType = itemType;
             Modifier = modifier;
         }
 

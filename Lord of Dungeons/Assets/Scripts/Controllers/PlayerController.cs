@@ -242,7 +242,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
     private IEnumerator Respawn()
     {
         yield return new WaitForSeconds(2);
-        InventoryManager.Instance.LoseInventory();
+        //InventoryManager.Instance.LoseInventory();
         SceneManager.LoadScene(0);
     }
 
