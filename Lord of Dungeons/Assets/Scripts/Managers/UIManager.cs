@@ -59,9 +59,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject escapeUI, escapeButtons, settingUI;
     [SerializeField] private Button resumeButton, settingButton, quitButton;
     [SerializeField] private Button[] changeButtons;
+    [SerializeField] private Dropdown resolutionDropdown;
     [SerializeField] private TMP_Text[] textKeys;
     public KeyCode[] keyCodes;
     private int chosenIndex = -1;
+    private Resolution[] resolutions;
 
     public bool isPaused = false;
     public bool npcWindowActive = false;
@@ -215,6 +217,19 @@ public class UIManager : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void SetQuality(int qualityIndex)
+    {
+        QualitySettings.SetQualityLevel(qualityIndex);
+    }
+    public void SetResolution()
+    {
+
+    }
+    public void SetFullscreen(bool isFullscreen)
+    {
+        Screen.fullScreen = isFullscreen;
     }
 
     private void ChangeKey(int index)
