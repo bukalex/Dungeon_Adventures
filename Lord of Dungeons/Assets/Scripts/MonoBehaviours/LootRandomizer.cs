@@ -26,7 +26,7 @@ public class LootRandomizer : MonoBehaviour
         // Creates a the droppable items for each individual loot table should work well for chests no idea how it will work for enemies. 
         // Call upon only one of these if you want a specific kind of loot table
         foreach (var item in totalItems)
-            FillRandomLootTable(item, randomWeaponLootTable);
+            FillRandomLootTable(item, randomLootTable);
 
         foreach (var item in materialLootTable)
             FillRandomLootTable(item, randomMaterialLootTable);
