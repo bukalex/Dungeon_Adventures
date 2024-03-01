@@ -52,7 +52,6 @@ public class BattleManager : MonoBehaviour
         playerActions.Add(PlayerExplosionClosest);
         playerActions.Add(PlayerPushingWave);
         playerActions.Add(PlayerGuisonKnife);
-        playerActions.Add(PlayerTeleportForward);
         playerActions.Add(PlayerMindControl);
 
         enemyActions.Add(GuardUseSword);
@@ -725,11 +724,6 @@ public class BattleManager : MonoBehaviour
             Destroy(projectile.gameObject);
         }
         battleData.guisonKnifes.Clear();
-    }
-
-    private void PlayerTeleportForward(PlayerData playerData, AttackParameters attack)
-    {
-        playerData.transform.Translate(playerData.attackDirection.normalized * attack.range);
     }
 
     private void PlayerMindControl(PlayerData playerData, AttackParameters attack)
