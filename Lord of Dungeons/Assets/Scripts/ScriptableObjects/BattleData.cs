@@ -13,4 +13,6 @@ public class BattleData : ScriptableObject
     public Dictionary<ScriptableObject, Vector3> attackDirections = new Dictionary<ScriptableObject, Vector3>();
 
     public GameObject Sparks;
+    public GameObject guisonKnifePrefab;
+    public List<ProjectileController> guisonKnifes = new List<ProjectileController>();
 }

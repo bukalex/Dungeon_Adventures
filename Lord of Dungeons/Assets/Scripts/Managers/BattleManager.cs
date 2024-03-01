@@ -681,6 +681,17 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerGuisonKnife(PlayerData playerData, AttackParameters attack)
     {
+        battleData.guisonKnifes = new List<ProjectileController>();
+        for (int i = 0; i < 5; i++)
+        {
+            ProjectileController projectile = Instantiate(battleData.guisonKnifePrefab, 
+                playerData.position, 
+                Quaternion.AngleAxis(Vector3.SignedAngle(Vector3.up, playerData.attackDirection, Vector3.forward) -45 + 22.5f * i, Vector3.forward)).GetComponent<ProjectileController>();
+            projectile.Launch("Player", playerData, attack, projectile.transform.up);
+            projectile.Launch(projectile.transform.up * attack.range * 3.0f / attack.duration);
+            battleData.guisonKnifes.Add(projectile);
+        }
+
         attack.playerData = playerData;
         attack.runningDelegate = PlayerGuisonKnifeRunning;
         attack.endDelegate = PlayerGuisonKnifeEnd;
@@ -690,12 +701,26 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerGuisonKnifeRunning(AttackParameters attack)
     {
-
+        foreach (ProjectileController projectile in battleData.guisonKnifes)
+        {
+            if (projectile.timer >= attack.duration / 3.0f)
+            {
+                projectile.Launch(Vector3.zero);
+            }
+            if (projectile.timer >= attack.duration * 2 / 3.0f && projectile.timer < attack.duration)
+            {
+                projectile.Launch((attack.playerData.position - projectile.transform.position) / (attack.duration - projectile.timer));
+            }
+        }
     }
 
     private void PlayerGuisonKnifeEnd(AttackParameters attack)
     {
-
+        foreach (ProjectileController projectile in battleData.guisonKnifes)
+        {
+            Destroy(projectile.gameObject);
+        }
+        battleData.guisonKnifes.Clear();
     }
 
     private void PlayerTeleportForward(PlayerData playerData, AttackParameters attack)
