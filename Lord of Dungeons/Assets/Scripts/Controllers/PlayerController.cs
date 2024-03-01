@@ -48,7 +48,8 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
         {
             //Movement
             #region
-            movementDirection = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0).normalized;
+            movementDirection = new Vector3(-System.Convert.ToInt32(Input.GetKey(UIManager.Instance.keyCodes[2])) + System.Convert.ToInt32(Input.GetKey(UIManager.Instance.keyCodes[3])),
+                -System.Convert.ToInt32(Input.GetKey(UIManager.Instance.keyCodes[1])) + System.Convert.ToInt32(Input.GetKey(UIManager.Instance.keyCodes[0])), 0).normalized;
 
             if (!isGoingBackward)
             {
@@ -175,7 +176,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
 
             //Chest Interactions
             #region
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[15]))
             {
                 if (activeLootable == null)
                 {
