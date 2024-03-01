@@ -6180,10 +6180,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SteelGuard
       objectReference: {fileID: 0}
-    - target: {fileID: 448594684700309886, guid: efef7a2fbb187444da8293bee0556e23, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3711029590176133290, guid: efef7a2fbb187444da8293bee0556e23, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.32
@@ -6235,10 +6231,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 448594684700309886, guid: efef7a2fbb187444da8293bee0556e23, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1769153684}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efef7a2fbb187444da8293bee0556e23, type: 3}
 --- !u!1 &598524661
 GameObject:
@@ -21638,10 +21631,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SteelGuard (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 448594684700309886, guid: efef7a2fbb187444da8293bee0556e23, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3711029590176133290, guid: efef7a2fbb187444da8293bee0556e23, type: 3}
       propertyPath: m_LocalPosition.x
       value: -16.38
@@ -21693,44 +21682,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 448594684700309886, guid: efef7a2fbb187444da8293bee0556e23, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1286326293}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efef7a2fbb187444da8293bee0556e23, type: 3}
---- !u!1 &1286326292 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 448594684700309886, guid: efef7a2fbb187444da8293bee0556e23, type: 3}
-  m_PrefabInstance: {fileID: 1286326291}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1286326293
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1286326292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da13fb10a93744d409e1f614d844cc01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InventoryItemPref: {fileID: 0}
-  totalItems:
-  - {fileID: 11400000, guid: 5c6d302094a9f054c8801f760271dc62, type: 2}
-  - {fileID: 11400000, guid: bf46bc0dcbddfc446ad028247273ef8d, type: 2}
-  - {fileID: 11400000, guid: b30fd890fa269b6439e207262062f5d3, type: 2}
-  materialLootTable:
-  - {fileID: 11400000, guid: b30fd890fa269b6439e207262062f5d3, type: 2}
-  weaponLootTable: []
-  consumableLootTable:
-  - {fileID: 11400000, guid: bf46bc0dcbddfc446ad028247273ef8d, type: 2}
-  uniqueLootTable: []
-  randomLootTable: []
-  randomMaterialLootTable: []
-  randomWeaponLootTable: []
-  randomConsumableLootTable: []
-  randomUniqueLootTable: []
 --- !u!1 &1515583513
 GameObject:
   m_ObjectHideFlags: 0
@@ -22788,39 +22741,6 @@ MonoBehaviour:
   m_LocalBounds:
     m_Center: {x: -14.490608, y: -12.480333, z: 0}
     m_Extent: {x: 0.43633318, y: 0.49686384, z: 0}
---- !u!1 &1769153679 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 448594684700309886, guid: efef7a2fbb187444da8293bee0556e23, type: 3}
-  m_PrefabInstance: {fileID: 566365395}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1769153684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1769153679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da13fb10a93744d409e1f614d844cc01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InventoryItemPref: {fileID: 0}
-  totalItems:
-  - {fileID: 11400000, guid: 5c6d302094a9f054c8801f760271dc62, type: 2}
-  - {fileID: 11400000, guid: bf46bc0dcbddfc446ad028247273ef8d, type: 2}
-  - {fileID: 11400000, guid: b30fd890fa269b6439e207262062f5d3, type: 2}
-  materialLootTable:
-  - {fileID: 11400000, guid: b30fd890fa269b6439e207262062f5d3, type: 2}
-  weaponLootTable: []
-  consumableLootTable:
-  - {fileID: 11400000, guid: bf46bc0dcbddfc446ad028247273ef8d, type: 2}
-  uniqueLootTable: []
-  randomLootTable: []
-  randomMaterialLootTable: []
-  randomWeaponLootTable: []
-  randomConsumableLootTable: []
-  randomUniqueLootTable: []
 --- !u!1 &1954240305
 GameObject:
   m_ObjectHideFlags: 0

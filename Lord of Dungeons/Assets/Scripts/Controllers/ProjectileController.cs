@@ -25,7 +25,7 @@ public class ProjectileController : MonoBehaviour
         initialPosition = transform.position;
     }
 
-    public enum ProjectileType { BULLET, BOOMERANG, GUISON_KNIFE }
+    public enum ProjectileType { BULLET, BOOMERANG, GUISON_KNIFE, PARTICLES }
 
     void Update()
     {
@@ -40,6 +40,12 @@ public class ProjectileController : MonoBehaviour
         {
             timer += Time.deltaTime;
         }
+    }
+
+    public void Launch(IAttackObject attackObject, AttackParameters attack)
+    {
+        this.attackObject = attackObject;
+        this.attack = attack;
     }
 
     public void Launch(Vector3 velocity)
@@ -75,15 +81,17 @@ public class ProjectileController : MonoBehaviour
         {
             if (collision.transform.parent == null) return; 
             string targetTag = collision.transform.parent.tag;
-
-            if (parentTag == "Enemy" && targetTag == "Player" ||
+            
+            if (type == ProjectileType.PARTICLES || 
+                parentTag == "Enemy" && targetTag == "Player" ||
                 parentTag == "Player" && (targetTag == "Enemy" || targetTag == "Object"))
             {
                 BattleManager.Instance.ProjectileHit(attackObject, collision.GetComponentInParent<IDefensiveMonoBehaviour>().GetDefenseObject(), attack);
             }
 
             if (type != ProjectileType.BOOMERANG &&
-                type != ProjectileType.GUISON_KNIFE && 
+                type != ProjectileType.GUISON_KNIFE &&
+                type != ProjectileType.PARTICLES &&
                 !targetTag.Equals(parentTag))
             {
                 Destroy(gameObject);
@@ -91,6 +99,7 @@ public class ProjectileController : MonoBehaviour
         }
         else if (type != ProjectileType.BOOMERANG &&
             type != ProjectileType.GUISON_KNIFE &&
+            type != ProjectileType.PARTICLES &&
             !collision.transform.tag.Equals(parentTag))
         {
             Destroy(gameObject);

@@ -269,7 +269,7 @@ public class BattleManager : MonoBehaviour
     }
 
     //Finds nearest target
-    private T GetNearestTarget<T>(Vector3 position, float radius, Vector3 attackDirection, bool inSector = true) where T : MonoBehaviour
+    private T GetNearestTarget<T>(Vector3 position, float radius, Vector3 attackDirection, bool inSector = true, bool mustBeVisible = true) where T : MonoBehaviour
     {
         Collider2D[] possibleTargets = Physics2D.OverlapCircleAll(position, radius);
         RaycastHit2D[] hits;
@@ -296,7 +296,7 @@ public class BattleManager : MonoBehaviour
                             }
                         }
 
-                        if (isVisible) target = collider.GetComponentInParent<T>();
+                        if (isVisible || !mustBeVisible) target = collider.GetComponentInParent<T>();
                     }
                 }
             }
@@ -641,7 +641,11 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerExplosionClosest(PlayerData playerData, AttackParameters attack)
     {
-
+        EnemyController enemy = GetNearestTarget<EnemyController>(playerData.position, attack.range + playerData.colliderRadius, playerData.attackDirection, false, false);
+        if (enemy != null)
+        {
+            Instantiate(battleData.explosionPrefab, enemy.transform.position - new Vector3(0, enemy.enemyParameters.colliderRadius/2, 0), Quaternion.identity).GetComponent<ProjectileController>().Launch(playerData, attack);
+        }
     }
 
     private void PlayerPushingWave(PlayerData playerData, AttackParameters attack)
