@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
 
     private NPCController activeNPC = null;
     private LootableController activeLootable = null;
+    private List<IInteractable> interactables = new List<IInteractable>();
 
     void Awake()
     {
@@ -147,6 +148,16 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
 
             //NPC interaction
             #region
+            foreach (IInteractable interactable in interactables)
+            {
+                interactable.HideButton();
+            }
+            interactables = DetectTargets<IInteractable>(playerData.npcDetectionRadius + playerData.colliderRadius, false);
+            foreach (IInteractable interactable in interactables)
+            {
+                interactable.ShowButton();
+            }
+
             if (Input.GetKeyDown(UIManager.Instance.keyCodes[15]))
             {
                 if (activeNPC == null)

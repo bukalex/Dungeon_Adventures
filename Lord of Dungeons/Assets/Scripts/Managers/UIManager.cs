@@ -60,7 +60,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button resumeButton, settingButton, quitButton;
     [SerializeField] private Button[] changeButtons;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
-    [SerializeField] private TMP_Text[] textKeys;
+    [SerializeField] public TMP_Text[] textKeys;
     [SerializeField] private TMP_Text[] barLabels;
     public KeyCode[] keyCodes;
     private int chosenIndex = -1;
@@ -355,6 +355,10 @@ public class UIManager : MonoBehaviour
     {
         if (checkpoint != SceneManager.GetActiveScene().buildIndex)
         {
+            foreach (GameObject obj in GameObject.FindGameObjectsWithTag("PopUpUI"))
+            {
+                Destroy(obj);
+            }
             teleportWindow.SetActive(false);
             SceneManager.LoadScene(checkpoint);
         }

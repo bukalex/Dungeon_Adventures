@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LootableController : MonoBehaviour
+public class LootableController : MonoBehaviour, IInteractable
 {
     [SerializeField]
     private LootableParameters lootableParameters;
@@ -14,6 +14,9 @@ public class LootableController : MonoBehaviour
     private Animator animator;
     [SerializeField]
     private SpriteRenderer spriteRenderer;
+    [SerializeField]
+    private GameObject interactIconPrefab;
+    private GameObject interactIcon;
 
     private bool beingChecked;
 
@@ -26,6 +29,9 @@ public class LootableController : MonoBehaviour
     private void Start()
     {
         chestInventory.SetActive(false);
+        interactIcon = Instantiate(interactIconPrefab, Camera.main.WorldToScreenPoint(transform.position + Vector3.up), Quaternion.identity, GameObject.FindGameObjectWithTag("MainCanvas").transform);
+        interactIcon.transform.SetSiblingIndex(0);
+        interactIcon.SetActive(false);
     }
     public void BeingLooted(bool isLooted)
     {
@@ -54,5 +60,17 @@ public class LootableController : MonoBehaviour
         animator.SetBool("isOpen",beingChecked);
 
         Debug.Log("Opened Chest");
+    }
+
+    public void ShowButton()
+    {
+        interactIcon.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 1.5f);
+        interactIcon.GetComponentInChildren<TMP_Text>().text = UIManager.Instance.textKeys[15].text;
+        interactIcon.SetActive(true);
+    }
+
+    public void HideButton()
+    {
+        interactIcon.SetActive(false);
     }
 }

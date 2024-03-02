@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 766286927728548305}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.21, y: 0.76, z: -4.2723837}
+  m_LocalPosition: {x: 0, y: 0.605, z: -4.2723837}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -173,7 +173,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.21125431, y: 0.38289943}
+  m_Offset: {x: 0, y: 0.23}
   m_Size: {x: 1.4225122, y: 0.6303068}
   m_Direction: 1
 --- !u!50 &6083100473236203364
@@ -219,3 +219,4 @@ MonoBehaviour:
   chestInventory: {fileID: 0}
   animator: {fileID: 7311802473356615376}
   spriteRenderer: {fileID: 7283278446942715338}
+  interactIconPrefab: {fileID: 3870152452940094802, guid: 16430019080162c49be4e868e67d4016, type: 3}

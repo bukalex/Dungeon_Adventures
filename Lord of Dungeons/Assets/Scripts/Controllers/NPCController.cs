@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class NPCController : MonoBehaviour
+public class NPCController : MonoBehaviour, IInteractable
 {
     [SerializeField]
     private NPCParameters npcParameters;
@@ -16,6 +17,10 @@ public class NPCController : MonoBehaviour
 
     [SerializeField]
     private SpriteRenderer spriteRenderer;
+
+    [SerializeField]
+    private GameObject interactIconPrefab;
+    private GameObject interactIcon;
 
     private DirectionName directionName = DirectionName.FRONT;
 
@@ -49,6 +54,9 @@ public class NPCController : MonoBehaviour
                 dialogWindow = UIManager.Instance.blacksmithWindow;
                 break;
         }
+        interactIcon = Instantiate(interactIconPrefab, Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 2), Quaternion.identity, GameObject.FindGameObjectWithTag("MainCanvas").transform);
+        interactIcon.transform.SetSiblingIndex(0);
+        interactIcon.SetActive(false);
     }
 
     public void InteractWithPlayer(bool isActive)
@@ -70,6 +78,18 @@ public class NPCController : MonoBehaviour
     public float GetColliderRadius()
     {
         return npcParameters.colliderRadius;
+    }
+
+    public void ShowButton()
+    {
+        interactIcon.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 1.5f);
+        interactIcon.GetComponentInChildren<TMP_Text>().text = UIManager.Instance.textKeys[15].text;
+        interactIcon.SetActive(true);
+    }
+
+    public void HideButton()
+    {
+        interactIcon.SetActive(false);
     }
 
     //Animation

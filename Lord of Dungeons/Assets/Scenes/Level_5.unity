@@ -172,7 +172,7 @@ Transform:
   - {fileID: 1066607298}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!43 &343605930
+--- !u!43 &304138690
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2981,10 +2981,6 @@ PrefabInstance:
     - target: {fileID: 8657246358550972624, guid: ced0f4bf360aac24eb57a4cb1ab757fe, type: 3}
       propertyPath: m_Name
       value: Warrior
-      objectReference: {fileID: 0}
-    - target: {fileID: 8657246358550972624, guid: ced0f4bf360aac24eb57a4cb1ab757fe, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8980521555222320769, guid: ced0f4bf360aac24eb57a4cb1ab757fe, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5866,8 +5862,8 @@ MonoBehaviour:
   - {x: 42.15834, y: 16.110437, z: 0}
   - {x: 42.15834, y: -14.552662, z: 0}
   m_ShapePathHash: -611520723
-  m_Mesh: {fileID: 343605930}
-  m_InstanceId: 46768
+  m_Mesh: {fileID: 304138690}
+  m_InstanceId: 104638
   m_LocalBounds:
     m_Center: {x: 33.84118, y: -12.24478, z: 0}
     m_Extent: {x: 30.95893, y: 28.355219, z: 0}
@@ -5882,6 +5878,14 @@ PrefabInstance:
     - target: {fileID: 636396803085573938, guid: 52c5c7a6bb0a7d7418cacf530e670281, type: 3}
       propertyPath: m_Name
       value: SceneChanger
+      objectReference: {fileID: 0}
+    - target: {fileID: 2482921676974428032, guid: 52c5c7a6bb0a7d7418cacf530e670281, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 43.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2482921676974428032, guid: 52c5c7a6bb0a7d7418cacf530e670281, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -14.7
       objectReference: {fileID: 0}
     - target: {fileID: 3251888979240611413, guid: 52c5c7a6bb0a7d7418cacf530e670281, type: 3}
       propertyPath: m_Pivot.x
