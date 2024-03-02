@@ -48,6 +48,32 @@ public class CheckpointManager : MonoBehaviour
             intKeyCodes.Add((int)keyCode);
         }
         gameData.intKeyCodes = intKeyCodes;
+        List<Vector2> inventoryItems = new List<Vector2>();
+        foreach (InventorySlot slot in InventoryManager.Instance.internalInventorySlots)
+        {
+            if (slot.GetComponentInChildren<InventoryItem>() != null)
+            {
+                inventoryItems.Add(new Vector2(Array.IndexOf(InventoryManager.Instance.allItems, slot.GetComponentInChildren<InventoryItem>().item), slot.GetComponentInChildren<InventoryItem>().count));
+            }
+            else
+            {
+                inventoryItems.Add(new Vector2(-1, 0));
+            }
+        }
+        gameData.inventoryItems = inventoryItems;
+        List<Vector2> toolBarItems = new List<Vector2>();
+        foreach (InventorySlot slot in InventoryManager.Instance.toolBar)
+        {
+            if (slot.GetComponentInChildren<InventoryItem>() != null)
+            {
+                toolBarItems.Add(new Vector2(Array.IndexOf(InventoryManager.Instance.allItems, slot.GetComponentInChildren<InventoryItem>().item), slot.GetComponentInChildren<InventoryItem>().count));
+            }
+            else
+            {
+                toolBarItems.Add(new Vector2(-1, 0));
+            }
+        }
+        gameData.toolBarItems = toolBarItems;
 
         string jsonData = JsonUtility.ToJson(gameData);
         File.WriteAllText(filePath, jsonData);
@@ -67,6 +93,14 @@ public class CheckpointManager : MonoBehaviour
                 UIManager.Instance.keyCodes[i] = Enum.Parse<KeyCode>(Enum.GetName(typeof(KeyCode), gameData.intKeyCodes[i]));
             }
             UIManager.Instance.InitializeKeyCodeSettings();
+            for (int i = 0; i < InventoryManager.Instance.internalInventorySlots.Length; i++)
+            {
+                InventoryManager.Instance.LoadItem(InventoryManager.Instance.internalInventorySlots, i, (int)gameData.inventoryItems[i].x, (int)gameData.inventoryItems[i].y);
+            }
+            for (int i = 0; i < InventoryManager.Instance.toolBar.Length; i++)
+            {
+                InventoryManager.Instance.LoadItem(InventoryManager.Instance.toolBar, i, (int)gameData.toolBarItems[i].x, (int)gameData.toolBarItems[i].y);
+            }
         }
     }
 
@@ -82,13 +116,15 @@ public class GameData
     public int checkpointsReached;
     public List<Vector2> timers;
     public List<int> intKeyCodes;
-    public List<Vector2> items;
+    public List<Vector2> inventoryItems;
+    public List<Vector2> toolBarItems;
 
     public GameData()
     {
         checkpointsReached = 0;
         timers = new List<Vector2>();
         intKeyCodes = new List<int>();
-        items = new List<Vector2>();
+        inventoryItems = new List<Vector2>();
+        toolBarItems = new List<Vector2>();
     }
 }
