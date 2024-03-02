@@ -40,7 +40,7 @@ public class TemporaryTradingSystem : MonoBehaviour
             {
                 if (result.gameObject.tag == "ItemHolder")
                 {
-                    if (itemInStore != null)
+                    if (itemInStore != null && itemInStore.GetComponentInParent<InventorySlot>())
                     {
                         itemInStore.GetComponentInParent<InventorySlot>().unselectSlot();
                     }
