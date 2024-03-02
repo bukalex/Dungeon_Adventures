@@ -59,7 +59,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject escapeUI, escapeButtons, settingUI;
     [SerializeField] private Button resumeButton, settingButton, quitButton;
     [SerializeField] private Button[] changeButtons;
-    [SerializeField] private Dropdown resolutionDropdown;
+    [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private TMP_Text[] textKeys;
     public KeyCode[] keyCodes;
     private int chosenIndex = -1;
@@ -89,6 +89,27 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        resolutions = Screen.resolutions;
+
+        resolutionDropdown.ClearOptions();
+
+        List<string> options = new List<string>();
+        int currentResolutionIndex = 0;
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            string option = resolutions[i].width + "X" + resolutions[i].height;
+            options.Add(option);
+            if (resolutions[i].width == Screen.currentResolution.width &&
+                resolutions[i].height == Screen.currentResolution.height)
+                currentResolutionIndex = i;
+        }
+        resolutionDropdown.AddOptions(options);
+        resolutionDropdown.value = currentResolutionIndex;
+        resolutionDropdown.RefreshShownValue();
     }
 
     void Update()
@@ -194,7 +215,8 @@ public class UIManager : MonoBehaviour
             resumeButton.onClick.AddListener(() => Resume());
             settingButton.onClick.AddListener(() => Setting());
             quitButton.onClick.AddListener(() => Quit());
-        }
+
+        }   
 
     }
 
@@ -223,9 +245,10 @@ public class UIManager : MonoBehaviour
     {
         QualitySettings.SetQualityLevel(qualityIndex);
     }
-    public void SetResolution()
+    public void SetResolution(int currentIndex)
     {
-
+        Resolution resolution = resolutions[currentIndex];
+        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
     public void SetFullscreen(bool isFullscreen)
     {
