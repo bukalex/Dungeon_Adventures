@@ -52,7 +52,6 @@ public class BattleManager : MonoBehaviour
         playerActions.Add(PlayerExplosionClosest);
         playerActions.Add(PlayerPushingWave);
         playerActions.Add(PlayerGuisonKnife);
-        playerActions.Add(PlayerTeleportForward);
         playerActions.Add(PlayerMindControl);
 
         enemyActions.Add(GuardUseSword);
@@ -269,7 +268,7 @@ public class BattleManager : MonoBehaviour
     }
 
     //Finds nearest target
-    private T GetNearestTarget<T>(Vector3 position, float radius, Vector3 attackDirection, bool inSector = true) where T : MonoBehaviour
+    private T GetNearestTarget<T>(Vector3 position, float radius, Vector3 attackDirection, bool inSector = true, bool mustBeVisible = true) where T : MonoBehaviour
     {
         Collider2D[] possibleTargets = Physics2D.OverlapCircleAll(position, radius);
         RaycastHit2D[] hits;
@@ -296,7 +295,7 @@ public class BattleManager : MonoBehaviour
                             }
                         }
 
-                        if (isVisible) target = collider.GetComponentInParent<T>();
+                        if (isVisible || !mustBeVisible) target = collider.GetComponentInParent<T>();
                     }
                 }
             }
@@ -641,7 +640,11 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerExplosionClosest(PlayerData playerData, AttackParameters attack)
     {
-
+        EnemyController enemy = GetNearestTarget<EnemyController>(playerData.position, attack.range + playerData.colliderRadius, playerData.attackDirection, false, false);
+        if (enemy != null)
+        {
+            Instantiate(battleData.explosionPrefab, enemy.transform.position - new Vector3(0, enemy.enemyParameters.colliderRadius/2, 0), Quaternion.identity).GetComponent<ProjectileController>().Launch(playerData, attack);
+        }
     }
 
     private void PlayerPushingWave(PlayerData playerData, AttackParameters attack)
@@ -681,6 +684,17 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerGuisonKnife(PlayerData playerData, AttackParameters attack)
     {
+        battleData.guisonKnifes = new List<ProjectileController>();
+        for (int i = 0; i < 5; i++)
+        {
+            ProjectileController projectile = Instantiate(battleData.guisonKnifePrefab, 
+                playerData.position, 
+                Quaternion.AngleAxis(Vector3.SignedAngle(Vector3.up, playerData.attackDirection, Vector3.forward) -45 + 22.5f * i, Vector3.forward)).GetComponent<ProjectileController>();
+            projectile.Launch("Player", playerData, attack, projectile.transform.up);
+            projectile.Launch(projectile.transform.up * attack.range * 3.0f / attack.duration);
+            battleData.guisonKnifes.Add(projectile);
+        }
+
         attack.playerData = playerData;
         attack.runningDelegate = PlayerGuisonKnifeRunning;
         attack.endDelegate = PlayerGuisonKnifeEnd;
@@ -690,17 +704,26 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerGuisonKnifeRunning(AttackParameters attack)
     {
-
+        foreach (ProjectileController projectile in battleData.guisonKnifes)
+        {
+            if (projectile.timer >= attack.duration / 3.0f)
+            {
+                projectile.Launch(Vector3.zero);
+            }
+            if (projectile.timer >= attack.duration * 2 / 3.0f && projectile.timer < attack.duration)
+            {
+                projectile.Launch((attack.playerData.position - projectile.transform.position) / (attack.duration - projectile.timer));
+            }
+        }
     }
 
     private void PlayerGuisonKnifeEnd(AttackParameters attack)
     {
-
-    }
-
-    private void PlayerTeleportForward(PlayerData playerData, AttackParameters attack)
-    {
-        playerData.transform.Translate(playerData.attackDirection.normalized * attack.range);
+        foreach (ProjectileController projectile in battleData.guisonKnifes)
+        {
+            Destroy(projectile.gameObject);
+        }
+        battleData.guisonKnifes.Clear();
     }
 
     private void PlayerMindControl(PlayerData playerData, AttackParameters attack)

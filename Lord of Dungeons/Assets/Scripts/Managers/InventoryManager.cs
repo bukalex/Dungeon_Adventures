@@ -81,7 +81,7 @@ public class InventoryManager : MonoBehaviour
     private void InitializeSlots()
     {
         //Initializing slots for internal inventory
-        internalInventorySlots = UIManager.Instance.inventory.GetComponentsInChildren<InventorySlot>();
+        internalInventorySlots = UIManager.Instance.inventory.transform.GetChild(0).GetComponentsInChildren<InventorySlot>();
         
         //Initializing slots for toolBar
         toolBar = UIManager.Instance.toolbar.GetComponentsInChildren<InventorySlot>();
@@ -162,17 +162,17 @@ public class InventoryManager : MonoBehaviour
                 spawnNewItem(item, slot);
                 return true;
             }
-            if(InventoryType1 != InventoryType2)
+        }
+        if (InventoryType1 != InventoryType2)
+        {
+            for (int j = 0; j < InventoryType2.Length; j++)
             {
-                for (int j = 0; j < InventoryType2.Length; j++)
+                InventorySlot internalSlots = InventoryType2[j];
+                InventoryItem internalItemInSlot = internalSlots.GetComponentInChildren<InventoryItem>();
+                if (internalItemInSlot == null)
                 {
-                    InventorySlot internalSlots = InventoryType2[j];
-                    InventoryItem internalItemInSlot = internalSlots.GetComponentInChildren<InventoryItem>();
-                    if (internalItemInSlot == null)
-                    {
-                        spawnNewItem(item, slot);
-                        return true;
-                    }
+                    spawnNewItem(item, internalSlots);
+                    return true;
                 }
             }
         }
@@ -324,6 +324,16 @@ public class InventoryManager : MonoBehaviour
             {
                 Destroy(inventoryItem.gameObject);
             }
+        }
+    }
+
+    public void LoadItem(InventorySlot[] slots, int slotIndex, int itemIndex, int itemCount)
+    {
+        if (itemIndex != -1)
+        {
+            InventoryItem item = Instantiate(inventoryItemPrefab, slots[slotIndex].transform).GetComponent<InventoryItem>();
+            item.count = itemCount;
+            item.InitializeItem(allItems[itemIndex]);
         }
     }
 }

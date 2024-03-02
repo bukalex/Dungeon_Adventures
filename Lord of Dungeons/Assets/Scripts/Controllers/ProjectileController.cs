@@ -17,7 +17,7 @@ public class ProjectileController : MonoBehaviour
     private IAttackObject attackObject;
     private AttackParameters attack;
     private Vector3 initialPosition;
-    private float timer;
+    public float timer;
     private float radiusSpeed;
 
     void Start()
@@ -25,7 +25,7 @@ public class ProjectileController : MonoBehaviour
         initialPosition = transform.position;
     }
 
-    public enum ProjectileType { BULLET, BOOMERANG, GUISON_KNIFE }
+    public enum ProjectileType { BULLET, BOOMERANG, GUISON_KNIFE, PARTICLES }
 
     void Update()
     {
@@ -35,6 +35,30 @@ public class ProjectileController : MonoBehaviour
             body.velocity = Mathf.Sign(-timer) * transform.right * radiusSpeed;
             transform.RotateAround(initialPosition, Vector3.forward, speed * Time.deltaTime);
         }
+
+        if (type == ProjectileType.GUISON_KNIFE)
+        {
+            timer += Time.deltaTime;
+        }
+    }
+
+    public void Launch(IAttackObject attackObject, AttackParameters attack)
+    {
+        this.attackObject = attackObject;
+        this.attack = attack;
+    }
+
+    public void Launch(Vector3 velocity)
+    {
+        if (velocity.magnitude > 0)
+        {
+            transform.rotation = Quaternion.AngleAxis(Vector3.SignedAngle(Vector3.up, velocity, Vector3.forward), Vector3.forward);
+        }
+        else if (body.velocity.magnitude > 0)
+        {
+            transform.Rotate(-60, 0, 0, Space.Self);
+        }
+        body.velocity = velocity;
     }
 
     public void Launch(string parentTag, IAttackObject attackObject, AttackParameters attack, Vector3 direction)
@@ -57,19 +81,26 @@ public class ProjectileController : MonoBehaviour
         {
             if (collision.transform.parent == null) return; 
             string targetTag = collision.transform.parent.tag;
-
-            if (parentTag == "Enemy" && targetTag == "Player" ||
+            
+            if (type == ProjectileType.PARTICLES || 
+                parentTag == "Enemy" && targetTag == "Player" ||
                 parentTag == "Player" && (targetTag == "Enemy" || targetTag == "Object"))
             {
                 BattleManager.Instance.ProjectileHit(attackObject, collision.GetComponentInParent<IDefensiveMonoBehaviour>().GetDefenseObject(), attack);
             }
 
-            if (type != ProjectileType.BOOMERANG && !targetTag.Equals(parentTag))
+            if (type != ProjectileType.BOOMERANG &&
+                type != ProjectileType.GUISON_KNIFE &&
+                type != ProjectileType.PARTICLES &&
+                !targetTag.Equals(parentTag))
             {
                 Destroy(gameObject);
             }
         }
-        else if (type != ProjectileType.BOOMERANG && !collision.transform.tag.Equals(parentTag))
+        else if (type != ProjectileType.BOOMERANG &&
+            type != ProjectileType.GUISON_KNIFE &&
+            type != ProjectileType.PARTICLES &&
+            !collision.transform.tag.Equals(parentTag))
         {
             Destroy(gameObject);
         }
