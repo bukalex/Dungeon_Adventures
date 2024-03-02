@@ -74,6 +74,19 @@ public class CheckpointManager : MonoBehaviour
             }
         }
         gameData.toolBarItems = toolBarItems;
+        List<Vector2> equipmentItems = new List<Vector2>();
+        foreach (InventorySlot slot in InventoryManager.Instance.equipmentSlots)
+        {
+            if (slot.GetComponentInChildren<InventoryItem>() != null)
+            {
+                equipmentItems.Add(new Vector2(Array.IndexOf(InventoryManager.Instance.allItems, slot.GetComponentInChildren<InventoryItem>().item), slot.GetComponentInChildren<InventoryItem>().count));
+            }
+            else
+            {
+                equipmentItems.Add(new Vector2(-1, 0));
+            }
+        }
+        gameData.equipmentItems = equipmentItems;
 
         string jsonData = JsonUtility.ToJson(gameData);
         File.WriteAllText(filePath, jsonData);
@@ -101,6 +114,10 @@ public class CheckpointManager : MonoBehaviour
             {
                 InventoryManager.Instance.LoadItem(InventoryManager.Instance.toolBar, i, (int)gameData.toolBarItems[i].x, (int)gameData.toolBarItems[i].y);
             }
+            for (int i = 0; i < InventoryManager.Instance.equipmentSlots.Length; i++)
+            {
+                InventoryManager.Instance.LoadItem(InventoryManager.Instance.equipmentSlots, i, (int)gameData.equipmentItems[i].x, (int)gameData.equipmentItems[i].y);
+            }
         }
     }
 
@@ -118,6 +135,7 @@ public class GameData
     public List<int> intKeyCodes;
     public List<Vector2> inventoryItems;
     public List<Vector2> toolBarItems;
+    public List<Vector2> equipmentItems;
 
     public GameData()
     {
@@ -126,5 +144,6 @@ public class GameData
         intKeyCodes = new List<int>();
         inventoryItems = new List<Vector2>();
         toolBarItems = new List<Vector2>();
+        equipmentItems = new List<Vector2>();
     }
 }

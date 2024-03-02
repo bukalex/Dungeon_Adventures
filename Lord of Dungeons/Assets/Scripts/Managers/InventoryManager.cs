@@ -23,6 +23,7 @@ public class InventoryManager : MonoBehaviour
     [Header("Slots")]
     public InventorySlot[] internalInventorySlots;
     public InventorySlot[] toolBar;
+    public InventorySlot[] equipmentSlots;
     public InventorySlot[] traderSellSlots;
     public InventorySlot[] wizardSellSlots;
     public InventorySlot[] storageSlots;
@@ -82,7 +83,8 @@ public class InventoryManager : MonoBehaviour
     {
         //Initializing slots for internal inventory
         internalInventorySlots = UIManager.Instance.inventory.transform.GetChild(0).GetComponentsInChildren<InventorySlot>();
-        
+        equipmentSlots = UIManager.Instance.equipment.GetComponentsInChildren<InventorySlot>();
+
         //Initializing slots for toolBar
         toolBar = UIManager.Instance.toolbar.GetComponentsInChildren<InventorySlot>();
 

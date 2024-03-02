@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     public GameObject HealthBar, ManaBar, StaminaBar;
     [SerializeField]
-    public GameObject inventory, toolbar, abilitybar;
+    public GameObject inventory, toolbar, abilitybar, equipment;
     [SerializeField] 
     public GameObject cheatChestUIs;
 
@@ -61,6 +61,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button[] changeButtons;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] private TMP_Text[] textKeys;
+    [SerializeField] private TMP_Text[] barLabels;
     public KeyCode[] keyCodes;
     private int chosenIndex = -1;
     private Resolution[] resolutions;
@@ -182,6 +183,10 @@ public class UIManager : MonoBehaviour
                 chosenIndex = -1;
             }
         }
+        barLabels[0].text = textKeys[8].text;
+        barLabels[1].text = textKeys[9].text;
+        barLabels[2].text = textKeys[10].text;
+        barLabels[3].text = textKeys[11].text;
 
 
         //Open inventory
