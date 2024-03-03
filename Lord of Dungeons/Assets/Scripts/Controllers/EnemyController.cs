@@ -131,7 +131,7 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
                     }
                 }
             }
-            else if ((lastPlayerPosition - transform.position).magnitude <= 0.1)
+            else if ((lastPlayerPosition - transform.position).magnitude <= 0.5)
             {
                 Stop();
                 body.velocity = Vector3.zero;
