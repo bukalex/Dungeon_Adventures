@@ -27,10 +27,9 @@ public class BankerWindow : MonoBehaviour
     [SerializeField]
     private Button convertButton;
 
+    public int vaultCapacity = 0;
     [SerializeField]
-    private int vaultCapacity = 10;
-    [SerializeField]
-    private Transform vault;
+    public Transform vault;
     [SerializeField]
     private GameObject slotPrefab;
     [SerializeField]
@@ -40,14 +39,6 @@ public class BankerWindow : MonoBehaviour
     private int rate;
     private int rateOffset = 25;
     private bool goingUp = false;
-
-    void Start()
-    {
-        for (int i = 0; i < vaultCapacity; i++)
-        {
-            Instantiate(slotPrefab, vault).transform.SetSiblingIndex(i);
-        }
-    }
 
     void Update()
     {
@@ -223,5 +214,22 @@ public class BankerWindow : MonoBehaviour
             }
             vaultCapacity += 5;
         }
+    }
+
+    public void LoadVault(int capacity, List<Vector2> bankerItems)
+    {
+        for (int i = 0; i < capacity; i++)
+        {
+            InventorySlot slot = Instantiate(slotPrefab, vault).GetComponent<InventorySlot>();
+            slot.transform.SetSiblingIndex(i);
+
+            if ((int)bankerItems[i].x != -1)
+            {
+                InventoryItem item = Instantiate(InventoryManager.Instance.inventoryItemPrefab, slot.transform).GetComponent<InventoryItem>();
+                item.count = (int)bankerItems[i].y;
+                item.InitializeItem(InventoryManager.Instance.allItems[(int)bankerItems[i].x]);
+            }
+        }
+        vaultCapacity = capacity;
     }
 }

@@ -87,6 +87,20 @@ public class CheckpointManager : MonoBehaviour
             }
         }
         gameData.equipmentItems = equipmentItems;
+        gameData.vaultCapacity = UIManager.Instance.bankerWindow.GetComponent<BankerWindow>().vaultCapacity;
+        List<Vector2> bankerItems = new List<Vector2>();
+        foreach (InventorySlot slot in UIManager.Instance.bankerWindow.GetComponent<BankerWindow>().vault.GetComponentsInChildren<InventorySlot>())
+        {
+            if (slot.GetComponentInChildren<InventoryItem>() != null)
+            {
+                bankerItems.Add(new Vector2(Array.IndexOf(InventoryManager.Instance.allItems, slot.GetComponentInChildren<InventoryItem>().item), slot.GetComponentInChildren<InventoryItem>().count));
+            }
+            else
+            {
+                bankerItems.Add(new Vector2(-1, 0));
+            }
+        }
+        gameData.bankerItems = bankerItems;
 
         string jsonData = JsonUtility.ToJson(gameData);
         File.WriteAllText(filePath, jsonData);
@@ -118,6 +132,7 @@ public class CheckpointManager : MonoBehaviour
             {
                 InventoryManager.Instance.LoadItem(InventoryManager.Instance.equipmentSlots, i, (int)gameData.equipmentItems[i].x, (int)gameData.equipmentItems[i].y);
             }
+            UIManager.Instance.bankerWindow.GetComponent<BankerWindow>().LoadVault(gameData.vaultCapacity, gameData.bankerItems);
         }
     }
 
@@ -136,6 +151,8 @@ public class GameData
     public List<Vector2> inventoryItems;
     public List<Vector2> toolBarItems;
     public List<Vector2> equipmentItems;
+    public int vaultCapacity;
+    public List<Vector2> bankerItems;
 
     public GameData()
     {
@@ -145,5 +162,7 @@ public class GameData
         inventoryItems = new List<Vector2>();
         toolBarItems = new List<Vector2>();
         equipmentItems = new List<Vector2>();
+        vaultCapacity = 0;
+        bankerItems = new List<Vector2>();
     }
 }
