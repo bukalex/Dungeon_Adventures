@@ -53,6 +53,7 @@ public class BattleManager : MonoBehaviour
         playerActions.Add(PlayerPushingWave);
         playerActions.Add(PlayerGuisonKnife);
         playerActions.Add(PlayerMindControl);
+        playerActions.Add(PlayerBlock);
 
         enemyActions.Add(GuardUseSword);
         enemyActions.Add(GuardUseSpecial);
@@ -164,7 +165,7 @@ public class BattleManager : MonoBehaviour
             return false;
         }
         
-        if (attack.isReady && AffordAttack(playerData, attack))
+        if (attack.isReady && AffordAttack(playerData, attack, attack.isPerSecond))
         {
             StartCoroutine(DelayAttack(attack, playerData, null));
         }
@@ -195,7 +196,7 @@ public class BattleManager : MonoBehaviour
         if (playerData.attacks.ContainsKey(playerData.type))
         {
             attack = playerData.attacks[playerData.type][AttackButton.SHIFT];
-            return AffordAttack(playerData, attack, true);
+            return AffordAttack(playerData, attack, attack.isPerSecond);
         }
         else
         {
@@ -513,6 +514,20 @@ public class BattleManager : MonoBehaviour
         {
             playerData.transform.GetComponentInChildren<Animator>().Play("Idle");
         }
+    }
+
+    private void PlayerBlock(PlayerData playerData, AttackParameters attack)
+    {
+        playerData.isBlocking = true;
+        attack.playerData = playerData;
+        attack.endDelegate = PlayerBlockEnd;
+        StartCoroutine(StartAttack(attack));
+        runningAttacks.Add(attack);
+    }
+
+    private void PlayerBlockEnd(AttackParameters attack)
+    {
+        attack.playerData.isBlocking = false;
     }
 
     private void PlayerActivateShield(PlayerData playerData, AttackParameters attack)

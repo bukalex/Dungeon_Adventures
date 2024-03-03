@@ -46,6 +46,7 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     public Transform transform;
     public bool isStunned = false;
     public bool isDead = false;
+    public bool isBlocking = false;
     public Dictionary<CharacterType, Dictionary<BattleManager.AttackButton, AttackParameters>> attacks = null;
 
     //Type
@@ -196,7 +197,14 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
 
     public void DealDamage(float damage)
     {
-        health -= damage;
+        if (isBlocking)
+        {
+            health -= damage * 0.1f;
+        }
+        else
+        {
+            health -= damage;
+        }
     }
 
     public void DisableStun()
