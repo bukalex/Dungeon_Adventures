@@ -359,7 +359,7 @@ public class BattleManager : MonoBehaviour
     //Deals damage from attackObject to defenseObject
     private void DealDamage(IAttackObject attackObject, IDefenseObject defenseObject, AttackParameters attack, bool isPerFrame = false)
     {
-        float multiplier = 1.0f;
+        float multiplier = attack.multiplier;
         if (isPerFrame)
         {
             multiplier = Time.deltaTime;
@@ -375,6 +375,18 @@ public class BattleManager : MonoBehaviour
         
         string text = defenseObject.DealDamage(damage * multiplier).ToString("F1");
         GameObject textObject = Instantiate(battleData.textDamagePrefab, Camera.main.WorldToScreenPoint(defenseObject.GetPosition() + Vector3.up * 1.6f), Quaternion.identity, GameObject.FindGameObjectWithTag("MainCanvas").transform);
+        if (attack.multiplier < 1)
+        {
+            textObject.GetComponent<TMP_Text>().color = Color.grey;
+        }
+        else if (attack.multiplier == 1)
+        {
+            textObject.GetComponent<TMP_Text>().color = Color.yellow;
+        }
+        else if (attack.multiplier > 1)
+        {
+            textObject.GetComponent<TMP_Text>().color = Color.red;
+        }
         textObject.GetComponent<TMP_Text>().text = text;
         textObject.GetComponent<DamageLabel>().SetDefenseObject(defenseObject);
     }
@@ -466,6 +478,14 @@ public class BattleManager : MonoBehaviour
     {
         bool shakeCamera = false;
         bool stopAnimation = false;
+        if (playerData.critChance >= UnityEngine.Random.Range(0f, 100f))
+        {
+            attack.multiplier = playerData.critMultiplier;
+        }
+        else
+        {
+            attack.multiplier = 1.0f;
+        }
 
         List<EnemyController> enemies = DetectTargets<EnemyController>(playerData.position, attack.range + playerData.colliderRadius, playerData.attackDirection);
         foreach (EnemyController enemy in enemies)

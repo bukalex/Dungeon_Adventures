@@ -15,6 +15,8 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     public float initialSpecialAttack = 3.0f;
     public float initialDefense = 2.0f;
     public float initialSpecialDefense = 2.0f;
+    public float initialCritChance = 20;
+    public float initialCritMultiplier = 1.25f;
 
     [Header("Run-time stats")]
     public float health = 100.0f;
@@ -28,6 +30,8 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     public float specialAttack = 3.0f;
     public float defense = 2.0f;
     public float specialDefense = 2.0f;
+    public float critChance = 20;
+    public float critMultiplier = 1.25f;
 
     [Header("Restore values")]
     public float healthRestoreRate = 1.0f;
@@ -79,6 +83,8 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
         specialAttack = initialSpecialAttack;
         defense = initialDefense;
         specialDefense = initialSpecialDefense;
+        critChance = initialCritChance;
+        critMultiplier = initialCritMultiplier;
 
         speed = initialSpeed;
         isStunned = false;

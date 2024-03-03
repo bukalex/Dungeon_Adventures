@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95327a1cf4b2c4b4d94b2115053e2790, type: 3}
   m_Name: GuardSword
   m_EditorClassIdentifier: 
+  attackName: 
   characterType: 0
   enemyType: 0
   attackButton: 1
@@ -24,6 +25,8 @@ MonoBehaviour:
   range: 0.75
   mana: 0
   stamina: 2.5
+  multiplier: 1
+  isPerSecond: 0
   isReady: 1
   isRunning: 0
   notEnoughMana: 0

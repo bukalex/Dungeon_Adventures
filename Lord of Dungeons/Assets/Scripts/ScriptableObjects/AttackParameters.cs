@@ -33,6 +33,7 @@ public class AttackParameters : ScriptableObject
     public float range;
     public float mana;
     public float stamina;
+    public float multiplier = 1.0f;
     public bool isPerSecond = false;
     public bool isReady = true;
     public bool isRunning = false;
