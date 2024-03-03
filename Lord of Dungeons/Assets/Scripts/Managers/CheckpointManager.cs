@@ -101,6 +101,9 @@ public class CheckpointManager : MonoBehaviour
             }
         }
         gameData.bankerItems = bankerItems;
+        gameData.gold = DataManager.Instance.playerData.resources[Item.CoinType.GoldenCoin];
+        gameData.silver = DataManager.Instance.playerData.resources[Item.CoinType.SilverCoin];
+        gameData.copper = DataManager.Instance.playerData.resources[Item.CoinType.CopperCoin];
 
         string jsonData = JsonUtility.ToJson(gameData);
         File.WriteAllText(filePath, jsonData);
@@ -134,6 +137,9 @@ public class CheckpointManager : MonoBehaviour
                 InventoryManager.Instance.LoadItem(InventoryManager.Instance.equipmentSlots, i, (int)gameData.equipmentItems[i].x, (int)gameData.equipmentItems[i].y);
             }
             UIManager.Instance.bankerWindow.GetComponent<BankerWindow>().LoadVault(gameData.vaultCapacity, gameData.bankerItems);
+            DataManager.Instance.playerData.resources[Item.CoinType.GoldenCoin] = gameData.gold;
+            DataManager.Instance.playerData.resources[Item.CoinType.SilverCoin] = gameData.silver;
+            DataManager.Instance.playerData.resources[Item.CoinType.CopperCoin] = gameData.copper;
         }
     }
 
@@ -154,6 +160,9 @@ public class GameData
     public List<Vector2> equipmentItems;
     public int vaultCapacity;
     public List<Vector2> bankerItems;
+    public int gold;
+    public int silver;
+    public int copper;
 
     public GameData()
     {
@@ -165,5 +174,8 @@ public class GameData
         equipmentItems = new List<Vector2>();
         vaultCapacity = 0;
         bankerItems = new List<Vector2>();
+        gold = 0;
+        silver = 0;
+        copper = 0;
     }
 }

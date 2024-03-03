@@ -142,14 +142,20 @@ public class EnemyParameters : ScriptableObject, IAttackObject, IDefenseObject
         return 0;
     }
 
-    public void DealDamage(float damage)
+    public float DealDamage(float damage)
     {
         health -= damage;
+        return damage;
     }
 
     public void DisableStun()
     {
         isStunned = false;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return position;
     }
     #endregion
 }

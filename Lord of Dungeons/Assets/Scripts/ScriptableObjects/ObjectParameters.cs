@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName = "New Object Parameters", menuName = "ScriptableObjects/Object parameters")]
 
@@ -18,6 +19,7 @@ public class ObjectParameters : ScriptableObject, IDefenseObject
     [Header("Others")]
     public PlayerData playerData;
     public float colliderRadius = 1.0f;
+    public Vector3 position;
     //public GameObject dropPrefab;
     public RuntimeAnimatorController animController;
 
@@ -39,14 +41,20 @@ public class ObjectParameters : ScriptableObject, IDefenseObject
         return 0;
     }
 
-    public void DealDamage(float damage)
+    public float DealDamage(float damage)
     {
         health -= damage;
+        return damage;
     }
 
     public void DisableStun()
     {
         
+    }
+
+    public Vector3 GetPosition()
+    {
+        return position;
     }
     #endregion
 }

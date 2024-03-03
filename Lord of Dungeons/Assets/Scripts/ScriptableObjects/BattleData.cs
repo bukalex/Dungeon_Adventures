@@ -16,4 +16,5 @@ public class BattleData : ScriptableObject
     public GameObject guisonKnifePrefab;
     public List<ProjectileController> guisonKnifes = new List<ProjectileController>();
     public GameObject explosionPrefab;
+    public GameObject textDamagePrefab;
 }

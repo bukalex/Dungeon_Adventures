@@ -195,21 +195,28 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
         return 0;
     }
 
-    public void DealDamage(float damage)
+    public float DealDamage(float damage)
     {
         if (isBlocking)
         {
             health -= damage * 0.1f;
+            return damage * 0.1f;
         }
         else
         {
             health -= damage;
+            return damage;
         }
     }
 
     public void DisableStun()
     {
         isStunned = false;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return position;
     }
     #endregion
 }

@@ -34,6 +34,7 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour
     {
         objectParameters = Instantiate(objectParametersOriginal);
         animator.runtimeAnimatorController = objectParameters.animController;
+        objectParameters.position = transform.position;
     }
 
     void Update()

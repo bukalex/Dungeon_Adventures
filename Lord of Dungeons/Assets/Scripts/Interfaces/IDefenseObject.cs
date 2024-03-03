@@ -5,6 +5,7 @@ using UnityEngine;
 public interface IDefenseObject
 {
     public float GetDefenseValue(BattleManager.AttackType attackType);
-    public void DealDamage(float damage);
+    public float DealDamage(float damage);
     public void DisableStun();
+    public Vector3 GetPosition();
 }

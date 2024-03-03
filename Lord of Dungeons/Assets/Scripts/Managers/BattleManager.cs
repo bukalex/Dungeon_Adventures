@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
-using static UnityEngine.GraphicsBuffer;
+using TMPro;
 
 public class BattleManager : MonoBehaviour
 {
@@ -374,7 +373,10 @@ public class BattleManager : MonoBehaviour
             damage = 1.0f;
         }
         
-        defenseObject.DealDamage(damage * multiplier);
+        string text = defenseObject.DealDamage(damage * multiplier).ToString("F1");
+        GameObject textObject = Instantiate(battleData.textDamagePrefab, Camera.main.WorldToScreenPoint(defenseObject.GetPosition() + Vector3.up * 1.6f), Quaternion.identity, GameObject.FindGameObjectWithTag("MainCanvas").transform);
+        textObject.GetComponent<TMP_Text>().text = text;
+        textObject.GetComponent<DamageLabel>().SetDefenseObject(defenseObject);
     }
 
     //Use this to recharge attacks
