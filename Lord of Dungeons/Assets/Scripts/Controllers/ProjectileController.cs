@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class ProjectileController : MonoBehaviour
 {
@@ -16,14 +17,12 @@ public class ProjectileController : MonoBehaviour
     private string parentTag;
     private IAttackObject attackObject;
     private AttackParameters attack;
-    private Vector3 initialPosition;
     public float timer;
-    private float radiusSpeed;
-
-    void Start()
-    {
-        initialPosition = transform.position;
-    }
+    private Vector2 direction;
+    private float targetAngle;
+    private float angleDifference;
+    private float rotationStep;
+    private float rotationAmount;
 
     public enum ProjectileType { BULLET, BOOMERANG, GUISON_KNIFE, PARTICLES }
 
@@ -32,14 +31,27 @@ public class ProjectileController : MonoBehaviour
         if (type == ProjectileType.BOOMERANG)
         {
             timer += Time.deltaTime;
-            body.velocity = Mathf.Sign(-timer) * transform.right * radiusSpeed;
-            transform.RotateAround(initialPosition, Vector3.forward, speed * Time.deltaTime);
+            transform.GetChild(0).Rotate(0, 0, 1500 * Time.deltaTime);
+            Seek();
         }
 
         if (type == ProjectileType.GUISON_KNIFE)
         {
             timer += Time.deltaTime;
         }
+    }
+
+    private void Seek()
+    {
+        direction = (attack.playerData.position + new Vector3(0.1f, 0.1f, 0) - transform.position).normalized;
+        targetAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90;
+
+        rotationStep = 200 * Time.deltaTime;
+        angleDifference = Mathf.DeltaAngle(targetAngle, transform.eulerAngles.z);
+        rotationAmount = Mathf.Clamp(angleDifference, -rotationStep, rotationStep);
+        
+        transform.Rotate(Vector3.forward, rotationAmount);
+        body.velocity = transform.up * speed;
     }
 
     public void Launch(IAttackObject attackObject, AttackParameters attack)
@@ -68,11 +80,6 @@ public class ProjectileController : MonoBehaviour
         this.attack = attack;
 
         body.velocity = direction.normalized * speed;
-        if (type == ProjectileType.BOOMERANG)
-        {
-            timer = -attack.duration * 0.5f;
-            radiusSpeed = attack.range / (attack.duration * 0.5f);
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -93,6 +100,11 @@ public class ProjectileController : MonoBehaviour
                 type != ProjectileType.GUISON_KNIFE &&
                 type != ProjectileType.PARTICLES &&
                 !targetTag.Equals(parentTag))
+            {
+                Destroy(gameObject);
+            }
+
+            if (type == ProjectileType.BOOMERANG && targetTag.Equals(parentTag) && timer > attack.duration * 0.5f)
             {
                 Destroy(gameObject);
             }

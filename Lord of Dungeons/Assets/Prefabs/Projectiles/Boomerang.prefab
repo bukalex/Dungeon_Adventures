@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7452355478407299184}
   - component: {fileID: 8796803342999291150}
-  - component: {fileID: 8445458863056811521}
   - component: {fileID: 3264463639218217615}
+  - component: {fileID: 1904909868639790231}
   m_Layer: 0
   m_Name: Boomerang
   m_TagString: Untagged
@@ -29,8 +29,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -9.52, y: -9.3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8824388088848743303}
   m_Father: {fileID: 0}
@@ -62,7 +62,23 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &8445458863056811521
+--- !u!114 &3264463639218217615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 686439564707158325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb7ce6e65093df44486c343e4ff8cb0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 12
+  body: {fileID: 8796803342999291150}
+  type: 1
+  timer: 0
+--- !u!58 &1904909868639790231
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,22 +112,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
---- !u!114 &3264463639218217615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 686439564707158325}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb7ce6e65093df44486c343e4ff8cb0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 720
-  body: {fileID: 8796803342999291150}
-  type: 1
+  m_Radius: 0.45
 --- !u!1 &6329270492711957371
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,10 +186,10 @@ SpriteRenderer:
   m_SortingLayerID: 1507275025
   m_SortingLayer: 11
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 80eb3375def8e3e40928528aec3b4e48, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
+  m_FlipX: 1
+  m_FlipY: 1
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5

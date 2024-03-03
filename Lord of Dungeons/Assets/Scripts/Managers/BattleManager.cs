@@ -591,9 +591,9 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerBoomerang(PlayerData playerData, AttackParameters attack)
     {
-        GameObject boomerang = Instantiate(battleData.boomerangPrefab, playerData.position, Quaternion.identity);
-        boomerang.GetComponent<ProjectileController>().Launch("Player", playerData, attack, Vector3.zero);
-        Destroy(boomerang, attack.duration);
+        attack.playerData = playerData;
+        GameObject boomerang = Instantiate(battleData.boomerangPrefab, playerData.position, Quaternion.AngleAxis(Vector3.SignedAngle(Vector3.up, playerData.attackDirection, Vector3.forward), Vector3.forward));
+        boomerang.GetComponent<ProjectileController>().Launch("Player", playerData, attack, playerData.attackDirection);
     }
 
     private void PlayerDash(PlayerData playerData, AttackParameters attack)
