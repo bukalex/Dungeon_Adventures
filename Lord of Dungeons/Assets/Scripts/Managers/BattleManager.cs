@@ -783,6 +783,6 @@ public class BattleManager : MonoBehaviour
     private void DisableStun(AttackParameters attack)
     {
         if (attack.playerData != null) attack.playerData.DisableStun();
-        if (attack.playerData != null) attack.enemyParameters.DisableStun();
+        if (attack.enemyParameters != null) attack.enemyParameters.DisableStun();
     }
 }

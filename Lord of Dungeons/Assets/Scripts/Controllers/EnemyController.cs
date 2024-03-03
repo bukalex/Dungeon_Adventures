@@ -20,6 +20,9 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
     [SerializeField]
     private CapsuleCollider2D capsuleCollider;
 
+    [SerializeField]
+    private LootRandomizer randomizer;
+
     private Vector3 lastPlayerPosition;
     private Vector3 movementDirection = Vector3.zero;
     private float targetDistance;
@@ -154,7 +157,7 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
             {
                 StartCoroutine(DelayedDie());
             }
-
+            randomizer.DropItems();
             alreadyDead = true;
         }
     }

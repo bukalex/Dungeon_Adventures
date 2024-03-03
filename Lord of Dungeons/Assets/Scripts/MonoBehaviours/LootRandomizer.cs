@@ -60,4 +60,12 @@ public class LootRandomizer : MonoBehaviour
         }
         return false;
     }
+
+    public void DropItems()
+    {
+        foreach (Item item in randomLootTable)
+        {
+            Instantiate(InventoryItemPref, transform.position, Quaternion.identity).GetComponent<SolidItem>().Initialize(item);
+        }
+    }
 }

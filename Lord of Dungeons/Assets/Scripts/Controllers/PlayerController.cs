@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
             //Attacks
             #region
             //Left Mouse Button
-            if (Input.GetKey(UIManager.Instance.keyCodes[6]) && !EventSystem.current.IsPointerOverGameObject())
+            if (Input.GetKey(UIManager.Instance.keyCodes[6]) && !Input.GetKey(UIManager.Instance.keyCodes[7]) && !EventSystem.current.IsPointerOverGameObject())
             {
                 if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.LMB))
                 {
@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
             }
 
             //R Button
-            if (Input.GetKey(UIManager.Instance.keyCodes[8]))
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[8]))
             {
                 if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.R))
                 {
@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
             }
 
             //F Button
-            if (Input.GetKey(UIManager.Instance.keyCodes[9]))
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[9]))
             {
                 if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.F))
                 {
@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
             }
 
             //C Button
-            if (Input.GetKey(UIManager.Instance.keyCodes[10]))
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[10]))
             {
                 if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.C))
                 {
@@ -137,7 +137,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
             }
 
             //V Button
-            if (Input.GetKey(UIManager.Instance.keyCodes[11]))
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[11]))
             {
                 if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.V))
                 {

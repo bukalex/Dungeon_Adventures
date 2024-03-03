@@ -97,7 +97,6 @@ GameObject:
   - component: {fileID: 8810905020771586454}
   - component: {fileID: 1033650342991500364}
   - component: {fileID: 4991368518672347802}
-  - component: {fileID: 4500918159179816349}
   m_Layer: 3
   m_Name: SteelGuard
   m_TagString: Enemy
@@ -202,6 +201,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 8155789756617482204}
   body: {fileID: 5965241633063302086}
   capsuleCollider: {fileID: 8810905020771586454}
+  randomizer: {fileID: 4991368518672347802}
 --- !u!114 &4991368518672347802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,39 +214,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da13fb10a93744d409e1f614d844cc01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InventoryItemPref: {fileID: 0}
+  InventoryItemPref: {fileID: 5824555973985954627, guid: 61fb5a510abe43b4c9aecef625790ecf, type: 3}
   totalItems:
   - {fileID: 11400000, guid: 5c6d302094a9f054c8801f760271dc62, type: 2}
   - {fileID: 11400000, guid: bf46bc0dcbddfc446ad028247273ef8d, type: 2}
   - {fileID: 11400000, guid: b30fd890fa269b6439e207262062f5d3, type: 2}
-  materialLootTable:
-  - {fileID: 11400000, guid: b30fd890fa269b6439e207262062f5d3, type: 2}
-  weaponLootTable: []
-  consumableLootTable:
-  - {fileID: 11400000, guid: bf46bc0dcbddfc446ad028247273ef8d, type: 2}
-  uniqueLootTable: []
-  randomLootTable: []
-  randomMaterialLootTable: []
-  randomWeaponLootTable: []
-  randomConsumableLootTable: []
-  randomUniqueLootTable: []
---- !u!114 &4500918159179816349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 448594684700309886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da13fb10a93744d409e1f614d844cc01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InventoryItemPref: {fileID: 0}
-  totalItems:
-  - {fileID: 11400000, guid: 5c6d302094a9f054c8801f760271dc62, type: 2}
-  - {fileID: 11400000, guid: bf46bc0dcbddfc446ad028247273ef8d, type: 2}
-  - {fileID: 11400000, guid: b30fd890fa269b6439e207262062f5d3, type: 2}
+  - {fileID: 11400000, guid: 39fb0a707208e334483f0edfd2d945aa, type: 2}
   materialLootTable:
   - {fileID: 11400000, guid: b30fd890fa269b6439e207262062f5d3, type: 2}
   weaponLootTable: []
