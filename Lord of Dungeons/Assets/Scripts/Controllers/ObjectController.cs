@@ -21,6 +21,9 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour
     [SerializeField]
     private CapsuleCollider2D capsuleCollider;
 
+    [SerializeField]
+    private LootRandomizer randomizer;
+
     private bool alreadyBusted = false;
 
     private int spriteOrder;
@@ -76,6 +79,7 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour
         {
             Bust();
             alreadyBusted = true;
+            randomizer.DropItems();
         }
     }
 

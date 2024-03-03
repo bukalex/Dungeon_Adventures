@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5849628240265830784}
   - component: {fileID: 4286235906023645579}
   - component: {fileID: 8930662251163375519}
+  - component: {fileID: 6969921826246550688}
   m_Layer: 0
   m_Name: Pot
   m_TagString: Object
@@ -114,6 +115,39 @@ MonoBehaviour:
   spriteRenderer: {fileID: 5887061553004270653}
   body: {fileID: 4286235906023645579}
   capsuleCollider: {fileID: 5849628240265830784}
+  randomizer: {fileID: 6969921826246550688}
+--- !u!114 &6969921826246550688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3646441639654730682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da13fb10a93744d409e1f614d844cc01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InventoryItemPref: {fileID: 5824555973985954627, guid: 61fb5a510abe43b4c9aecef625790ecf, type: 3}
+  totalItems:
+  - {fileID: 11400000, guid: 39fb0a707208e334483f0edfd2d945aa, type: 2}
+  - {fileID: 11400000, guid: 954ee29662dbee744ba66aef7e294f3c, type: 2}
+  - {fileID: 11400000, guid: a7e34d6ac206f9547b684b167692d8e4, type: 2}
+  - {fileID: 11400000, guid: 5c6d302094a9f054c8801f760271dc62, type: 2}
+  - {fileID: 11400000, guid: c5987065a81e66c4d90f8f2e6a125ce9, type: 2}
+  - {fileID: 11400000, guid: 86777c7b46d63c54bb9b2b89086be26a, type: 2}
+  - {fileID: 11400000, guid: 84b223635351fbd4cb0318bc4569f848, type: 2}
+  - {fileID: 11400000, guid: bf46bc0dcbddfc446ad028247273ef8d, type: 2}
+  - {fileID: 11400000, guid: bbababbfb783d584c82ed83da09b9c36, type: 2}
+  materialLootTable: []
+  weaponLootTable: []
+  consumableLootTable: []
+  uniqueLootTable: []
+  randomLootTable: []
+  randomMaterialLootTable: []
+  randomWeaponLootTable: []
+  randomConsumableLootTable: []
+  randomUniqueLootTable: []
 --- !u!1 &6065513556934670150
 GameObject:
   m_ObjectHideFlags: 0

@@ -153,12 +153,9 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
             body.velocity = Vector3.zero;
             Die();
 
-            if (enemyParameters.type == EnemyParameters.EnemyType.GHOST)
-            {
-                StartCoroutine(DelayedDie());
-            }
             randomizer.DropItems();
             alreadyDead = true;
+            Destroy(gameObject, 1);
         }
     }
 
@@ -239,12 +236,6 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
         {
             enemyParameters.stamina = Mathf.Clamp(enemyParameters.stamina + enemyParameters.staminaRestoreRate * Time.deltaTime, 0, enemyParameters.maxStamina);
         }
-    }
-
-    private IEnumerator DelayedDie()
-    {
-        yield return new WaitForSeconds(0.6f);
-        Destroy(gameObject);
     }
 
     private List<T> DetectSprites<T>()
