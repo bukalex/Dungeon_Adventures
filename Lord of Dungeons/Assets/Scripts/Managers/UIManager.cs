@@ -360,6 +360,7 @@ public class UIManager : MonoBehaviour
                 Destroy(obj);
             }
             teleportWindow.SetActive(false);
+            npcWindowActive = false;
             SceneManager.LoadScene(checkpoint);
         }
     }

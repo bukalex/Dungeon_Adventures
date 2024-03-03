@@ -79,7 +79,7 @@ public class InventoryManager : MonoBehaviour
         foreach (var item in allItems)
             fillStacks(item, cheatSlots);
     }
-    private void InitializeSlots()
+    public void InitializeSlots()
     {
         //Initializing slots for internal inventory
         internalInventorySlots = UIManager.Instance.inventory.transform.GetChild(0).GetComponentsInChildren<InventorySlot>();

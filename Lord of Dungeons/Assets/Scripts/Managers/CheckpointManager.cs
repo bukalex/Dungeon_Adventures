@@ -120,6 +120,7 @@ public class CheckpointManager : MonoBehaviour
                 UIManager.Instance.keyCodes[i] = Enum.Parse<KeyCode>(Enum.GetName(typeof(KeyCode), gameData.intKeyCodes[i]));
             }
             UIManager.Instance.InitializeKeyCodeSettings();
+            InventoryManager.Instance.InitializeSlots();
             for (int i = 0; i < InventoryManager.Instance.internalInventorySlots.Length; i++)
             {
                 InventoryManager.Instance.LoadItem(InventoryManager.Instance.internalInventorySlots, i, (int)gameData.inventoryItems[i].x, (int)gameData.inventoryItems[i].y);
