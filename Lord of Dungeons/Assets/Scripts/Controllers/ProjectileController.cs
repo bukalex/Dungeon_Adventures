@@ -109,7 +109,10 @@ public class ProjectileController : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-        else if (!collision.transform.tag.Equals("Enemy") &&
+        else if (type != ProjectileType.BOOMERANG &&
+            type != ProjectileType.GUISON_KNIFE &&
+            type != ProjectileType.PARTICLES && 
+            !collision.transform.tag.Equals("Enemy") &&
             !collision.transform.tag.Equals("Player"))
         {
             Destroy(gameObject);
