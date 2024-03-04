@@ -3,14 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class CheckpointManager : MonoBehaviour
 {
     [SerializeField]
+    private TemporaryTradingSystem tradingSystem;
+
+    [SerializeField]
     private int checkpointPeriod = 5;
     private int checkpointsReached;
+    public int levelsPassed = 0;
     private string filePath = "Assets/Resources/GameData.json";
     private GameData gameData = new GameData();
+    public List<int> commonLevels = new List<int>();
+    public List<int> bossLevels = new List<int>();
+    public List<int> checkpoints = new List<int>();
 
     public static CheckpointManager Instance { get; private set; }
 
@@ -22,18 +31,28 @@ public class CheckpointManager : MonoBehaviour
 
     private void Initialize()
     {
+        for (int i = 2; i < SceneManager.sceneCountInBuildSettings; i++)
+        {
+            if ((i - 2) % 5 < 3) commonLevels.Add(i);
+            if ((i - 2) % 5 == 3) bossLevels.Add(i);
+            if ((i - 2) % 5 == 4) checkpoints.Add(i);
+        }
         checkpointsReached = 0;
         LoadData();
         UIManager.Instance.InitializeTeleportWindow(checkpointsReached, checkpointPeriod);
     }
 
     //Checks if we reached checkpoint
-    public void ChangeLevel(int levelNumber)
+    public void ChangeLevel()
     {
-        if (levelNumber % checkpointPeriod == 0)
+        levelsPassed++;
+        if (levelsPassed % checkpointPeriod == 0)
         {
-            checkpointsReached++;
-            UIManager.Instance.UpdateTeleportWindow(checkpointsReached, checkpointPeriod);
+            if (levelsPassed / checkpointPeriod > checkpointsReached)
+            {
+                checkpointsReached++;
+                UIManager.Instance.UpdateTeleportWindow(checkpointsReached, checkpointPeriod);
+            }
         }
         SaveData();
     }
@@ -130,6 +149,7 @@ public class CheckpointManager : MonoBehaviour
             }
         }
         gameData.toolBarAbilities = toolBarAbilities;
+        gameData.wizardLuck = tradingSystem.wizardLuck;
 
         string jsonData = JsonUtility.ToJson(gameData);
         File.WriteAllText(filePath, jsonData);
@@ -150,15 +170,15 @@ public class CheckpointManager : MonoBehaviour
             }
             UIManager.Instance.InitializeKeyCodeSettings();
             InventoryManager.Instance.InitializeSlots();
-            for (int i = 0; i < InventoryManager.Instance.internalInventorySlots.Length; i++)
+            for (int i = 0; i < gameData.inventoryItems.Count; i++)
             {
                 InventoryManager.Instance.LoadItem(InventoryManager.Instance.internalInventorySlots, i, (int)gameData.inventoryItems[i].x, (int)gameData.inventoryItems[i].y);
             }
-            for (int i = 0; i < InventoryManager.Instance.toolBar.Length; i++)
+            for (int i = 0; i < gameData.toolBarItems.Count; i++)
             {
                 InventoryManager.Instance.LoadItem(InventoryManager.Instance.toolBar, i, (int)gameData.toolBarItems[i].x, (int)gameData.toolBarItems[i].y);
             }
-            for (int i = 0; i < InventoryManager.Instance.equipmentSlots.Length; i++)
+            for (int i = 0; i < gameData.equipmentItems.Count; i++)
             {
                 InventoryManager.Instance.LoadItem(InventoryManager.Instance.equipmentSlots, i, (int)gameData.equipmentItems[i].x, (int)gameData.equipmentItems[i].y);
             }
@@ -167,14 +187,15 @@ public class CheckpointManager : MonoBehaviour
             DataManager.Instance.playerData.resources[Item.CoinType.SilverCoin] = gameData.silver;
             DataManager.Instance.playerData.resources[Item.CoinType.CopperCoin] = gameData.copper;
             InventoryManager.Instance.LoadAbilityInventory(gameData.inventoryAbilities.Count);
-            for (int i = 0; i < InventoryManager.Instance.abilityInventory.Length; i++)
+            for (int i = 0; i < gameData.inventoryAbilities.Count; i++)
             {
                 InventoryManager.Instance.LoadAbility(InventoryManager.Instance.abilityInventory, i, gameData.inventoryAbilities[i]);
             }
-            for (int i = 0; i < InventoryManager.Instance.abilityBar.Length; i++)
+            for (int i = 0; i < gameData.toolBarAbilities.Count; i++)
             {
                 InventoryManager.Instance.LoadAbility(InventoryManager.Instance.abilityBar, i, gameData.toolBarAbilities[i]);
             }
+            tradingSystem.wizardLuck = gameData.wizardLuck;
         }
     }
 
@@ -200,6 +221,7 @@ public class GameData
     public int copper;
     public List<int> inventoryAbilities;
     public List<int> toolBarAbilities;
+    public float wizardLuck;
 
     public GameData()
     {
@@ -216,5 +238,6 @@ public class GameData
         copper = 0;
         inventoryAbilities = new List<int>();
         toolBarAbilities = new List<int>();
+        wizardLuck = 100;
     }
 }

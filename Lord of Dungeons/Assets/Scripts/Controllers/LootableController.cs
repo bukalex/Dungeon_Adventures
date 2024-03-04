@@ -64,13 +64,16 @@ public class LootableController : MonoBehaviour, IInteractable
 
     public void ShowButton()
     {
-        interactIcon.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 1.5f);
-        interactIcon.GetComponentInChildren<TMP_Text>().text = UIManager.Instance.textKeys[15].text;
-        interactIcon.SetActive(true);
+        if (interactIcon != null)
+        {
+            interactIcon.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 1.5f);
+            interactIcon.GetComponentInChildren<TMP_Text>().text = UIManager.Instance.textKeys[15].text;
+            interactIcon.SetActive(true);
+        }
     }
 
     public void HideButton()
     {
-        interactIcon.SetActive(false);
+        if (interactIcon != null) interactIcon.SetActive(false);
     }
 }

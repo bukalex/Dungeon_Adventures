@@ -18,7 +18,8 @@ public class UIManager : MonoBehaviour
     public GameObject inventory, toolbar, abilitybar, abilityInventory, equipment;
     [SerializeField] 
     public GameObject cheatChestUIs;
-
+    [SerializeField]
+    private Button abilityInventoryOpen, abilityInventoryClose;
 
     //UI to open on a button
     [SerializeField]
@@ -188,6 +189,9 @@ public class UIManager : MonoBehaviour
         barLabels[2].text = textKeys[10].text;
         barLabels[3].text = textKeys[11].text;
 
+        abilityInventoryOpen.interactable = SceneManager.GetActiveScene().name == "HUB";
+        abilityInventoryClose.interactable = SceneManager.GetActiveScene().name == "HUB";
+
 
         //Open inventory
         if (!npcWindowActive)
@@ -349,7 +353,7 @@ public class UIManager : MonoBehaviour
     public void UpdateTeleportWindow(int checkpoints, int period)
     {
         GameObject teleportButton = Instantiate(teleportButtonPrefab, teleportContent.transform);
-        teleportButton.GetComponent<Button>().onClick.AddListener(delegate { GoToCheckpoint(checkpoints * period); });
+        teleportButton.GetComponent<Button>().onClick.AddListener(delegate { GoToCheckpoint(CheckpointManager.Instance.checkpoints[UnityEngine.Random.Range(0, CheckpointManager.Instance.checkpoints.Count)]); });
         teleportButton.GetComponentInChildren<TMP_Text>().text = (checkpoints * period).ToString();
     }
 

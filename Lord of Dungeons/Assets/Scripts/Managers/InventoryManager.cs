@@ -249,7 +249,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
         AbilitySlot slot = Instantiate(abilitySlotPrefab, UIManager.Instance.abilityInventory.transform).GetComponent<AbilitySlot>();
-        abilityInventory = UIManager.Instance.abilityInventory.GetComponentsInChildren<AbilitySlot>();
+        abilityInventory = UIManager.Instance.abilityInventory.GetComponentsInChildren<AbilitySlot>(true);
         spawnNewAbility(ability, slot);
         return false;
     }
@@ -378,7 +378,7 @@ public class InventoryManager : MonoBehaviour
         {
             Instantiate(abilitySlotPrefab, UIManager.Instance.abilityInventory.transform);
         }
-        abilityInventory = UIManager.Instance.abilityInventory.GetComponentsInChildren<AbilitySlot>();
+        abilityInventory = UIManager.Instance.abilityInventory.GetComponentsInChildren<AbilitySlot>(true);
     }
 
     public void LoadAbility(AbilitySlot[] slots, int slotIndex, int abilityIndex)

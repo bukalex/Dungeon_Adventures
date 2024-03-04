@@ -9495,6 +9495,7 @@ MonoBehaviour:
   traderItemDescription: {fileID: 3184471942991042419}
   wizardItemDescription: {fileID: 8741955167460013447}
   itemPrice: []
+  wizardLuck: 100
   wizardAbilities: []
   graphicRaycaster: {fileID: 3260420287923813360}
   eventSystem: {fileID: 0}
@@ -16369,6 +16370,8 @@ MonoBehaviour:
   abilityInventory: {fileID: 5045707531448429395}
   equipment: {fileID: 3064172483309561022}
   cheatChestUIs: {fileID: 5638252907910681458}
+  abilityInventoryOpen: {fileID: 1287592733045792888}
+  abilityInventoryClose: {fileID: 561185890694344917}
   InventorySlots: {fileID: 4935679444620546838}
   EquipmentSection: {fileID: 8511909530823671317}
   traderStorage: {fileID: 3182028544884223640}
@@ -35636,6 +35639,10 @@ PrefabInstance:
       propertyPath: npcs.Array.data[5]
       value: 
       objectReference: {fileID: 11400000, guid: 1c33677d2067d4f4b9da05d06e18f9fe, type: 2}
+    - target: {fileID: 3382668283870754255, guid: 9031f2174cee6af4485eec35ea6e80c8, type: 3}
+      propertyPath: tradingSystem
+      value: 
+      objectReference: {fileID: 695617204988941667}
     - target: {fileID: 3382668283870754255, guid: 9031f2174cee6af4485eec35ea6e80c8, type: 3}
       propertyPath: checkpointPeriod
       value: 5

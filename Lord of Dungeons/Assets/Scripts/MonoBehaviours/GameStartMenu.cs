@@ -14,12 +14,12 @@ public class GameStartMenu : MonoBehaviour
         {
             File.Delete(filePath);
         }
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("HUB");
     }
 
     public void Continue()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("HUB");
     }
 
     public void Quit()
