@@ -279,10 +279,12 @@ public class UIManager : MonoBehaviour
         string HPstats = "HP: " + playerData.maxHealth + "\n"; 
         string ManaStats = "Mana: " + playerData.maxMana.ToString() + "\n";
         string StaminaStats = "Stamina: " + playerData.maxStamina.ToString() + "\n";
-        string DamageStats = "Damage: " + playerData.attack.ToString() + "\n";
-        string DefenseStats = "Defense: " + playerData.defense.ToString() + "\n";
         string SpeedStats = "Speed: " + playerData.speed.ToString() + "\n";
-        stats.text = HPstats + ManaStats + StaminaStats + DamageStats + DefenseStats + SpeedStats;
+        string AttackStats = "Attack: " + playerData.attack.ToString() + "\n";
+        string DefenseStats = "Defense: " + playerData.defense.ToString() + "\n";
+        string SpecialAttackStats = "Sp. attack: " + playerData.specialAttack.ToString() + "\n";
+        string SpecialDefenseStats = "Sp. defense: " + playerData.specialDefense.ToString() + "\n";
+        stats.text = HPstats + ManaStats + StaminaStats + SpeedStats + AttackStats + DefenseStats + SpecialAttackStats + SpecialDefenseStats;
 
         //Display coins amount
         goldenCoinCounter.text = playerData.resources[Item.CoinType.GoldenCoin].ToString();
@@ -336,7 +338,7 @@ public class UIManager : MonoBehaviour
 
     public void InitializeTeleportWindow(int checkpoints, int period)
     {
-        teleportContent.GetComponentInChildren<Button>().onClick.AddListener(delegate { GoToCheckpoint(0); });
+        teleportContent.GetComponentInChildren<Button>().onClick.AddListener(delegate { GoToCheckpoint(1); });
 
         for (int i = 0; i < checkpoints; i++)
         {

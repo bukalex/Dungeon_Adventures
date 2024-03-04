@@ -253,7 +253,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
     {
         yield return new WaitForSeconds(2);
         InventoryManager.Instance.LoseInventory();
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
     public IDefenseObject GetDefenseObject()

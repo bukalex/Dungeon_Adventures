@@ -686,7 +686,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 724879289}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1338179411}
+        m_TargetAssemblyTypeName: GameStartMenu, Assembly-CSharp
+        m_MethodName: ChangeToNextScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &724879289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1749,17 +1761,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6533659661822679937, guid: ea6d5c0e663acec42aa18a08707ed5c6, type: 3}
   m_PrefabInstance: {fileID: 1256442096}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1256442098 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6533659661822679938, guid: ea6d5c0e663acec42aa18a08707ed5c6, type: 3}
-  m_PrefabInstance: {fileID: 1256442096}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1283479806
 GameObject:
   m_ObjectHideFlags: 0
@@ -1916,7 +1917,6 @@ GameObject:
   - component: {fileID: 1338179408}
   - component: {fileID: 1338179407}
   - component: {fileID: 1338179411}
-  - component: {fileID: 1338179412}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2019,81 +2019,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1338179406}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b52114ca79c302458dd9ab96ecb675f, type: 3}
+  m_Script: {fileID: 11500000, guid: a6ce44a937206234294b91551190a101, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  ContinueButton: {fileID: 724879288}
-  CreditsButton: {fileID: 1634342420}
-  CrossButton: {fileID: 1256442098}
-  MenuUI: {fileID: 825532544}
-  CreditsUI: {fileID: 1493643192}
---- !u!114 &1338179412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1338179406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 989e95bb2961d7845925ff156b129b57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerData: {fileID: 0}
-  stats: {fileID: 0}
-  goldenCoinCounter: {fileID: 0}
-  silverCoinCounter: {fileID: 0}
-  copperCoinCounter: {fileID: 0}
-  HealthBar: {fileID: 0}
-  ManaBar: {fileID: 0}
-  StaminaBar: {fileID: 0}
-  inventory: {fileID: 0}
-  toolbar: {fileID: 0}
-  abilitybar: {fileID: 0}
-  cheatChestUIs: {fileID: 0}
-  InventorySlots: {fileID: 0}
-  EquipmentSection: {fileID: 0}
-  traderStorage: {fileID: 0}
-  wizardStorage: {fileID: 0}
-  itemHolderPrefab: {fileID: 0}
-  teleportButtonPrefab: {fileID: 0}
-  sellSlots: {fileID: 0}
-  wizardSellSlots: {fileID: 0}
-  traderSellMenu: {fileID: 0}
-  traderStoreMenu: {fileID: 0}
-  wizardSellMenu: {fileID: 0}
-  wizardStoreMenu: {fileID: 0}
-  traderSellButton: {fileID: 0}
-  traderStoreButton: {fileID: 0}
-  wizardSellButton: {fileID: 0}
-  wizardStoreButton: {fileID: 0}
-  traderWindow: {fileID: 0}
-  wizardWindow: {fileID: 0}
-  teleportWindow: {fileID: 0}
-  bankerWindow: {fileID: 0}
-  blacksmithWindow: {fileID: 0}
-  teleportContent: {fileID: 0}
-  traderItems: []
-  wizardItems: []
-  ChestUI: {fileID: 0}
-  ChestUIs: []
-  Chests: []
-  playerCanvas: {fileID: 0}
-  escapeUI: {fileID: 0}
-  escapeButtons: {fileID: 0}
-  settingUI: {fileID: 0}
-  resumeButton: {fileID: 0}
-  settingButton: {fileID: 0}
-  quitButton: {fileID: 0}
-  changeButtons: []
-  resolutionDropdown: {fileID: 0}
-  textKeys: []
-  keyCodes: 
-  isPaused: 0
-  npcWindowActive: 0
-  spawnedEnemies: []
-  enemyHealthBars: []
 --- !u!1 &1381706493
 GameObject:
   m_ObjectHideFlags: 0

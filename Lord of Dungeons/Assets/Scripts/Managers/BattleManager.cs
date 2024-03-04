@@ -375,9 +375,9 @@ public class BattleManager : MonoBehaviour
         
         string text = defenseObject.DealDamage(damage * multiplier).ToString("F1");
         GameObject textObject = Instantiate(battleData.textDamagePrefab, Camera.main.WorldToScreenPoint(defenseObject.GetPosition() + Vector3.up * 1.6f), Quaternion.identity, GameObject.FindGameObjectWithTag("MainCanvas").transform);
-        if (attack.multiplier < 1)
+        if (attack.enemyAction != null)
         {
-            textObject.GetComponent<TMP_Text>().color = Color.grey;
+            textObject.GetComponent<TMP_Text>().color = Color.black;
         }
         else if (attack.multiplier == 1)
         {
@@ -395,7 +395,9 @@ public class BattleManager : MonoBehaviour
     private IEnumerator Cooldown(AttackParameters attack)
     {
         attack.isReady = false;
+        if (attack.playerAction != null) InventoryManager.Instance.activeAbilities += 1;
         yield return new WaitForSeconds(attack.cooldown);
+        if (attack.playerAction != null) InventoryManager.Instance.activeAbilities -= 1;
         attack.isReady = true;
     }
 

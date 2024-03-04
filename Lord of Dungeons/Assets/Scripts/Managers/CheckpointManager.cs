@@ -104,19 +104,19 @@ public class CheckpointManager : MonoBehaviour
         gameData.gold = DataManager.Instance.playerData.resources[Item.CoinType.GoldenCoin];
         gameData.silver = DataManager.Instance.playerData.resources[Item.CoinType.SilverCoin];
         gameData.copper = DataManager.Instance.playerData.resources[Item.CoinType.CopperCoin];
-        //List<int> inventoryAbilities = new List<int>();
-        //foreach (AbilitySlot slot in InventoryManager.Instance.abilityInventory)
-        //{
-        //    if (slot.GetComponentInChildren<AbilityItem>() != null)
-        //    {
-        //        inventoryAbilities.Add(Array.IndexOf(InventoryManager.Instance.allAbilities, slot.GetComponentInChildren<AbilityItem>().ability));
-        //    }
-        //    else
-        //    {
-        //        inventoryAbilities.Add(-1);
-        //    }
-        //}
-        //gameData.inventoryAbilities = inventoryAbilities;
+        List<int> inventoryAbilities = new List<int>();
+        foreach (AbilitySlot slot in InventoryManager.Instance.abilityInventory)
+        {
+            if (slot.GetComponentInChildren<AbilityItem>() != null)
+            {
+                inventoryAbilities.Add(Array.IndexOf(InventoryManager.Instance.allAbilities, slot.GetComponentInChildren<AbilityItem>().ability));
+            }
+            else
+            {
+                inventoryAbilities.Add(-1);
+            }
+        }
+        gameData.inventoryAbilities = inventoryAbilities;
         List<int> toolBarAbilities = new List<int>();
         foreach (AbilitySlot slot in InventoryManager.Instance.abilityBar)
         {
@@ -166,10 +166,11 @@ public class CheckpointManager : MonoBehaviour
             DataManager.Instance.playerData.resources[Item.CoinType.GoldenCoin] = gameData.gold;
             DataManager.Instance.playerData.resources[Item.CoinType.SilverCoin] = gameData.silver;
             DataManager.Instance.playerData.resources[Item.CoinType.CopperCoin] = gameData.copper;
-            //for (int i = 0; i < InventoryManager.Instance.abilityInventory.Length; i++)
-            //{
-            //    InventoryManager.Instance.LoadAbility(InventoryManager.Instance.abilityInventory, i, gameData.inventoryAbilities[i]);
-            //}
+            InventoryManager.Instance.LoadAbilityInventory(gameData.inventoryAbilities.Count);
+            for (int i = 0; i < InventoryManager.Instance.abilityInventory.Length; i++)
+            {
+                InventoryManager.Instance.LoadAbility(InventoryManager.Instance.abilityInventory, i, gameData.inventoryAbilities[i]);
+            }
             for (int i = 0; i < InventoryManager.Instance.abilityBar.Length; i++)
             {
                 InventoryManager.Instance.LoadAbility(InventoryManager.Instance.abilityBar, i, gameData.toolBarAbilities[i]);

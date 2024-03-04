@@ -7,8 +7,7 @@ public class AbilitySlot : MonoBehaviour, IDropHandler
     
     public void OnDrop(PointerEventData eventData)
     {
-
-        if(transform.childCount == 0)
+        if(InventoryManager.Instance.activeAbilities == 0)
         {
             GameObject dropped = eventData.pointerDrag;
             AbilityItem abilityItem = dropped.GetComponent<AbilityItem>();
