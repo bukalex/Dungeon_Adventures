@@ -106,8 +106,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7737402644207671180}
-  - component: {fileID: 8066028998141091623}
   - component: {fileID: 3678085449971484704}
+  - component: {fileID: 8066028998141091623}
   m_Layer: 0
   m_Name: SceneChanger
   m_TagString: Untagged
@@ -131,24 +131,6 @@ Transform:
   - {fileID: 8811803634268165014}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8066028998141091623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4562576353326803664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b52114ca79c302458dd9ab96ecb675f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 3494084588302746363}
-  ContinueButton: {fileID: 0}
-  CreditsButton: {fileID: 0}
-  CrossButton: {fileID: 0}
-  MenuUI: {fileID: 0}
-  CreditsUI: {fileID: 0}
 --- !u!61 &3678085449971484704
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -194,6 +176,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.001915, y: 0.89265203}
   m_EdgeRadius: 0
+--- !u!114 &8066028998141091623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4562576353326803664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b52114ca79c302458dd9ab96ecb675f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 3494084588302746363}
+  ContinueButton: {fileID: 0}
+  CreditsButton: {fileID: 0}
+  CrossButton: {fileID: 0}
+  MenuUI: {fileID: 0}
+  CreditsUI: {fileID: 0}
 --- !u!1 &6223315749269753720
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,21 +19,21 @@ public class SceneChanger : MonoBehaviour
         if (Input.GetKey(KeyCode.Space))
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 
-        CreditsButton.onClick.AddListener(() => Credits());
-        CrossButton.onClick.AddListener(() => Credits());
-        ContinueButton.onClick.AddListener(() => ContinueGame());
+        //CreditsButton.onClick.AddListener(() => Credits());
+        //CrossButton.onClick.AddListener(() => Credits());
+        //ContinueButton.onClick.AddListener(() => ContinueGame());
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
             animator.SetTrigger("FadeOut");
     }
-    public void LoadNextScene()
-    {
-        SceneToChange = SceneManager.GetActiveScene().buildIndex + 1;
-        CheckpointManager.Instance.ChangeLevel(SceneToChange);
-        SceneManager.LoadScene(SceneToChange);
-    }
+    //public void LoadNextScene()
+    //{
+    //    SceneToChange = SceneManager.GetActiveScene().buildIndex + 1;
+    //    CheckpointManager.Instance.ChangeLevel(SceneToChange);
+    //    SceneManager.LoadScene(SceneToChange);
+    //}
     public void NewGame()
     {
 
@@ -39,7 +41,7 @@ public class SceneChanger : MonoBehaviour
     public void ContinueGame()
     {
         animator.SetTrigger("FadeOut");
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("HUB");
     }
     public void Quit()
     {
@@ -50,6 +52,13 @@ public class SceneChanger : MonoBehaviour
         MenuUI.SetActive(!MenuUI.activeSelf);
         CreditsUI.SetActive(!MenuUI.activeSelf);
     }
-
+    
+    IEnumerator LoadNextScene()
+    {
+        yield return new WaitForSeconds(0.45f);
+        SceneToChange = SceneManager.GetActiveScene().buildIndex + 1;
+        CheckpointManager.Instance.ChangeLevel(SceneToChange);
+        SceneManager.LoadScene(SceneToChange);
+    }
 
 }
