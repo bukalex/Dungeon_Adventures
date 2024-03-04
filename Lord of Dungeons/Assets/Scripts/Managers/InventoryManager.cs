@@ -19,6 +19,7 @@ public class InventoryManager : MonoBehaviour
     public List<Item> randomConsumableLootTable = new List<Item>();
     public List<Item> randomUniqueLootTable = new List<Item>();
     public Ability[] startAbilities;
+    public Ability[] allAbilities;
     public int maxStackCount = 16;
     [Header("Slots")]
     public InventorySlot[] internalInventorySlots;
@@ -29,6 +30,7 @@ public class InventoryManager : MonoBehaviour
     public InventorySlot[] storageSlots;
     public InventorySlot[] cheatSlots;
     public AbilitySlot[] abilityBar;
+    public AbilitySlot[] abilityInventory;
     [Header("Icon prefabs")]
     public GameObject inventoryItemPrefab, abilityItemPrefab;
     public PlayerData playerData;
@@ -97,6 +99,7 @@ public class InventoryManager : MonoBehaviour
 
         //Initializing slots for abilities
         abilityBar = UIManager.Instance.abilitybar.GetComponentsInChildren<AbilitySlot>();
+        //abilityInventory = UIManager.Instance.abilityInventory.GetComponentsInChildren<AbilitySlot>();
 
         //Initialize slots for cheat chests
         cheatSlots = UIManager.Instance.cheatChestUIs.GetComponentsInChildren<InventorySlot>(true);
@@ -337,6 +340,15 @@ public class InventoryManager : MonoBehaviour
             InventoryItem item = Instantiate(inventoryItemPrefab, slots[slotIndex].transform).GetComponent<InventoryItem>();
             item.count = itemCount;
             item.InitializeItem(allItems[itemIndex]);
+        }
+    }
+
+    public void LoadAbility(AbilitySlot[] slots, int slotIndex, int abilityIndex)
+    {
+        if (abilityIndex != -1)
+        {
+            AbilityItem ability = Instantiate(abilityItemPrefab, slots[slotIndex].transform).GetComponent<AbilityItem>();
+            ability.InitializeAbility(allAbilities[abilityIndex]);
         }
     }
 }

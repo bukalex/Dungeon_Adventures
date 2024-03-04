@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     public GameObject HealthBar, ManaBar, StaminaBar;
     [SerializeField]
-    public GameObject inventory, toolbar, abilitybar, equipment;
+    public GameObject inventory, toolbar, abilitybar, abilityInventory, equipment;
     [SerializeField] 
     public GameObject cheatChestUIs;
 
