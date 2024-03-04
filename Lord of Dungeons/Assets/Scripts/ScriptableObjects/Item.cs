@@ -11,6 +11,7 @@ public class Item : ScriptableObject
     public PlayerData playerData;
     public string name;
     public string description;
+    public int craftId;
     public int unitsPerStack;
 
     public ItemTag tag;
@@ -67,8 +68,13 @@ public class Item : ScriptableObject
     public RuntimeAnimatorController animController;
 
     public enum ItemType { Potion, Material, Gear, Weapon, Artifact, Treasure, Food, Trash, Spell, MonsterLoot, Coin}
-    public enum ItemTag { Item, Helmet, Chestplate, Gloves, Boots, Sword, Gem}
+    public enum ItemTag { Item, Helmet, Chestplate, Gloves, Boots, Sword, Gem, CraftMaterial}
     public enum CoinType { OFF, GoldenCoin, SilverCoin, CopperCoin }
+
+    public int GetCraftItemID(Item item)
+    {
+        return item.craftId;
+    }
 
     public string GetItemType(ItemType itemType)
     {
