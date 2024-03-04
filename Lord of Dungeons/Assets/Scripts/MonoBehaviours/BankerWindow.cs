@@ -43,6 +43,7 @@ public class BankerWindow : MonoBehaviour
     void Update()
     {
         depositButton.interactable = InventoryManager.Instance.HasCoins();
+        if (rateMultiplier != 10 * (1 + InventoryManager.Instance.CountAbilities())) OnEnable();
     }
 
     public void OnEnable()
@@ -50,11 +51,9 @@ public class BankerWindow : MonoBehaviour
         UIManager.Instance.InventorySlots.SetActive(true);
         UIManager.Instance.npcWindowActive = true;
 
-        if (rateMultiplier == 0) rateMultiplier = UnityEngine.Random.Range(1, 11);
-        rateMultiplier = UnityEngine.Random.Range(1, 11);
-        //rateMultiplier = 10 * (1 + abilityCount);
-
         goingUp = dropdownRight.value < dropdownLeft.value;
+        if (rateMultiplier == 0) rateMultiplier = 10 * (1 + InventoryManager.Instance.CountAbilities());
+        rateMultiplier = 10 * (1 + InventoryManager.Instance.CountAbilities());
         rate = rateOffset + (int)(rateMultiplier * Mathf.Abs(dropdownRight.value - dropdownLeft.value) * Mathf.Pow(2, System.Convert.ToInt32(dropdownRight.value < dropdownLeft.value)));
 
         UpdateText();

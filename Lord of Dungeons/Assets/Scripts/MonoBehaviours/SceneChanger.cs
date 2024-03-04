@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,7 +20,7 @@ public class SceneChanger : MonoBehaviour, IInteractable
 
     void Update()
     {
-        if (interactIcon.activeSelf && Input.GetKeyDown(UIManager.Instance.keyCodes[15]))
+        if (interactIcon != null && interactIcon.activeSelf && Input.GetKeyDown(UIManager.Instance.keyCodes[15]))
         {
             foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Enemy"))
             {
@@ -32,25 +33,45 @@ public class SceneChanger : MonoBehaviour, IInteractable
 
     public void ChangeScene()
     {
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("PopUpUI"))
+        List<GameObject> popUps = new List<GameObject>();
+        for (int i = 0; i < GameObject.FindGameObjectWithTag("MainCanvas").transform.childCount; i++)
         {
-            Destroy(obj);
+            GameObject popUp = GameObject.FindGameObjectWithTag("MainCanvas").transform.GetChild(i).gameObject;
+            if (popUp.tag == "PopUpUI") popUps.Add(popUp);
+        }
+        foreach (GameObject popUp in popUps)
+        {
+            Destroy(popUp);
         }
 
-        SceneToChange = SceneManager.GetActiveScene().buildIndex + 1;
-        CheckpointManager.Instance.ChangeLevel(SceneToChange);
+        if (CheckpointManager.Instance.levelsPassed % 5 < 3)
+        {
+            SceneToChange = CheckpointManager.Instance.commonLevels[Random.Range(0, CheckpointManager.Instance.commonLevels.Count)];
+        }
+        else if (CheckpointManager.Instance.levelsPassed % 5 == 3)
+        {
+            SceneToChange = CheckpointManager.Instance.bossLevels[Random.Range(0, CheckpointManager.Instance.bossLevels.Count)];
+        }
+        else if (CheckpointManager.Instance.levelsPassed % 5 == 4)
+        {
+            SceneToChange = CheckpointManager.Instance.checkpoints[Random.Range(0, CheckpointManager.Instance.checkpoints.Count)];
+        }
+        CheckpointManager.Instance.ChangeLevel();
         SceneManager.LoadScene(SceneToChange);
     }
 
     public void ShowButton()
     {
-        interactIcon.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 1.5f);
-        interactIcon.GetComponentInChildren<TMP_Text>().text = UIManager.Instance.textKeys[15].text;
-        interactIcon.SetActive(true);
+        if (interactIcon != null)
+        {
+            interactIcon.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 1.5f);
+            interactIcon.GetComponentInChildren<TMP_Text>().text = UIManager.Instance.textKeys[15].text;
+            interactIcon.SetActive(true);
+        }
     }
 
     public void HideButton()
     {
-        interactIcon.SetActive(false);
+        if (interactIcon != null) interactIcon.SetActive(false);
     }
 }

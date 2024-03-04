@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
@@ -19,6 +18,7 @@ public class InventoryManager : MonoBehaviour
     public List<Item> randomConsumableLootTable = new List<Item>();
     public List<Item> randomUniqueLootTable = new List<Item>();
     public Ability[] startAbilities;
+    public Ability[] allAbilities;
     public int maxStackCount = 16;
     [Header("Slots")]
     public InventorySlot[] internalInventorySlots;
@@ -29,8 +29,9 @@ public class InventoryManager : MonoBehaviour
     public InventorySlot[] storageSlots;
     public InventorySlot[] cheatSlots;
     public AbilitySlot[] abilityBar;
+    public AbilitySlot[] abilityInventory;
     [Header("Icon prefabs")]
-    public GameObject inventoryItemPrefab, abilityItemPrefab;
+    public GameObject inventoryItemPrefab, abilityItemPrefab, abilitySlotPrefab;
     public PlayerData playerData;
     [Header("EquipmentSlots")]
     public GameObject helmetSlot;
@@ -42,6 +43,8 @@ public class InventoryManager : MonoBehaviour
 
     public int selectedSlot = -1;
     public int[] intsd;
+    public int activeAbilities = 0;
+
     public static InventoryManager Instance { get; private set; }
     public void Awake()
     {
@@ -97,6 +100,7 @@ public class InventoryManager : MonoBehaviour
 
         //Initializing slots for abilities
         abilityBar = UIManager.Instance.abilitybar.GetComponentsInChildren<AbilitySlot>();
+        //abilityInventory = UIManager.Instance.abilityInventory.GetComponentsInChildren<AbilitySlot>();
 
         //Initialize slots for cheat chests
         cheatSlots = UIManager.Instance.cheatChestUIs.GetComponentsInChildren<InventorySlot>(true);
@@ -234,6 +238,19 @@ public class InventoryManager : MonoBehaviour
                 return true;
             }
         }
+
+        foreach (AbilitySlot abilitySlot in abilityInventory)
+        {
+            AbilityItem abilityInSlot = abilitySlot.GetComponentInChildren<AbilityItem>();
+            if (abilityInSlot == null)
+            {
+                spawnNewAbility(ability, abilitySlot);
+                return true;
+            }
+        }
+        AbilitySlot slot = Instantiate(abilitySlotPrefab, UIManager.Instance.abilityInventory.transform).GetComponent<AbilitySlot>();
+        abilityInventory = UIManager.Instance.abilityInventory.GetComponentsInChildren<AbilitySlot>(true);
+        spawnNewAbility(ability, slot);
         return false;
     }
     public void spawnNewItem(Item item, InventorySlot slot)
@@ -330,6 +347,20 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public int CountAbilities()
+    {
+        int count = 0;
+        foreach (AbilitySlot slot in abilityBar)
+        {
+            if (slot.GetComponentInChildren<AbilityItem>() != null) count++;
+        }
+        foreach (AbilitySlot slot in abilityInventory)
+        {
+            if (slot.GetComponentInChildren<AbilityItem>() != null) count++;
+        }
+        return count;
+    }
+
     public void LoadItem(InventorySlot[] slots, int slotIndex, int itemIndex, int itemCount)
     {
         if (itemIndex != -1)
@@ -337,6 +368,28 @@ public class InventoryManager : MonoBehaviour
             InventoryItem item = Instantiate(inventoryItemPrefab, slots[slotIndex].transform).GetComponent<InventoryItem>();
             item.count = itemCount;
             item.InitializeItem(allItems[itemIndex]);
+        }
+    }
+
+    public void LoadAbilityInventory(int slotCount)
+    {
+        if (slotCount == 0) slotCount = 8;
+        for (int i = 0; i < slotCount; i++)
+        {
+            Instantiate(abilitySlotPrefab, UIManager.Instance.abilityInventory.transform);
+        }
+        abilityInventory = UIManager.Instance.abilityInventory.GetComponentsInChildren<AbilitySlot>(true);
+    }
+
+    public void LoadAbility(AbilitySlot[] slots, int slotIndex, int abilityIndex)
+    {
+        if (abilityIndex != -1)
+        {
+            spawnNewAbility(allAbilities[abilityIndex], slots[slotIndex]);
+            if (slots[slotIndex].attackButton != BattleManager.AttackButton.NONE)
+            {
+                BattleManager.Instance.AssingAbility(DataManager.Instance.playerData, allAbilities[abilityIndex].attackParameters, slots[slotIndex].attackButton);
+            }
         }
     }
 }

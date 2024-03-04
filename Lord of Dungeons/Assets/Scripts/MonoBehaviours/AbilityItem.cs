@@ -14,6 +14,7 @@ public class AbilityItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public Image image;
     [SerializeField]
     public Transform parentAfterDrag;
+    public Transform parentBeforeDrag;
 
     public void InitializeAbility(Ability newAbility)
     {
@@ -22,19 +23,32 @@ public class AbilityItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        image.raycastTarget = false;
-        parentAfterDrag = transform.parent;
-        transform.SetParent(transform.root);
+        if (InventoryManager.Instance.activeAbilities == 0)
+        {
+            image.raycastTarget = false;
+            parentBeforeDrag = transform.parent;
+            parentAfterDrag = transform.parent;
+            transform.SetParent(transform.root);
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = Input.mousePosition;
+        if (InventoryManager.Instance.activeAbilities == 0)
+        {
+            transform.position = Input.mousePosition;
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        image.raycastTarget = true;
-        transform.SetParent(parentAfterDrag);
+        if (InventoryManager.Instance.activeAbilities == 0)
+        {
+            AbilityItem existingAbility = parentAfterDrag.GetComponentInChildren<AbilityItem>();
+            if (existingAbility != null) existingAbility.transform.SetParent(parentBeforeDrag);
+
+            image.raycastTarget = true;
+            transform.SetParent(parentAfterDrag);
+        }
     }
 }

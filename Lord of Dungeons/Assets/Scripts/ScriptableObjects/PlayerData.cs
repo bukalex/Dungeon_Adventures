@@ -70,7 +70,6 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
         if (isDead)
         {
             health = 1;
-            isDead = false;
         }
         else
         {

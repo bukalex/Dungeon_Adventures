@@ -16,7 +16,7 @@ public class TemporaryTradingSystem : MonoBehaviour
     public TMP_Text traderItemDescription, wizardItemDescription;
     public TMP_Text[] itemPrice;
     private int[] coinsFromSell;
-    private float wizardLuck = 100.0f;
+    public float wizardLuck = 100.0f;
     public List<Ability> wizardAbilities;
 
     public GraphicRaycaster graphicRaycaster;
