@@ -14,26 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   maxMana: 50
-  maxStamina: 50
+  maxStamina: 100
   health: 100
-  mana: 50
-  stamina: 50
-  speed: 0.6
-  attack: 3
+  mana: 0
+  stamina: 100
+  speed: 2
+  attack: 6
   specialAttack: 3
   defense: 2
-  specialDefense: 2
+  specialDefense: 0
   healthRestoreRate: 1
-  manaRestoreRate: 1
+  manaRestoreRate: 0
   staminaRestoreRate: 1
   isUsingMana: 0
   isUsingStamina: 0
-  whiskerLength: 2
+  whiskerLength: 1
   whiskerAngle: 10
   rotationSpeed: 60
   playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
-  colliderRadius: 1
-  detectionRadius: 3.5
+  colliderRadius: 0.4
+  detectionRadius: 6
   isBoss: 0
   isStunned: 0
   isAttacking: 0
