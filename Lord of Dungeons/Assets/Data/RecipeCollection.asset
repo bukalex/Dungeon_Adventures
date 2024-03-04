@@ -12,5 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe3737c6e5d0534ea8eadb82464d88e, type: 3}
   m_Name: RecipeCollection
   m_EditorClassIdentifier: 
-  Recipes: []
-  materials: []
+  Recipe:
+  - craftItem: {fileID: 11400000, guid: 24b7b41a74928a843bc2b0f5d2a8750d, type: 2}
+    ItemId: 0
+    materials:
+    - amount: 4
+      materialId: 2
+  materials:
+  - MaterialSprite: {fileID: -1951645582, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
+    MaterialId: 2
+    MaterialName: Iron Ingot
