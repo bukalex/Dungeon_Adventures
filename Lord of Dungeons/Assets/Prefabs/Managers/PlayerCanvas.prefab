@@ -16392,7 +16392,7 @@ MonoBehaviour:
   wizardWindow: {fileID: 2110858797523221307}
   teleportWindow: {fileID: 7067249650542042219}
   bankerWindow: {fileID: 3419330282261114878}
-  blacksmithWindow: {fileID: 0}
+  blacksmithWindow: {fileID: 1435091522267067311}
   teleportContent: {fileID: 7415375687723494257}
   traderItems:
   - {fileID: 11400000, guid: 7fafd69d431cb244b86293fd9e812b42, type: 2}
@@ -39141,10 +39141,13 @@ MonoBehaviour:
   insertButton: {fileID: 8007006768198456042}
   materiaSlotsGroup: {fileID: 6221581247731733486}
   materialSlots: []
-  insertedMaterialIDs: 
-  insertedMaterialAmount: 
-  ItemHolder: {fileID: 0}
-  recipe: {fileID: 0}
+  ItemHolderPrefab: {fileID: 0}
+  recipe: {fileID: 11400000, guid: 766ec527a1a5f5c4ab7a8d74bd1b85ae, type: 2}
+  CraftItemButton: {fileID: 8007006768198456042}
+  materialRequireDisplayPrefab: {fileID: 0}
+  materialDisplayPrefab: {fileID: 0}
+  materialIconPrefab: {fileID: 0}
+  materialAmount: {fileID: 0}
 --- !u!114 &3555501998183179961 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7750301074703293912, guid: 1c3bc039eff1ac04bbe33b69aecbf028, type: 3}
