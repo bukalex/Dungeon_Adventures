@@ -46,7 +46,7 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
             InventoryItem materialInSlot = materialSlot.GetComponentInChildren<InventoryItem>();
             if(materialInSlot != null)
             {
-                int materialId = materialInSlot.craftID;
+                int materialId = materialInSlot.materialID;
                 int CraftAmount = materialInSlot.count;
                 if (insertedMaterial.ContainsKey(materialId))
                 {

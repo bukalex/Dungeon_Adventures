@@ -18,6 +18,8 @@ MonoBehaviour:
     materials:
     - amount: 4
       materialId: 1
+    - amount: 2
+      materialId: 4
   - craftItem: {fileID: 11400000, guid: 0a8989261c20e58459a5f4ebf6e4cc98, type: 2}
     ItemId: 1
     materials:
@@ -59,29 +61,43 @@ MonoBehaviour:
     ItemId: 6
     materials:
     - amount: 4
-      materialId: 0
+      materialId: 6
+    - amount: 4
+      materialId: 5
   - craftItem: {fileID: 11400000, guid: 79df8dbdbf1e753478e67d38c5d5307e, type: 2}
     ItemId: 7
     materials:
-    - amount: 4
-      materialId: 0
+    - amount: 3
+      materialId: 5
+    - amount: 1
+      materialId: 3
+    - amount: 1
+      materialId: 2
   - craftItem: {fileID: 11400000, guid: 0096631c82fad394c87d28bf0d6722f1, type: 2}
     ItemId: 8
     materials:
-    - amount: 4
+    - amount: 2
       materialId: 0
+    - amount: 6
+      materialId: 3
   - craftItem: {fileID: 11400000, guid: 24b7b41a74928a843bc2b0f5d2a8750d, type: 2}
     ItemId: 9
     materials:
-    - amount: 4
+    - amount: 1
       materialId: 0
-    - amount: 4
-      materialId: 0
+    - amount: 1
+      materialId: 4
+    - amount: 3
+      materialId: 3
   - craftItem: {fileID: 11400000, guid: 8a2101e15bbf0104ebfeb69816b3af0d, type: 2}
     ItemId: 9
     materials:
-    - amount: 4
-      materialId: 0
+    - amount: 5
+      materialId: 2
+    - amount: 2
+      materialId: 3
+    - amount: 2
+      materialId: 4
   materials:
   - MaterialSprite: {fileID: -1951645582, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
     MaterialId: 0
@@ -95,3 +111,12 @@ MonoBehaviour:
   - MaterialSprite: {fileID: 21300000, guid: 00ab6dfe7e8a3b44fb7530bcac919a27, type: 3}
     MaterialId: 3
     MaterialName: Chain
+  - MaterialSprite: {fileID: 21300000, guid: c91f7fe7fba255f4cb1f595b514021ee, type: 3}
+    MaterialId: 4
+    MaterialName: Bone
+  - MaterialSprite: {fileID: 21300000, guid: d2934aea3a7dc4f42bc3211bca218d1c, type: 3}
+    MaterialId: 5
+    MaterialName: Stone
+  - MaterialSprite: {fileID: -209997116, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
+    MaterialId: 6
+    MaterialName: Wood

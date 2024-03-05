@@ -11,7 +11,7 @@ public class Item : ScriptableObject
     public PlayerData playerData;
     public string name;
     public string description;
-    public int craftId;
+    public int materialId;
     public int unitsPerStack;
 
     public ItemTag tag;
@@ -81,7 +81,7 @@ public class Item : ScriptableObject
 
     public int GetCraftItemID(Item item)
     {
-        return item.craftId;
+        return item.materialId;
     }
 
     public string GetItemType(ItemType itemType)

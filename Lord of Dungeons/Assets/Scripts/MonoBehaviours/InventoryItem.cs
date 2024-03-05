@@ -14,7 +14,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [SerializeField]
     public GameObject InventoryItemPrefab;
     [SerializeField]
-    public int craftID;
+    public int materialID;
 
     [HideInInspector]
     public Image image;
@@ -32,7 +32,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         item = newItem;                                             
         image.sprite = newItem.image;
         InventoryItemPrefab.tag = newItem.tag.ToString();
-        craftID = newItem.craftId;
+        materialID = newItem.materialId;
         
         updateCount();
     }
