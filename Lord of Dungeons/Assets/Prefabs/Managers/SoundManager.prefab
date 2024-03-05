@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 295564415048511307}
   - component: {fileID: 1328392645993931972}
   m_Layer: 0
-  m_Name: SondManager
+  m_Name: SoundManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53,17 +53,44 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: f917a1379f0167047903303d71da3f8c, type: 3}
     volume: 1
   seSoundDatas:
+  - se: 6
+    audioClip: {fileID: 8300000, guid: c254ac1b5df65a54489b6428961bfdda, type: 3}
+    volume: 1
+  - se: 4
+    audioClip: {fileID: 8300000, guid: dd765cded0e114b4ba8673fd2fba28c3, type: 3}
+    volume: 0.943
+  - se: 3
+    audioClip: {fileID: 8300000, guid: b2e773bd80138f041870fc1e2a06b7ad, type: 3}
+    volume: 1
   - se: 1
-    audioClip: {fileID: 8300000, guid: b31d74e130b869440bd754b8dca8af03, type: 3}
+    audioClip: {fileID: 8300000, guid: 3c1683d79c2d4d048999b37d19ee27bb, type: 3}
     volume: 1
   - se: 0
     audioClip: {fileID: 8300000, guid: 3155850a79548f042a819cd0bf66cd43, type: 3}
     volume: 1
   - se: 2
-    audioClip: {fileID: 8300000, guid: a1100a899a72cb84291bd4e7c770b1f8, type: 3}
+    audioClip: {fileID: 8300000, guid: 9850c00579565f44bad45053ce834fba, type: 3}
     volume: 1
-  - se: 3
-    audioClip: {fileID: 8300000, guid: 3f38084175316134ba32595a45019bdf, type: 3}
+  - se: 10
+    audioClip: {fileID: 8300000, guid: 53959f86bd4b0bf4791f12d508f99141, type: 3}
+    volume: 1
+  - se: 9
+    audioClip: {fileID: 8300000, guid: 5868ed912fa8cfb438ed1afcce8f2789, type: 3}
+    volume: 1
+  - se: 5
+    audioClip: {fileID: 8300000, guid: f2041eb8a7b53924893d074f8637b1dc, type: 3}
+    volume: 1
+  - se: 8
+    audioClip: {fileID: 8300000, guid: 33dd97f82f676904b84249214c4ffb35, type: 3}
+    volume: 1
+  - se: 11
+    audioClip: {fileID: 8300000, guid: 25e474de51ae1dc45b52ebe30e922e92, type: 3}
+    volume: 1
+  - se: 12
+    audioClip: {fileID: 8300000, guid: 55c80c47304d4ad41bf5f75bf1301851, type: 3}
+    volume: 1
+  - se: 13
+    audioClip: {fileID: 8300000, guid: b100ad389462f3b4fa5850270f274302, type: 3}
     volume: 1
   masterVolume: 1
   bgmMasterVolume: 1
@@ -86,7 +113,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 108
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

@@ -65,7 +65,7 @@ public class LootRandomizer : MonoBehaviour
     {
         foreach (Item item in randomLootTable)
         {
-            Instantiate(InventoryItemPref, transform.position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0).normalized * 0.4f, Quaternion.identity).GetComponent<SolidItem>().Initialize(item);
+            Instantiate(InventoryItemPref, transform.position + new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0).normalized * 0.75f, Quaternion.identity).GetComponent<SolidItem>().Initialize(item);
         }
     }
 }

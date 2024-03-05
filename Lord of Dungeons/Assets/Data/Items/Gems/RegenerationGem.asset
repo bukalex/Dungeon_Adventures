@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
   name: Regeneration gem
-  description: 
+  description: This gem allows you to replenish your health over time, ensuring you
+    remain resilient to face any challenges that comes your way.
+  materialId: 0
   unitsPerStack: 0
   tag: 6
   itemType: 2
@@ -27,8 +29,14 @@ MonoBehaviour:
   restoreMP: 3
   restoreSPD: 0
   restoreStamina: 0
-  increseAttack: 0
-  increaseDamage: 0
+  addAttack: 0
+  addDefense: 0
+  addSpecialAttack: 0
+  addSpecialDefense: 0
+  increseAttack: 1
+  increaseDefense: 1
+  increseSpecialAttack: 1
+  increaseSpecialDefense: 1
   cooldown: 0
   ability: {fileID: 0}
   items: []

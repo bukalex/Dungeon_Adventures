@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
   name: Cataphract helmet
-  description: 
-  craftId: 0
+  description: You will need the best armor if you want to survive in a dungeon.\n+1.2
+    defense\n+0.8 sp. attack\n+1 sp.defense
+  materialId: 0
   unitsPerStack: 0
   tag: 1
   itemType: 2
@@ -28,8 +29,14 @@ MonoBehaviour:
   restoreMP: 0
   restoreSPD: 0
   restoreStamina: 0
-  increseAttack: 0
-  increaseDefense: 0
+  addAttack: 0
+  addDefense: 1.2
+  addSpecialAttack: 0.8
+  addSpecialDefense: 1
+  increseAttack: 1
+  increaseDefense: 1
+  increseSpecialAttack: 1
+  increaseSpecialDefense: 1
   cooldown: 0
   ability: {fileID: 0}
   items: []

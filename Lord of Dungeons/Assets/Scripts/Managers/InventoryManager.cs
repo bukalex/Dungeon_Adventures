@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -19,7 +20,6 @@ public class InventoryManager : MonoBehaviour
     public List<Item> randomUniqueLootTable = new List<Item>();
     public Ability[] startAbilities;
     public Ability[] allAbilities;
-    public int maxStackCount = 16;
     [Header("Slots")]
     public InventorySlot[] internalInventorySlots;
     public InventorySlot[] toolBar;
@@ -85,7 +85,7 @@ public class InventoryManager : MonoBehaviour
     public void InitializeSlots()
     {
         //Initializing slots for internal inventory
-        internalInventorySlots = UIManager.Instance.inventory.transform.GetChild(0).GetComponentsInChildren<InventorySlot>();
+        internalInventorySlots = UIManager.Instance.inventory.transform.GetChild(3).GetComponentsInChildren<InventorySlot>();
         equipmentSlots = UIManager.Instance.equipment.GetComponentsInChildren<InventorySlot>();
 
         //Initializing slots for toolBar
@@ -129,6 +129,37 @@ public class InventoryManager : MonoBehaviour
         {
             useSelectedItem();
         }
+        CheckEquipmentSlots();
+    }
+    private void CheckEquipmentSlots()
+    {
+        PlayerData playerData = DataManager.Instance.playerData;
+        List<InventoryItem> equipmentItems = new List<InventoryItem>();
+        if (helmetSlot.GetComponentInChildren<InventoryItem>() != null) equipmentItems.Add(helmetSlot.GetComponentInChildren<InventoryItem>());
+        if (glovesSlot.GetComponentInChildren<InventoryItem>() != null) equipmentItems.Add(glovesSlot.GetComponentInChildren<InventoryItem>());
+        if (chestplateSlot.GetComponentInChildren<InventoryItem>() != null) equipmentItems.Add(chestplateSlot.GetComponentInChildren<InventoryItem>());
+        if (legginsSlot.GetComponentInChildren<InventoryItem>() != null) equipmentItems.Add(legginsSlot.GetComponentInChildren<InventoryItem>());
+        if (gemSlot.GetComponentInChildren<InventoryItem>() != null) equipmentItems.Add(gemSlot.GetComponentInChildren<InventoryItem>());
+        if (swordSlot.GetComponentInChildren<InventoryItem>() != null) equipmentItems.Add(swordSlot.GetComponentInChildren<InventoryItem>());
+
+        playerData.attack = playerData.initialAttack;
+        playerData.defense = playerData.initialDefense;
+        playerData.specialAttack = playerData.initialSpecialAttack;
+        playerData.specialDefense = playerData.initialSpecialDefense;
+        foreach (InventoryItem item in equipmentItems)
+        {
+            playerData.attack += item.item.addAttack;
+            playerData.defense += item.item.addDefense;
+            playerData.specialAttack += item.item.addSpecialAttack;
+            playerData.specialDefense += item.item.addSpecialDefense;
+        }
+        foreach (InventoryItem item in equipmentItems)
+        {
+            playerData.attack *= item.item.increseAttack;
+            playerData.defense *= item.item.increaseDefense;
+            playerData.specialAttack *= item.item.increseSpecialAttack;
+            playerData.specialDefense *= item.item.increaseSpecialDefense;
+        }
     }
     public bool AddItem(Item item, InventorySlot[] InventoryType1, InventorySlot[] InventoryType2)
     {
@@ -137,7 +168,7 @@ public class InventoryManager : MonoBehaviour
         {
             InventorySlot slot = InventoryType1[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count < maxStackCount && itemInSlot.item.isStackable == true)
+            if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count < item.unitsPerStack && itemInSlot.item.isStackable == true)
             {
                 itemInSlot.count++;
                 itemInSlot.updateCount();
@@ -149,7 +180,7 @@ public class InventoryManager : MonoBehaviour
                 {
                     InventorySlot intertalSlot = InventoryType2[j];
                     InventoryItem internalItemInSlot = intertalSlot.GetComponentInChildren<InventoryItem>();
-                    if (internalItemInSlot != null && internalItemInSlot.item == item && internalItemInSlot.count < maxStackCount && internalItemInSlot.item.isStackable == true)
+                    if (internalItemInSlot != null && internalItemInSlot.item == item && internalItemInSlot.count < item.unitsPerStack && internalItemInSlot.item.isStackable == true)
                     {
                         internalItemInSlot.count++;
                         internalItemInSlot.updateCount();
@@ -222,6 +253,48 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
+        return false;
+    }
+
+    public bool HasSpace(Item item)
+    {
+        for (int i = 0; i < toolBar.Length; i++)
+        {
+            InventorySlot slot = toolBar[i];
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+            if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count < item.unitsPerStack && itemInSlot.item.isStackable == true)
+            {
+                return true;
+            }
+            for (int j = 0; j < internalInventorySlots.Length; j++)
+            {
+                InventorySlot intertalSlot = internalInventorySlots[j];
+                InventoryItem internalItemInSlot = intertalSlot.GetComponentInChildren<InventoryItem>();
+                if (internalItemInSlot != null && internalItemInSlot.item == item && internalItemInSlot.count < item.unitsPerStack && internalItemInSlot.item.isStackable == true)
+                {
+                    return true;
+                }
+            }
+        }
+        //Check if any slot has the same item
+        for (int i = 0; i < toolBar.Length; i++)
+        {
+            InventorySlot slot = toolBar[i];
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+            if (itemInSlot == null)
+            {
+                return true;
+            }
+        }
+        for (int j = 0; j < internalInventorySlots.Length; j++)
+        {
+            InventorySlot internalSlots = internalInventorySlots[j];
+            InventoryItem internalItemInSlot = internalSlots.GetComponentInChildren<InventoryItem>();
+            if (internalItemInSlot == null)
+            {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -389,6 +462,23 @@ public class InventoryManager : MonoBehaviour
             if (slots[slotIndex].attackButton != BattleManager.AttackButton.NONE)
             {
                 BattleManager.Instance.AssingAbility(DataManager.Instance.playerData, allAbilities[abilityIndex].attackParameters, slots[slotIndex].attackButton);
+            }
+        }
+    }
+
+    public void StartCooldown(BattleManager.AttackButton attackButton)
+    {
+        if (attackButton != BattleManager.AttackButton.NONE &&
+                attackButton != BattleManager.AttackButton.LMB &&
+                attackButton != BattleManager.AttackButton.RMB)
+        {
+            foreach (AbilitySlot slot in abilityBar)
+            {
+                if (slot.attackButton == attackButton)
+                {
+                    slot.GetComponentInChildren<AbilityItem>().timer = 0;
+                    break;
+                }
             }
         }
     }

@@ -31,7 +31,6 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
 
     private void Start()
     {
-        //SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Dungeon);
         playerData.position = transform.position;
         playerData.transform = transform;
         animator.runtimeAnimatorController = playerData.animController;
@@ -205,6 +204,15 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
                     activeLootable.BeingLooted(isLooting);
                 }
             }
+
+            if (activeLootable != null)
+            {
+                if ((activeLootable.transform.position - transform.position).magnitude - playerData.colliderRadius - activeLootable.GetColliderRadius() > playerData.lootableDetectionRadius)
+                {
+                    activeLootable.BeingLooted(false);
+                    activeLootable = null;
+                }
+            }
             #endregion
 
             //Stats restore
@@ -213,6 +221,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
         else if (!alreadyDead && !playerData.isStunned)
         {
             Die();
+            SoundManager.Instance.PlaySE(SESoundData.SE.PlayerDeath);
 
             capsuleCollider.enabled = false;
             body.velocity = Vector3.zero;
