@@ -433,5 +433,22 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
+
+    public void StartCooldown(BattleManager.AttackButton attackButton)
+    {
+        if (attackButton != BattleManager.AttackButton.NONE &&
+                attackButton != BattleManager.AttackButton.LMB &&
+                attackButton != BattleManager.AttackButton.RMB)
+        {
+            foreach (AbilitySlot slot in abilityBar)
+            {
+                if (slot.attackButton == attackButton)
+                {
+                    slot.GetComponentInChildren<AbilityItem>().timer = 0;
+                    break;
+                }
+            }
+        }
+    }
 }
 

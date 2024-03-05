@@ -179,6 +179,7 @@ public class BattleManager : MonoBehaviour
         
         if (attack.cooldown > 0)
         {
+            InventoryManager.Instance.StartCooldown(attackButton);
             StartCoroutine(Cooldown(attack));
         }
 
