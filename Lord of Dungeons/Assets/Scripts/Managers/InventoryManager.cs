@@ -19,7 +19,6 @@ public class InventoryManager : MonoBehaviour
     public List<Item> randomUniqueLootTable = new List<Item>();
     public Ability[] startAbilities;
     public Ability[] allAbilities;
-    public int maxStackCount = 16;
     [Header("Slots")]
     public InventorySlot[] internalInventorySlots;
     public InventorySlot[] toolBar;
@@ -85,7 +84,7 @@ public class InventoryManager : MonoBehaviour
     public void InitializeSlots()
     {
         //Initializing slots for internal inventory
-        internalInventorySlots = UIManager.Instance.inventory.transform.GetChild(0).GetComponentsInChildren<InventorySlot>();
+        internalInventorySlots = UIManager.Instance.inventory.transform.GetChild(3).GetComponentsInChildren<InventorySlot>();
         equipmentSlots = UIManager.Instance.equipment.GetComponentsInChildren<InventorySlot>();
 
         //Initializing slots for toolBar
@@ -137,7 +136,7 @@ public class InventoryManager : MonoBehaviour
         {
             InventorySlot slot = InventoryType1[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count < maxStackCount && itemInSlot.item.isStackable == true)
+            if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count < item.unitsPerStack && itemInSlot.item.isStackable == true)
             {
                 itemInSlot.count++;
                 itemInSlot.updateCount();
@@ -149,7 +148,7 @@ public class InventoryManager : MonoBehaviour
                 {
                     InventorySlot intertalSlot = InventoryType2[j];
                     InventoryItem internalItemInSlot = intertalSlot.GetComponentInChildren<InventoryItem>();
-                    if (internalItemInSlot != null && internalItemInSlot.item == item && internalItemInSlot.count < maxStackCount && internalItemInSlot.item.isStackable == true)
+                    if (internalItemInSlot != null && internalItemInSlot.item == item && internalItemInSlot.count < item.unitsPerStack && internalItemInSlot.item.isStackable == true)
                     {
                         internalItemInSlot.count++;
                         internalItemInSlot.updateCount();
@@ -222,6 +221,48 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
+        return false;
+    }
+
+    public bool HasSpace(Item item)
+    {
+        for (int i = 0; i < toolBar.Length; i++)
+        {
+            InventorySlot slot = toolBar[i];
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+            if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count < item.unitsPerStack && itemInSlot.item.isStackable == true)
+            {
+                return true;
+            }
+            for (int j = 0; j < internalInventorySlots.Length; j++)
+            {
+                InventorySlot intertalSlot = internalInventorySlots[j];
+                InventoryItem internalItemInSlot = intertalSlot.GetComponentInChildren<InventoryItem>();
+                if (internalItemInSlot != null && internalItemInSlot.item == item && internalItemInSlot.count < item.unitsPerStack && internalItemInSlot.item.isStackable == true)
+                {
+                    return true;
+                }
+            }
+        }
+        //Check if any slot has the same item
+        for (int i = 0; i < toolBar.Length; i++)
+        {
+            InventorySlot slot = toolBar[i];
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+            if (itemInSlot == null)
+            {
+                return true;
+            }
+        }
+        for (int j = 0; j < internalInventorySlots.Length; j++)
+        {
+            InventorySlot internalSlots = internalInventorySlots[j];
+            InventoryItem internalItemInSlot = internalSlots.GetComponentInChildren<InventoryItem>();
+            if (internalItemInSlot == null)
+            {
+                return true;
+            }
+        }
         return false;
     }
 
