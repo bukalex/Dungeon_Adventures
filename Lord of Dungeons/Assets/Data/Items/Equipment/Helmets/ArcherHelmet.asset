@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ed05b4d375b5d24db9207e8e55202cb, type: 3}
-  m_Name: IronSword
+  m_Name: ArcherHelmet
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
-  name: 
+  name: Archer helmet
   description: 
   craftId: 0
   unitsPerStack: 0
-  tag: 0
-  itemType: 0
+  tag: 1
+  itemType: 2
   materialType: 0
   addHP: 0
   addMP: 0
@@ -28,8 +28,8 @@ MonoBehaviour:
   restoreMP: 0
   restoreSPD: 0
   restoreStamina: 0
-  increseAttack: 30
-  increaseDamage: 0
+  increseAttack: 0
+  increaseDefense: 0
   cooldown: 0
   ability: {fileID: 0}
   items: []
@@ -46,5 +46,5 @@ MonoBehaviour:
   isPurchasable: 0
   isCraftMaterial: 0
   isUpgradeMaterial: 0
-  image: {fileID: 21300000, guid: 9497259d4594f37418b8509b04f05dca, type: 3}
+  image: {fileID: 21300000, guid: fb9dce3cea222e0499933c877e190449, type: 3}
   animController: {fileID: 0}
