@@ -83,6 +83,7 @@ public class SESoundData
         WarriorBoomerang,
         Fire,
         EnemyAttack,
+        GuardSpecial,
     }
 
     public SE se;

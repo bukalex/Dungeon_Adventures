@@ -49,6 +49,10 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Item[] wizardItems;
 
+    //Sound Panel UI
+    [SerializeField]
+    private GameObject SoundPanel;
+
     //Chest UI
     [SerializeField] private GameObject ChestUI;
     [SerializeField] private GameObject[] ChestUIs, Chests;
@@ -243,5 +247,12 @@ public class UIManager : MonoBehaviour
     {
         Bar.GetComponent<Slider>().value = health;
     }
-
+    public void ShowVolumePanel()
+    {
+        SoundPanel.SetActive(true);
+    }
+    public void HideVolumePanel()
+    {
+        SoundPanel.SetActive(false);
+    }
 }

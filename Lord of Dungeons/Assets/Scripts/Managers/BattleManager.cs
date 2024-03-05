@@ -188,7 +188,7 @@ public class BattleManager : MonoBehaviour
         {
             playerData.attacks = CloneDictionary(playerAttacks);
         }
-        
+        SoundManager.Instance.PlaySE(SESoundData.SE.Run);
         //Run
         if (playerData.attacks.ContainsKey(playerData.type))
         {
@@ -664,6 +664,7 @@ public class BattleManager : MonoBehaviour
 
         enemyParameters.playerData.isStunned = true;
         DealDamage(enemyParameters, enemyParameters.playerData, attack);
+        //SoundManager.Instance.PlaySE(SESoundData.SE.GuardSpecial);
 
         attack.playerData = enemyParameters.playerData;
         attack.endDelegate = DisableStun;
