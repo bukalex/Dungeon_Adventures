@@ -9,7 +9,8 @@ public class LootableController : MonoBehaviour, IInteractable
     [SerializeField]
     private LootableParameters lootableParameters;
     [SerializeField]
-    public GameObject chestInventory;
+    private int chestIndex;
+    private GameObject chestInventory;
     [SerializeField]
     private Animator animator;
     [SerializeField]
@@ -23,11 +24,11 @@ public class LootableController : MonoBehaviour, IInteractable
     void Awake()
     {
         animator.runtimeAnimatorController = lootableParameters.animController;
-
     }
 
     private void Start()
     {
+        chestInventory = UIManager.Instance.ChestUIs[chestIndex];
         chestInventory.SetActive(false);
         interactIcon = Instantiate(interactIconPrefab, Camera.main.WorldToScreenPoint(transform.position + Vector3.up), Quaternion.identity, GameObject.FindGameObjectWithTag("MainCanvas").transform);
         interactIcon.transform.SetSiblingIndex(0);
@@ -46,8 +47,8 @@ public class LootableController : MonoBehaviour, IInteractable
             Debug.Log("Inventory chest should open.");
         }
         Open();
-        beingChecked = false;
-
+        //beingChecked = false;
+        UIManager.Instance.npcWindowActive = beingChecked;
     }
 
     public float GetColliderRadius()
