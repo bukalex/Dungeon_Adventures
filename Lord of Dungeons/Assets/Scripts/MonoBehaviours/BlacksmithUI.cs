@@ -1,70 +1,122 @@
+using Assets.Scripts.Recipes;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Material = Assets.Scripts.Recipes.Material;
 
-public class BlacksmithUI : MonoBehaviour
+public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHandler
 {
     public Button insertButton;
 
     [SerializeField] private GameObject materiaSlotsGroup;
     [SerializeField] private InventorySlot[] materialSlots;
-    [SerializeField] private List<int> insertedMaterialIDs;
-    [SerializeField] private List<int> insertedMaterialAmount;
-    [SerializeField] private GameObject ItemHolder;
+    [SerializeField] private GameObject ItemHolderPrefab;
     [SerializeField] private RecipeCollection recipe;
-    private Dictionary<int, int> insertedMaterial;
-    
+    [SerializeField] private Button CraftItemButton;
+    [SerializeField] private GameObject materialRequireDisplayPrefab;
+    [SerializeField] private GameObject materialDisplayPrefab;
+    [SerializeField] private GameObject materialIconPrefab;
+    [SerializeField] private TMP_Text materialAmount;
+    private Dictionary<int, int> insertedMaterial = new Dictionary<int, int>();
+    private Dictionary<int, int> previousFrame = new Dictionary<int, int>();
 
     private void Awake()
     {
         materialSlots = materiaSlotsGroup.GetComponentsInChildren<InventorySlot>();
 
     }
-
-    private void Start()
-    {
-
-    }
-
     private void Update()
     {
-        //for(int i = 0; i < materialSlots.Length; i++) 
-        //    if (materialSlots[i].transform.childCount != 0)
-        //        if(i == materialSlots.Length - 1)
-        //            materialSlots[i].gameObject.SetActive(!materialSlots[i].gameObject.activeSelf);
-        //        else
-        //            materialSlots[i + 1].gameObject.SetActive(!materialSlots[i + 1].gameObject.activeSelf);
 
-        insertButton.onClick.AddListener(() => CheckMaterialSlots());
-    }
-
-    public void InitializeItemHolder(RecipeCollection recipe)
-    {
-        Item craftableItem = recipe.GetCraftableItem(0);
-    }
-
-    public void InitializeItemIcon()
-    {
-
-    }
-
-    public void InitializeMaterialDisplay()
-    {
-
-    }
-
-    public void CheckMaterialSlots()
-    {
-        foreach (InventorySlot slot in materialSlots)
+        if(Input.GetKey(KeyCode.Escape)) 
+            Debug.Log(insertedMaterial);
+        previousFrame.Clear();
+        foreach(KeyValuePair<int, int> pair in insertedMaterial)
         {
-            InventoryItem materialInSlot = slot.GetComponentInChildren<InventoryItem>();
-            int craftID = materialInSlot.item.craftId;
-            int materialAmount = materialInSlot.count;
-            insertedMaterialIDs.Clear();
-
-            insertedMaterial.Add(craftID, materialAmount);
+            previousFrame.Add(pair.Key, pair.Value);
         }
+        insertedMaterial.Clear();
+        foreach (InventorySlot materialSlot in materialSlots)
+        {
+            InventoryItem materialInSlot = materialSlot.GetComponentInChildren<InventoryItem>();
+            if(materialInSlot != null)
+            {
+                int materialId = materialInSlot.craftID;
+                int CraftAmount = materialInSlot.count;
+                if (insertedMaterial.ContainsKey(materialId))
+                {
+                    insertedMaterial[materialId] += CraftAmount;
+                }
+                else
+                    insertedMaterial.Add(materialId, CraftAmount);
+            }
+        }
+        foreach (KeyValuePair<int, int> pair in insertedMaterial)
+        {
+            if (previousFrame.Count != insertedMaterial.Count || !insertedMaterial.ContainsKey(pair.Key) || insertedMaterial[pair.Key] != previousFrame[pair.Key])
+            {
+                CraftItemButton.onClick.AddListener(() => CraftItem());
 
+                break;
+            }
+        }
+    }
+    public void CraftItem()
+    {
+        int craftRate = 0;
+        Item craftableItem = recipe.GetCraftableItem(0);
+        List<MaterialToCraft> requireMaterials= recipe.GetMaterialsToCraft(0);
+        if(insertedMaterial.Count == requireMaterials.Count)
+        {
+            foreach (MaterialToCraft requiredMaterial in requireMaterials)
+                if (insertedMaterial.ContainsKey(requiredMaterial.materialId) && (insertedMaterial[requiredMaterial.materialId] >= requiredMaterial.amount))
+                    craftRate++;
+
+            Debug.Log(craftRate);
+            if (craftRate == requireMaterials.Count)
+            {
+                // TODO: Remove Items when it needs, 
+                InventoryManager.Instance.AddItem(craftableItem, InventoryManager.Instance.toolBar, InventoryManager.Instance.internalInventorySlots);
+            }
+        }
+    }
+    public void InstantiateNewItemHolder(int recipeID)
+    {
+
+    }
+    public void InitializeItemIcon(Sprite sprite)
+    {
+
+    }
+
+    public void InitializeMaterialDisplay(GameObject itemHolderPref)
+    {
+        GameObject materialsRequireDisplay = Instantiate(materialRequireDisplayPrefab, itemHolderPref.transform.parent);
+        List<MaterialToCraft> requireMaterials = recipe.GetMaterialsToCraft(0);
+        List<GameObject> materialDisplays = new List<GameObject>();
+        List<TMP_Text> costs = new List<TMP_Text>();
+        List<GameObject> materialIcons = new List<GameObject>();
+        for (int i = 0; i < requireMaterials.Count; i++)
+        {
+            GameObject newMaterialDisplay = Instantiate(materialDisplayPrefab, materialRequireDisplayPrefab.transform.parent);
+            materialDisplays.Add(newMaterialDisplay);
+        }
+        foreach (GameObject materialDisplay in materialDisplays)
+        {
+            TMP_Text cost = Instantiate(materialAmount, materialDisplay.transform.parent);
+            costs.Add(cost);
+            GameObject materialIcon = Instantiate(materialIconPrefab, materialDisplay.transform.parent);
+            materialIcons.Add(materialIcon);
+        }
+        foreach(MaterialToCraft material in requireMaterials)
+        {
+            foreach (GameObject materialIcon in materialIcons)
+                materialIcon.GetComponent<Image>().sprite = recipe.GetMaterialSprite(material.materialId);
+        }
     }
 }

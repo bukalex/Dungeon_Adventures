@@ -19,4 +19,12 @@ public class RecipeCollection : ScriptableObject
     {
         return Recipe[itemId].materials;
     }
+    public Sprite GetMaterialSprite(int materialID)
+    {
+        if (materials.Contains(materials[materialID]))
+        {
+            return materials[materialID].MaterialSprite;
+        }
+        return null;
+    }
 }

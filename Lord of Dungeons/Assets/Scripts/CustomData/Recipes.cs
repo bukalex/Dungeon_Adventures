@@ -29,9 +29,9 @@ namespace Assets.Scripts.Recipes
         public int MaterialId;
         public string MaterialName;
 
-        public Sprite GetMaterialSprite(Item item)
+        public Sprite GetMaterialSprite(int materialID)
         {
-            return MaterialSprite = item.image;
+            return MaterialSprite;
         }
         public string GetMAttribute(Item item)
         {
