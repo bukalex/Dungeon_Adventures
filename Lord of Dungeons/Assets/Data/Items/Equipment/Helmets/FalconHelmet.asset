@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ed05b4d375b5d24db9207e8e55202cb, type: 3}
-  m_Name: ArcherBoots
+  m_Name: FalconHelmet
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
-  name: Archer boots
+  name: Falcon helmet
   description: 
   craftId: 0
   unitsPerStack: 0
-  tag: 4
+  tag: 1
   itemType: 2
   materialType: 0
   addHP: 0
@@ -30,6 +30,8 @@ MonoBehaviour:
   restoreStamina: 0
   increseAttack: 0
   increaseDefense: 0
+  increseSpecialAttack: 0
+  increaseSpecialDefense: 0
   cooldown: 0
   ability: {fileID: 0}
   items: []
@@ -46,5 +48,5 @@ MonoBehaviour:
   isPurchasable: 0
   isCraftMaterial: 0
   isUpgradeMaterial: 0
-  image: {fileID: 21300000, guid: a1589528c6c739249a80d03bf819cb64, type: 3}
+  image: {fileID: 21300000, guid: ca62f25c843bcf941bf012c1c2627058, type: 3}
   animController: {fileID: 0}
