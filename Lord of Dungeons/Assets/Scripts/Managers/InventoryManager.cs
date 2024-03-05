@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -127,6 +128,37 @@ public class InventoryManager : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Q))
         {
             useSelectedItem();
+        }
+        CheckEquipmentSlots();
+    }
+    private void CheckEquipmentSlots()
+    {
+        PlayerData playerData = DataManager.Instance.playerData;
+        List<InventoryItem> equipmentItems = new List<InventoryItem>();
+        if (helmetSlot.GetComponentInChildren<InventoryItem>() != null) equipmentItems.Add(helmetSlot.GetComponentInChildren<InventoryItem>());
+        if (glovesSlot.GetComponentInChildren<InventoryItem>() != null) equipmentItems.Add(glovesSlot.GetComponentInChildren<InventoryItem>());
+        if (chestplateSlot.GetComponentInChildren<InventoryItem>() != null) equipmentItems.Add(chestplateSlot.GetComponentInChildren<InventoryItem>());
+        if (legginsSlot.GetComponentInChildren<InventoryItem>() != null) equipmentItems.Add(legginsSlot.GetComponentInChildren<InventoryItem>());
+        if (gemSlot.GetComponentInChildren<InventoryItem>() != null) equipmentItems.Add(gemSlot.GetComponentInChildren<InventoryItem>());
+        if (swordSlot.GetComponentInChildren<InventoryItem>() != null) equipmentItems.Add(swordSlot.GetComponentInChildren<InventoryItem>());
+
+        playerData.attack = playerData.initialAttack;
+        playerData.defense = playerData.initialDefense;
+        playerData.specialAttack = playerData.initialSpecialAttack;
+        playerData.specialDefense = playerData.initialSpecialDefense;
+        foreach (InventoryItem item in equipmentItems)
+        {
+            playerData.attack += item.item.addAttack;
+            playerData.defense += item.item.addDefense;
+            playerData.specialAttack += item.item.addSpecialAttack;
+            playerData.specialDefense += item.item.addSpecialDefense;
+        }
+        foreach (InventoryItem item in equipmentItems)
+        {
+            playerData.attack *= item.item.increseAttack;
+            playerData.defense *= item.item.increaseDefense;
+            playerData.specialAttack *= item.item.increseSpecialAttack;
+            playerData.specialDefense *= item.item.increaseSpecialDefense;
         }
     }
     public bool AddItem(Item item, InventorySlot[] InventoryType1, InventorySlot[] InventoryType2)

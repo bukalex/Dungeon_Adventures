@@ -280,14 +280,14 @@ public class UIManager : MonoBehaviour
     public void displayInventoryUI()
     {
         //Display player stats
-        string HPstats = "HP: " + playerData.maxHealth + "\n"; 
-        string ManaStats = "Mana: " + playerData.maxMana.ToString() + "\n";
-        string StaminaStats = "Stamina: " + playerData.maxStamina.ToString() + "\n";
-        string SpeedStats = "Speed: " + playerData.speed.ToString() + "\n";
-        string AttackStats = "Attack: " + playerData.attack.ToString() + "\n";
-        string DefenseStats = "Defense: " + playerData.defense.ToString() + "\n";
-        string SpecialAttackStats = "Sp. attack: " + playerData.specialAttack.ToString() + "\n";
-        string SpecialDefenseStats = "Sp. defense: " + playerData.specialDefense.ToString() + "\n";
+        string HPstats = "HP: " + playerData.maxHealth.ToString("F2") + "\n"; 
+        string ManaStats = "Mana: " + playerData.maxMana.ToString("F2") + "\n";
+        string StaminaStats = "Stamina: " + playerData.maxStamina.ToString("F2") + "\n";
+        string SpeedStats = "Speed: " + playerData.speed.ToString("F2") + "\n";
+        string AttackStats = "Attack: " + playerData.attack.ToString("F2") + "\n";
+        string DefenseStats = "Defense: " + playerData.defense.ToString("F2") + "\n";
+        string SpecialAttackStats = "Sp. attack: " + playerData.specialAttack.ToString("F2") + "\n";
+        string SpecialDefenseStats = "Sp. defense: " + playerData.specialDefense.ToString("F2") + "\n";
         stats.text = HPstats + ManaStats + StaminaStats + SpeedStats + AttackStats + DefenseStats + SpecialAttackStats + SpecialDefenseStats;
 
         //Display coins amount

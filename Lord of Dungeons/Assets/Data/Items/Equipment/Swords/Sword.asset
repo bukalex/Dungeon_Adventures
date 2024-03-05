@@ -15,6 +15,7 @@ MonoBehaviour:
   playerData: {fileID: 0}
   name: Sword
   description: 
+  craftId: 0
   unitsPerStack: 0
   tag: 5
   itemType: 3
@@ -27,8 +28,14 @@ MonoBehaviour:
   restoreMP: 0
   restoreSPD: 0
   restoreStamina: 0
-  increseAttack: 0
-  increaseDamage: 0
+  addAttack: 0.3
+  addDefense: 0.3
+  addSpecialAttack: 0.3
+  addSpecialDefense: 0.3
+  increseAttack: 1
+  increaseDefense: 1
+  increseSpecialAttack: 1
+  increaseSpecialDefense: 1
   cooldown: 0
   ability: {fileID: 0}
   items: []
