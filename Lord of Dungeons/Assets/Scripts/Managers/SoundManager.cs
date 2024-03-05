@@ -23,8 +23,8 @@ public class SoundManager : MonoBehaviour
         {
             Instance = this;
         }
+
     }
-    
     public void PlayBGM(BGMSoundData.BGM bgm)
     {
         BGMSoundData data = bgmSoundDatas.Find(data => data.bgm == bgm);
@@ -36,19 +36,19 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySE(SESoundData.SE se)
     {
-        //SESoundData data = seSoundDatas.Find(data => data.se == se);
-        //if (data != null) // ここでnullチェックを追加
-        //{
-        //    seAudioSource.volume = data.volume * seMasterVolume * masterVolume;
-        //    seAudioSource.PlayOneShot(data.audioClip);
-        //}
-        //else
-        //{
-        //    Debug.LogWarning($"SE data not found for: {se}");
-        //}
         SESoundData data = seSoundDatas.Find(data => data.se == se);
-        seAudioSource.volume = data.volume * seMasterVolume * masterVolume;
-        seAudioSource.PlayOneShot(data.audioClip);
+        if (data != null) 
+        {
+            seAudioSource.volume = data.volume * seMasterVolume * masterVolume;
+            seAudioSource.PlayOneShot(data.audioClip);
+        }
+        else
+        {
+            Debug.LogWarning($"SE data not found for: {se}");
+        }
+        //SESoundData data = seSoundDatas.Find(data => data.se == se);
+        //seAudioSource.volume = data.volume * seMasterVolume * masterVolume;
+        //seAudioSource.PlayOneShot(data.audioClip);
     }
 
 }
@@ -81,6 +81,8 @@ public class SESoundData
         Dash,
         Run,
         WarriorBoomerang,
+        Fire,
+        EnemyAttack,
     }
 
     public SE se;

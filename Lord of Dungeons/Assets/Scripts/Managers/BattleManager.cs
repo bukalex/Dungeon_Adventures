@@ -40,10 +40,10 @@ public class BattleManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    private void Start()
-    {
-        SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Dungeon);
-    }
+    //private void Start()
+    //{
+    //    SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Dungeon);
+    //}
     private void Initialize()
     {
         playerActions.Add(PlayerUseSword);
@@ -182,7 +182,6 @@ public class BattleManager : MonoBehaviour
     //Performs an attack for Shift
     public bool PlayerPerformShift(PlayerData playerData)
     {
-        SoundManager.Instance.PlaySE(SESoundData.SE.Run);
         AttackParameters attack;
 
         if (playerData.attacks == null)
@@ -652,6 +651,7 @@ public class BattleManager : MonoBehaviour
             if (player.GetPlayerData().IsAlive())
             {
                 DealDamage(enemyParameters, player.GetPlayerData(), attack);
+                SoundManager.Instance.PlaySE(SESoundData.SE.EnemyAttack);
             }
         }
     }
@@ -676,6 +676,7 @@ public class BattleManager : MonoBehaviour
     {
         ProjectileController projectileController = Instantiate(enemyParameters.projectilePrefab, enemyParameters.position, new Quaternion()).GetComponent<ProjectileController>();
         projectileController.Launch("Enemy", enemyParameters, attack, enemyParameters.attackDirection);
+        SoundManager.Instance.PlaySE(SESoundData.SE.Fire);
     }
 
     private void DisableStun(AttackParameters attack)
