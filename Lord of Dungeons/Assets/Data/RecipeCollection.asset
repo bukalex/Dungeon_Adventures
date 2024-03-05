@@ -13,12 +13,85 @@ MonoBehaviour:
   m_Name: RecipeCollection
   m_EditorClassIdentifier: 
   Recipe:
-  - craftItem: {fileID: 11400000, guid: 24b7b41a74928a843bc2b0f5d2a8750d, type: 2}
+  - craftItem: {fileID: 11400000, guid: fefa174d7d9d4224bb9e2d6c512cdf67, type: 2}
     ItemId: 0
+    materials:
+    - amount: 4
+      materialId: 1
+  - craftItem: {fileID: 11400000, guid: 0a8989261c20e58459a5f4ebf6e4cc98, type: 2}
+    ItemId: 1
+    materials:
+    - amount: 2
+      materialId: 0
+    - amount: 4
+      materialId: 1
+    - amount: 1
+      materialId: 3
+  - craftItem: {fileID: 11400000, guid: de95299caa47e9545923684b319cd34d, type: 2}
+    ItemId: 2
+    materials:
+    - amount: 3
+      materialId: 0
+    - amount: 3
+      materialId: 1
+    - amount: 1
+      materialId: 3
+  - craftItem: {fileID: 11400000, guid: 51b54330146aa544a82654267ec7ae09, type: 2}
+    ItemId: 3
+    materials:
+    - amount: 4
+      materialId: 1
+    - amount: 1
+      materialId: 2
+  - craftItem: {fileID: 11400000, guid: 83ccdd4639e22f342a44ab3e60cbef54, type: 2}
+    ItemId: 4
+    materials:
+    - amount: 2
+      materialId: 1
+  - craftItem: {fileID: 11400000, guid: 19aeb51749633b94c9b7d572b0c5c780, type: 2}
+    ItemId: 5
+    materials:
+    - amount: 4
+      materialId: 0
+    - amount: 4
+      materialId: 0
+  - craftItem: {fileID: 11400000, guid: dbbbd316b6060054e9ac3d4bb8a0c0b9, type: 2}
+    ItemId: 6
+    materials:
+    - amount: 4
+      materialId: 0
+  - craftItem: {fileID: 11400000, guid: 79df8dbdbf1e753478e67d38c5d5307e, type: 2}
+    ItemId: 7
+    materials:
+    - amount: 4
+      materialId: 0
+  - craftItem: {fileID: 11400000, guid: 0096631c82fad394c87d28bf0d6722f1, type: 2}
+    ItemId: 8
+    materials:
+    - amount: 4
+      materialId: 0
+  - craftItem: {fileID: 11400000, guid: 24b7b41a74928a843bc2b0f5d2a8750d, type: 2}
+    ItemId: 9
+    materials:
+    - amount: 4
+      materialId: 0
+    - amount: 4
+      materialId: 0
+  - craftItem: {fileID: 11400000, guid: 8a2101e15bbf0104ebfeb69816b3af0d, type: 2}
+    ItemId: 9
     materials:
     - amount: 4
       materialId: 0
   materials:
   - MaterialSprite: {fileID: -1951645582, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
     MaterialId: 0
-    MaterialName: Iron Ingot
+    MaterialName: Silver Ingot
+  - MaterialSprite: {fileID: -1255418135, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
+    MaterialId: 1
+    MaterialName: Copper Ingot
+  - MaterialSprite: {fileID: -944675605, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
+    MaterialId: 2
+    MaterialName: Golden Ingot
+  - MaterialSprite: {fileID: 21300000, guid: 00ab6dfe7e8a3b44fb7530bcac919a27, type: 3}
+    MaterialId: 3
+    MaterialName: Chain
