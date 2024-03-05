@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
   name: Attack gem
-  description: 
-  craftId: 0
+  description: This special gem increases your attack by 1.2 times the original strenght,
+    turning every attack into a blow againts your enemies.
+  materialId: 0
   unitsPerStack: 0
   tag: 6
   itemType: 2
@@ -32,7 +33,7 @@ MonoBehaviour:
   addDefense: 0
   addSpecialAttack: 0
   addSpecialDefense: 0
-  increseAttack: 1.4
+  increseAttack: 1.2
   increaseDefense: 1
   increseSpecialAttack: 1.2
   increaseSpecialDefense: 1

@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
   name: Defense gem
-  description: 
-  craftId: 0
+  description: Use this gem to enhance your shield and reduce the damage received
+    by 1.2 times.
+  materialId: 0
   unitsPerStack: 0
   tag: 6
   itemType: 2
@@ -33,7 +34,7 @@ MonoBehaviour:
   addSpecialAttack: 0
   addSpecialDefense: 0
   increseAttack: 1
-  increaseDefense: 1.4
+  increaseDefense: 1.2
   increseSpecialAttack: 1
   increaseSpecialDefense: 1.2
   cooldown: 0

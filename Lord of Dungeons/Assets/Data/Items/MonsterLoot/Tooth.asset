@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerData: {fileID: 0}
   name: Tooth
-  description: 
+  description: Swap this tooth with a trader for a reward of 10 coins.
+  materialId: 0
   unitsPerStack: 32
   tag: 0
   itemType: 9
@@ -27,8 +28,14 @@ MonoBehaviour:
   restoreMP: 0
   restoreSPD: 0
   restoreStamina: 0
+  addAttack: 0
+  addDefense: 0
+  addSpecialAttack: 0
+  addSpecialDefense: 0
   increseAttack: 0
-  increaseDamage: 0
+  increaseDefense: 1
+  increseSpecialAttack: 1
+  increaseSpecialDefense: 1
   cooldown: 0
   ability: {fileID: 0}
   items: []
