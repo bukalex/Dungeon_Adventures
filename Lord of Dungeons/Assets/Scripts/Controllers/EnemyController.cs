@@ -53,7 +53,7 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
         List<SpriteRenderer> renderers = DetectSprites<SpriteRenderer>();
         foreach (SpriteRenderer renderer in renderers)
         {
-            if (renderer.sortingLayerName.Equals(spriteRenderer.sortingLayerName))
+            if (renderer != null && renderer.sortingLayerName.Equals(spriteRenderer.sortingLayerName))
             {
                 angle = Vector2.SignedAngle(Vector3.right, renderer.transform.parent.position - transform.position);
                 if (135 >= angle && angle > 45)

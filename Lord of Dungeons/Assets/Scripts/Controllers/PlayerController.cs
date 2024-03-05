@@ -204,6 +204,15 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
                     activeLootable.BeingLooted(isLooting);
                 }
             }
+
+            if (activeLootable != null)
+            {
+                if ((activeLootable.transform.position - transform.position).magnitude - playerData.colliderRadius - activeLootable.GetColliderRadius() > playerData.lootableDetectionRadius)
+                {
+                    activeLootable.BeingLooted(false);
+                    activeLootable = null;
+                }
+            }
             #endregion
 
             //Stats restore

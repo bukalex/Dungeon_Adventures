@@ -53,7 +53,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Chest UI Properties")]
     [SerializeField] private GameObject ChestUI;
-    [SerializeField] private GameObject[] ChestUIs, Chests;
+    [SerializeField] public GameObject[] ChestUIs, Chests;
     [SerializeField] private Canvas playerCanvas;
 
     [Header("Escape Menu Properties")]
