@@ -9,6 +9,7 @@ public class AbilitySlot : MonoBehaviour, IDropHandler
     {
         if(InventoryManager.Instance.activeAbilities == 0)
         {
+            Debug.Log(gameObject);
             GameObject dropped = eventData.pointerDrag;
             AbilityItem abilityItem = dropped.GetComponent<AbilityItem>();
             abilityItem.parentAfterDrag = transform;
