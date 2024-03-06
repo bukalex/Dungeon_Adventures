@@ -361,6 +361,7 @@ public class UIManager : MonoBehaviour
     {
         if (checkpoint != SceneManager.GetActiveScene().buildIndex)
         {
+            if (checkpoint == 1) CheckpointManager.Instance.levelsPassed = 0;
             foreach (GameObject obj in GameObject.FindGameObjectsWithTag("PopUpUI"))
             {
                 Destroy(obj);
