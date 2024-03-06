@@ -1,6 +1,7 @@
 using Assets.Scripts.Recipes;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,18 +13,18 @@ using Material = Assets.Scripts.Recipes.Material;
 public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHandler
 {
     public Button insertButton;
+    public GameObject ContainerOfItemHolders;
 
     [SerializeField] private GameObject materiaSlotsGroup;
     [SerializeField] private InventorySlot[] materialSlots;
     [SerializeField] private GameObject ItemHolderPrefab;
     [SerializeField] private RecipeCollection recipe;
     [SerializeField] private Button CraftItemButton;
-    [SerializeField] private GameObject materialRequireDisplayPrefab;
-    [SerializeField] private GameObject materialDisplayPrefab;
-    [SerializeField] private GameObject materialIconPrefab;
-    [SerializeField] private TMP_Text materialAmount;
+    [SerializeField] private List<GameObject> ItemHolders;
     private Dictionary<int, int> insertedMaterial = new Dictionary<int, int>();
     private Dictionary<int, int> previousFrame = new Dictionary<int, int>();
+    private int recipeAmount;
+    public bool filled = true;
 
     private void Awake()
     {
@@ -32,9 +33,15 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
     }
     private void Update()
     {
+        if (filled)
+        {
+            foreach (ItemRecipe recipe in recipe.GetListOfRecipes())
+                InitializeItemHolder(recipe.ItemId);
+            if(ItemHolders.Count == recipe.GetListOfRecipes().Count)
+                filled = false;
+        }
 
-        if(Input.GetKey(KeyCode.Escape)) 
-            Debug.Log(insertedMaterial);
+
         previousFrame.Clear();
         foreach(KeyValuePair<int, int> pair in insertedMaterial)
         {
@@ -85,38 +92,33 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
             }
         }
     }
-    public void InstantiateNewItemHolder(int recipeID)
-    {
 
-    }
-    public void InitializeItemIcon(Sprite sprite)
+    public void InitializeItemHolder(int ItemID)
     {
+        GameObject newItemHolder = Instantiate(ItemHolderPrefab, ContainerOfItemHolders.transform);
+        ItemHolders.Add(newItemHolder);
+        BlacksmithItemHolder itemHolder = newItemHolder.GetComponent<BlacksmithItemHolder>();
+        itemHolder.ItemID = ItemID;
 
-    }
+        Dictionary<Sprite, int> materials = new Dictionary<Sprite, int>();
+        Sprite[] materialSprites = recipe.GetMaterialsSpritesByItemID(ItemID, recipe);
+        int[] materialAmounts = recipe.GetMaterialAmountsToCraftByItemID(ItemID, recipe);
+        //Initialize Item Icon that it will craft
+        itemHolder.itemIcon.GetComponent<Image>().sprite = recipe.GetListOfRecipes()[ItemID].craftItem.image;
 
-    public void InitializeMaterialDisplay(GameObject itemHolderPref)
-    {
-        GameObject materialsRequireDisplay = Instantiate(materialRequireDisplayPrefab, itemHolderPref.transform.parent);
-        List<MaterialToCraft> requireMaterials = recipe.GetMaterialsToCraft(0);
-        List<GameObject> materialDisplays = new List<GameObject>();
-        List<TMP_Text> costs = new List<TMP_Text>();
-        List<GameObject> materialIcons = new List<GameObject>();
-        for (int i = 0; i < requireMaterials.Count; i++)
+        //Initialize material icons that we need to craft an item
+        for(int i = 0; i < materialSprites.Length; i++)
         {
-            GameObject newMaterialDisplay = Instantiate(materialDisplayPrefab, materialRequireDisplayPrefab.transform.parent);
-            materialDisplays.Add(newMaterialDisplay);
+            itemHolder.materialDisplays[i].transform.GetChild(1).GetComponent<Image>().sprite = materialSprites[i];
+            itemHolder.materialDisplays[i].transform.GetChild(1).GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
         }
-        foreach (GameObject materialDisplay in materialDisplays)
+
+        //Initialize amount of material that we need to craft an item
+        for(int i = 0; i < materialAmounts.Length; i++)
         {
-            TMP_Text cost = Instantiate(materialAmount, materialDisplay.transform.parent);
-            costs.Add(cost);
-            GameObject materialIcon = Instantiate(materialIconPrefab, materialDisplay.transform.parent);
-            materialIcons.Add(materialIcon);
-        }
-        foreach(MaterialToCraft material in requireMaterials)
-        {
-            foreach (GameObject materialIcon in materialIcons)
-                materialIcon.GetComponent<Image>().sprite = recipe.GetMaterialSprite(material.materialId);
+            Debug.Log(materialAmounts[i].ToString());
+            itemHolder.materialDisplays[i].transform.GetChild(0).GetComponent<TMP_Text>().text = materialAmounts[i].ToString();
+
         }
     }
 }
