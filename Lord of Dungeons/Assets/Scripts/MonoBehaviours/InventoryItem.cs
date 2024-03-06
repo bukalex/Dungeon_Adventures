@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
     public Item item;
@@ -15,6 +15,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public GameObject InventoryItemPrefab;
     [SerializeField]
     public int materialID;
+
+    public GameObject ItemDescription;
 
     [HideInInspector]
     public Image image;
@@ -65,5 +67,21 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             image.raycastTarget = true;
             transform.SetParent(parentAfterDrag);
         }
+    }
+    private IEnumerator onItemDescription(float interval)
+    {
+        yield return new WaitForSeconds(interval);
+        ItemDescription.SetActive(true);
+    }
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        onItemDescription(0.75f);
+        ItemDescription.SetActive(true);
+        ItemDescription.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        ItemDescription.SetActive(false);
     }
 }
