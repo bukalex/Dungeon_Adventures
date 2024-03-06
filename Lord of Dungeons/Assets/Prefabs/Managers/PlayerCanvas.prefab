@@ -13205,7 +13205,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00005340576}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0.15, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &8453936419605905598
@@ -26254,7 +26254,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2808919326602978874, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.14214972
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2808919326602978874, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -26284,6 +26284,74 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: seSoundDatas.Array.size
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: bgmSoundDatas.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: seSoundDatas.Array.data[13].se
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: seSoundDatas.Array.data[14].se
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: seSoundDatas.Array.data[15].se
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: bgmSoundDatas.Array.data[0].bgm
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: bgmSoundDatas.Array.data[1].bgm
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: bgmSoundDatas.Array.data[1].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: seSoundDatas.Array.data[13].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: seSoundDatas.Array.data[14].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: seSoundDatas.Array.data[15].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: seSoundDatas.Array.data[6].audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8c566aa771df4a84c9f7d2368f4f56ae, type: 3}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: bgmSoundDatas.Array.data[0].audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: a0a5dce2f0e9b3340aa66b55f523e04d, type: 3}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: bgmSoundDatas.Array.data[1].audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 5aeb470ec099e9b45a5141c536731cb0, type: 3}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: seSoundDatas.Array.data[13].audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 0c930c55ed28b734c97b659f96eec49e, type: 3}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: seSoundDatas.Array.data[14].audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d2878ed3fb7e5f4479b7ac7b494dcf6c, type: 3}
+    - target: {fileID: 7737406939647449801, guid: 4ec3fddea43d9c340b0545bd44c9a7b6, type: 3}
+      propertyPath: seSoundDatas.Array.data[15].audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: a1100a899a72cb84291bd4e7c770b1f8, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -41572,6 +41640,10 @@ PrefabInstance:
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 2724193799405771190, guid: 2f796508b43af694baff293cabb3520f, type: 3}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2724193799405771190, guid: 2f796508b43af694baff293cabb3520f, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -41606,6 +41678,10 @@ PrefabInstance:
     - target: {fileID: 2968076052651347817, guid: 2f796508b43af694baff293cabb3520f, type: 3}
       propertyPath: m_SizeDelta.x
       value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3196183805249975002, guid: 2f796508b43af694baff293cabb3520f, type: 3}
+      propertyPath: m_Value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3196183805249975002, guid: 2f796508b43af694baff293cabb3520f, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
@@ -41709,7 +41785,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5218304390912211684, guid: 2f796508b43af694baff293cabb3520f, type: 3}
       propertyPath: m_VerticalScrollbarSpacing
-      value: 0
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 5499808475461850429, guid: 2f796508b43af694baff293cabb3520f, type: 3}
       propertyPath: m_Type
