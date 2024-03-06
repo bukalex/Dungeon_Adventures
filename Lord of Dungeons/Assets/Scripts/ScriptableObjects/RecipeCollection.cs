@@ -64,4 +64,9 @@ public class RecipeCollection : ScriptableObject
         }
         return materialAmounts.ToArray();
     }
+    public int GetMaterialAmount(int itemID, RecipeCollection recipe)
+    {
+        List<MaterialToCraft> materialToCrafts = recipe.GetMaterialsToCraft(itemID);
+        return materialToCrafts[itemID].amount;
+    }
 }

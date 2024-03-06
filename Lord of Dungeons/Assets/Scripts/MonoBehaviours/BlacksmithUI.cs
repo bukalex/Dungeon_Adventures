@@ -53,13 +53,14 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
             previousFrame.Add(pair.Key, pair.Value);
         }
         insertedMaterial.Clear();
-        foreach (InventorySlot materialSlot in materialSlots)
+        for(int i = 0; i < materialSlots.Length; i++)
         {
+            InventorySlot materialSlot = materialSlots[i];
             InventoryItem materialInSlot = materialSlot.GetComponentInChildren<InventoryItem>();
             if(materialInSlot != null)
             {
                 int materialId = materialInSlot.materialID;
-                int CraftAmount = materialInSlot.count;
+                int CraftAmount = materialInSlot.count; 
                 if (insertedMaterial.ContainsKey(materialId))
                 {
                     insertedMaterial[materialId] += CraftAmount;
@@ -72,7 +73,9 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
         {
             if (previousFrame.Count != insertedMaterial.Count || !insertedMaterial.ContainsKey(pair.Key) || insertedMaterial[pair.Key] != previousFrame[pair.Key])
             {
-                craftItemButton.onClick.AddListener(() => CraftItem(currentItemID));
+                Debug.Log(insertedMaterial.Count);
+                craftItemButton.onClick.RemoveAllListeners();
+                craftItemButton.onClick.AddListener(delegate { CraftItem(currentItemID); });
                 break;
             }
         }
@@ -82,14 +85,17 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
         List<InventoryItem> materials = new List<InventoryItem>();
         foreach(InventorySlot materialSlot in materialSlots)
         {
+            
             InventoryItem material = materialSlot.GetComponentInChildren<InventoryItem>();
-            materials.Add(material);
+            if(material != null)
+                materials.Add(material);
         }
 
 
         int craftRate = 0;
         Item craftableItem = recipe.GetCraftableItem(ItemID);
         List<MaterialToCraft> requireMaterials= recipe.GetMaterialsToCraft(ItemID);
+
         if(insertedMaterial.Count == requireMaterials.Count)
         {
             foreach (MaterialToCraft requiredMaterial in requireMaterials)
@@ -103,10 +109,13 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
                 {
                     InventorySlot materialSlot = materialSlots[i];
                     InventoryItem material = materialSlot.GetComponentInChildren<InventoryItem>();
-                    if(material != null)
+                    if (material != null)
                     {
-                        material.count -= insertedMaterial[material.materialID];
+                        material.count -= recipe.GetMaterialAmountsToCraftByItemID(ItemID, recipe)[i];
                         material.updateCount();
+                        
+                        if(material.count == 0)
+                            Destroy(material.gameObject);
                     }
                 }
                 InventoryManager.Instance.AddItem(craftableItem, InventoryManager.Instance.toolBar, InventoryManager.Instance.internalInventorySlots);
@@ -137,7 +146,6 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
         //Initialize amount of material that we need to craft an item
         for(int i = 0; i < materialAmounts.Length; i++)
         {
-            Debug.Log(materialAmounts[i].ToString());
             itemHolder.materialDisplays[i].transform.GetChild(0).GetComponent<TMP_Text>().text = materialAmounts[i].ToString();
 
         }
