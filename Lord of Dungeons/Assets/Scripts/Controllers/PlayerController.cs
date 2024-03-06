@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
         animator.runtimeAnimatorController = playerData.animController;
         if (playerData.isDead)
         {
+            CheckpointManager.Instance.levelsPassed = 0;
             transform.position += Vector3.down * 15;
             playerData.isDead = false;
         }
