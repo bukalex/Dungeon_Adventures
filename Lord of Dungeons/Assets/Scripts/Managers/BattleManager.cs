@@ -484,6 +484,26 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerUseSword(PlayerData playerData, AttackParameters attack)
     {
+        Transform trail = Instantiate(battleData.swordParticles, playerData.position + Vector3.up * 0.5f, Quaternion.Euler(0, 0, 90), playerData.transform).transform;
+        float angle = Vector2.SignedAngle(Vector3.right, playerData.attackDirection);
+        if (135 >= angle && angle > 45)
+        {
+            trail.localScale = new Vector3(0.85f, -0.85f, 0.85f);
+            trail.Rotate(0, 0, 90);
+        }
+        if (-135 <= angle && angle < -45)
+        {
+            trail.localScale = new Vector3(-0.85f, -0.85f, 0.85f);
+            trail.Rotate(0, 0, 90);
+        }
+        else if(Mathf.Abs(angle) > 135)
+        {
+            trail.localScale = new Vector3(0.85f, -0.85f, 0.85f);
+        }
+        else
+        {
+            trail.localScale = new Vector3(0.85f, 0.85f, 0.85f);
+        }
         bool shakeCamera = false;
         bool stopAnimation = false;
         if (playerData.critChance >= UnityEngine.Random.Range(0f, 100f))
