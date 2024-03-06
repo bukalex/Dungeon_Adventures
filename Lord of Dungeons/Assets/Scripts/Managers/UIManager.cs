@@ -95,11 +95,13 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        
         resolutions = Screen.resolutions;
 
         resolutionDropdown.ClearOptions();
 
         List<string> options = new List<string>();
+        options.Clear();
         int currentResolutionIndex = 0;
         for (int i = 0; i < resolutions.Length; i++)
         {
