@@ -212,6 +212,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
         else if (!alreadyDead && !playerData.isStunned)
         {
             Die();
+            SoundManager.Instance.PlaySE(SESoundData.SE.PlayerDeath);
 
             capsuleCollider.enabled = false;
             body.velocity = Vector3.zero;

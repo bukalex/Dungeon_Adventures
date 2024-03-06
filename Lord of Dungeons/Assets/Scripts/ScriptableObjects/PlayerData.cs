@@ -69,7 +69,6 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     {
         if (isDead)
         {
-            SoundManager.Instance.PlaySE(SESoundData.SE.PlayerDeath);
             health = 1;
         }
         else
