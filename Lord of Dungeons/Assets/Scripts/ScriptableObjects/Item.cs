@@ -28,6 +28,12 @@ public class Item : ScriptableObject
     public float restoreSPD;
     public float restoreStamina;
 
+    [Header("Additions")]
+    public float addAttack;
+    public float addDefense;
+    public float addSpecialAttack;
+    public float addSpecialDefense;
+
     [Header("Multipliers")]
     public float increseAttack;
     public float increaseDefense;
