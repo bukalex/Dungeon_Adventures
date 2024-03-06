@@ -12,6 +12,10 @@ public class RecipeCollection : ScriptableObject
 
     public List<Material> materials = new List<Material>();
 
+    public string GetItemName(int ItemID)
+    {
+        return Recipe[ItemID].ItemName;
+    }
     public Item GetCraftableItem(int itemId)
     {
         return Recipe[itemId].craftItem;

@@ -12,24 +12,29 @@ using Material = Assets.Scripts.Recipes.Material;
 
 public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHandler
 {
-    public Button insertButton;
-    public GameObject ContainerOfItemHolders;
+    public Button craftItemButton;
+    public Text buttonText;
+    public int currentItemID;
+    public string itemName;
 
+    [SerializeField] private GameObject ContainerOfItemHolders;
     [SerializeField] private GameObject materiaSlotsGroup;
     [SerializeField] private InventorySlot[] materialSlots;
     [SerializeField] private GameObject ItemHolderPrefab;
     [SerializeField] private RecipeCollection recipe;
-    [SerializeField] private Button CraftItemButton;
     [SerializeField] private List<GameObject> ItemHolders;
     private Dictionary<int, int> insertedMaterial = new Dictionary<int, int>();
     private Dictionary<int, int> previousFrame = new Dictionary<int, int>();
     private int recipeAmount;
-    public bool filled = true;
+    private bool filled = true;
 
+    public static BlacksmithUI Instance { get; private set; }
     private void Awake()
     {
-        materialSlots = materiaSlotsGroup.GetComponentsInChildren<InventorySlot>();
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
 
+        materialSlots = materiaSlotsGroup.GetComponentsInChildren<InventorySlot>();
     }
     private void Update()
     {
@@ -53,7 +58,7 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
             InventoryItem materialInSlot = materialSlot.GetComponentInChildren<InventoryItem>();
             if(materialInSlot != null)
             {
-                int materialId = materialInSlot.craftID;
+                int materialId = materialInSlot.materialID;
                 int CraftAmount = materialInSlot.count;
                 if (insertedMaterial.ContainsKey(materialId))
                 {
@@ -67,17 +72,24 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
         {
             if (previousFrame.Count != insertedMaterial.Count || !insertedMaterial.ContainsKey(pair.Key) || insertedMaterial[pair.Key] != previousFrame[pair.Key])
             {
-                CraftItemButton.onClick.AddListener(() => CraftItem());
-
+                craftItemButton.onClick.AddListener(() => CraftItem(currentItemID));
                 break;
             }
         }
     }
-    public void CraftItem()
+    public void CraftItem(int ItemID)
     {
+        List<InventoryItem> materials = new List<InventoryItem>();
+        foreach(InventorySlot materialSlot in materialSlots)
+        {
+            InventoryItem material = materialSlot.GetComponentInChildren<InventoryItem>();
+            materials.Add(material);
+        }
+
+
         int craftRate = 0;
-        Item craftableItem = recipe.GetCraftableItem(0);
-        List<MaterialToCraft> requireMaterials= recipe.GetMaterialsToCraft(0);
+        Item craftableItem = recipe.GetCraftableItem(ItemID);
+        List<MaterialToCraft> requireMaterials= recipe.GetMaterialsToCraft(ItemID);
         if(insertedMaterial.Count == requireMaterials.Count)
         {
             foreach (MaterialToCraft requiredMaterial in requireMaterials)
@@ -87,7 +99,16 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
             Debug.Log(craftRate);
             if (craftRate == requireMaterials.Count)
             {
-                // TODO: Remove Items when it needs, 
+                for(int i = 0; i < materialSlots.Length; i++)
+                {
+                    InventorySlot materialSlot = materialSlots[i];
+                    InventoryItem material = materialSlot.GetComponentInChildren<InventoryItem>();
+                    if(material != null)
+                    {
+                        material.count -= insertedMaterial[material.materialID];
+                        material.updateCount();
+                    }
+                }
                 InventoryManager.Instance.AddItem(craftableItem, InventoryManager.Instance.toolBar, InventoryManager.Instance.internalInventorySlots);
             }
         }
