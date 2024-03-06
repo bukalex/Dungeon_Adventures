@@ -209,6 +209,7 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
         }
         else
         {
+            SoundManager.Instance.PlaySE(SESoundData.SE.PlayerHit);
             health -= damage;
             return damage;
         }

@@ -40,6 +40,10 @@ public class BattleManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    private void Start()
+    {
+        SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Dungeon);
+    }
 
     private void Initialize()
     {
@@ -243,6 +247,7 @@ public class BattleManager : MonoBehaviour
     //Called be projectiles upon hit
     public void ProjectileHit(IAttackObject attackObject, IDefenseObject defenseObject, AttackParameters attack, bool isPerFrame = false)
     {
+        SoundManager.Instance.PlaySE(SESoundData.SE.HitProjectile);
         DealDamage(attackObject, defenseObject, attack, isPerFrame);
     }
 
@@ -515,6 +520,7 @@ public class BattleManager : MonoBehaviour
 
         if (shakeCamera)
         {
+            SoundManager.Instance.PlaySE(SESoundData.SE.Attack);
             Camera.main.GetComponent<Animator>().SetTrigger("shake");
         }
 
@@ -556,6 +562,7 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerActivateShield(PlayerData playerData, AttackParameters attack)
     {
+        SoundManager.Instance.PlaySE(SESoundData.SE.Shield);
         GameObject shield = Instantiate(battleData.shieldPrefab, playerData.transform);
         shield.transform.localPosition = new Vector3(0, 0.5f, 0);
         shield.GetComponent<ParticleSystem>().Play(battleData.shieldPrefab);
@@ -587,6 +594,7 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerLeap(PlayerData playerData, AttackParameters attack)
     {
+        SoundManager.Instance.PlaySE(SESoundData.SE.Leap);
         attack.playerData = playerData;
         
         EnemyController enemy = GetNearestTarget<EnemyController>(playerData.position, attack.range + playerData.colliderRadius, playerData.attackDirection, false);
@@ -630,6 +638,7 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerBoomerang(PlayerData playerData, AttackParameters attack)
     {
+        SoundManager.Instance.PlaySE(SESoundData.SE.WarriorBoomerang);
         attack.playerData = playerData;
         GameObject boomerang = Instantiate(battleData.boomerangPrefab, playerData.position, Quaternion.AngleAxis(Vector3.SignedAngle(Vector3.up, playerData.attackDirection, Vector3.forward), Vector3.forward));
         boomerang.GetComponent<ProjectileController>().Launch("Player", playerData, attack, playerData.attackDirection);
@@ -637,6 +646,7 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerDash(PlayerData playerData, AttackParameters attack)
     {
+        SoundManager.Instance.PlaySE(SESoundData.SE.Dash);
         battleData.attackDirections.Add(playerData, playerData.attackDirection);
         playerData.transform.GetComponent<Rigidbody2D>().excludeLayers = LayerMask.GetMask(new string[] { "Creatures" });
 
@@ -682,12 +692,14 @@ public class BattleManager : MonoBehaviour
         EnemyController enemy = GetNearestTarget<EnemyController>(playerData.position, attack.range + playerData.colliderRadius, playerData.attackDirection, false, false);
         if (enemy != null)
         {
+            SoundManager.Instance.PlaySE(SESoundData.SE.PlayerExplosion);
             Instantiate(battleData.explosionPrefab, enemy.transform.position - new Vector3(0, enemy.enemyParameters.colliderRadius/2, 0), Quaternion.identity).GetComponent<ProjectileController>().Launch(playerData, attack);
         }
     }
 
     private void PlayerPushingWave(PlayerData playerData, AttackParameters attack)
     {
+        SoundManager.Instance.PlaySE(SESoundData.SE.PushingWave);
         attack.enemyParametersList = new List<EnemyParameters>();
         List<EnemyController> enemies = DetectTargets<EnemyController>(playerData.position, attack.range + playerData.colliderRadius, playerData.attackDirection, false);
         foreach (EnemyController enemy in enemies)
@@ -726,6 +738,7 @@ public class BattleManager : MonoBehaviour
         battleData.guisonKnifes = new List<ProjectileController>();
         for (int i = 0; i < 5; i++)
         {
+            SoundManager.Instance.PlaySE(SESoundData.SE.PlayerKnife);
             ProjectileController projectile = Instantiate(battleData.guisonKnifePrefab, 
                 playerData.position, 
                 Quaternion.AngleAxis(Vector3.SignedAngle(Vector3.up, playerData.attackDirection, Vector3.forward) -45 + 22.5f * i, Vector3.forward)).GetComponent<ProjectileController>();
@@ -772,6 +785,8 @@ public class BattleManager : MonoBehaviour
 
     private void GuardUseSword(EnemyParameters enemyParameters, AttackParameters attack)
     {
+        if(!enemyParameters.isBoss) SoundManager.Instance.PlaySE(SESoundData.SE.GuardAttack);
+        else SoundManager.Instance.PlaySE(SESoundData.SE.GuardSpecialAttack);
         List<PlayerController> players = DetectTargets<PlayerController>(enemyParameters.position, attack.range + enemyParameters.colliderRadius + 0.25f, enemyParameters.attackDirection);
         foreach (PlayerController player in players)
         {
@@ -800,6 +815,7 @@ public class BattleManager : MonoBehaviour
 
     private void GhostShoot(EnemyParameters enemyParameters, AttackParameters attack)
     {
+        SoundManager.Instance.PlaySE(SESoundData.SE.GhoastProjectile);
         ProjectileController projectileController = Instantiate(enemyParameters.projectilePrefab, enemyParameters.position, new Quaternion()).GetComponent<ProjectileController>();
         projectileController.Launch("Enemy", enemyParameters, attack, enemyParameters.attackDirection);
     }
