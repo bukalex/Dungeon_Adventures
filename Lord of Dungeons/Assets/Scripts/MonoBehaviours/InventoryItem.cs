@@ -76,7 +76,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public void OnPointerEnter(PointerEventData eventData)
     {
         onItemDescription(0.75f);
-        ItemDescription.SetActive(true);
+        ItemDescription.SetActive(true); 
         ItemDescription.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 

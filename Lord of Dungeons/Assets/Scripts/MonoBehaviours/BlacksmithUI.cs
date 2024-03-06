@@ -36,6 +36,16 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
 
         materialSlots = materiaSlotsGroup.GetComponentsInChildren<InventorySlot>();
     }
+    private void OnEnable()
+    {
+        UIManager.Instance.InventorySlots.SetActive(true);
+        UIManager.Instance.npcWindowActive = true;
+    }
+    private void OnDisable()
+    {
+        UIManager.Instance.InventorySlots.SetActive(false);
+        UIManager.Instance.npcWindowActive = false;
+    }
     private void Update()
     {
         if (filled)
