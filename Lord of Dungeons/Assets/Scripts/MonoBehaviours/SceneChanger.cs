@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneChanger : MonoBehaviour, IInteractable
 {
+    public Animator anim;
     private int SceneToChange;
 
     [SerializeField]
@@ -27,10 +29,16 @@ public class SceneChanger : MonoBehaviour, IInteractable
                 if (obj.GetComponent<EnemyController>() != null && obj.GetComponent<EnemyController>().IsAlive()) return;
             }
 
-            ChangeScene();
+            StartCoroutine(waitForAnimation());
         }
     }
 
+    public IEnumerator waitForAnimation()
+    {
+        anim.SetTrigger("FadeOut");
+        yield return new WaitForSeconds(1);
+        ChangeScene();
+    }
     public void ChangeScene()
     {
         List<GameObject> popUps = new List<GameObject>();
