@@ -5,24 +5,26 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    [SerializeField] AudioSource bgmAudioSource;
-    [SerializeField] AudioSource seAudioSource;
+    [SerializeField] public AudioSource bgmAudioSource;
+    [SerializeField] public AudioSource seAudioSource;
 
-    [SerializeField] List<BGMSoundData> bgmSoundDatas;
-    [SerializeField] List<SESoundData> seSoundDatas;
+    [SerializeField] public List<BGMSoundData> bgmSoundDatas;
+    [SerializeField] public List<SESoundData> seSoundDatas;
 
     public float masterVolume = 1;
     public float bgmMasterVolume = 1;
     public float seMasterVolume = 1;
-    private BGMSoundData.BGM music = BGMSoundData.BGM.Dungeon;
+    public BGMSoundData.BGM music = BGMSoundData.BGM.Dungeon;
 
     public static SoundManager Instance { get; private set; }
 
-    private void Awake()
+    private void Start()
     {
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
+            PlayBGM(BGMSoundData.BGM.Dungeon);
         }
 
     }
@@ -51,18 +53,6 @@ public class SoundManager : MonoBehaviour
         //SESoundData data = seSoundDatas.Find(data => data.se == se);
         //seAudioSource.volume = data.volume * seMasterVolume * masterVolume;
         //seAudioSource.PlayOneShot(data.audioClip);
-    }
-
-    public void ChangeSFXVolume(float value)
-    {
-        seMasterVolume = value;
-    }
-
-    public void ChangeMusicVolume(float value)
-    {
-        BGMSoundData data = bgmSoundDatas.Find(data => data.bgm == music);
-        bgmMasterVolume = value;
-        bgmAudioSource.volume = data.volume * bgmMasterVolume * masterVolume;
     }
 }
 

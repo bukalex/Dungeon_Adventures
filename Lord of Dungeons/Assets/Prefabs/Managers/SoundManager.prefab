@@ -49,8 +49,11 @@ MonoBehaviour:
   bgmAudioSource: {fileID: 295564415048511307}
   seAudioSource: {fileID: 1328392645993931972}
   bgmSoundDatas:
+  - bgm: 0
+    audioClip: {fileID: 8300000, guid: a0a5dce2f0e9b3340aa66b55f523e04d, type: 3}
+    volume: 1
   - bgm: 1
-    audioClip: {fileID: 8300000, guid: f917a1379f0167047903303d71da3f8c, type: 3}
+    audioClip: {fileID: 8300000, guid: 5aeb470ec099e9b45a5141c536731cb0, type: 3}
     volume: 1
   seSoundDatas:
   - se: 6
@@ -72,7 +75,7 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: 9850c00579565f44bad45053ce834fba, type: 3}
     volume: 1
   - se: 10
-    audioClip: {fileID: 8300000, guid: 53959f86bd4b0bf4791f12d508f99141, type: 3}
+    audioClip: {fileID: 8300000, guid: 8c566aa771df4a84c9f7d2368f4f56ae, type: 3}
     volume: 1
   - se: 9
     audioClip: {fileID: 8300000, guid: 5868ed912fa8cfb438ed1afcce8f2789, type: 3}
@@ -92,6 +95,15 @@ MonoBehaviour:
   - se: 13
     audioClip: {fileID: 8300000, guid: b100ad389462f3b4fa5850270f274302, type: 3}
     volume: 1
+  - se: 14
+    audioClip: {fileID: 8300000, guid: 0c930c55ed28b734c97b659f96eec49e, type: 3}
+    volume: 1
+  - se: 15
+    audioClip: {fileID: 8300000, guid: d2878ed3fb7e5f4479b7ac7b494dcf6c, type: 3}
+    volume: 1
+  - se: 7
+    audioClip: {fileID: 8300000, guid: a1100a899a72cb84291bd4e7c770b1f8, type: 3}
+    volume: 1
   masterVolume: 1
   bgmMasterVolume: 1
   seMasterVolume: 1
@@ -106,7 +118,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1

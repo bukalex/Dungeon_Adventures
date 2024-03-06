@@ -448,4 +448,15 @@ public class UIManager : MonoBehaviour
         Bar.GetComponent<Slider>().value = health;
     }
 
+    public void ChangeSFXVolume(float value)
+    {
+        SoundManager.Instance.seMasterVolume = value;
+    }
+
+    public void ChangeMusicVolume(float value)
+    {
+        BGMSoundData data = SoundManager.Instance.bgmSoundDatas.Find(data => data.bgm == SoundManager.Instance.music);
+        SoundManager.Instance.bgmMasterVolume = value;
+        SoundManager.Instance.bgmAudioSource.volume = data.volume * SoundManager.Instance.bgmMasterVolume * SoundManager.Instance.masterVolume;
+    }
 }
