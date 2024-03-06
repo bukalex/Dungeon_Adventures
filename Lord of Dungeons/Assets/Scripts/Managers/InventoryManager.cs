@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
+    public GameObject ItemDescription;
     private InventorySlot[] emp;
     [Header("Loot Tables")]  
     public Item[] startItems;
@@ -230,6 +231,10 @@ public class InventoryManager : MonoBehaviour
             }
         }
         return false;
+    }
+    public void InitializeItemDescription(Item item)
+    {
+
     }
 
     public bool HasCoins()

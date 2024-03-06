@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
+public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField]
     public Item item;
@@ -16,7 +16,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [SerializeField]
     public int materialID;
 
-    public GameObject ItemDescription;
 
     [HideInInspector]
     public Image image;
@@ -71,17 +70,19 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     private IEnumerator onItemDescription(float interval)
     {
         yield return new WaitForSeconds(interval);
-        ItemDescription.SetActive(true);
+        InventoryManager.Instance.ItemDescription.SetActive(true);
     }
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        onItemDescription(0.75f);
-        ItemDescription.SetActive(true); 
-        ItemDescription.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        ItemDescription.SetActive(false);
-    }
+    //public void OnPointerEnter(PointerEventData eventData)
+    //{
+    //    onItemDescription(0.75f);
+    //    InventoryManager.Instance.ItemDescription.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    //    InventoryManager.Instance.InitializeItemDescription(item);
+    //
+    //    Debug.Log("Enter");
+    //}
+    //
+    //public void OnPointerExit(PointerEventData eventData)
+    //{
+    //    InventoryManager.Instance.ItemDescription.SetActive(false);
+    //}
 }
