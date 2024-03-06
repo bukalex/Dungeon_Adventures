@@ -339,7 +339,7 @@ public class InventoryManager : MonoBehaviour
     }
     public void itemIsUsed(Item item)
     {
-        if (item.GetItemType(item.itemType) == "Potion")
+        if (item.itemType == Item.ItemType.Potion)
         {
             playerData.health += item.addHP;
             playerData.mana += item.addMP;
@@ -360,16 +360,17 @@ public class InventoryManager : MonoBehaviour
             Item item = itemInSlot.item;
             if (item.isUsable == true)
             {
-                    itemInSlot.count--;
-                    if(itemInSlot.count <= 0)
-                    {
-                        Destroy(itemInSlot.gameObject);
-                        itemIsUsed(item);
-                    }
-                    else
-                    {
-                        itemInSlot.updateCount();
-                    }
+                itemIsUsed(item);
+                itemInSlot.count--;
+                if(itemInSlot.count <= 0)
+                {
+                    Destroy(itemInSlot.gameObject);
+                        
+                }
+                else
+                {
+                    itemInSlot.updateCount();
+                }
             }
             return item;
         }
