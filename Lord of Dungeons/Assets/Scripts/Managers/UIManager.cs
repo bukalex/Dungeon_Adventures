@@ -211,7 +211,7 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(keyCodes[12]))
+        if (!npcWindowActive && Input.GetKeyDown(keyCodes[12]))
         {
             escapeUI.SetActive(!escapeUI.activeSelf);
             if (escapeUI.activeSelf)

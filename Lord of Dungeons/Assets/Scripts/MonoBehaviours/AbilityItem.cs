@@ -20,7 +20,7 @@ public class AbilityItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void InitializeAbility(Ability newAbility)
     {
         ability = newAbility;
-        image.sprite = newAbility.backgroundSprite;
+        image.sprite = newAbility.maskSprite;
         imageBackground.sprite = newAbility.backgroundSprite;
         clock.sprite = newAbility.backgroundSprite;
     }
