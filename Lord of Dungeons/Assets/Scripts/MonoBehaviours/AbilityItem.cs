@@ -61,7 +61,7 @@ public class AbilityItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             if (existingAbility != null) existingAbility.transform.SetParent(parentBeforeDrag);
 
             image.raycastTarget = true;
-            transform.SetParent(parentAfterDrag);
+            transform?.SetParent(parentAfterDrag);
         }
     }
 }
