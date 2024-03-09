@@ -56,15 +56,13 @@ public class RecipeCollection : ScriptableObject
     {
         List<MaterialToCraft> materialToCrafts = recipe.GetMaterialsToCraft(ItemID);
 
-        int[] materialAmounts = new int[3];
+        List<int> materialAmounts = new List<int>();
         for(int i = 0;i < materialToCrafts.Count;i++)
         {
-            materialAmounts[i] = materialToCrafts[i].amount;
-            if (materialAmounts[i] == 0)
-                materialAmounts[i] = 0;
-        }
+            materialAmounts.Add(materialToCrafts[i].amount);
 
-        return materialAmounts;
+        }
+        return materialAmounts.ToArray();
     }
     //public int GetMaterialAmount(int itemID, RecipeCollection recipe)
     //{

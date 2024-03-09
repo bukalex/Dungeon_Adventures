@@ -34,7 +34,7 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        materialSlots = materiaSlotsGroup.GetComponentsInChildren<InventorySlot>();
+        materialSlots = materiaSlotsGroup.GetComponentsInChildren<InventorySlot>(true);
     }
     private void OnEnable()
     {
@@ -56,6 +56,9 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
                 filled = false;
         }
 
+        for(int i = 1; i < materialSlots.Length; i++)
+            if (materialSlots[i-1].transform.childCount == 0)
+                materialSlots[i].gameObject.SetActive(false);
 
         previousFrame.Clear();
         foreach(KeyValuePair<int, int> pair in insertedMaterial)
@@ -83,8 +86,12 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
         {
             if (previousFrame.Count != insertedMaterial.Count || !insertedMaterial.ContainsKey(pair.Key) || insertedMaterial[pair.Key] != previousFrame[pair.Key])
             {
+                if(insertedMaterial.Count > 0)
+                {
+                    materialSlots[insertedMaterial.Count].gameObject.SetActive(!materialSlots[insertedMaterial.Count].gameObject.activeSelf);
+                }
                 craftItemButton.onClick.RemoveAllListeners();
-                craftItemButton.onClick.AddListener(delegate { CraftItem(currentItemID); });
+                craftItemButton.onClick.AddListener(() => CraftItem(currentItemID));
                 break;
             }
         }
@@ -114,23 +121,26 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
             Debug.Log(craftRate);
             if (craftRate == requireMaterials.Count)
             {
+                InventoryManager.Instance.AddItem(craftableItem, InventoryManager.Instance.toolBar, InventoryManager.Instance.internalInventorySlots);
                 for(int i = 0; i < materialSlots.Length; i++)
                 {
                     InventorySlot materialSlot = materialSlots[i];
                     InventoryItem material = materialSlot.GetComponentInChildren<InventoryItem>();
-                    if (material != null)
-                    {
-                        material.count -= recipe.GetMaterialAmounts(ItemID, recipe)[i];
-                        Debug.Log(recipe.GetMaterialAmounts(ItemID, recipe)[i].ToString());
 
-                        material.updateCount();
+                    //List<int> materialIDs = new List<int>();
+                    //for(int j = 0; j < materialSlots.Length; j++)
+                    //    materialIDs.Add(material.materialID);
+                    //InventoryItem material = origMaterial ??= materialSlots[materialSlots.Length - 1].GetComponentInChildren<InventoryItem>();
 
-                        if (material.count == 0)
-                            Destroy(material.gameObject);
+                    int materialCost = requireMaterials[i].amount;
 
-                    }
+                    material.count -= materialCost;
+                    material.updateCount();
+
+                    if (material.count == 0)
+                        Destroy(material.gameObject);
+
                 } 
-                InventoryManager.Instance.AddItem(craftableItem, InventoryManager.Instance.toolBar, InventoryManager.Instance.internalInventorySlots);
             }
         }
     }
