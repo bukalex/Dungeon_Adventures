@@ -39,6 +39,7 @@ public class AttackParameters : ScriptableObject
     public bool isRunning = false;
     public bool notEnoughMana = false;
     public bool notEnoughStamina = false;
+    public int rank = 1;
 
     public void SetAction(List<PlayerAction> playerActions, List<EnemyAction> enemyActions)
     {
@@ -53,6 +54,25 @@ public class AttackParameters : ScriptableObject
                 enemyAction = enemyActions[functionIndex];
             }
         }
+    }
+
+    public void SetRank(int value)
+    {
+        cooldown /= 1.0f - (rank - 1) * 0.1f;
+        mana /= 1.0f - (rank - 1) * 0.1f;
+        stamina /= 1.0f - (rank - 1) * 0.1f;
+        range /= 1.0f + (rank - 1) * 0.1f;
+        damage /= 1.0f + (rank - 1) * 0.1f;
+
+        rank = value;
+        if (rank <= 6)
+        {
+            cooldown *= 1.0f - (rank - 1) * 0.1f;
+            mana *= 1.0f - (rank - 1) * 0.1f;
+            stamina *= 1.0f - (rank - 1) * 0.1f;
+            range *= 1.0f + (rank - 1) * 0.1f;
+        }
+        damage *= 1.0f + (rank - 1) * 0.1f;
     }
 
     public delegate void PlayerAction(PlayerData playerData, AttackParameters attack);

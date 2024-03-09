@@ -17,9 +17,12 @@ public class AbilityItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public Transform parentBeforeDrag;
     public float timer = 1.0f;
 
-    public void InitializeAbility(Ability newAbility)
+    public void InitializeAbility(Ability newAbility, int rank = 1)
     {
-        ability = newAbility;
+        ability = Instantiate(newAbility);
+        ability.attackParameters = Instantiate(newAbility.attackParameters);
+        ability.attackParameters.SetRank(rank);
+
         image.sprite = newAbility.maskSprite;
         imageBackground.sprite = newAbility.backgroundSprite;
         clock.sprite = newAbility.backgroundSprite;
