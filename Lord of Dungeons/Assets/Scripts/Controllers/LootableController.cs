@@ -48,7 +48,7 @@ public class LootableController : MonoBehaviour, IInteractable
         }
         Open();
         //beingChecked = false;
-        UIManager.Instance.npcWindowActive = beingChecked;
+        UIManager.Instance.npcWindowActive = isLooted;
     }
 
     public float GetColliderRadius()

@@ -52,7 +52,6 @@ public class InventoryManager : MonoBehaviour
     public void Awake()
     {
         if (Instance == null) Instance = this;
-        else DontDestroyOnLoad(gameObject);
     }
     private void Start()
     {
@@ -334,17 +333,41 @@ public class InventoryManager : MonoBehaviour
         spawnNewAbility(ability, slot);
         return false;
     }
+    private bool HasAbility(Ability ability)
+    {
+        foreach (AbilitySlot abilitySlot in abilityBar)
+        {
+            AbilityItem abilityInSlot = abilitySlot.GetComponentInChildren<AbilityItem>();
+            if (abilityInSlot != null && abilityInSlot.ability.abilityName == ability.abilityName)
+            {
+                abilityInSlot.ability.attackParameters.SetRank(abilityInSlot.ability.attackParameters.rank + 1);
+                DataManager.Instance.playerData.attacks[DataManager.Instance.playerData.type][abilitySlot.attackButton].SetRank(abilityInSlot.ability.attackParameters.rank);
+                return true;
+            }
+        }
+
+        foreach (AbilitySlot abilitySlot in abilityInventory)
+        {
+            AbilityItem abilityInSlot = abilitySlot.GetComponentInChildren<AbilityItem>();
+            if (abilityInSlot != null && abilityInSlot.ability.abilityName == ability.abilityName)
+            {
+                abilityInSlot.ability.attackParameters.SetRank(abilityInSlot.ability.attackParameters.rank + 1);
+                return true;
+            }
+        }
+        return false;
+    }
     public void spawnNewItem(Item item, InventorySlot slot)
     {
         GameObject newItemGo = Instantiate(inventoryItemPrefab, slot.transform);
         InventoryItem inventoryItem = newItemGo.GetComponent<InventoryItem>();
         inventoryItem.InitializeItem(item);
     }
-    public void spawnNewAbility(Ability ability, AbilitySlot slot)
+    public void spawnNewAbility(Ability ability, AbilitySlot slot, int rank = 1)
     {
         GameObject newAbilityGo = Instantiate(abilityItemPrefab, slot.transform);
         AbilityItem abilityItem = newAbilityGo.GetComponent<AbilityItem>();
-        abilityItem.InitializeAbility(ability); 
+        abilityItem.InitializeAbility(ability, rank); 
     }
     public void itemIsUsed(Item item)
     {
@@ -357,7 +380,7 @@ public class InventoryManager : MonoBehaviour
         }
         else if (item.itemType == Item.ItemType.Spell)
         {
-            AddAbility(item.ability);
+            if (!HasAbility(item.ability)) AddAbility(item.ability);
         }
     }
     public Item useSelectedItem()
@@ -463,14 +486,15 @@ public class InventoryManager : MonoBehaviour
         abilityInventory = UIManager.Instance.abilityInventory.GetComponentsInChildren<AbilitySlot>(true);
     }
 
-    public void LoadAbility(AbilitySlot[] slots, int slotIndex, int abilityIndex)
+    public void LoadAbility(AbilitySlot[] slots, int slotIndex, int abilityIndex, int rank)
     {
         if (abilityIndex != -1)
         {
-            spawnNewAbility(allAbilities[abilityIndex], slots[slotIndex]);
+            spawnNewAbility(allAbilities[abilityIndex], slots[slotIndex], rank);
             if (slots[slotIndex].attackButton != BattleManager.AttackButton.NONE)
             {
                 BattleManager.Instance.AssingAbility(DataManager.Instance.playerData, allAbilities[abilityIndex].attackParameters, slots[slotIndex].attackButton);
+                DataManager.Instance.playerData.attacks[DataManager.Instance.playerData.type][slots[slotIndex].attackButton].SetRank(rank);
             }
         }
     }

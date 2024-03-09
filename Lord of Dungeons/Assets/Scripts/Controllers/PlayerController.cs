@@ -36,12 +36,15 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
         animator.runtimeAnimatorController = playerData.animController;
         if (playerData.isDead)
         {
+            UIManager.Instance.bossCounter.text = "0";
+            UIManager.Instance.enemyCounter.text = "0";
+            UIManager.Instance.levelCounter.text = "HUB";
             CheckpointManager.Instance.levelsPassed = 0;
             transform.position += Vector3.down * 15;
             playerData.isDead = false;
         }
     }
-    void Update()
+    void LateUpdate()
     {
         playerData.position = transform.position;
         playerData.isUsingMana = false;
@@ -160,7 +163,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
                 interactable.ShowButton();
             }
 
-            if (Input.GetKeyDown(UIManager.Instance.keyCodes[15]))
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[15]) || (isTalkingToNPC && Input.GetKeyDown(UIManager.Instance.keyCodes[12])))
             {
                 if (activeNPC == null)
                 {
@@ -189,7 +192,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
 
             //Chest Interactions
             #region
-            if (Input.GetKeyDown(UIManager.Instance.keyCodes[15]))
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[15]) || (isLooting && Input.GetKeyDown(UIManager.Instance.keyCodes[12])))
             {
                 if (activeLootable == null)
                 {

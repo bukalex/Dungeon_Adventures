@@ -11,7 +11,7 @@ public class AbilitySlot : MonoBehaviour, IDropHandler
         {
             Debug.Log(gameObject);
             GameObject dropped = eventData.pointerDrag;
-            AbilityItem abilityItem = dropped.GetComponent<AbilityItem>();
+            AbilityItem abilityItem = dropped?.GetComponent<AbilityItem>();
             abilityItem.parentAfterDrag = transform;
             BattleManager.Instance.AssingAbility(DataManager.Instance.playerData, abilityItem.ability.attackParameters, attackButton);
         }

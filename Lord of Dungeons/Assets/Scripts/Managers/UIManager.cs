@@ -72,6 +72,11 @@ public class UIManager : MonoBehaviour
 
     public GameObject[] spawnedEnemies;
     public GameObject[] enemyHealthBars;
+    public TMP_Text bossCounter, enemyCounter, levelCounter;
+
+    [SerializeField] private Transform exitDirection;
+    private Transform exit;
+    private Vector3 screenDirection;
 
     public static UIManager Instance { get; private set; }
 
@@ -211,7 +216,7 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(keyCodes[12]))
+        if (!npcWindowActive && Input.GetKeyDown(keyCodes[12]))
         {
             escapeUI.SetActive(!escapeUI.activeSelf);
             if (escapeUI.activeSelf)
@@ -229,6 +234,11 @@ public class UIManager : MonoBehaviour
 
         }   
 
+    }
+
+    private void FixedUpdate()
+    {
+        UpdateExitDirection();
     }
 
     //Escape Menu Functions
@@ -370,6 +380,10 @@ public class UIManager : MonoBehaviour
             }
             teleportWindow.SetActive(false);
             npcWindowActive = false;
+            bossCounter.text = "0";
+            enemyCounter.text = "0";
+            if (CheckpointManager.Instance.levelsPassed == 0) levelCounter.text = "HUB";
+            else levelCounter.text = "Level " + CheckpointManager.Instance.levelsPassed.ToString();
             SceneManager.LoadScene(checkpoint);
         }
     }
@@ -458,5 +472,26 @@ public class UIManager : MonoBehaviour
         BGMSoundData data = SoundManager.Instance.bgmSoundDatas.Find(data => data.bgm == SoundManager.Instance.music);
         SoundManager.Instance.bgmMasterVolume = value;
         SoundManager.Instance.bgmAudioSource.volume = data.volume * SoundManager.Instance.bgmMasterVolume * SoundManager.Instance.masterVolume;
+    }
+
+    private void UpdateExitDirection()
+    {
+        if (exit == null) exit = GameObject.FindGameObjectWithTag("Finish").transform;
+        screenDirection = Camera.main.WorldToScreenPoint(exit.position) - Camera.main.WorldToScreenPoint(playerData.position);
+        float factor;
+        float diagonalAngle = Mathf.Atan2(Screen.width / 2, Screen.height/2) * Mathf.Rad2Deg;
+        float angle = Vector3.SignedAngle(Vector3.up, screenDirection, Vector3.forward);
+        exitDirection.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        if (Mathf.Abs(angle) <= diagonalAngle || (180 - diagonalAngle) <= Mathf.Abs(angle))
+        {
+            factor = Mathf.Abs((Screen.height / 2 - 25) / Mathf.Cos(angle * Mathf.Deg2Rad)) / screenDirection.magnitude;
+        }
+        else
+        {
+            factor = Mathf.Abs((Screen.width / 2 - 25) / Mathf.Sin(angle * Mathf.Deg2Rad)) / screenDirection.magnitude;
+        }
+        if (factor >= 1) exitDirection.GetComponent<Image>().enabled = false;
+        else exitDirection.GetComponent<Image>().enabled = true;
+        exitDirection.position = Camera.main.WorldToScreenPoint(Vector3.Lerp(playerData.position, exit.position, factor));
     }
 }

@@ -25,8 +25,11 @@ public class CheckpointManager : MonoBehaviour
 
     void Start()
     {
-        if (Instance == null) Instance = this;
-        Initialize();
+        if (Instance == null)
+        {
+            Instance = this;
+            Initialize();
+        }
     }
 
     private void Initialize()
@@ -55,6 +58,15 @@ public class CheckpointManager : MonoBehaviour
             }
         }
         SaveData();
+    }
+
+    private int FindByName(Ability[] abilities, string abilityName)
+    {
+        for (int i = 0; i < abilities.Length; i++)
+        {
+            if (abilities[i].abilityName.Equals(abilityName)) return i;
+        }
+        return -1;
     }
 
     public void SaveData()
@@ -123,29 +135,29 @@ public class CheckpointManager : MonoBehaviour
         gameData.gold = DataManager.Instance.playerData.resources[Item.CoinType.GoldenCoin];
         gameData.silver = DataManager.Instance.playerData.resources[Item.CoinType.SilverCoin];
         gameData.copper = DataManager.Instance.playerData.resources[Item.CoinType.CopperCoin];
-        List<int> inventoryAbilities = new List<int>();
+        List<Vector2> inventoryAbilities = new List<Vector2>();
         foreach (AbilitySlot slot in InventoryManager.Instance.abilityInventory)
         {
             if (slot.GetComponentInChildren<AbilityItem>() != null)
             {
-                inventoryAbilities.Add(Array.IndexOf(InventoryManager.Instance.allAbilities, slot.GetComponentInChildren<AbilityItem>().ability));
+                inventoryAbilities.Add(new Vector2(FindByName(InventoryManager.Instance.allAbilities, slot.GetComponentInChildren<AbilityItem>().ability.abilityName), slot.GetComponentInChildren<AbilityItem>().ability.attackParameters.rank));
             }
             else
             {
-                inventoryAbilities.Add(-1);
+                inventoryAbilities.Add(new Vector2(-1, 1));
             }
         }
         gameData.inventoryAbilities = inventoryAbilities;
-        List<int> toolBarAbilities = new List<int>();
+        List<Vector2> toolBarAbilities = new List<Vector2>();
         foreach (AbilitySlot slot in InventoryManager.Instance.abilityBar)
         {
             if (slot.GetComponentInChildren<AbilityItem>() != null)
             {
-                toolBarAbilities.Add(Array.IndexOf(InventoryManager.Instance.allAbilities, slot.GetComponentInChildren<AbilityItem>().ability));
+                toolBarAbilities.Add(new Vector2(FindByName(InventoryManager.Instance.allAbilities, slot.GetComponentInChildren<AbilityItem>().ability.abilityName), slot.GetComponentInChildren<AbilityItem>().ability.attackParameters.rank));
             }
             else
             {
-                toolBarAbilities.Add(-1);
+                toolBarAbilities.Add(new Vector2(-1, 1));
             }
         }
         gameData.toolBarAbilities = toolBarAbilities;
@@ -189,11 +201,11 @@ public class CheckpointManager : MonoBehaviour
             InventoryManager.Instance.LoadAbilityInventory(gameData.inventoryAbilities.Count);
             for (int i = 0; i < gameData.inventoryAbilities.Count; i++)
             {
-                InventoryManager.Instance.LoadAbility(InventoryManager.Instance.abilityInventory, i, gameData.inventoryAbilities[i]);
+                InventoryManager.Instance.LoadAbility(InventoryManager.Instance.abilityInventory, i, (int)gameData.inventoryAbilities[i].x, (int)gameData.inventoryAbilities[i].y);
             }
             for (int i = 0; i < gameData.toolBarAbilities.Count; i++)
             {
-                InventoryManager.Instance.LoadAbility(InventoryManager.Instance.abilityBar, i, gameData.toolBarAbilities[i]);
+                InventoryManager.Instance.LoadAbility(InventoryManager.Instance.abilityBar, i, (int)gameData.toolBarAbilities[i].x, (int)gameData.toolBarAbilities[i].y);
             }
             tradingSystem.wizardLuck = gameData.wizardLuck;
         }
@@ -219,8 +231,8 @@ public class GameData
     public int gold;
     public int silver;
     public int copper;
-    public List<int> inventoryAbilities;
-    public List<int> toolBarAbilities;
+    public List<Vector2> inventoryAbilities;
+    public List<Vector2> toolBarAbilities;
     public float wizardLuck;
 
     public GameData()
@@ -236,8 +248,8 @@ public class GameData
         gold = 0;
         silver = 0;
         copper = 0;
-        inventoryAbilities = new List<int>();
-        toolBarAbilities = new List<int>();
+        inventoryAbilities = new List<Vector2>();
+        toolBarAbilities = new List<Vector2>();
         wizardLuck = 100;
     }
 }

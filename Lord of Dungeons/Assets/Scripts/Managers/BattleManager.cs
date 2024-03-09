@@ -35,10 +35,6 @@ public class BattleManager : MonoBehaviour
             Initialize();
             Instance = this;
         }
-        else
-        {
-            Destroy(gameObject);
-        }
     }
     private void Start()
     {
@@ -108,7 +104,9 @@ public class BattleManager : MonoBehaviour
             Dictionary<AttackButton, AttackParameters> inCopy = new Dictionary<AttackButton, AttackParameters>();
             foreach (KeyValuePair<AttackButton, AttackParameters> inPair in outPair.Value)
             {
-                inCopy.Add(inPair.Key, Instantiate(inPair.Value));
+                AttackParameters attackCopy = Instantiate(inPair.Value);
+                attackCopy.SetRank(inPair.Value.rank);
+                inCopy.Add(inPair.Key, attackCopy);
             }
             copy.Add(outPair.Key, inCopy);
         }
@@ -462,19 +460,25 @@ public class BattleManager : MonoBehaviour
 
         if (currentAttackButton == AttackButton.NONE && currentAttack == null)//New key in the dictionary
         {
-            playerData.attacks[playerData.type].Add(attackButton, Instantiate(attack));
+            AttackParameters attackCopy = Instantiate(attack);
+            attackCopy.SetRank(attack.rank);
+            playerData.attacks[playerData.type].Add(attackButton, attackCopy);
         }
         else if (currentAttackButton != AttackButton.NONE && currentAttack == null)//Remove key in the dictionary
         {
             playerData.attacks[playerData.type].Remove(currentAttackButton);
             if (attackButton != AttackButton.NONE)
             {
-                playerData.attacks[playerData.type][attackButton] = Instantiate(attack);
+                AttackParameters attackCopy = Instantiate(attack);
+                attackCopy.SetRank(attack.rank);
+                playerData.attacks[playerData.type][attackButton] = attackCopy;
             }
         }
         else if (currentAttack != null)//Swap the attacks
         {
-            playerData.attacks[playerData.type][attackButton] = Instantiate(attack);
+            AttackParameters attackCopy = Instantiate(attack);
+            attackCopy.SetRank(attack.rank);
+            playerData.attacks[playerData.type][attackButton] = attackCopy;
             if (currentAttackButton != AttackButton.NONE)
             {
                 playerData.attacks[playerData.type][currentAttackButton] = currentAttack;
@@ -756,6 +760,8 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerGuisonKnife(PlayerData playerData, AttackParameters attack)
     {
+        Debug.Log(attack.rank);
+        Debug.Log(attack.range);
         battleData.guisonKnifes = new List<ProjectileController>();
         for (int i = 0; i < 5; i++)
         {
