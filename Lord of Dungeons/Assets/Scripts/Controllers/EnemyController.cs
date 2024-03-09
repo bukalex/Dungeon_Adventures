@@ -41,6 +41,9 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
         lastPlayerPosition = transform.position;
         animator.runtimeAnimatorController = enemyParameters.animController;
         enemyParameters.transform = transform;
+
+        if (enemyParameters.isBoss) UIManager.Instance.bossCounter.text = (int.Parse(UIManager.Instance.bossCounter.text) + 1).ToString();
+        else UIManager.Instance.enemyCounter.text = (int.Parse(UIManager.Instance.enemyCounter.text) + 1).ToString();
     }
 
     void Update()
@@ -152,6 +155,9 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
             GetComponentInChildren<PolygonCollider2D>().enabled = false;
             body.velocity = Vector3.zero;
             Die();
+
+            if (enemyParameters.isBoss) UIManager.Instance.bossCounter.text = (int.Parse(UIManager.Instance.bossCounter.text) - 1).ToString();
+            else UIManager.Instance.enemyCounter.text = (int.Parse(UIManager.Instance.enemyCounter.text) - 1).ToString();
 
             randomizer.DropItems();
             alreadyDead = true;

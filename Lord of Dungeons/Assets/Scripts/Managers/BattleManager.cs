@@ -35,10 +35,6 @@ public class BattleManager : MonoBehaviour
             Initialize();
             Instance = this;
         }
-        else
-        {
-            Destroy(gameObject);
-        }
     }
     private void Start()
     {

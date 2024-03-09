@@ -72,6 +72,7 @@ public class UIManager : MonoBehaviour
 
     public GameObject[] spawnedEnemies;
     public GameObject[] enemyHealthBars;
+    public TMP_Text bossCounter, enemyCounter, levelCounter;
 
     public static UIManager Instance { get; private set; }
 
@@ -370,6 +371,10 @@ public class UIManager : MonoBehaviour
             }
             teleportWindow.SetActive(false);
             npcWindowActive = false;
+            bossCounter.text = "0";
+            enemyCounter.text = "0";
+            if (CheckpointManager.Instance.levelsPassed == 0) levelCounter.text = "HUB";
+            else levelCounter.text = "Level " + CheckpointManager.Instance.levelsPassed.ToString();
             SceneManager.LoadScene(checkpoint);
         }
     }

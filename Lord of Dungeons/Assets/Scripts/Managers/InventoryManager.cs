@@ -49,7 +49,6 @@ public class InventoryManager : MonoBehaviour
     public void Awake()
     {
         if (Instance == null) Instance = this;
-        else DontDestroyOnLoad(gameObject);
     }
     private void Start()
     {

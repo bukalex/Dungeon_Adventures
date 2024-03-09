@@ -26,7 +26,7 @@ public class SceneChanger : MonoBehaviour, IInteractable
         {
             foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Enemy"))
             {
-                if (obj.GetComponent<EnemyController>() != null && obj.GetComponent<EnemyController>().IsAlive()) return;
+                if (obj.GetComponent<EnemyController>() != null && obj.GetComponent<EnemyController>().enemyParameters.isBoss && obj.GetComponent<EnemyController>().IsAlive()) return;
             }
 
             StartCoroutine(waitForAnimation());
@@ -65,6 +65,9 @@ public class SceneChanger : MonoBehaviour, IInteractable
             SceneToChange = CheckpointManager.Instance.checkpoints[Random.Range(0, CheckpointManager.Instance.checkpoints.Count)];
         }
         CheckpointManager.Instance.ChangeLevel();
+        UIManager.Instance.bossCounter.text = "0";
+        UIManager.Instance.enemyCounter.text = "0";
+        UIManager.Instance.levelCounter.text = "Level " + CheckpointManager.Instance.levelsPassed.ToString();
         SceneManager.LoadScene(SceneToChange);
     }
 

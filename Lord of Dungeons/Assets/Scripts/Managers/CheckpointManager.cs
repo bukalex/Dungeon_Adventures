@@ -25,8 +25,11 @@ public class CheckpointManager : MonoBehaviour
 
     void Start()
     {
-        if (Instance == null) Instance = this;
-        Initialize();
+        if (Instance == null)
+        {
+            Instance = this;
+            Initialize();
+        }
     }
 
     private void Initialize()

@@ -36,6 +36,9 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
         animator.runtimeAnimatorController = playerData.animController;
         if (playerData.isDead)
         {
+            UIManager.Instance.bossCounter.text = "0";
+            UIManager.Instance.enemyCounter.text = "0";
+            UIManager.Instance.levelCounter.text = "HUB";
             CheckpointManager.Instance.levelsPassed = 0;
             transform.position += Vector3.down * 15;
             playerData.isDead = false;
