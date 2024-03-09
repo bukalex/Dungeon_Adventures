@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -234,7 +237,8 @@ public class InventoryManager : MonoBehaviour
     }
     public void InitializeItemDescription(Item item)
     {
-
+        ItemDescription.transform.GetChild(0).GetComponent<TMP_Text>().text = item.name;
+        ItemDescription.transform.GetChild(1).GetComponent<TMP_Text>().text = item.description;
     }
 
     public bool HasCoins()

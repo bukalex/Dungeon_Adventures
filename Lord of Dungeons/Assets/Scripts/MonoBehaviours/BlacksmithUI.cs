@@ -83,7 +83,6 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
         {
             if (previousFrame.Count != insertedMaterial.Count || !insertedMaterial.ContainsKey(pair.Key) || insertedMaterial[pair.Key] != previousFrame[pair.Key])
             {
-                Debug.Log(insertedMaterial.Count);
                 craftItemButton.onClick.RemoveAllListeners();
                 craftItemButton.onClick.AddListener(delegate { CraftItem(currentItemID); });
                 break;
@@ -121,13 +120,16 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
                     InventoryItem material = materialSlot.GetComponentInChildren<InventoryItem>();
                     if (material != null)
                     {
-                        material.count -= recipe.GetMaterialAmountsToCraftByItemID(ItemID, recipe)[i];
+                        material.count -= recipe.GetMaterialAmounts(ItemID, recipe)[i];
+                        Debug.Log(recipe.GetMaterialAmounts(ItemID, recipe)[i].ToString());
+
                         material.updateCount();
-                        
-                        if(material.count == 0)
+
+                        if (material.count == 0)
                             Destroy(material.gameObject);
+
                     }
-                }
+                } 
                 InventoryManager.Instance.AddItem(craftableItem, InventoryManager.Instance.toolBar, InventoryManager.Instance.internalInventorySlots);
             }
         }
@@ -142,7 +144,7 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
 
         Dictionary<Sprite, int> materials = new Dictionary<Sprite, int>();
         Sprite[] materialSprites = recipe.GetMaterialsSpritesByItemID(ItemID, recipe);
-        int[] materialAmounts = recipe.GetMaterialAmountsToCraftByItemID(ItemID, recipe);
+        int[] materialAmounts = recipe.GetMaterialAmounts(ItemID, recipe).ToArray();
         //Initialize Item Icon that it will craft
         itemHolder.itemIcon.GetComponent<Image>().sprite = recipe.GetListOfRecipes()[ItemID].craftItem.image;
 

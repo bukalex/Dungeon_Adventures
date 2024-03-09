@@ -52,16 +52,19 @@ public class RecipeCollection : ScriptableObject
         }
         return sprites.ToArray();
     }
-    public int[] GetMaterialAmountsToCraftByItemID(int ItemID, RecipeCollection recipe)
+    public int[] GetMaterialAmounts(int ItemID, RecipeCollection recipe)
     {
         List<MaterialToCraft> materialToCrafts = recipe.GetMaterialsToCraft(ItemID);
 
-        List<int> materialAmounts = new List<int>();
+        int[] materialAmounts = new int[3];
         for(int i = 0;i < materialToCrafts.Count;i++)
         {
-            materialAmounts.Add(materialToCrafts[i].amount);
+            materialAmounts[i] = materialToCrafts[i].amount;
+            if (materialAmounts[i] == 0)
+                materialAmounts[i] = 0;
         }
-        return materialAmounts.ToArray();
+
+        return materialAmounts;
     }
     //public int GetMaterialAmount(int itemID, RecipeCollection recipe)
     //{

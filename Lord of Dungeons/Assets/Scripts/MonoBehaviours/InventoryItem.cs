@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
     public Item item;
@@ -26,7 +26,10 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public string itemTag;
     [HideInInspector]
     public bool isLocked = false;
-
+    private void Update()
+    {
+        InventoryManager.Instance.ItemDescription.transform.position = Input.mousePosition + new Vector3(150f, 125f);
+    }
     public void InitializeItem(Item newItem)
     {
         item = newItem;                                             
@@ -72,17 +75,24 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         yield return new WaitForSeconds(interval);
         InventoryManager.Instance.ItemDescription.SetActive(true);
     }
-    //public void OnPointerEnter(PointerEventData eventData)
-    //{
-    //    onItemDescription(0.75f);
-    //    InventoryManager.Instance.ItemDescription.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    //    InventoryManager.Instance.InitializeItemDescription(item);
-    //
-    //    Debug.Log("Enter");
-    //}
-    //
-    //public void OnPointerExit(PointerEventData eventData)
-    //{
-    //    InventoryManager.Instance.ItemDescription.SetActive(false);
-    //}
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        StartCoroutine(onItemDescription(0.75f));
+        InventoryManager.Instance.InitializeItemDescription(item);
+        Debug.Log("Enter");
+
+        if (Input.GetKeyUp(KeyCode.LeftShift)) 
+        { 
+        }
+
+
+        if (eventData.pointerEnter.GetComponent<Canvas>() == null)
+            InventoryManager.Instance.ItemDescription.SetActive(false);
+    }
+    
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        StopAllCoroutines();
+        InventoryManager.Instance.ItemDescription.SetActive(false);
+    }
 }
