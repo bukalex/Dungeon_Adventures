@@ -71,7 +71,10 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
         for (int i = 0; i < materialSlots.Length - 1; i++)
         {
             if (materialSlots[i].transform.childCount == 1)
+            {
                 materialSlots[i + 1].gameObject.SetActive(true);
+            }
+                
 
             if (materialSlots[i].transform.childCount == 0)
             {
@@ -221,8 +224,14 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
         List<MaterialToCraft> requireMaterials = recipe.GetMaterialsToCraft(itemHolder.ItemID);
 
         for (int i = 0; i < requireMaterials.Count; i++)
+        {
             if (insertedMaterial.ContainsKey(requireMaterials[i].materialId))
                 itemHolder.materialDisplays[i].transform.GetChild(0).GetComponent<TMP_Text>().color = Color.green;
+            else
+                itemHolder.materialDisplays[i].transform.GetChild(0).GetComponent<TMP_Text>().color = Color.red;
+        }
+            
+
         
         if(requireMaterials.Count == 1)
         {
