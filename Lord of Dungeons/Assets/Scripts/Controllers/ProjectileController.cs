@@ -24,7 +24,7 @@ public class ProjectileController : MonoBehaviour
     private float rotationStep;
     private float rotationAmount;
 
-    public enum ProjectileType { BULLET, BOOMERANG, GUISON_KNIFE, PARTICLES }
+    public enum ProjectileType { BULLET, BOOMERANG, GUISON_KNIFE, EXPLOSION }
 
     void Update()
     {
@@ -38,6 +38,12 @@ public class ProjectileController : MonoBehaviour
         if (type == ProjectileType.GUISON_KNIFE)
         {
             timer += Time.deltaTime;
+        }
+
+        if (type == ProjectileType.EXPLOSION)
+        {
+            if (timer > 0.2f) GetComponent<Collider2D>().enabled = false;
+            else timer += Time.deltaTime;
         }
     }
 
@@ -89,7 +95,7 @@ public class ProjectileController : MonoBehaviour
             if (collision.transform.parent == null) return; 
             string targetTag = collision.transform.parent.tag;
             
-            if (type == ProjectileType.PARTICLES || 
+            if (type == ProjectileType.EXPLOSION || 
                 parentTag == "Enemy" && targetTag == "Player" ||
                 parentTag == "Player" && (targetTag == "Enemy" || targetTag == "Object"))
             {
@@ -98,7 +104,7 @@ public class ProjectileController : MonoBehaviour
 
             if (type != ProjectileType.BOOMERANG &&
                 type != ProjectileType.GUISON_KNIFE &&
-                type != ProjectileType.PARTICLES &&
+                type != ProjectileType.EXPLOSION &&
                 !targetTag.Equals(parentTag))
             {
                 Destroy(gameObject);
@@ -111,7 +117,7 @@ public class ProjectileController : MonoBehaviour
         }
         else if (type != ProjectileType.BOOMERANG &&
             type != ProjectileType.GUISON_KNIFE &&
-            type != ProjectileType.PARTICLES && 
+            type != ProjectileType.EXPLOSION && 
             !collision.transform.tag.Equals("Enemy") &&
             !collision.transform.tag.Equals("Player"))
         {
