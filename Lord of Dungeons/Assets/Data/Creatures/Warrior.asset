@@ -20,7 +20,9 @@ MonoBehaviour:
   initialSpecialAttack: 1
   initialDefense: 4
   initialSpecialDefense: 2
-  health: 200
+  initialCritChance: 20
+  initialCritMultiplier: 1.25
+  health: 14.931447
   mana: 50
   stamina: 50
   speed: 2.15
@@ -30,6 +32,8 @@ MonoBehaviour:
   specialAttack: 1
   defense: 4
   specialDefense: 2
+  critChance: 20
+  critMultiplier: 1.25
   healthRestoreRate: 3.5
   manaRestoreRate: 1
   staminaRestoreRate: 2
@@ -38,9 +42,11 @@ MonoBehaviour:
   npcDetectionRadius: 0.75
   lootableDetectionRadius: 0.75
   colliderRadius: 0.3
-  position: {x: -11, y: -10, z: 0}
+  position: {x: -11.06, y: -25.6, z: 0}
   attackDirection: {x: 1, y: 0, z: 0}
   transform: {fileID: 0}
   isStunned: 0
+  isDead: 0
+  isBlocking: 0
   type: 0
   animController: {fileID: 9100000, guid: a1178efb3bfa8794ba40c822149a3e46, type: 2}
