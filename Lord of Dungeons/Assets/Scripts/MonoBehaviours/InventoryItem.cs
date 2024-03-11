@@ -28,7 +28,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public bool isLocked = false;
     private void Update()
     {
-        InventoryManager.Instance.ItemDescription.transform.position = Input.mousePosition + new Vector3(200f, 175f);
+        InventoryManager.Instance.ItemDescription.transform.position = Input.mousePosition + new Vector3(250f, 200f);
     }
     public void InitializeItem(Item newItem)
     {
