@@ -54,18 +54,7 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
         UIManager.Instance.npcWindowActive = false;
     }
     private void Update()
-    {
-        //Instantiate all item holders based on recipe amount
-        #region
-        if (filled)
-        {
-            foreach (ItemRecipe recipe in recipe.GetListOfRecipes())
-                InitializeItemHolder(recipe.ItemId);
-            if(ItemHolders.Count == recipe.GetListOfRecipes().Count)
-                filled = false;
-        }
-        #endregion
-
+{ 
         //Turn off material slot if there is no child
         #region
         for (int i = 0; i < materialSlots.Length - 1; i++)
@@ -117,16 +106,41 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
 
         //Check every frame if something has changed in material slots
         #region
+        if(materialSlots[0].transform.childCount == 0)
+        {
+            foreach (BlacksmithItemHolder itemHolder in ItemHolders)
+                ItemHoldersSorter(itemHolder);
+        }
+
         foreach (KeyValuePair<int, int> pair in insertedMaterial)
         {
             if (previousFrame.Count != insertedMaterial.Count || !insertedMaterial.ContainsKey(pair.Key) || insertedMaterial[pair.Key] != previousFrame[pair.Key])
             {
+
+                //Instantiate all item holders
+                #region
+                //Delete all previous item holders
+                foreach (BlacksmithItemHolder itemHolder in ItemHolders)
+                    Destroy(itemHolder.gameObject);
+                ItemHolders.Clear();
+
+                //Instantiate new item holders
+                foreach (ItemRecipe recipe in recipe.GetListOfRecipes())
+                    InitializeItemHolder(recipe.ItemId);
+                #endregion
+
+                //Sort item holders
+                #region
+                //Reset all item holders positions
                 firstMaterialPos = 0;
                 secondMaterialsPos = 0;
                 thirdMaterialsPos = 0;
 
+                //Sort item holders
                 foreach (BlacksmithItemHolder itemHolder in ItemHolders)
                     ItemHoldersSorter(itemHolder);
+                #endregion
+
 
                 craftItemButton.onClick.RemoveAllListeners();
                 craftItemButton.onClick.AddListener(() => CraftItem(currentItemID));
@@ -191,36 +205,57 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
 
     public void InitializeItemHolder(int ItemID)
     {
-        //Instantiate an item holder
-        GameObject newItemHolder = Instantiate(ItemHolderPrefab, ContainerOfItemHolders.transform);
-
-        //Initialize item holder with an item
-        BlacksmithItemHolder itemHolder = newItemHolder.GetComponent<BlacksmithItemHolder>();
-        ItemHolders.Add(itemHolder);
-        itemHolder.ItemID = ItemID;
-
-        Sprite[] materialSprites = recipe.GetMaterialsSpritesByItemID(ItemID, recipe);
-        int[] materialAmounts = recipe.GetMaterialAmounts(ItemID, recipe).ToArray();
-
-        //Initialize Item Icon that it will craft
-        itemHolder.itemIcon.GetComponent<Image>().sprite = recipe.GetListOfRecipes()[ItemID].craftItem.image;
-
-        //Initialize material icons that we need to craft an item
-        for(int i = 0; i < materialSprites.Length; i++)
+        List<MaterialToCraft> materials = recipe.GetMaterialsToCraft(ItemID);
+        for (int j = 0; j < materials.Count; j++)
         {
-            itemHolder.materialDisplays[i].transform.GetChild(1).GetComponent<Image>().sprite = materialSprites[i];
-            itemHolder.materialDisplays[i].transform.GetChild(1).GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
-        }
+            if (insertedMaterial.ContainsKey(materials[j].materialId))
+            {
+                GameObject newItemHolder = Instantiate(ItemHolderPrefab, ContainerOfItemHolders.transform);
+                //Check if item holder already exist
+                #region
+                BlacksmithItemHolder itemHolder = newItemHolder.GetComponent<BlacksmithItemHolder>();
+                BlacksmithItemHolder exisitingItemHolder = ItemHolders.Find(itemHolder => itemHolder.ItemID == ItemID);
+                if (exisitingItemHolder == null)
+                {
+                    itemHolder.ItemID = ItemID;
+                    ItemHolders.Add(itemHolder);
+                }
+                else
+                {
+                    Destroy(newItemHolder);
+                    break;
+                }
+                #endregion
 
-        //Initialize amount of material that we need to craft an item
-        for(int i = 0; i < materialAmounts.Length; i++)
-        {
-            itemHolder.materialDisplays[i].transform.GetChild(0).GetComponent<TMP_Text>().text = materialAmounts[i].ToString();
-            itemHolder.materialDisplays[i].transform.GetChild(0).GetComponent<TMP_Text>().color = Color.red;
+                //Initialize item holder with an item
+                Sprite[] materialSprites = recipe.GetMaterialsSpritesByItemID(ItemID, recipe);
+                int[] materialAmounts = recipe.GetMaterialAmounts(ItemID, recipe).ToArray();
+
+                //Initialize Item Icon that it will craft
+                itemHolder.itemIcon.GetComponent<Image>().sprite = recipe.GetListOfRecipes()[ItemID].craftItem.image;
+
+                //Initialize material icons that we need to craft an item
+                for (int i = 0; i < materialSprites.Length; i++)
+                {
+                    itemHolder.materialDisplays[i].transform.GetChild(1).GetComponent<Image>().sprite = materialSprites[i];
+                    itemHolder.materialDisplays[i].transform.GetChild(1).GetComponent<Image>().color = new Color(255f, 255f, 255f, 255f);
+                }
+
+                //Initialize amount of material that we need to craft an item
+                for (int i = 0; i < materialAmounts.Length; i++)
+                {
+                    itemHolder.materialDisplays[i].transform.GetChild(0).GetComponent<TMP_Text>().text = materialAmounts[i].ToString();
+                    itemHolder.materialDisplays[i].transform.GetChild(0).GetComponent<TMP_Text>().color = Color.red;
+                }
+                break;
+            }
         }
+       
     }
     public void ItemHoldersSorter(BlacksmithItemHolder itemHolder)
     {
+        int twoMaterialsPos = firstMaterialPos + secondMaterialsPos;
+        int threeMaterialsPos = firstMaterialPos + twoMaterialsPos + thirdMaterialsPos;
         List<MaterialToCraft> requireMaterials = recipe.GetMaterialsToCraft(itemHolder.ItemID);
 
         for (int i = 0; i < requireMaterials.Count; i++)
@@ -230,25 +265,23 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
             else
                 itemHolder.materialDisplays[i].transform.GetChild(0).GetComponent<TMP_Text>().color = Color.red;
         }
-            
 
-        
-        if(requireMaterials.Count == 1)
+        if (requireMaterials.Count == 1)
         {
-            
+            if (itemHolder.materialDisplays[0].transform.GetChild(0).GetComponent<TMP_Text>().color == Color.red)
+                firstMaterialPos--;
+
             itemHolder.ChildPos = firstMaterialPos;
             firstMaterialPos++;
         }
         else if (requireMaterials.Count == 2)
         {
             secondMaterialsPos++;
-            int twoMaterialsPos = firstMaterialPos + secondMaterialsPos;
             itemHolder.ChildPos = twoMaterialsPos;
         }
         else if (requireMaterials.Count == 3)
         {
-            thirdMaterialsPos++;
-            int threeMaterialsPos = firstMaterialPos + secondMaterialsPos + thirdMaterialsPos;
+            thirdMaterialsPos += 2;
             itemHolder.ChildPos = threeMaterialsPos;
         }
     }
