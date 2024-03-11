@@ -765,7 +765,7 @@ public class BattleManager : MonoBehaviour
         battleData.guisonKnifes = new List<ProjectileController>();
         for (int i = 0; i < 5; i++)
         {
-            SoundManager.Instance.PlaySE(SESoundData.SE.PlayerKnife);
+            //SoundManager.Instance.PlaySE(SESoundData.SE.PlayerKnife);
             ProjectileController projectile = Instantiate(battleData.guisonKnifePrefab, 
                 playerData.position, 
                 Quaternion.AngleAxis(Vector3.SignedAngle(Vector3.up, playerData.attackDirection, Vector3.forward) -45 + 22.5f * i, Vector3.forward)).GetComponent<ProjectileController>();
@@ -842,7 +842,7 @@ public class BattleManager : MonoBehaviour
 
     private void GhostShoot(EnemyParameters enemyParameters, AttackParameters attack)
     {
-        SoundManager.Instance.PlaySE(SESoundData.SE.GhoastProjectile);
+        //SoundManager.Instance.PlaySE(SESoundData.SE.GhoastProjectile);
         ProjectileController projectileController = Instantiate(enemyParameters.projectilePrefab, enemyParameters.position, new Quaternion()).GetComponent<ProjectileController>();
         projectileController.Launch("Enemy", enemyParameters, attack, enemyParameters.attackDirection);
     }

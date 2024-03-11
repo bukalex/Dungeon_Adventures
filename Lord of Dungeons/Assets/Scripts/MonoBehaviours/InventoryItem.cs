@@ -28,7 +28,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public bool isLocked = false;
     private void Update()
     {
-        InventoryManager.Instance.ItemDescription.transform.position = Input.mousePosition + new Vector3(150f, 125f);
+        InventoryManager.Instance.ItemDescription.transform.position = Input.mousePosition + new Vector3(200f, 175f);
     }
     public void InitializeItem(Item newItem)
     {
@@ -70,26 +70,24 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             transform.SetParent(parentAfterDrag);
         }
     }
-    private IEnumerator onItemDescription(float interval)
+    private IEnumerator ItemDescriptionOn(float interval)
     {
         yield return new WaitForSeconds(interval);
         InventoryManager.Instance.ItemDescription.SetActive(true);
     }
+    private IEnumerator ItemDescriptionOff(float interval)
+    {
+        yield return new WaitForSeconds(interval);
+        InventoryManager.Instance.ItemDescription.SetActive(false);
+    }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        StartCoroutine(onItemDescription(0.75f));
+        StartCoroutine(ItemDescriptionOn(0.75f));
         InventoryManager.Instance.InitializeItemDescription(item);
         Debug.Log("Enter");
 
-        if (Input.GetKeyUp(KeyCode.LeftShift)) 
-        { 
-        }
-
-
-        if (eventData.pointerEnter.GetComponent<Canvas>() == null)
-            InventoryManager.Instance.ItemDescription.SetActive(false);
     }
-    
+
     public void OnPointerExit(PointerEventData eventData)
     {
         StopAllCoroutines();
