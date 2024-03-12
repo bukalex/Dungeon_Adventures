@@ -17,7 +17,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public int materialID;
 
 
-    [HideInInspector]
     public Image image;
     public int count = 1;
     [HideInInspector]

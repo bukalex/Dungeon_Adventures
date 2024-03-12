@@ -14,7 +14,7 @@ public abstract class Timer : MonoBehaviour
         this.timerCallback = timerCallback;
     }
     // Update is called once per frame
-    protected virtual void Update()
+    protected virtual void TimerUpdate()
     {
         if(timer > 0f)
         {
