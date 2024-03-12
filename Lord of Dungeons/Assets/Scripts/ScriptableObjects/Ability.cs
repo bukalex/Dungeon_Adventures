@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Ability : ScriptableObject
 {
     public string abilityName;
+    public string description;
 
     [Header("Data")]
     public AttackParameters attackParameters;

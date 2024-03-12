@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using static UnityEditor.Progress;
 
-public class AbilityItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class AbilityItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
     public Ability ability;
@@ -42,6 +43,7 @@ public class AbilityItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         if (InventoryManager.Instance.activeAbilities == 0)
         {
             image.raycastTarget = false;
+            BattleManager.Instance.isUsingUI = true;
             parentBeforeDrag = transform.parent;
             parentAfterDrag = transform.parent;
             transform.SetParent(transform.root);
@@ -64,7 +66,28 @@ public class AbilityItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             if (existingAbility != null) existingAbility.transform.SetParent(parentBeforeDrag);
 
             image.raycastTarget = true;
+            BattleManager.Instance.isUsingUI = false;
             transform?.SetParent(parentAfterDrag);
         }
+    }
+
+    private IEnumerator ItemDescriptionOn(float interval)
+    {
+        yield return new WaitForSeconds(interval);
+        InventoryManager.Instance.ItemDescription.SetActive(true);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        StartCoroutine(ItemDescriptionOn(0.75f));
+        InventoryManager.Instance.InitializeAbilityDescription(ability);
+        Debug.Log("Enter");
+
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        StopAllCoroutines();
+        InventoryManager.Instance.ItemDescription.SetActive(false);
     }
 }

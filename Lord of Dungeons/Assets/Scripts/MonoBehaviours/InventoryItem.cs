@@ -50,6 +50,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         {
             itemTag = InventoryItemPrefab.tag;
             image.raycastTarget = false;
+            BattleManager.Instance.isUsingUI = true;
             parentAfterDrag = transform.parent;
             transform.SetParent(transform.root);
         }
@@ -66,6 +67,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         if (!isLocked)
         {
             image.raycastTarget = true;
+            BattleManager.Instance.isUsingUI = false;
             transform.SetParent(parentAfterDrag);
         }
     }

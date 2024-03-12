@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -114,16 +115,15 @@ public class InventoryManager : MonoBehaviour
         {
             if(selectedSlot != -1) toolBar[selectedSlot].unselectSlot();
 
-            string[] inputString = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};  
-
-            for(int i = 0; i < inputString.Length; i++)
-            {
-                if (Input.inputString == inputString[i])
-                {
-                    int.TryParse(Input.inputString, out selectedSlot);
-                    selectedSlot -= 1;
-                }
-            }
+            if (Input.GetKeyDown(KeyCode.Alpha1)) selectedSlot = 0;
+            if (Input.GetKeyDown(KeyCode.Alpha2)) selectedSlot = 1;
+            if (Input.GetKeyDown(KeyCode.Alpha3)) selectedSlot = 2;
+            if (Input.GetKeyDown(KeyCode.Alpha4)) selectedSlot = 3;
+            if (Input.GetKeyDown(KeyCode.Alpha5)) selectedSlot = 4;
+            if (Input.GetKeyDown(KeyCode.Alpha6)) selectedSlot = 5;
+            if (Input.GetKeyDown(KeyCode.Alpha7)) selectedSlot = 6;
+            if (Input.GetKeyDown(KeyCode.Alpha8)) selectedSlot = 7;
+            if (Input.GetKeyDown(KeyCode.Alpha9)) selectedSlot = 8;
 
             if (selectedSlot != -1) toolBar[selectedSlot].selectSlot();
         }
@@ -237,7 +237,14 @@ public class InventoryManager : MonoBehaviour
     public void InitializeItemDescription(Item item)
     {
         ItemDescription.transform.GetChild(0).GetComponent<TMP_Text>().text = item.name;
-        ItemDescription.transform.GetChild(1).GetComponent<TMP_Text>().text = item.description;
+        ItemDescription.transform.GetChild(1).GetComponent<TMP_Text>().text = item.description.Replace("\\n", "\n");
+        ItemDescription.transform.GetChild(2).GetComponent<TMP_Text>().text = item.itemType.ToString();
+    }
+    public void InitializeAbilityDescription(Ability ability)
+    {
+        ItemDescription.transform.GetChild(0).GetComponent<TMP_Text>().text = ability.abilityName;
+        ItemDescription.transform.GetChild(1).GetComponent<TMP_Text>().text = ability.description.Replace("\\n", "\n");
+        ItemDescription.transform.GetChild(2).GetComponent<TMP_Text>().text = "Level " + ability.attackParameters.rank;
     }
 
     public bool HasCoins()

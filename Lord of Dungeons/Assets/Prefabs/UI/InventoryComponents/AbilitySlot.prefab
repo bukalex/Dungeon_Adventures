@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1187476728491881493}
   - component: {fileID: 8826955594761959688}
   - component: {fileID: 3957735152335714556}
-  - component: {fileID: -4589190978062997493}
   - component: {fileID: 3439382876652962409}
+  - component: {fileID: -4589190978062997493}
   m_Layer: 5
   m_Name: AbilitySlot
   m_TagString: Untagged
@@ -77,19 +77,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-4589190978062997493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2436972528760244070}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 974353ae12775ca4f866dbf6c95820c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackButton: 0
 --- !u!114 &3439382876652962409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,3 +101,16 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &-4589190978062997493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2436972528760244070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 974353ae12775ca4f866dbf6c95820c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackButton: 0
