@@ -42,6 +42,7 @@ public class AbilityItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         if (InventoryManager.Instance.activeAbilities == 0)
         {
             image.raycastTarget = false;
+            BattleManager.Instance.isUsingUI = true;
             parentBeforeDrag = transform.parent;
             parentAfterDrag = transform.parent;
             transform.SetParent(transform.root);
@@ -64,6 +65,7 @@ public class AbilityItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             if (existingAbility != null) existingAbility.transform.SetParent(parentBeforeDrag);
 
             image.raycastTarget = true;
+            BattleManager.Instance.isUsingUI = false;
             transform?.SetParent(parentAfterDrag);
         }
     }

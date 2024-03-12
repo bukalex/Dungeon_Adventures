@@ -25,6 +25,8 @@ public class BattleManager : MonoBehaviour
     private List<AttackParameters> runningAttacks = new List<AttackParameters>();
     private List<AttackParameters> expiredAttacks = new List<AttackParameters>();
 
+    public bool isUsingUI = false;
+
     public enum AttackType { BASIC, SPECIAL }
     public enum AttackButton { NONE, LMB, RMB, SHIFT, R, F, C, V }
 

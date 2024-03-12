@@ -95,58 +95,61 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
 
             //Attacks
             #region
-            //Left Mouse Button
-            if (Input.GetKey(UIManager.Instance.keyCodes[6]) && !Input.GetKey(UIManager.Instance.keyCodes[7]) && !EventSystem.current.IsPointerOverGameObject())
+            if (!BattleManager.Instance.isUsingUI && !EventSystem.current.IsPointerOverGameObject())
             {
-                if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.LMB))
+                //Left Mouse Button
+                if (Input.GetKey(UIManager.Instance.keyCodes[6]) && !Input.GetKey(UIManager.Instance.keyCodes[7]))
                 {
-                    body.velocity = movementDirection * playerData.speed * 0.5f;
-                    AttackWithLMB();
+                    if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.LMB))
+                    {
+                        body.velocity = movementDirection * playerData.speed * 0.5f;
+                        AttackWithLMB();
+                    }
                 }
-            }
 
-            //Right Mouse Button
-            if (Input.GetKey(UIManager.Instance.keyCodes[7]) && !EventSystem.current.IsPointerOverGameObject())
-            {
-                if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.RMB))
+                //Right Mouse Button
+                if (Input.GetKey(UIManager.Instance.keyCodes[7]))
                 {
-                    
+                    if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.RMB))
+                    {
+
+                    }
                 }
-            }
 
-            //R Button
-            if (Input.GetKeyDown(UIManager.Instance.keyCodes[8]))
-            {
-                if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.R))
+                //R Button
+                if (Input.GetKeyDown(UIManager.Instance.keyCodes[8]))
                 {
+                    if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.R))
+                    {
 
+                    }
                 }
-            }
 
-            //F Button
-            if (Input.GetKeyDown(UIManager.Instance.keyCodes[9]))
-            {
-                if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.F))
+                //F Button
+                if (Input.GetKeyDown(UIManager.Instance.keyCodes[9]))
                 {
+                    if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.F))
+                    {
 
+                    }
                 }
-            }
 
-            //C Button
-            if (Input.GetKeyDown(UIManager.Instance.keyCodes[10]))
-            {
-                if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.C))
+                //C Button
+                if (Input.GetKeyDown(UIManager.Instance.keyCodes[10]))
                 {
+                    if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.C))
+                    {
 
+                    }
                 }
-            }
 
-            //V Button
-            if (Input.GetKeyDown(UIManager.Instance.keyCodes[11]))
-            {
-                if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.V))
+                //V Button
+                if (Input.GetKeyDown(UIManager.Instance.keyCodes[11]))
                 {
+                    if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.V))
+                    {
 
+                    }
                 }
             }
             #endregion
