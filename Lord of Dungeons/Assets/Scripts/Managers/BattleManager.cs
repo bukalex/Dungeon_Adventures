@@ -38,10 +38,6 @@ public class BattleManager : MonoBehaviour
             Instance = this;
         }
     }
-    private void Start()
-    {
-        //SoundManager.Instance.PlayBGM(BGMSoundData.BGM.Dungeon);
-    }
 
     private void Initialize()
     {
