@@ -389,6 +389,10 @@ public class InventoryManager : MonoBehaviour
         {
             if (!HasAbility(item.ability)) AddAbility(item.ability);
         }
+        else if (item.itemType == Item.ItemType.Food)
+        {
+            Camera.main.GetComponent<Animator>().SetTrigger("rotate");
+        }
     }
     public Item useSelectedItem()
     {
