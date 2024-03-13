@@ -359,7 +359,7 @@ public class UIManager : MonoBehaviour
 
     public void InitializeTeleportWindow(int checkpoints, int period)
     {
-        teleportContent.GetComponentInChildren<Button>().onClick.AddListener(delegate { GoToCheckpoint(1); });
+        teleportContent.GetComponentInChildren<Button>().onClick.AddListener(delegate { GoToCheckpoint(1, 0); });
 
         for (int i = 0; i < checkpoints; i++)
         {
@@ -370,15 +370,15 @@ public class UIManager : MonoBehaviour
     public void UpdateTeleportWindow(int checkpoints, int period)
     {
         GameObject teleportButton = Instantiate(teleportButtonPrefab, teleportContent.transform);
-        teleportButton.GetComponent<Button>().onClick.AddListener(delegate { GoToCheckpoint(CheckpointManager.Instance.checkpoints[UnityEngine.Random.Range(0, CheckpointManager.Instance.checkpoints.Count)]); });
+        teleportButton.GetComponent<Button>().onClick.AddListener(delegate { GoToCheckpoint(CheckpointManager.Instance.checkpoints[UnityEngine.Random.Range(0, CheckpointManager.Instance.checkpoints.Count)], checkpoints * period); });
         teleportButton.GetComponentInChildren<TMP_Text>().text = (checkpoints * period).ToString();
     }
 
-    public void GoToCheckpoint(int checkpoint)
+    public void GoToCheckpoint(int checkpoint, int levelsPassed)
     {
         if (checkpoint != SceneManager.GetActiveScene().buildIndex)
         {
-            CheckpointManager.Instance.levelsPassed = (checkpoint - 1) * 5;
+            CheckpointManager.Instance.levelsPassed = levelsPassed;
             foreach (GameObject obj in GameObject.FindGameObjectsWithTag("PopUpUI"))
             {
                 Destroy(obj);
