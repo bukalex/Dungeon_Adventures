@@ -54,42 +54,45 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
         {
             //Movement
             #region
-            movementDirection = new Vector3(-System.Convert.ToInt32(Input.GetKey(UIManager.Instance.keyCodes[2])) + System.Convert.ToInt32(Input.GetKey(UIManager.Instance.keyCodes[3])),
+            if (!CheatManager.Instance.ChatIsActive())
+            {
+                movementDirection = new Vector3(-System.Convert.ToInt32(Input.GetKey(UIManager.Instance.keyCodes[2])) + System.Convert.ToInt32(Input.GetKey(UIManager.Instance.keyCodes[3])),
                 -System.Convert.ToInt32(Input.GetKey(UIManager.Instance.keyCodes[1])) + System.Convert.ToInt32(Input.GetKey(UIManager.Instance.keyCodes[0])), 0).normalized;
 
-            if (!isGoingBackward)
-            {
-                ChangeDirection();
-            }
-
-            if (movementDirection.magnitude != 0)
-            {
-                playerData.attackDirection = movementDirection;
-                isGoingBackward = false;
-
-                if (Input.GetKey(UIManager.Instance.keyCodes[4]) && BattleManager.Instance.PlayerPerformShift(playerData))
+                if (!isGoingBackward)
                 {
-                    Run();
-                    body.velocity = movementDirection * playerData.speed * playerData.sprintFactor;
+                    ChangeDirection();
                 }
-                else if (Input.GetKey(UIManager.Instance.keyCodes[5]))
-                {
-                    Walk();
-                    body.velocity = movementDirection * playerData.speed * playerData.slowWalkFactor;
 
-                    playerData.attackDirection = -movementDirection;
-                    isGoingBackward = true;
+                if (movementDirection.magnitude != 0)
+                {
+                    playerData.attackDirection = movementDirection;
+                    isGoingBackward = false;
+
+                    if (Input.GetKey(UIManager.Instance.keyCodes[4]) && BattleManager.Instance.PlayerPerformShift(playerData))
+                    {
+                        Run();
+                        body.velocity = movementDirection * playerData.speed * playerData.sprintFactor;
+                    }
+                    else if (Input.GetKey(UIManager.Instance.keyCodes[5]))
+                    {
+                        Walk();
+                        body.velocity = movementDirection * playerData.speed * playerData.slowWalkFactor;
+
+                        playerData.attackDirection = -movementDirection;
+                        isGoingBackward = true;
+                    }
+                    else
+                    {
+                        Walk();
+                        body.velocity = movementDirection * playerData.speed;
+                    }
                 }
                 else
                 {
-                    Walk();
-                    body.velocity = movementDirection * playerData.speed;
+                    Stop();
+                    body.velocity = Vector3.zero;
                 }
-            }
-            else
-            {
-                Stop();
-                body.velocity = Vector3.zero;
             }
             #endregion
 

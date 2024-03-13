@@ -17,6 +17,13 @@ public class CheatManager : MonoBehaviour
     [SerializeField]
     private string command;
 
+    public static CheatManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
+
     void Update()
     {
         //chatLog.text = input.GetComponentInChildren<TMP_Text>().text;
@@ -68,4 +75,8 @@ public class CheatManager : MonoBehaviour
         }
     }
 
+    public bool ChatIsActive()
+    {
+        return chatMenu.activeSelf;
+    }
 }
