@@ -126,6 +126,8 @@ public class UIManager : MonoBehaviour
         //Initialize chests UI
         //ChestUIs = GameObject.FindGameObjectsWithTag("ChestUI");
         Cursor.visible = npcWindowActive || InventorySlots.activeSelf || escapeUI.activeSelf || CheatManager.Instance.ChatIsActive();
+        if (npcWindowActive || InventorySlots.activeSelf || escapeUI.activeSelf || CheatManager.Instance.ChatIsActive()) Cursor.lockState = CursorLockMode.None;
+        else Cursor.lockState = CursorLockMode.Locked;
 
         //Update values
         displayInventoryUI();

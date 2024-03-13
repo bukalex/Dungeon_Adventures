@@ -23,6 +23,7 @@ public class InventoryManager : MonoBehaviour
     public Ability[] allAbilities;
     [Header("Slots")]
     public InventorySlot inventorySlotPrefab;
+    public InventorySlot deleteSlot;
     public InventorySlot[] internalInventorySlots;
     public InventorySlot[] toolBar;
     public InventorySlot[] equipmentSlots;
@@ -91,7 +92,7 @@ public class InventoryManager : MonoBehaviour
     public void InitializeSlots()
     {
         //Initializing slots for internal inventory
-        internalInventorySlots = UIManager.Instance.inventory.transform.GetChild(3).GetComponentsInChildren<InventorySlot>();
+        internalInventorySlots = UIManager.Instance.inventory.transform.GetChild(2).GetComponentsInChildren<InventorySlot>();
         equipmentSlots = UIManager.Instance.equipment.GetComponentsInChildren<InventorySlot>();
 
         //Initializing slots for toolBar
@@ -234,6 +235,11 @@ public class InventoryManager : MonoBehaviour
         }
         return false;
     }
+    public void DeleteItem()
+    {
+        InventoryItem itemInTrashcan = deleteSlot.GetComponentInChildren<InventoryItem>();
+        Destroy(itemInTrashcan.transform.gameObject);
+    }
     public void MoveItemSilently(Item item)
     {
         //spawnNewItem(item)
@@ -250,7 +256,6 @@ public class InventoryManager : MonoBehaviour
                     itemPosition = 0;
                 }
         }
-
         if (itemPosition == -1)
         {
             for (int i = 0; i < inventoryType2.Length; i++)
@@ -276,7 +281,6 @@ public class InventoryManager : MonoBehaviour
                     currentInventoryItem.transform.parent = slot.transform;
                     break;
                 }
-                
             }
         }
 
@@ -296,7 +300,49 @@ public class InventoryManager : MonoBehaviour
     }
     public void instantlyMoveItem(Item item, InventorySlot[] toolbar, InventorySlot[] inventoryType2, InventorySlot[] inventoryType3)
     {
+        int itemPosition = -1;
 
+        if (itemPosition == -1)
+        {
+            for (int i = 0; i < inventoryType2.Length; i++)
+            {
+                InventorySlot slot = inventoryType2[i];
+                InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+                if (itemInSlot != null)
+                {
+                    itemPosition = 1;
+                    break;
+                }
+            }
+        }
+        Debug.Log(itemPosition);
+        if (itemPosition == 0)
+        {
+            for (int i = 0; i < inventoryType2.Length; i++)
+            {
+                InventorySlot slot = inventoryType2[i];
+                InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+                if (itemInSlot == null)
+                {
+                    currentInventoryItem.transform.parent = slot.transform;
+                    break;
+                }
+            }
+        }
+
+        if (itemPosition == 1)
+        {
+            for (int i = 0; i < toolbar.Length; i++)
+            {
+                InventorySlot slot = toolbar[i];
+                InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+                if (itemInSlot == null)
+                {
+                    currentInventoryItem.transform.parent = slot.transform;
+                    break;
+                }
+            }
+        }
     }
     public bool fillStacks(Item item, InventorySlot[] InventoryType)
     {

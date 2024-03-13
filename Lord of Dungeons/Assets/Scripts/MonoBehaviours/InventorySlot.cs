@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class InventorySlot : MonoBehaviour, IDropHandler /*IPointerEnterHandler, IPointerExitHandler*/
+public class InventorySlot : MonoBehaviour, IDropHandler
 {
     public GameObject slotPrefab;
     public Color selectedSlot, nonSelectedSlot;
@@ -66,20 +66,5 @@ public class InventorySlot : MonoBehaviour, IDropHandler /*IPointerEnterHandler,
         yield return new WaitForSeconds(interval);
         InventoryManager.Instance.ItemDescription.SetActive(true);
     }
-    //public void OnPointerEnter(PointerEventData eventData)
-    //{
-    //    GameObject slot = eventData.pointerEnter;
-    //    InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-    //    if (itemInSlot != null)
-    //    {
-    //        StartCoroutine(onItemDescribe(0.75f));
-    //        InventoryManager.Instance.ItemDescription.transform.GetChild(0).GetComponent<TMP_Text>().text = itemInSlot.item.name;
-    //        InventoryManager.Instance.ItemDescription.transform.GetChild(1).GetComponent<TMP_Text>().text = itemInSlot.item.description;
-    //    }
-    //}
-    //
-    //public void OnPointerExit(PointerEventData eventData)
-    //{
-    //    InventoryManager.Instance.ItemDescription.SetActive(false);
-    //}
+
 }

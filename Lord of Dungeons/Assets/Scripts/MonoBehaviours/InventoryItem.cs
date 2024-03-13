@@ -71,7 +71,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         if (!isLocked)
         {
-
             image.raycastTarget = true;
             BattleManager.Instance.isUsingUI = false;
             transform.SetParent(parentAfterDrag);

@@ -51,6 +51,10 @@ public class CheatManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.BackQuote))
         {
             chatMenu.SetActive(!chatMenu.activeSelf);
+            if(chatMenu.activeSelf)
+                Time.timeScale = 0f;
+            else if(!chatMenu.activeSelf) 
+                Time.timeScale = 1f;
         }
     }
 
@@ -72,6 +76,33 @@ public class CheatManager : MonoBehaviour
             playerData.resources[Item.CoinType.GoldenCoin] = 0;
             playerData.resources[Item.CoinType.SilverCoin] = 0;
             playerData.resources[Item.CoinType.CopperCoin] = 0;
+        }
+
+        if (command == "/immortality on")
+        {
+            playerData.health = 999999999.9f;
+        }
+
+        if (command == "/immortality off")
+        {
+            playerData.health = 100.0f;
+        }
+
+        if (command == "/high-speed on")
+        {
+            playerData.speed = 10f;
+        }
+
+        if (command == "/high-speed off")
+        {
+            playerData.speed = 3f;
+        }
+
+        if(command == "/god")
+        {
+            playerData.speed = 12.5f;
+            playerData.attack = 12500.0f;
+            playerData.health = 99999999999f;
         }
     }
 
