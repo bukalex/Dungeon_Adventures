@@ -56,7 +56,7 @@ public class EnemyParameters : ScriptableObject, IAttackObject, IDefenseObject
     public GameObject projectilePrefab;
 
     //Enums
-    public enum EnemyType { GUARD, GHOST, RAT, BAT }
+    public enum EnemyType { GUARD, GHOST, RAT, BAT, EYE }
 
     //Interfaces
     #region

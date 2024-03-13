@@ -54,6 +54,7 @@ public class BattleManager : MonoBehaviour
         enemyActions.Add(GuardUseSword);
         enemyActions.Add(GuardUseSpecial);
         enemyActions.Add(GhostShoot);
+        enemyActions.Add(RatBite);
 
         foreach (string str in Enum.GetNames(typeof(PlayerData.CharacterType)))
         {
@@ -433,7 +434,7 @@ public class BattleManager : MonoBehaviour
             return enemyAttacks[enemyType][attackButton].range;
         }
 
-        return Mathf.Infinity;
+        return 0;
     }
 
     public void AssingAbility(PlayerData playerData, AttackParameters attack, AttackButton attackButton)
@@ -842,6 +843,18 @@ public class BattleManager : MonoBehaviour
         SoundManager.Instance.PlaySE(SESoundData.SE.GhoastProjectile);
         ProjectileController projectileController = Instantiate(enemyParameters.projectilePrefab, enemyParameters.position, new Quaternion()).GetComponent<ProjectileController>();
         projectileController.Launch("Enemy", enemyParameters, attack, enemyParameters.attackDirection);
+    }
+
+    private void RatBite(EnemyParameters enemyParameters, AttackParameters attack)
+    {
+        List<PlayerController> players = DetectTargets<PlayerController>(enemyParameters.position, attack.range + enemyParameters.colliderRadius + 0.25f, enemyParameters.attackDirection);
+        foreach (PlayerController player in players)
+        {
+            if (player.GetPlayerData().IsAlive())
+            {
+                DealDamage(enemyParameters, player.GetPlayerData(), attack);
+            }
+        }
     }
 
     private void DisableStun(AttackParameters attack)

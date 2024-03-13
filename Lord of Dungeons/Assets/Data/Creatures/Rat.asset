@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ddae792339ded641ad5663a529ccf72, type: 3}
+  m_Name: Rat
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  maxMana: 50
+  maxStamina: 100
+  health: 100
+  mana: 0
+  stamina: 100
+  speed: 2
+  attack: 6
+  specialAttack: 3
+  defense: 2
+  specialDefense: 0
+  healthRestoreRate: 1
+  manaRestoreRate: 0
+  staminaRestoreRate: 1
+  isUsingMana: 0
+  isUsingStamina: 0
+  whiskerLength: 1
+  whiskerAngle: 10
+  rotationSpeed: 60
+  playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
+  colliderRadius: 0.4
+  detectionRadius: 6
+  isBoss: 0
+  isStunned: 0
+  isAttacking: 0
+  position: {x: 0, y: 0, z: 0}
+  attackDirection: {x: 0, y: -1, z: 0}
+  transform: {fileID: 0}
+  type: 2
+  animController: {fileID: 9100000, guid: 45585c2208e06a849acde5d496586777, type: 2}
+  projectilePrefab: {fileID: 0}
