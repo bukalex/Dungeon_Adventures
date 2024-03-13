@@ -70,14 +70,16 @@ public class BlacksmithUI : Timer
         }
         if (!craftedItemDisplay.activeSelf && slotActivated)
         {
+            slotActivated = false;
             craftItemButton.GetComponentInChildren<Text>().text = "Craft";
             for (int j = 0; j < InventoryManager.Instance.internalInventorySlots.Length; j++)
             {
                 InventorySlot internalSlots = InventoryManager.Instance.internalInventorySlots[j];
                 InventoryItem internalItemInSlot = internalSlots.GetComponentInChildren<InventoryItem>();
+                InventoryItem craftedItemInSlot = craftedItemSlot.GetComponentInChildren<InventoryItem>();
                 if (internalItemInSlot == null)
                 {
-                    craftedItemSlot.GetComponentInChildren<InventoryItem>().transform.parent = internalSlots.transform;
+                    craftedItemInSlot?.transform.SetParent(internalSlots.transform);
                 }
             }
             for (int i = 0; i < InventoryManager.Instance.toolBar.Length; i++)
@@ -86,9 +88,10 @@ public class BlacksmithUI : Timer
                 InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
                 if (itemInSlot == null)
                 {
-                    craftedItemSlot.GetComponentInChildren<InventoryItem>().transform.parent = slot.transform;
+                    craftedItemSlot.GetComponentInChildren<InventoryItem>()?.transform.SetParent(slot.transform);
                 }
             }
+            
         }
 
         //Turn off material slot if there is no child
