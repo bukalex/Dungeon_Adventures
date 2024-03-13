@@ -125,8 +125,8 @@ public class UIManager : MonoBehaviour
     {
         //Initialize chests UI
         //ChestUIs = GameObject.FindGameObjectsWithTag("ChestUI");
-        
-        
+        Cursor.visible = npcWindowActive || InventorySlots.activeSelf || escapeUI.activeSelf;
+
         //Update values
         displayInventoryUI();
         InitializeBars();

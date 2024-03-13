@@ -128,10 +128,9 @@ public class InventoryManager : MonoBehaviour
                 instantlyMoveItem(itemToChange, toolBar, internalInventorySlots);
             }
         }
+        if (selectedSlot != -1) toolBar[selectedSlot].unselectSlot();
         if (Input.anyKeyDown)
         {
-            if(selectedSlot != -1) toolBar[selectedSlot].unselectSlot();
-
             if (Input.GetKeyDown(KeyCode.Alpha1)) selectedSlot = 0;
             if (Input.GetKeyDown(KeyCode.Alpha2)) selectedSlot = 1;
             if (Input.GetKeyDown(KeyCode.Alpha3)) selectedSlot = 2;
@@ -141,9 +140,10 @@ public class InventoryManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha7)) selectedSlot = 6;
             if (Input.GetKeyDown(KeyCode.Alpha8)) selectedSlot = 7;
             if (Input.GetKeyDown(KeyCode.Alpha9)) selectedSlot = 8;
-
-            if (selectedSlot != -1) toolBar[selectedSlot].selectSlot();
         }
+        selectedSlot = Mathf.Clamp(selectedSlot + (int)Input.mouseScrollDelta.y, 0, 8);
+        if (selectedSlot != -1) toolBar[selectedSlot].selectSlot();
+
         if (Input.GetKeyUp(KeyCode.Q))
         {
             useSelectedItem();
