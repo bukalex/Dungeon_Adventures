@@ -47,9 +47,13 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (!isLocked)
+        if (eventData.button == PointerEventData.InputButton.Right)
         {
 
+        }
+
+        if (!isLocked)
+        {
             itemTag = InventoryItemPrefab.tag;
             image.raycastTarget = false;
             BattleManager.Instance.isUsingUI = true;

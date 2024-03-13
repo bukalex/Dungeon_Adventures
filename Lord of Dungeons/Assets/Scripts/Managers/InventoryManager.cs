@@ -25,6 +25,7 @@ public class InventoryManager : MonoBehaviour
     public Ability[] startAbilities;
     public Ability[] allAbilities;
     [Header("Slots")]
+    public InventorySlot inventorySlotPrefab;
     public InventorySlot[] internalInventorySlots;
     public InventorySlot[] toolBar;
     public InventorySlot[] equipmentSlots;
@@ -238,7 +239,7 @@ public class InventoryManager : MonoBehaviour
     }
     public void MoveItemSilently(Item item)
     {
-
+        //spawnNewItem(item)
     }
     public void instantlyMoveItem(Item item, InventorySlot[] toolbar, InventorySlot[] inventoryType2)
     {
@@ -447,13 +448,24 @@ public class InventoryManager : MonoBehaviour
         }
         return false;
     }
-    public GameObject spawnNewItem(Item item, InventorySlot slot)
+    public void spawnNewItem(Item item)
+    {
+        GameObject newItemGo = Instantiate(inventoryItemPrefab);
+        InventoryItem inventoryItem = newItemGo.GetComponent<InventoryItem>();
+        inventoryItem.InitializeItem(item);
+    }
+    public void spawnNewItem(Item item, InventorySlot slot)
     {
         GameObject newItemGo = Instantiate(inventoryItemPrefab, slot.transform);
         InventoryItem inventoryItem = newItemGo.GetComponent<InventoryItem>();
         inventoryItem.InitializeItem(item);
-        return newItemGo;
     }
+    //public void spawnNewItem(Item item, InventorySlot slot)
+    //{
+    //    GameObject newItemGo = Instantiate(inventoryItemPrefab, slot.transform);
+    //    InventoryItem inventoryItem = newItemGo.GetComponent<InventoryItem>();
+    //    inventoryItem.InitializeItem(item);
+    //}
     public void spawnNewAbility(Ability ability, AbilitySlot slot, int rank = 1)
     {
         GameObject newAbilityGo = Instantiate(abilityItemPrefab, slot.transform);

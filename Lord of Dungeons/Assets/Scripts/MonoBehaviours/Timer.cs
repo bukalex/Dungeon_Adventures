@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class Timer : MonoBehaviour
 {
-    protected float timer;
+    public float timer;
     private Action timerCallback;
 
     protected virtual void SetTimer(float timer, Action timerCallback)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class NPCController : MonoBehaviour, IInteractable
+public class NPCController : Timer, IInteractable
 {
     [SerializeField]
     private NPCParameters npcParameters;

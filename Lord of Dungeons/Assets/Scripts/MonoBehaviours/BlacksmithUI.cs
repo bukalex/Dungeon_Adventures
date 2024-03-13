@@ -17,7 +17,9 @@ public class BlacksmithUI : Timer
     public Text buttonText;
     public int currentItemID;
     public string itemName;
+    public GameObject craftedItemSlot;
 
+    [SerializeField] private GameObject craftedItemDisplay;
     [SerializeField] private GameObject ContainerOfItemHolders;
     [SerializeField] private GameObject materiaSlotsGroup;
     [SerializeField] private InventorySlot[] materialSlots;
@@ -28,8 +30,10 @@ public class BlacksmithUI : Timer
     //Key is material ID, Value is material amount to craft
     private Dictionary<int, int> insertedMaterial = new Dictionary<int, int>();
     private Dictionary<int, int> previousFrame = new Dictionary<int, int>();
+
     private int recipeAmount;
     private bool filled = true;
+    private bool slotActivated = false;
 
     private int firstMaterialPos= 0;
     private int secondMaterialsPos = 0;
@@ -57,6 +61,40 @@ public class BlacksmithUI : Timer
     private void Update()
     {
         base.TimerUpdate();
+        if (timer > 0f)
+        {
+
+            craftItemButton.GetComponentInChildren<Text>().text = timer.ToString("F1");
+        }
+
+        if (craftedItemSlot.GetComponent<InventorySlot>().GetComponentInChildren<InventoryItem>() == null)
+        {
+            craftItemButton.gameObject.SetActive(true);
+            craftedItemDisplay.SetActive(false);
+        }
+        if (!craftedItemDisplay.activeSelf && slotActivated)
+        {
+            craftItemButton.GetComponentInChildren<Text>().text = "Craft";
+            for (int j = 0; j < InventoryManager.Instance.internalInventorySlots.Length; j++)
+            {
+                InventorySlot internalSlots = InventoryManager.Instance.internalInventorySlots[j];
+                InventoryItem internalItemInSlot = internalSlots.GetComponentInChildren<InventoryItem>();
+                if (internalItemInSlot == null)
+                {
+                    craftedItemSlot.GetComponentInChildren<InventoryItem>().transform.parent = internalSlots.transform;
+                }
+            }
+            for (int i = 0; i < InventoryManager.Instance.toolBar.Length; i++)
+            {
+                InventorySlot slot = InventoryManager.Instance.toolBar[i];
+                InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+                if (itemInSlot == null)
+                {
+                    craftedItemSlot.GetComponentInChildren<InventoryItem>().transform.parent = slot.transform;
+                }
+            }
+        }
+
         //Turn off material slot if there is no child
         #region
         for (int i = 0; i < materialSlots.Length - 1; i++)
@@ -182,7 +220,10 @@ public class BlacksmithUI : Timer
             {
                 SetTimer(5f, () =>
                 {
-                    InventoryManager.Instance.AddItem(craftableItem, InventoryManager.Instance.toolBar, InventoryManager.Instance.internalInventorySlots);
+                    craftItemButton.gameObject.SetActive(false);
+                    craftedItemDisplay.SetActive(true);
+                    InventoryManager.Instance.spawnNewItem(craftableItem, craftedItemSlot.GetComponent<InventorySlot>());
+                    slotActivated = true;
                 });
                 for (int i = 0; i < materialSlots.Length; i++)
                 {
