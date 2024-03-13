@@ -57,6 +57,7 @@ public class BattleManager : MonoBehaviour
         enemyActions.Add(GuardUseSword);
         enemyActions.Add(GuardUseSpecial);
         enemyActions.Add(GhostShoot);
+        enemyActions.Add(TrapSpikeAttack);
 
         foreach (string str in Enum.GetNames(typeof(PlayerData.CharacterType)))
         {
@@ -824,6 +825,8 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    
+
     private void GuardUseSpecial(EnemyParameters enemyParameters, AttackParameters attack)
     {
         GameObject area = Instantiate(battleData.superAttackAreaPrefab, enemyParameters.transform);
@@ -851,5 +854,17 @@ public class BattleManager : MonoBehaviour
     {
         if (attack.playerData != null) attack.playerData.DisableStun();
         if (attack.enemyParameters != null) attack.enemyParameters.DisableStun();
+    }
+
+    private void TrapSpikeAttack(EnemyParameters enemyParameters, AttackParameters attack)
+    {
+        List<PlayerController> players = DetectTargets<PlayerController>(enemyParameters.position, attack.range + enemyParameters.colliderRadius + 0.25f, enemyParameters.attackDirection);
+        foreach (PlayerController player in players)
+        {
+            if (player.GetPlayerData().IsAlive())
+            {
+                DealDamage(enemyParameters, player.GetPlayerData(), attack);
+            }
+        }
     }
 }
