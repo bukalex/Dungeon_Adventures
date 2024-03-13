@@ -5,10 +5,6 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
-using Material = Assets.Scripts.Recipes.Material;
-using System.Collections;
-using Unity.VisualScripting;
 
 public class BlacksmithUI : Timer
 {
