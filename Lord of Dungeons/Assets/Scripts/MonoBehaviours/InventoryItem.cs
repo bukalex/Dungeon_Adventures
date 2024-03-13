@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -48,6 +49,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         if (!isLocked)
         {
+
             itemTag = InventoryItemPrefab.tag;
             image.raycastTarget = false;
             BattleManager.Instance.isUsingUI = true;
@@ -66,6 +68,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         if (!isLocked)
         {
+
             image.raycastTarget = true;
             BattleManager.Instance.isUsingUI = false;
             transform.SetParent(parentAfterDrag);
@@ -83,15 +86,20 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
+        InventoryManager.Instance.currentInventoryItem = transform.gameObject.GetComponent<InventoryItem>();
+        InventoryManager.Instance.itemToChange = item;
         StartCoroutine(ItemDescriptionOn(0.75f));
         InventoryManager.Instance.InitializeItemDescription(item);
         Debug.Log("Enter");
 
+        InventoryManager.Instance.itemToChange = item;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         StopAllCoroutines();
         InventoryManager.Instance.ItemDescription.SetActive(false);
+
+        InventoryManager.Instance.itemToChange = null;
     }
 }

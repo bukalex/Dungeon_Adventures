@@ -206,13 +206,16 @@ public class UIManager : MonoBehaviour
             if (Input.GetKeyDown(keyCodes[13]))
             {
                 Debug.Log("Button TAB was pressed!");
-                InventorySlots.SetActive(true);
-                EquipmentSection.SetActive(true);
-            }
-            else if (Input.GetKeyUp(keyCodes[13]))
-            {
-                InventorySlots.SetActive(false);
-                EquipmentSection.SetActive(false);
+                if(InventorySlots.activeSelf == EquipmentSection.activeSelf)
+                {
+                    InventorySlots.SetActive(!InventorySlots.activeSelf);
+                    EquipmentSection.SetActive(!EquipmentSection.activeSelf);
+                }
+                else
+                {
+                    InventorySlots.SetActive(!InventorySlots.activeSelf);
+                    EquipmentSection.SetActive(EquipmentSection.activeSelf);
+                }
             }
         }
 
