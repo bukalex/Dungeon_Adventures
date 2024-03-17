@@ -20,10 +20,12 @@ public class ObjectParameters : ScriptableObject, IDefenseObject
     public PlayerData playerData;
     public float colliderRadius = 1.0f;
     public Vector3 position;
-    //public GameObject dropPrefab;
+
     public RuntimeAnimatorController animController;
 
-    public enum ObjectType { POT, CHEST}
+    public bool isTrap;
+
+    public enum ObjectType { POT, CHEST, TRAP, CRATE}
 
     //Interfaces
     #region
