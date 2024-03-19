@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 665f08dc8a82b6141a692c5644f3351c, type: 3}
-  m_Name: Spikes
+  m_Name: Crate
   m_EditorClassIdentifier: 
-  health: 50000
-  attack: 20
+  health: 30
+  attack: 3
   specialAttack: 3
-  defense: 9999999
-  specialDefense: 9999999
-  playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}
+  defense: 2
+  specialDefense: 2
+  playerData: {fileID: 0}
   colliderRadius: 1
   position: {x: 0, y: 0, z: 0}
-  animController: {fileID: 9100000, guid: f1a66913670e39242b81e113e4090bff, type: 2}
-  isTrap: 1
+  animController: {fileID: 0}
+  isTrap: 0

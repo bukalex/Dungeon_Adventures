@@ -13,6 +13,9 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour
     private Animator animator;
 
     [SerializeField]
+    private AttackParameters attack;
+
+    [SerializeField]
     private SpriteRenderer spriteRenderer;
 
     [SerializeField]
@@ -91,10 +94,17 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour
 
     private void Bust()
     {
-        //Instantiate(objectParametersOriginal.dropPrefab, transform.position, new Quaternion());
+        
         animator.SetTrigger("isBroken");
         capsuleCollider.enabled = false;
         GetComponentInChildren<PolygonCollider2D>().enabled = false;
+    }
+
+    private void Attack()
+    {
+        animator.SetTrigger("isAttacking");
+        //However you deal damage with battle manager here
+        Debug.Log("Hit");
     }
 
     private List<T> DetectSprites<T>()
@@ -111,6 +121,14 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour
         }
 
         return targets;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (objectParameters.isTrap == true) 
+        {
+            Attack();
+        }
     }
 
     public IDefenseObject GetDefenseObject()

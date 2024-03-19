@@ -58,6 +58,7 @@ public class EnemyParameters : ScriptableObject, IAttackObject, IDefenseObject
     //Enums
     public enum EnemyType { GUARD, GHOST, RAT, BAT, EYE }
 
+
     //Interfaces
     #region
     public float GetAttackValue(BattleManager.AttackType attackType)

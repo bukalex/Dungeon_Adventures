@@ -5,8 +5,10 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
+using Material = Assets.Scripts.Recipes.Material;
 
-public class BlacksmithUI : Timer
+public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHandler
 {
     public Button craftItemButton;
     public BlacksmithItemHolder currentItemHodler;
@@ -55,45 +57,7 @@ public class BlacksmithUI : Timer
         UIManager.Instance.npcWindowActive = false;
     }
     private void Update()
-    {
-        base.TimerUpdate();
-        if (timer > 0f)
-        {
-
-            craftItemButton.GetComponentInChildren<Text>().text = timer.ToString("F1");
-        }
-
-        if (craftedItemSlot.GetComponent<InventorySlot>().GetComponentInChildren<InventoryItem>() == null)
-        {
-            craftItemButton.gameObject.SetActive(true);
-            craftedItemDisplay.SetActive(false);
-        }
-        if (!craftedItemDisplay.activeSelf && slotActivated)
-        {
-            slotActivated = false;
-            craftItemButton.GetComponentInChildren<Text>().text = "Craft";
-            for (int j = 0; j < InventoryManager.Instance.internalInventorySlots.Length; j++)
-            {
-                InventorySlot internalSlots = InventoryManager.Instance.internalInventorySlots[j];
-                InventoryItem internalItemInSlot = internalSlots.GetComponentInChildren<InventoryItem>();
-                InventoryItem craftedItemInSlot = craftedItemSlot.GetComponentInChildren<InventoryItem>();
-                if (internalItemInSlot == null)
-                {
-                    craftedItemInSlot?.transform.SetParent(internalSlots.transform);
-                }
-            }
-            for (int i = 0; i < InventoryManager.Instance.toolBar.Length; i++)
-            {
-                InventorySlot slot = InventoryManager.Instance.toolBar[i];
-                InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-                if (itemInSlot == null)
-                {
-                    craftedItemSlot.GetComponentInChildren<InventoryItem>()?.transform.SetParent(slot.transform);
-                }
-            }
-            
-        }
-
+{ 
         //Turn off material slot if there is no child
         #region
         for (int i = 0; i < materialSlots.Length - 1; i++)
@@ -217,28 +181,21 @@ public class BlacksmithUI : Timer
             Debug.Log(craftRate);
             if (craftRate == requireMaterials.Count)
             {
-                SetTimer(5f, () =>
+                InventoryManager.Instance.AddItem(craftableItem, InventoryManager.Instance.toolBar, InventoryManager.Instance.internalInventorySlots);
+                for(int i = 0; i < materialSlots.Length; i++)
                 {
-                    craftItemButton.gameObject.SetActive(false);
-                    craftedItemDisplay.SetActive(true);
-                    InventoryManager.Instance.spawnNewItem(craftableItem, craftedItemSlot.GetComponent<InventorySlot>());
-                    slotActivated = true;
-                });
-                for (int i = 0; i < materialSlots.Length; i++)
-                {
-                    if (requireMaterials.Count <= 2)
-                        if (i == 3) break;
                     InventorySlot materialSlot = materialSlots[i];
                     InventoryItem material = materialSlot.GetComponentInChildren<InventoryItem>();
 
-                    for (int j = 0; j < currentItemHodler.materialDisplays.Length; j++)
-                    {
-                        if (material.image.sprite == currentItemHodler.materialDisplays[j].transform?.GetChild(1).GetComponent<Image>().sprite)
-                        {
-                            material.count -= int.Parse(currentItemHodler.materialDisplays[j].transform.GetChild(0).GetComponent<TMP_Text>().text);
-                            material.updateCount();
-                        }   
-                    }
+                    //List<int> materialIDs = new List<int>();
+                    //for(int j = 0; j < materialSlots.Length; j++)
+                    //    materialIDs.Add(material.materialID);
+                    //InventoryItem material = origMaterial ??= materialSlots[materialSlots.Length - 1].GetComponentInChildren<InventoryItem>();
+
+                    int materialCost = requireMaterials[i].amount;
+
+                    material.count -= materialCost;
+                    material.updateCount();
 
                     if (material.count == 0)
                         Destroy(material.gameObject);
