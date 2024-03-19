@@ -121,7 +121,7 @@ public class InventoryManager : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            if (Input.GetMouseButtonDown(0) && itemToChange == currentInventoryItem.GetComponent<InventoryItem>().item)
+            if (currentInventoryItem != null && Input.GetMouseButtonDown(0) && itemToChange == currentInventoryItem.GetComponent<InventoryItem>().item)
             {
                 instantlyMoveItem(itemToChange, toolBar, internalInventorySlots);
             }

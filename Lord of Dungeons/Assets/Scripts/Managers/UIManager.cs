@@ -74,9 +74,13 @@ public class UIManager : MonoBehaviour
     public GameObject[] enemyHealthBars;
     public TMP_Text bossCounter, enemyCounter, levelCounter;
 
-    [SerializeField] private Transform exitDirection;
+    [SerializeField] GameObject arrowPrefab;
+    private Transform exitDirection;
     private Transform exit;
     private Vector3 screenDirection;
+    float factor;
+    float diagonalAngle;
+    float arrowAngle;
 
     public static UIManager Instance { get; private set; }
 
@@ -243,7 +247,17 @@ public class UIManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        UpdateExitDirection();
+        if (true/*!DataManager.Instance.isEducating*/)
+        {
+            if (exitDirection == null) exitDirection = Instantiate(arrowPrefab, transform).transform;
+            if (exit == null) exit = GameObject.FindGameObjectWithTag("Finish")?.transform;
+            if (exit != null)
+            {
+                exitDirection.gameObject.SetActive(true);
+                UpdateArrowDirection(exitDirection, exit);
+            }
+            else exitDirection.gameObject.SetActive(false);
+        }
     }
 
     //Escape Menu Functions
@@ -359,7 +373,7 @@ public class UIManager : MonoBehaviour
 
     public void InitializeTeleportWindow(int checkpoints, int period)
     {
-        teleportContent.GetComponentInChildren<Button>().onClick.AddListener(delegate { GoToCheckpoint(1, 0); });
+        teleportContent.GetComponentInChildren<Button>().onClick.AddListener(delegate { GoToCheckpoint(2, 0); });
 
         for (int i = 0; i < checkpoints; i++)
         {
@@ -479,24 +493,22 @@ public class UIManager : MonoBehaviour
         SoundManager.Instance.bgmAudioSource.volume = data.volume * SoundManager.Instance.bgmMasterVolume * SoundManager.Instance.masterVolume;
     }
 
-    private void UpdateExitDirection()
+    public void UpdateArrowDirection(Transform arrowImage, Transform arrowTarget)
     {
-        if (exit == null) exit = GameObject.FindGameObjectWithTag("Finish").transform;
-        screenDirection = Camera.main.WorldToScreenPoint(exit.position) - Camera.main.WorldToScreenPoint(playerData.position);
-        float factor;
-        float diagonalAngle = Mathf.Atan2(Screen.width / 2, Screen.height/2) * Mathf.Rad2Deg;
-        float angle = Vector3.SignedAngle(Vector3.up, screenDirection, Vector3.forward);
-        exitDirection.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        if (Mathf.Abs(angle) <= diagonalAngle || (180 - diagonalAngle) <= Mathf.Abs(angle))
+        screenDirection = Camera.main.WorldToScreenPoint(arrowTarget.position) - Camera.main.WorldToScreenPoint(playerData.position);
+        diagonalAngle = Mathf.Atan2(Screen.width / 2, Screen.height/2) * Mathf.Rad2Deg;
+        arrowAngle = Vector3.SignedAngle(Vector3.up, screenDirection, Vector3.forward);
+        arrowImage.rotation = Quaternion.AngleAxis(arrowAngle, Vector3.forward);
+        if (Mathf.Abs(arrowAngle) <= diagonalAngle || (180 - diagonalAngle) <= Mathf.Abs(arrowAngle))
         {
-            factor = Mathf.Abs((Screen.height / 2 - 25) / Mathf.Cos(angle * Mathf.Deg2Rad)) / screenDirection.magnitude;
+            factor = Mathf.Abs((Screen.height / 2 - 25) / Mathf.Cos(arrowAngle * Mathf.Deg2Rad)) / screenDirection.magnitude;
         }
         else
         {
-            factor = Mathf.Abs((Screen.width / 2 - 25) / Mathf.Sin(angle * Mathf.Deg2Rad)) / screenDirection.magnitude;
+            factor = Mathf.Abs((Screen.width / 2 - 25) / Mathf.Sin(arrowAngle * Mathf.Deg2Rad)) / screenDirection.magnitude;
         }
-        if (factor >= 1) exitDirection.GetComponent<Image>().enabled = false;
-        else exitDirection.GetComponent<Image>().enabled = true;
-        exitDirection.position = Camera.main.WorldToScreenPoint(Vector3.Lerp(playerData.position, exit.position, factor));
+        if (factor >= 1) arrowImage.GetComponent<Image>().enabled = false;
+        else arrowImage.GetComponent<Image>().enabled = true;
+        arrowImage.position = Camera.main.WorldToScreenPoint(Vector3.Lerp(playerData.position, arrowTarget.position, factor));
     }
 }

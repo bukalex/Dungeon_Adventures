@@ -25,6 +25,8 @@ public class DataManager : MonoBehaviour
     [HideInInspector]
     private UIManager UI;
 
+    public bool isEducating;
+
     public static DataManager Instance { get; private set; }
 
     void Awake()
@@ -62,7 +64,7 @@ public class DataManager : MonoBehaviour
 
     private void Update()
     {
-
+        isEducating = SceneManager.GetActiveScene().name == "Education";
     }
 
     //Getting player position where he changed scene

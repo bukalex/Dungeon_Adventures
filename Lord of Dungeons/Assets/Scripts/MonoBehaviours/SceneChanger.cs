@@ -52,23 +52,27 @@ public class SceneChanger : MonoBehaviour, IInteractable
             Destroy(popUp);
         }
 
-        if (CheckpointManager.Instance.levelsPassed % 5 < 3)
+        if (!DataManager.Instance.isEducating)
         {
-            SceneToChange = CheckpointManager.Instance.commonLevels[Random.Range(0, CheckpointManager.Instance.commonLevels.Count)];
+            if (CheckpointManager.Instance.levelsPassed % 5 < 3)
+            {
+                SceneToChange = CheckpointManager.Instance.commonLevels[Random.Range(0, CheckpointManager.Instance.commonLevels.Count)];
+            }
+            else if (CheckpointManager.Instance.levelsPassed % 5 == 3)
+            {
+                SceneToChange = CheckpointManager.Instance.bossLevels[Random.Range(0, CheckpointManager.Instance.bossLevels.Count)];
+            }
+            else if (CheckpointManager.Instance.levelsPassed % 5 == 4)
+            {
+                SceneToChange = CheckpointManager.Instance.checkpoints[Random.Range(0, CheckpointManager.Instance.checkpoints.Count)];
+            }
+            CheckpointManager.Instance.ChangeLevel();
+            UIManager.Instance.bossCounter.text = "0";
+            UIManager.Instance.enemyCounter.text = "0";
+            UIManager.Instance.levelCounter.text = "Level " + CheckpointManager.Instance.levelsPassed.ToString();
+            SceneManager.LoadScene(SceneToChange);
         }
-        else if (CheckpointManager.Instance.levelsPassed % 5 == 3)
-        {
-            SceneToChange = CheckpointManager.Instance.bossLevels[Random.Range(0, CheckpointManager.Instance.bossLevels.Count)];
-        }
-        else if (CheckpointManager.Instance.levelsPassed % 5 == 4)
-        {
-            SceneToChange = CheckpointManager.Instance.checkpoints[Random.Range(0, CheckpointManager.Instance.checkpoints.Count)];
-        }
-        CheckpointManager.Instance.ChangeLevel();
-        UIManager.Instance.bossCounter.text = "0";
-        UIManager.Instance.enemyCounter.text = "0";
-        UIManager.Instance.levelCounter.text = "Level " + CheckpointManager.Instance.levelsPassed.ToString();
-        SceneManager.LoadScene(SceneToChange);
+        else SceneManager.LoadScene("HUB");
     }
 
     public void ShowButton()
