@@ -34,11 +34,11 @@ public class CheckpointManager : MonoBehaviour
 
     private void Initialize()
     {
-        for (int i = 2; i < SceneManager.sceneCountInBuildSettings; i++)
+        for (int i = 3; i < SceneManager.sceneCountInBuildSettings; i++)
         {
-            if ((i - 2) % 5 < 3) commonLevels.Add(i);
-            if ((i - 2) % 5 == 3) bossLevels.Add(i);
-            if ((i - 2) % 5 == 4) checkpoints.Add(i);
+            if ((i - 3) % 5 < 3) commonLevels.Add(i);
+            if ((i - 3) % 5 == 3) bossLevels.Add(i);
+            if ((i - 3) % 5 == 4) checkpoints.Add(i);
         }
         checkpointsReached = 0;
         LoadData();
