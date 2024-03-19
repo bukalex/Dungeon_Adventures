@@ -46,6 +46,8 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
     }
     void LateUpdate()
     {
+        if (TrainingManager.Instance != null && TrainingManager.Instance.movementBlocked) return;
+
         playerData.position = transform.position;
         playerData.isUsingMana = false;
         playerData.isUsingStamina = false;
