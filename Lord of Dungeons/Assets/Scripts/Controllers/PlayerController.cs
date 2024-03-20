@@ -332,16 +332,17 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
         yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
         yield return new WaitForSeconds(0.5f);
 
-        //TAB
+        //Dialog
         TrainingManager.Instance.dialogPanel.SetActive(true);
         StartCoroutine(TrainingManager.Instance.StartTyping("Player:", TrainingManager.Instance.nameText));
         yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
         StartCoroutine(TrainingManager.Instance.StartTyping("Hmm... I've got some coins in my pocket.", TrainingManager.Instance.textFieldObject));
         yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(2.0f);
         TrainingManager.Instance.uiBlocked = false;
         TrainingManager.Instance.dialogPanel.SetActive(false);
 
+        //TAB
         TrainingManager.Instance.AddTask("Open inventory (" + UIManager.Instance.keyCodes[13].ToString() + ")");
         while (TrainingManager.Instance.HasUndoneTasks())
         {
@@ -356,6 +357,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
         StartCoroutine(TrainingManager.Instance.RemoveTasks());
         yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
 
+        //Replace
         TrainingManager.Instance.AddTask("Drag and drop an item to replace it");
         TrainingManager.Instance.AddTask("Hold Left Shift click an item to replace it");
         while (TrainingManager.Instance.HasUndoneTasks())
@@ -364,9 +366,8 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
             TrainingManager.Instance.taskList.GetChild(1).GetComponent<Toggle>().isOn = TrainingManager.Instance.itemWasClickedAndMoved;
             yield return null;
         }
-        TrainingManager.Instance.uiBlocked = false;
 
-        StartCoroutine(TrainingManager.Instance.RemoveTasks());
+        StartCoroutine(TrainingManager.Instance.RemoveTasks(true));
         yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
 
         isTraining = false;

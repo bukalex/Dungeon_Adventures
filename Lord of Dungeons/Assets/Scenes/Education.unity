@@ -1270,9 +1270,10 @@ MonoBehaviour:
   uiBlocked: 1
   isTyping: 0
   isRemovingTasks: 0
+  itemWasDraggedAndMoved: 0
+  itemWasClickedAndMoved: 0
   taskPrefab: {fileID: 4543675974438007085, guid: 3ba7a7fdc61799b42968560a170be61d, type: 3}
   trainables:
-  - {fileID: 2099208649}
   - {fileID: 1901166506}
   - {fileID: 1683671346}
   - {fileID: 623922933}
@@ -2335,17 +2336,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ae67f09241ce954aba323b89ba48713, type: 3}
---- !u!114 &2099208649 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9118879467724637701, guid: ced0f4bf360aac24eb57a4cb1ab757fe, type: 3}
-  m_PrefabInstance: {fileID: 60717140}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a7421d3d7fbcfb48a610c35811bf884, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

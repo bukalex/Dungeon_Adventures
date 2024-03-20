@@ -69,10 +69,15 @@ public class TrainingManager : MonoBehaviour
         task.text = description;
     }
 
-    public IEnumerator RemoveTasks()
+    public IEnumerator RemoveTasks(bool closeUI = false)
     {
         isRemovingTasks = true;
         yield return new WaitForSeconds(1.0f);
+        if (closeUI)
+        {
+            UIManager.Instance.SwitchInventory();
+        }
+
         for (int i = taskList.childCount-1; i >= 0; i--)
         {
             for (int j = 0; j < 100; j++)

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NPCController : Timer, IInteractable, ITrainable
 {
@@ -27,6 +28,7 @@ public class NPCController : Timer, IInteractable, ITrainable
 
     private DirectionName directionName = DirectionName.FRONT;
     private bool isTraining = true;
+    private bool wasMet = false;
 
     public enum DirectionName { FRONT, BACK, LEFT, RIGHT }
 
@@ -87,6 +89,7 @@ public class NPCController : Timer, IInteractable, ITrainable
         if (dialogWindow != null)
         {
             dialogWindow.SetActive(isActive);
+            if (!wasMet) wasMet = true;
         }
 
         UIManager.Instance.npcWindowActive = isActive;
@@ -114,17 +117,36 @@ public class NPCController : Timer, IInteractable, ITrainable
 
     public IEnumerator StartTraining()
     {
+        TrainingManager.Instance.movementBlocked = false;
         arrow.gameObject.SetActive(true);
         switch (npcParameters.type)
         {
             case NPCParameters.NPCType.BANKER:
+                //Dialog
                 TrainingManager.Instance.dialogPanel.SetActive(true);
+                TrainingManager.Instance.nameText.text = "";
+                TrainingManager.Instance.textFieldObject.text = "";
                 StartCoroutine(TrainingManager.Instance.StartTyping("Player:", TrainingManager.Instance.nameText));
                 yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
-                StartCoroutine(TrainingManager.Instance.StartTyping("Hmm... I've got some coins in my pocket.", TrainingManager.Instance.textFieldObject));
+                StartCoroutine(TrainingManager.Instance.StartTyping("Today I have to deposit these coins on my account.", TrainingManager.Instance.textFieldObject));
                 yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
-                yield return new WaitForSeconds(1.0f);
+                yield return new WaitForSeconds(2.0f);
                 TrainingManager.Instance.dialogPanel.SetActive(false);
+
+                //Go to
+                TrainingManager.Instance.AddTask("Come to the Banker");
+                while (TrainingManager.Instance.HasUndoneTasks())
+                {
+                    if (Input.GetKeyDown(UIManager.Instance.keyCodes[13]))
+                    {
+                        TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = true;
+                        TrainingManager.Instance.uiBlocked = true;
+                    }
+                    yield return null;
+                }
+
+                StartCoroutine(TrainingManager.Instance.RemoveTasks());
+                yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
                 break;
 
             case NPCParameters.NPCType.TRADER:
