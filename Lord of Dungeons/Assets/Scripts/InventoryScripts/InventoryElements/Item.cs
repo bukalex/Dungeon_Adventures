@@ -42,9 +42,9 @@ namespace Assets.Scripts.InventoryElements
             switch(itemType)
             {
                 case ItemType.Potion: return 16;
-                case ItemType.Food: return 32;
-                case ItemType.MonsterLoot: return 64;
-                case ItemType.Trash: return 32;
+                case ItemType.Food: return 8;
+                case ItemType.MonsterLoot: return 32;
+                case ItemType.Trash: return 64;
                 case ItemType.UpgradeMaterial: return 16;
                 default: return 0;
             }

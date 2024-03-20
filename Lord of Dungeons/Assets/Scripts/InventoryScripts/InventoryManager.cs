@@ -136,6 +136,18 @@ public class InventoryManager : MonoBehaviour
                 Destroy(gameObject);
         }
     }
+
+    public InventorySlot[] GetHolder(string holderName)
+    {
+        foreach (InventorySlot[] slotHolder in slotHolders)
+        {
+            InventorySlot slot = slotHolder.ToList().Find(slot => slot.transform.parent.parent.name == holderName);
+            if (slot != null)
+                return slotHolder;
+        }
+        
+        return null;
+    }
     public object GetStatsChanges(ModifierID modID)
     {
         var Value = new Hashtable
