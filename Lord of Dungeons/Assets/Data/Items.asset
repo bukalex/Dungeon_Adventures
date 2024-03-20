@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41c706764378ad54aa5709e0b97a1bd7, type: 3}
+  m_Name: Items
+  m_EditorClassIdentifier: 
+  Items:
+  - name: Small HP Potion
+    Id: 0
+    Count: 1
+    sprite: {fileID: -1053952808, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
+    ItemType: 8
+    Modifier: 0f000000
+    inventoryItemPref: {fileID: 0}
+  - name: Ice Bomb
+    Id: 1
+    Count: 1
+    sprite: {fileID: -991463193, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
+    ItemType: 9
+    Modifier: 01000000
+    inventoryItemPref: {fileID: 0}
+  playerData: {fileID: 11400000, guid: 8c7a7d0666bf4fd4dbe3d683833b23f0, type: 2}

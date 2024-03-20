@@ -4,59 +4,73 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using Assets.Scripts.Enums;
+using Assets.Scripts.InventoryElements;
+using UnityEditor.Tilemaps;
 
-public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
+
+public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [SerializeField]
+    [SerializeField] public TMP_Text countText;
+    [SerializeField] public GameObject InventoryItemPrefab;
+    [SerializeField] private int Id;
+    [SerializeField] public Dictionary<int, List<ModifierID>> itemModifiers = new Dictionary<int, List<ModifierID>>();
+
     public Item item;
-    [SerializeField]
-    public TMP_Text countText;
-    [SerializeField]
-    public GameObject InventoryItemPrefab;
-    [SerializeField]
-    public int materialID;
-
-
     public Image image;
-    public int count = 1;
-    [HideInInspector]
-    public Transform parentAfterDrag;
-    [HideInInspector]
+    public InventorySlot currentInventorySlot;
     public string itemTag;
-    [HideInInspector]
     public bool isLocked = false;
+    public bool isUsable = false;
+    public int maxStack;
+
     private void Update()
     {
-        InventoryManager.Instance.ItemDescription.transform.position = Input.mousePosition + new Vector3(250f, 200f);
     }
     public void InitializeItem(Item newItem)
     {
-        item = newItem;                                             
-        image.sprite = newItem.image;
-        InventoryItemPrefab.tag = newItem.tag.ToString();
-        materialID = newItem.materialID;
-        
-        updateCount();
+        Item item = newItem;
+        image.sprite = newItem.sprite;
+        Id = item.Id;
+        item.inventoryItemPref = gameObject;
+        if(newItem.Modifier.Count > 0)
+            itemModifiers.Add(newItem.Id, newItem.Modifier);
+
+        maxStack = newItem.InitializeStackableItem(newItem.ItemType);
+
+        if (maxStack > 0)
+        {
+            isUsable = true;
+            countText.enabled = true;
+        }
+        else
+        {
+            isUsable = false;
+            countText.enabled = false;
+        }
     }
-    public void updateCount()
+
+    public int GetItemID(Item item)
     {
-        countText.text = count.ToString();
-        bool textActive = count > 1;
-        countText.gameObject.SetActive(textActive);
+        return item.Id;
+    }
+
+    public List<ModifierID> GetItemModifiers(Item item)
+    {
+        return itemModifiers[item.Id];
+    }
+
+    public void updateCount(Item item, Item existingItem)
+    {
+        countText.text = (item.Count + existingItem.Count).ToString();
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Right)
-        {
-
-        }
-
         if (!isLocked)
         {
             itemTag = InventoryItemPrefab.tag;
             image.raycastTarget = false;
-            BattleManager.Instance.isUsingUI = true;
-            parentAfterDrag = transform.parent;
+            currentInventorySlot = GetComponentInParent<InventorySlot>();
             transform.SetParent(transform.root);
         }
     }
@@ -71,37 +85,10 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         if (!isLocked)
         {
+            GameObject go = eventData.pointerEnter ??= gameObject;
+            InventorySlot slot = go.GetComponent<InventorySlot>() ?? currentInventorySlot;
+            transform.SetParent(slot?.transform);
             image.raycastTarget = true;
-            BattleManager.Instance.isUsingUI = false;
-            transform.SetParent(parentAfterDrag);
         }
-    }
-    private IEnumerator ItemDescriptionOn(float interval)
-    {
-        yield return new WaitForSeconds(interval);
-        InventoryManager.Instance.ItemDescription.SetActive(true);
-    }
-    private IEnumerator ItemDescriptionOff(float interval)
-    {
-        yield return new WaitForSeconds(interval);
-        InventoryManager.Instance.ItemDescription.SetActive(false);
-    }
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        InventoryManager.Instance.currentInventoryItem = transform.gameObject.GetComponent<InventoryItem>();
-        InventoryManager.Instance.itemToChange = item;
-        StartCoroutine(ItemDescriptionOn(0.75f));
-        InventoryManager.Instance.InitializeItemDescription(item);
-        Debug.Log("Enter");
-
-        InventoryManager.Instance.itemToChange = item;
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        StopAllCoroutines();
-        InventoryManager.Instance.ItemDescription.SetActive(false);
-
-        InventoryManager.Instance.itemToChange = null;
     }
 }
