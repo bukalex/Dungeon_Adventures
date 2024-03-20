@@ -179,7 +179,7 @@ public class BattleManager : MonoBehaviour
         
         if (attack.cooldown > 0)
         {
-            InventoryManager.Instance.StartCooldown(attackButton);
+            //InventoryManager.Instance.StartCooldown(attackButton);
             StartCoroutine(Cooldown(attack));
         }
 
@@ -401,9 +401,9 @@ public class BattleManager : MonoBehaviour
     private IEnumerator Cooldown(AttackParameters attack)
     {
         attack.isReady = false;
-        if (attack.playerAction != null) InventoryManager.Instance.activeAbilities += 1;
+        //if (attack.playerAction != null) InventoryManager.Instance.activeAbilities += 1;
         yield return new WaitForSeconds(attack.cooldown);
-        if (attack.playerAction != null) InventoryManager.Instance.activeAbilities -= 1;
+        //if (attack.playerAction != null) InventoryManager.Instance.activeAbilities -= 1;
         attack.isReady = true;
     }
 

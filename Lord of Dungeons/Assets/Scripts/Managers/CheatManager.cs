@@ -1,3 +1,4 @@
+using Assets.Scripts.Enums.ItemType;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -31,9 +32,9 @@ public class CheatManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.O))
             {
-                playerData.resources[Item.CoinType.GoldenCoin] += 100;
-                playerData.resources[Item.CoinType.SilverCoin] += 100;
-                playerData.resources[Item.CoinType.CopperCoin] += 100;
+                playerData.resources[CoinType.GoldenCoin] += 100;
+                playerData.resources[CoinType.SilverCoin] += 100;
+                playerData.resources[CoinType.CopperCoin] += 100;
             }
 
             if (Input.GetKeyDown(KeyCode.L))
@@ -66,16 +67,16 @@ public class CheatManager : MonoBehaviour
 
         if (command == "/give coins")
         {
-            playerData.resources[Item.CoinType.GoldenCoin] += 100;
-            playerData.resources[Item.CoinType.SilverCoin] += 100;
-            playerData.resources[Item.CoinType.CopperCoin] += 100;
+            playerData.resources[CoinType.GoldenCoin] += 100;
+            playerData.resources[CoinType.SilverCoin] += 100;
+            playerData.resources[CoinType.CopperCoin] += 100;
         }
 
         if (command == "/reset coins")
         {
-            playerData.resources[Item.CoinType.GoldenCoin] = 0;
-            playerData.resources[Item.CoinType.SilverCoin] = 0;
-            playerData.resources[Item.CoinType.CopperCoin] = 0;
+            playerData.resources[CoinType.GoldenCoin] = 0;
+            playerData.resources[CoinType.SilverCoin] = 0;
+            playerData.resources[CoinType.CopperCoin] = 0;
         }
 
         if (command == "/immortality on")

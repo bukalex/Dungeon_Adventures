@@ -26,4 +26,12 @@ namespace Assets.Scripts.Enums.ItemType
         Trash,
         Artifact
     }
+    public enum CoinType 
+    { 
+        OFF, 
+        GoldenCoin, 
+        SilverCoin, 
+        CopperCoin 
+    }
+
 }

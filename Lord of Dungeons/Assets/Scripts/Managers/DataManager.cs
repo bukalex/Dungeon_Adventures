@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using Assets.Scripts.InventoryElements;
 public class DataManager : MonoBehaviour
 {
 
@@ -44,7 +44,7 @@ public class DataManager : MonoBehaviour
 
         foreach (Item item in items)
         {
-            item.playerData = playerData;   
+            //item.playerData = playerData;   
         }
 
         foreach (NPCParameters npc in npcs)
@@ -54,7 +54,7 @@ public class DataManager : MonoBehaviour
 
         if (inventory != null)
         {
-            inventory.playerData = playerData;
+            //inventory.playerData = playerData;
         }
         if (UI != null)
         {

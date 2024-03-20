@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using Assets.Scripts.InventoryElements;
+using Assets.Scripts.Enums;
+using Assets.Scripts.Enums.ItemType;
 
 public class TemporaryTradingSystem : MonoBehaviour
 {
@@ -105,9 +108,9 @@ public class TemporaryTradingSystem : MonoBehaviour
                     }
                 }
 
-                playerData.resources[Item.CoinType.GoldenCoin] += coinsFromSell[0];
-                playerData.resources[Item.CoinType.SilverCoin] += coinsFromSell[1];
-                playerData.resources[Item.CoinType.CopperCoin] += coinsFromSell[2];
+                playerData.resources[CoinType.GoldenCoin] += coinsFromSell[0];
+                playerData.resources[CoinType.SilverCoin] += coinsFromSell[1];
+                playerData.resources[CoinType.CopperCoin] += coinsFromSell[2];
 
                 StartCoroutine(ChangeLabel(npcIndex, "Place items that you want to sell", ""));
                 break;
@@ -134,7 +137,7 @@ public class TemporaryTradingSystem : MonoBehaviour
                     {
                         Ability ability = wizardAbilities[Random.Range(0, wizardAbilities.Count)];
                         wizardAbilities.Remove(ability);
-                        InventoryManager.Instance.AddAbility(ability);
+                        //InventoryManager.Instance.AddAbility(ability);
                         wizardLuck = 0;
 
                         if (wizardAbilities.Count != 0)

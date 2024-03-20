@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System;
+using Assets.Scripts.InventoryElements;
+using Assets.Scripts.Enums.ItemType;
 
 public class UIManager : MonoBehaviour
 {
@@ -322,9 +324,9 @@ public class UIManager : MonoBehaviour
         stats.text = HPstats + ManaStats + StaminaStats + SpeedStats + AttackStats + DefenseStats + SpecialAttackStats + SpecialDefenseStats;
 
         //Display coins amount
-        goldenCoinCounter.text = playerData.resources[Item.CoinType.GoldenCoin].ToString();
-        silverCoinCounter.text = playerData.resources[Item.CoinType.SilverCoin].ToString();
-        copperCoinCounter.text = playerData.resources[Item.CoinType.CopperCoin].ToString();
+        goldenCoinCounter.text = playerData.resources[CoinType.GoldenCoin].ToString();
+        silverCoinCounter.text = playerData.resources[CoinType.SilverCoin].ToString();
+        copperCoinCounter.text = playerData.resources[CoinType.CopperCoin].ToString();
     }
 
     public void traderButtons(int npcIndex)
@@ -360,12 +362,12 @@ public class UIManager : MonoBehaviour
             Transform itemHolder = Instantiate(itemHolderPrefab, storage.transform).transform;
             InventoryItem inventoryItem = itemHolder.GetComponentInChildren<InventorySlot>().GetComponentInChildren<InventoryItem>();
             inventoryItem.item = item;
-            inventoryItem.GetComponent<Image>().sprite = item.image;
+            //inventoryItem.GetComponent<Image>().sprite = item.image;
             inventoryItem.transform.GetChild(0).gameObject.SetActive(false);
 
-            itemHolder.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = item.GoldenCoin.ToString();
-            itemHolder.GetChild(0).GetChild(3).GetComponent<TMP_Text>().text = item.SilverCoin.ToString();
-            itemHolder.GetChild(0).GetChild(5).GetComponent<TMP_Text>().text = item.CopperCoin.ToString();
+            //itemHolder.GetChild(0).GetChild(1).GetComponent<TMP_Text>().text = item.GoldenCoin.ToString();
+            //itemHolder.GetChild(0).GetChild(3).GetComponent<TMP_Text>().text = item.SilverCoin.ToString();
+            //itemHolder.GetChild(0).GetChild(5).GetComponent<TMP_Text>().text = item.CopperCoin.ToString();
 
             inventoryItem.isLocked = true;
         }

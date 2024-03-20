@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.InventoryElements;
+using Assets.Scripts.Enums.ItemType;
 
 [CreateAssetMenu(fileName = "New Player Data", menuName = "ScriptableObjects/Player data")]
 public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
@@ -60,7 +62,7 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     public RuntimeAnimatorController animController;
 
     //Resources
-    public Dictionary<Item.CoinType, int> resources = new Dictionary<Item.CoinType, int>();
+    public Dictionary<CoinType, int> resources = new Dictionary<CoinType, int>();
 
     //Enums
     public enum CharacterType { WARRIOR, ARCHER, WIZARD }
@@ -93,9 +95,9 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     {
         //Set resources
         resources.Clear();
-        resources.Add(Item.CoinType.GoldenCoin, 0);
-        resources.Add(Item.CoinType.SilverCoin, 0);
-        resources.Add(Item.CoinType.CopperCoin, 0);
+        resources.Add(CoinType.GoldenCoin, 0);
+        resources.Add(CoinType.SilverCoin, 0);
+        resources.Add(CoinType.CopperCoin, 0);
     }
 
     public bool IsAlive()

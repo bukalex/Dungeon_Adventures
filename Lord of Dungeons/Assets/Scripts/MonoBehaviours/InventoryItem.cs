@@ -16,6 +16,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     [SerializeField] private int Id;
     [SerializeField] public Dictionary<int, List<ModifierID>> itemModifiers = new Dictionary<int, List<ModifierID>>();
 
+    public int materialID;
     public Item item;
     public Image image;
     public InventorySlot currentInventorySlot;
@@ -23,6 +24,8 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public bool isLocked = false;
     public bool isUsable = false;
     public int maxStack;
+
+    public enum CoinType { OFF, GoldenCoin, SilverCoin, CopperCoin}
 
     private void Update()
     {
@@ -48,6 +51,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             isUsable = false;
             countText.enabled = false;
         }
+
     }
 
     public int GetItemID(Item item)

@@ -9,12 +9,13 @@ namespace Assets.Scripts.InventoryElements
 {
     [Serializable]
     public class Item
-    {
+    {   
         public string name;
         public int Id;
         public int Count;
         public Sprite sprite;
         public ItemType ItemType;
+        public CoinType CoinType;
         public List<ModifierID> Modifier;
         public GameObject inventoryItemPref;
         public Item(int id, int count)

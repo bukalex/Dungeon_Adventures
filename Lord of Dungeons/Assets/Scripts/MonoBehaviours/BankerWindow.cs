@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using Assets.Scripts.Enums.ItemType;
 
 public class BankerWindow : MonoBehaviour
 {
@@ -177,7 +178,7 @@ public class BankerWindow : MonoBehaviour
     private void UpdateText()
     {
         convertButton.interactable = false;
-        int leftValue = playerData.resources[Enum.Parse<Item.CoinType>(Enum.GetName(typeof(Item.CoinType), dropdownLeft.value + 1))];
+        int leftValue = playerData.resources[Enum.Parse<CoinType>(Enum.GetName(typeof(CoinType), dropdownLeft.value + 1))];
         inputLeft.SetTextWithoutNotify(leftValue.ToString());
         inputRight.SetTextWithoutNotify("0");
 
@@ -199,13 +200,13 @@ public class BankerWindow : MonoBehaviour
 
     public void ExpandVault()
     {
-        if (playerData.resources[Item.CoinType.GoldenCoin] >= gold &&
-            playerData.resources[Item.CoinType.SilverCoin] >= silver &&
-            playerData.resources[Item.CoinType.CopperCoin] >= copper)
+        if (playerData.resources[CoinType.GoldenCoin] >= gold &&
+            playerData.resources[CoinType.SilverCoin] >= silver &&
+            playerData.resources[CoinType.CopperCoin] >= copper)
         {
-            playerData.resources[Item.CoinType.GoldenCoin] -= gold;
-            playerData.resources[Item.CoinType.SilverCoin] -= silver;
-            playerData.resources[Item.CoinType.CopperCoin] -= copper;
+            playerData.resources[CoinType.GoldenCoin] -= gold;
+            playerData.resources[CoinType.SilverCoin] -= silver;
+            playerData.resources[CoinType.CopperCoin] -= copper;
 
             for (int i = 0; i < 5; i++)
             {

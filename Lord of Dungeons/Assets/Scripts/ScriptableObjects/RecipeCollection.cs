@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Recipes;
 using Material = Assets.Scripts.Recipes.Material;
+using Assets.Scripts.InventoryElements;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/RecipeCollection")]
 public class RecipeCollection : ScriptableObject
