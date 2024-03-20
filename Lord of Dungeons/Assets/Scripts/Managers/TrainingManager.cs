@@ -10,16 +10,15 @@ public class TrainingManager : MonoBehaviour
     public bool attacksBlocked = true;
     public bool uiBlocked = false;
     public bool isTyping = false;
+    public GameObject taskPrefab;
     [SerializeField] private List<MonoBehaviour> trainables;
 
-    public Image movementUI;
-    public TMP_Text movementDescription;
+    public ToggleGroup taskList;
 
     public Transform bankerHouse, traiderHouse, blacksmithHouse, wizardHouse;
 
     public Transform dialogPanel;
-    public Image leftImage, rightImage;
-    public TMP_Text leftText, rightText;
+    public TMP_Text textFieldObject, nameText;
 
     public static TrainingManager Instance { get; set; }
 

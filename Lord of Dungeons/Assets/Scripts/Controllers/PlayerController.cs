@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
@@ -289,53 +290,54 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
 
     public IEnumerator StartTraining()
     {
+        //WSAD LShift
         TrainingManager.Instance.uiBlocked = true;
-        TrainingManager.Instance.movementUI.gameObject.SetActive(true);
-        TrainingManager.Instance.movementDescription.text = "Use keys " +
-            UIManager.Instance.keyCodes[0].ToString() + ", " +
-            UIManager.Instance.keyCodes[1].ToString() + ", " +
-            UIManager.Instance.keyCodes[2].ToString() + ", " +
-            UIManager.Instance.keyCodes[3].ToString() +
-            " for movement";
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 5; i++)
         {
-            TrainingManager.Instance.movementUI.color = new Color(0, 0, 0, TrainingManager.Instance.movementUI.color.a + 0.75f / 100);
-            TrainingManager.Instance.movementDescription.color = new Color(1, 1, 1, TrainingManager.Instance.movementDescription.color.a + 1.0f / 100);
-            yield return new WaitForSeconds(0.001f);
+            Toggle task = Instantiate(TrainingManager.Instance.taskPrefab, TrainingManager.Instance.taskList.transform).GetComponent<Toggle>();
+            task.group = TrainingManager.Instance.taskList;
+            switch (i)
+            {
+                case 0:
+                    task.GetComponentInChildren<Text>().text = "Use " + UIManager.Instance.keyCodes[i].ToString() + " to move forward";
+                    break;
+                case 1:
+                    task.GetComponentInChildren<Text>().text = "Use " + UIManager.Instance.keyCodes[i].ToString() + " to move backward";
+                    break;
+                case 2:
+                    task.GetComponentInChildren<Text>().text = "Use " + UIManager.Instance.keyCodes[i].ToString() + " to move left";
+                    break;
+                case 3:
+                    task.GetComponentInChildren<Text>().text = "Use " + UIManager.Instance.keyCodes[i].ToString() + " to move right";
+                    break;
+                case 4:
+                    task.GetComponentInChildren<Text>().text = "Move and hold " + UIManager.Instance.keyCodes[i].ToString() + " to run";
+                    break;
+            }
+            yield return new WaitForSeconds(0.5f);
         }
 
-        //WASD
-        yield return new WaitUntil(() => body.velocity.magnitude != 0);
-
-        for (int i = 0; i < 100; i++)
+        while (false)//TrainingManager.Instance.taskList.)
         {
-            TrainingManager.Instance.movementUI.color = new Color(0, 0, 0, TrainingManager.Instance.movementUI.color.a - 0.75f / 100);
-            TrainingManager.Instance.movementDescription.color = new Color(1, 1, 1, TrainingManager.Instance.movementDescription.color.a - 1.0f / 100);
-            yield return new WaitForSeconds(0.001f);
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[0])) TrainingManager.Instance.taskList.transform.GetChild(0).GetComponent<Toggle>().isOn = true;
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[1])) TrainingManager.Instance.taskList.transform.GetChild(1).GetComponent<Toggle>().isOn = true;
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[2])) TrainingManager.Instance.taskList.transform.GetChild(2).GetComponent<Toggle>().isOn = true;
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[3])) TrainingManager.Instance.taskList.transform.GetChild(3).GetComponent<Toggle>().isOn = true;
+            if (Input.GetKey(UIManager.Instance.keyCodes[4]) && body.velocity.magnitude != 0) TrainingManager.Instance.taskList.transform.GetChild(4).GetComponent<Toggle>().isOn = true;
+
+            yield return null;
         }
 
-        yield return new WaitForSeconds(2f);
-
-        TrainingManager.Instance.movementDescription.text = "Move and hold " +
-            UIManager.Instance.keyCodes[4].ToString() +
-            " for sprint";
-        for (int i = 0; i < 100; i++)
+        for (int i = 4; i >= 0; i--)
         {
-            TrainingManager.Instance.movementUI.color = new Color(0, 0, 0, TrainingManager.Instance.movementUI.color.a + 0.75f / 100);
-            TrainingManager.Instance.movementDescription.color = new Color(1, 1, 1, TrainingManager.Instance.movementDescription.color.a + 1.0f / 100);
-            yield return new WaitForSeconds(0.001f);
+            for (int j = 0; j < 1000; j++)
+            {
+                TrainingManager.Instance.taskList.transform.GetChild(i).Translate(new Vector3(5.0f, 0, 0));
+                yield return new WaitForEndOfFrame();
+            }
+            Destroy(TrainingManager.Instance.taskList.transform.GetChild(i).gameObject);
         }
 
-        //LShift
-        yield return new WaitUntil(() => Input.GetKey(UIManager.Instance.keyCodes[4]) && body.velocity.magnitude != 0);
-
-        for (int i = 0; i < 100; i++)
-        {
-            TrainingManager.Instance.movementUI.color = new Color(0, 0, 0, TrainingManager.Instance.movementUI.color.a - 0.75f / 100);
-            TrainingManager.Instance.movementDescription.color = new Color(1, 1, 1, TrainingManager.Instance.movementDescription.color.a - 1.0f / 100);
-            yield return new WaitForSeconds(0.001f);
-        }
-        TrainingManager.Instance.movementUI.gameObject.SetActive(false);
         TrainingManager.Instance.uiBlocked = false;
         isTraining = false;
     }
