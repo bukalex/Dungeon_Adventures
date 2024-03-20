@@ -74,7 +74,7 @@ public class UIManager : MonoBehaviour
     public GameObject[] enemyHealthBars;
     public TMP_Text bossCounter, enemyCounter, levelCounter;
 
-    [SerializeField] GameObject arrowPrefab;
+    public GameObject arrowPrefab;
     private Transform exitDirection;
     private Transform exit;
     private Vector3 screenDirection;
@@ -205,49 +205,50 @@ public class UIManager : MonoBehaviour
         abilityInventoryOpen.interactable = SceneManager.GetActiveScene().name == "HUB";
         abilityInventoryClose.interactable = SceneManager.GetActiveScene().name == "HUB";
 
-
-        //Open inventory
-        if (!npcWindowActive)
+        if (TrainingManager.Instance == null || TrainingManager.Instance != null && !TrainingManager.Instance.uiBlocked)
         {
-            if (Input.GetKeyDown(keyCodes[13]))
+            //Open inventory
+            if (!npcWindowActive)
             {
-                Debug.Log("Button TAB was pressed!");
-                if(InventorySlots.activeSelf == EquipmentSection.activeSelf)
+                if (Input.GetKeyDown(keyCodes[13]))
                 {
-                    InventorySlots.SetActive(!InventorySlots.activeSelf);
-                    EquipmentSection.SetActive(!EquipmentSection.activeSelf);
+                    Debug.Log("Button TAB was pressed!");
+                    if (InventorySlots.activeSelf == EquipmentSection.activeSelf)
+                    {
+                        InventorySlots.SetActive(!InventorySlots.activeSelf);
+                        EquipmentSection.SetActive(!EquipmentSection.activeSelf);
+                    }
+                    else
+                    {
+                        InventorySlots.SetActive(!InventorySlots.activeSelf);
+                        EquipmentSection.SetActive(EquipmentSection.activeSelf);
+                    }
                 }
-                else
+            }
+
+            if (!npcWindowActive && Input.GetKeyDown(keyCodes[12]))
+            {
+                escapeUI.SetActive(!escapeUI.activeSelf);
+                if (escapeUI.activeSelf)
+                    Time.timeScale = 0f;
+                if (!escapeUI.activeSelf)
                 {
-                    InventorySlots.SetActive(!InventorySlots.activeSelf);
-                    EquipmentSection.SetActive(EquipmentSection.activeSelf);
+                    Time.timeScale = 1.0f;
+                    chosenIndex = -1;
                 }
+
+
+                resumeButton.onClick.AddListener(() => Resume());
+                settingButton.onClick.AddListener(() => Setting());
+                quitButton.onClick.AddListener(() => Quit());
+
             }
         }
-
-        if (!npcWindowActive && Input.GetKeyDown(keyCodes[12]))
-        {
-            escapeUI.SetActive(!escapeUI.activeSelf);
-            if (escapeUI.activeSelf)
-                Time.timeScale = 0f;
-            if (!escapeUI.activeSelf)
-            {
-                Time.timeScale = 1.0f;
-                chosenIndex = -1;
-            }
-                
-
-            resumeButton.onClick.AddListener(() => Resume());
-            settingButton.onClick.AddListener(() => Setting());
-            quitButton.onClick.AddListener(() => Quit());
-
-        }   
-
     }
 
     private void FixedUpdate()
     {
-        if (true/*!DataManager.Instance.isEducating*/)
+        if (!DataManager.Instance.isEducating)
         {
             if (exitDirection == null) exitDirection = Instantiate(arrowPrefab, transform).transform;
             if (exit == null) exit = GameObject.FindGameObjectWithTag("Finish")?.transform;

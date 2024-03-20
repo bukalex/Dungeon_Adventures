@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class NPCController : Timer, IInteractable
+public class NPCController : Timer, IInteractable, ITrainable
 {
     [SerializeField]
     private NPCParameters npcParameters;
@@ -22,7 +22,11 @@ public class NPCController : Timer, IInteractable
     private GameObject interactIconPrefab;
     private GameObject interactIcon;
 
+    private Transform arrow;
+    private Transform arrowTarget;
+
     private DirectionName directionName = DirectionName.FRONT;
+    private bool isTraining = true;
 
     public enum DirectionName { FRONT, BACK, LEFT, RIGHT }
 
@@ -40,23 +44,36 @@ public class NPCController : Timer, IInteractable
         {
             case NPCParameters.NPCType.TRADER:
                 dialogWindow = UIManager.Instance.traderWindow;
+                arrowTarget = TrainingManager.Instance.traiderHouse;
                 break;
             case NPCParameters.NPCType.WIZARD:
                 dialogWindow = UIManager.Instance.wizardWindow;
+                arrowTarget = TrainingManager.Instance.wizardHouse;
                 break;
             case NPCParameters.NPCType.TELEPORT:
                 dialogWindow = UIManager.Instance.teleportWindow;
+                arrowTarget = transform;
                 break;
             case NPCParameters.NPCType.BANKER:
                 dialogWindow = UIManager.Instance.bankerWindow;
+                arrowTarget = TrainingManager.Instance.bankerHouse;
                 break;
             case NPCParameters.NPCType.BLACKSMITH:
                 dialogWindow = UIManager.Instance.blacksmithWindow;
+                arrowTarget = TrainingManager.Instance.blacksmithHouse;
                 break;
         }
         interactIcon = Instantiate(interactIconPrefab, Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 2), Quaternion.identity, GameObject.FindGameObjectWithTag("MainCanvas").transform);
         interactIcon.transform.SetSiblingIndex(0);
         interactIcon.SetActive(false);
+
+        arrow = Instantiate(UIManager.Instance.arrowPrefab, UIManager.Instance.transform).transform;
+        arrow.gameObject.SetActive(false);
+    }
+
+    void FixedUpdate()
+    {
+        if (arrowTarget != null) UIManager.Instance.UpdateArrowDirection(arrow, arrowTarget);
     }
 
     public void InteractWithPlayer(bool isActive)
@@ -93,6 +110,37 @@ public class NPCController : Timer, IInteractable
     public void HideButton()
     {
         if (interactIcon != null) interactIcon.SetActive(false);
+    }
+
+    public IEnumerator StartTraining()
+    {
+        arrow.gameObject.SetActive(true);
+        switch (npcParameters.type)
+        {
+            case NPCParameters.NPCType.BANKER:
+                break;
+
+            case NPCParameters.NPCType.TRADER:
+                break;
+
+            case NPCParameters.NPCType.WIZARD:
+                break;
+
+            case NPCParameters.NPCType.BLACKSMITH:
+                break;
+
+            case NPCParameters.NPCType.TELEPORT:
+                break;
+        }
+        yield return new WaitForSeconds(2);
+        arrow.gameObject.SetActive(false);
+
+        isTraining = false;
+    }
+
+    public bool IsTraining()
+    {
+        return isTraining;
     }
 
     //Animation
