@@ -8,13 +8,13 @@ public abstract class Timer : MonoBehaviour
     public float timer;
     private Action timerCallback;
 
-    protected virtual void SetTimer(float timer, Action timerCallback)
+    protected void SetTimer(float timer, Action timerCallback)
     {
         this.timer = timer;
         this.timerCallback = timerCallback;
     }
     // Update is called once per frame
-    protected virtual void TimerUpdate()
+    protected void TimerUpdate()
     {
         if(timer > 0f)
         {

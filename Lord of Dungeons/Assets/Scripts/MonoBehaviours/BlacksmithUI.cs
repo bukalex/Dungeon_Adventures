@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using static UnityEditor.Progress;
 using Material = Assets.Scripts.Recipes.Material;
 
-public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHandler
+public class BlacksmithUI : Timer//, IPointerDownHandler, IPointerUpHandler
 {
     public Button craftItemButton;
     public BlacksmithItemHolder currentItemHodler;
@@ -58,6 +58,43 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
     }
     private void Update()
 { 
+        base.TimerUpdate();
+
+        if (timer > 0f)
+        {
+            craftItemButton.GetComponentInChildren<Text>().text = timer.ToString("F1");
+        }
+        if (craftedItemSlot.GetComponent<InventorySlot>().GetComponentInChildren<InventoryItem>() == null)
+        {
+            craftItemButton.gameObject.SetActive(true);
+            craftedItemDisplay.SetActive(false);
+        }
+        if (!craftedItemDisplay.activeSelf && slotActivated)
+        {
+            slotActivated = false;
+            craftItemButton.GetComponentInChildren<Text>().text = "Craft";
+            for (int j = 0; j < InventoryManager.Instance.internalInventorySlots.Length; j++)
+            {
+                InventorySlot internalSlots = InventoryManager.Instance.internalInventorySlots[j];
+                InventoryItem internalItemInSlot = internalSlots.GetComponentInChildren<InventoryItem>();
+                InventoryItem craftedItemInSlot = craftedItemSlot.GetComponentInChildren<InventoryItem>();
+                if (internalItemInSlot == null)
+                {
+                    craftedItemInSlot?.transform.SetParent(internalSlots.transform);
+                }
+            }
+            for (int i = 0; i < InventoryManager.Instance.toolBar.Length; i++)
+            {
+                InventorySlot slot = InventoryManager.Instance.toolBar[i];
+                InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+                if (itemInSlot == null)
+                {
+                    craftedItemSlot.GetComponentInChildren<InventoryItem>()?.transform.SetParent(slot.transform);
+                }
+            }
+
+        }
+
         //Turn off material slot if there is no child
         #region
         for (int i = 0; i < materialSlots.Length - 1; i++)
@@ -67,7 +104,6 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
                 materialSlots[i + 1].gameObject.SetActive(true);
             }
                 
-
             if (materialSlots[i].transform.childCount == 0)
             {
                 materialSlots[i + 1].gameObject.SetActive(false);
@@ -76,7 +112,6 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
         }
             
         #endregion
-
         //Save previous inserted materials
         #region
         previousFrame.Clear();
@@ -85,7 +120,6 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
             previousFrame.Add(pair.Key, pair.Value);
         }
         #endregion
-
         //Initialize inserted materials from each material slot
         #region
         insertedMaterial.Clear();
@@ -106,7 +140,6 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
             }
         }
         #endregion
-
         //Check every frame if something has changed in material slots
         #region
         if(materialSlots[0].transform.childCount == 0)
@@ -114,37 +147,30 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
             foreach (BlacksmithItemHolder itemHolder in ItemHolders)
                 ItemHoldersSorter(itemHolder);
         }
-
         foreach (KeyValuePair<int, int> pair in insertedMaterial)
         {
             if (previousFrame.Count != insertedMaterial.Count || !insertedMaterial.ContainsKey(pair.Key) || insertedMaterial[pair.Key] != previousFrame[pair.Key])
             {
-
                 //Instantiate all item holders
                 #region
                 //Delete all previous item holders
                 foreach (BlacksmithItemHolder itemHolder in ItemHolders)
                     Destroy(itemHolder.gameObject);
                 ItemHolders.Clear();
-
                 //Instantiate new item holders
                 foreach (ItemRecipe recipe in recipe.GetListOfRecipes())
                     InitializeItemHolder(recipe.ItemId);
                 #endregion
-
                 //Sort item holders
                 #region
                 //Reset all item holders positions
                 firstMaterialPos = 0;
                 secondMaterialsPos = 0;
                 thirdMaterialsPos = 0;
-
                 //Sort item holders
                 foreach (BlacksmithItemHolder itemHolder in ItemHolders)
                     ItemHoldersSorter(itemHolder);
                 #endregion
-
-
                 craftItemButton.onClick.RemoveAllListeners();
                 craftItemButton.onClick.AddListener(() => CraftItem(currentItemID));
                 break;
@@ -181,8 +207,14 @@ public class BlacksmithUI : MonoBehaviour//, IPointerDownHandler, IPointerUpHand
             Debug.Log(craftRate);
             if (craftRate == requireMaterials.Count)
             {
-                InventoryManager.Instance.AddItem(craftableItem, InventoryManager.Instance.toolBar, InventoryManager.Instance.internalInventorySlots);
-                for(int i = 0; i < materialSlots.Length; i++)
+                SetTimer(5f, () =>
+                {
+                    craftItemButton.gameObject.SetActive(false);
+                    craftedItemDisplay.SetActive(true);
+                    InventoryManager.Instance.spawnNewItem(craftableItem, craftedItemSlot.GetComponent<InventorySlot>());
+                    slotActivated = true;
+                });
+                for (int i = 0; i < materialSlots.Length; i++)
                 {
                     InventorySlot materialSlot = materialSlots[i];
                     InventoryItem material = materialSlot.GetComponentInChildren<InventoryItem>();
