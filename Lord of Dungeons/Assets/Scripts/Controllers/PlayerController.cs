@@ -305,11 +305,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
         }
 
         //WASD
-        yield return new WaitUntil(() => 
-        Input.GetKey(UIManager.Instance.keyCodes[0]) || 
-        Input.GetKey(UIManager.Instance.keyCodes[1]) || 
-        Input.GetKey(UIManager.Instance.keyCodes[2]) ||
-        Input.GetKey(UIManager.Instance.keyCodes[3]));
+        yield return new WaitUntil(() => body.velocity.magnitude != 0);
 
         for (int i = 0; i < 100; i++)
         {
@@ -320,7 +316,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
 
         yield return new WaitForSeconds(2f);
 
-        TrainingManager.Instance.movementDescription.text = "Use " +
+        TrainingManager.Instance.movementDescription.text = "Move and hold " +
             UIManager.Instance.keyCodes[4].ToString() +
             " for sprint";
         for (int i = 0; i < 100; i++)
@@ -331,7 +327,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
         }
 
         //LShift
-        yield return new WaitUntil(() => Input.GetKey(UIManager.Instance.keyCodes[4]));
+        yield return new WaitUntil(() => Input.GetKey(UIManager.Instance.keyCodes[4]) && body.velocity.magnitude != 0);
 
         for (int i = 0; i < 100; i++)
         {
