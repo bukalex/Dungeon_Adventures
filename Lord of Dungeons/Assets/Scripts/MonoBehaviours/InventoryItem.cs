@@ -21,6 +21,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public int count = 1;
     [HideInInspector]
     public Transform parentAfterDrag;
+    private Transform parentBeforeDrag;
     [HideInInspector]
     public string itemTag;
     [HideInInspector]
@@ -57,6 +58,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             image.raycastTarget = false;
             BattleManager.Instance.isUsingUI = true;
             parentAfterDrag = transform.parent;
+            parentBeforeDrag = transform.parent;
             transform.SetParent(transform.root);
         }
     }
@@ -74,6 +76,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             image.raycastTarget = true;
             BattleManager.Instance.isUsingUI = false;
             transform.SetParent(parentAfterDrag);
+            if (TrainingManager.Instance != null && parentAfterDrag != parentBeforeDrag) TrainingManager.Instance.itemWasDraggedAndMoved = true;
         }
     }
     private IEnumerator ItemDescriptionOn(float interval)

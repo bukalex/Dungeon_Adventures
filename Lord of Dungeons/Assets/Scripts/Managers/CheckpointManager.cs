@@ -213,7 +213,7 @@ public class CheckpointManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        SaveData();
+        if (!DataManager.Instance.isEducating) SaveData();
     }
 }
 

@@ -71,7 +71,7 @@ public class InventoryManager : MonoBehaviour
 
         //Pick up items to correct inventory slot
         foreach (var item in startItems)
-            AddItem(item, toolBar, internalInventorySlots);
+            AddItem(item, internalInventorySlots, toolBar);
 
         //adds random items from all items in the game to the inventory of the player
         //foreach (var item in randomLootTable)
@@ -123,6 +123,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (currentInventoryItem != null && Input.GetMouseButtonDown(0) && itemToChange == currentInventoryItem.GetComponent<InventoryItem>().item)
             {
+                if (TrainingManager.Instance != null) TrainingManager.Instance.itemWasClickedAndMoved = true;
                 instantlyMoveItem(itemToChange, toolBar, internalInventorySlots);
             }
         }

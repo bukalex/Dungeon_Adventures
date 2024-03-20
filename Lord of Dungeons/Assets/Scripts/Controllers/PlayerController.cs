@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using System.Linq;
+using System;
 
 public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainable
 {
@@ -291,54 +293,82 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
     public IEnumerator StartTraining()
     {
         //WSAD LShift
-        TrainingManager.Instance.uiBlocked = true;
         for (int i = 0; i < 5; i++)
         {
-            Toggle task = Instantiate(TrainingManager.Instance.taskPrefab, TrainingManager.Instance.taskList.transform).GetComponent<Toggle>();
-            task.group = TrainingManager.Instance.taskList;
             switch (i)
             {
                 case 0:
-                    task.GetComponentInChildren<Text>().text = "Use " + UIManager.Instance.keyCodes[i].ToString() + " to move forward";
+                    TrainingManager.Instance.AddTask("Use " + UIManager.Instance.keyCodes[i].ToString() + " to move forward");
                     break;
                 case 1:
-                    task.GetComponentInChildren<Text>().text = "Use " + UIManager.Instance.keyCodes[i].ToString() + " to move backward";
+                    TrainingManager.Instance.AddTask("Use " + UIManager.Instance.keyCodes[i].ToString() + " to move backward");
                     break;
                 case 2:
-                    task.GetComponentInChildren<Text>().text = "Use " + UIManager.Instance.keyCodes[i].ToString() + " to move left";
+                    TrainingManager.Instance.AddTask("Use " + UIManager.Instance.keyCodes[i].ToString() + " to move left");
                     break;
                 case 3:
-                    task.GetComponentInChildren<Text>().text = "Use " + UIManager.Instance.keyCodes[i].ToString() + " to move right";
+                    TrainingManager.Instance.AddTask("Use " + UIManager.Instance.keyCodes[i].ToString() + " to move right");
                     break;
                 case 4:
-                    task.GetComponentInChildren<Text>().text = "Move and hold " + UIManager.Instance.keyCodes[i].ToString() + " to run";
+                    TrainingManager.Instance.AddTask("Move and hold " + UIManager.Instance.keyCodes[i].ToString() + " to run");
                     break;
             }
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.1f);
         }
 
-        while (false)//TrainingManager.Instance.taskList.)
+        TrainingManager.Instance.movementBlocked = false;
+        while (TrainingManager.Instance.HasUndoneTasks())
         {
-            if (Input.GetKeyDown(UIManager.Instance.keyCodes[0])) TrainingManager.Instance.taskList.transform.GetChild(0).GetComponent<Toggle>().isOn = true;
-            if (Input.GetKeyDown(UIManager.Instance.keyCodes[1])) TrainingManager.Instance.taskList.transform.GetChild(1).GetComponent<Toggle>().isOn = true;
-            if (Input.GetKeyDown(UIManager.Instance.keyCodes[2])) TrainingManager.Instance.taskList.transform.GetChild(2).GetComponent<Toggle>().isOn = true;
-            if (Input.GetKeyDown(UIManager.Instance.keyCodes[3])) TrainingManager.Instance.taskList.transform.GetChild(3).GetComponent<Toggle>().isOn = true;
-            if (Input.GetKey(UIManager.Instance.keyCodes[4]) && body.velocity.magnitude != 0) TrainingManager.Instance.taskList.transform.GetChild(4).GetComponent<Toggle>().isOn = true;
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[0])) TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = true;
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[1])) TrainingManager.Instance.taskList.GetChild(1).GetComponent<Toggle>().isOn = true;
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[2])) TrainingManager.Instance.taskList.GetChild(2).GetComponent<Toggle>().isOn = true;
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[3])) TrainingManager.Instance.taskList.GetChild(3).GetComponent<Toggle>().isOn = true;
+            if (Input.GetKey(UIManager.Instance.keyCodes[4]) && body.velocity.magnitude != 0) TrainingManager.Instance.taskList.GetChild(4).GetComponent<Toggle>().isOn = true;
 
             yield return null;
         }
 
-        for (int i = 4; i >= 0; i--)
+        StartCoroutine(TrainingManager.Instance.RemoveTasks());
+        yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
+        yield return new WaitForSeconds(0.5f);
+
+        //TAB
+        TrainingManager.Instance.dialogPanel.SetActive(true);
+        StartCoroutine(TrainingManager.Instance.StartTyping("Player:", TrainingManager.Instance.nameText));
+        yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+        StartCoroutine(TrainingManager.Instance.StartTyping("Hmm... I've got some coins in my pocket.", TrainingManager.Instance.textFieldObject));
+        yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+        yield return new WaitForSeconds(1.0f);
+        TrainingManager.Instance.uiBlocked = false;
+        TrainingManager.Instance.dialogPanel.SetActive(false);
+
+        TrainingManager.Instance.AddTask("Open inventory (" + UIManager.Instance.keyCodes[13].ToString() + ")");
+        while (TrainingManager.Instance.HasUndoneTasks())
         {
-            for (int j = 0; j < 1000; j++)
+            if (Input.GetKeyDown(UIManager.Instance.keyCodes[13]))
             {
-                TrainingManager.Instance.taskList.transform.GetChild(i).Translate(new Vector3(5.0f, 0, 0));
-                yield return new WaitForEndOfFrame();
+                TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = true;
+                TrainingManager.Instance.uiBlocked = true;
             }
-            Destroy(TrainingManager.Instance.taskList.transform.GetChild(i).gameObject);
+            yield return null;
         }
 
+        StartCoroutine(TrainingManager.Instance.RemoveTasks());
+        yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
+
+        TrainingManager.Instance.AddTask("Drag and drop an item to replace it");
+        TrainingManager.Instance.AddTask("Hold Left Shift click an item to replace it");
+        while (TrainingManager.Instance.HasUndoneTasks())
+        {
+            TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = TrainingManager.Instance.itemWasDraggedAndMoved;
+            TrainingManager.Instance.taskList.GetChild(1).GetComponent<Toggle>().isOn = TrainingManager.Instance.itemWasClickedAndMoved;
+            yield return null;
+        }
         TrainingManager.Instance.uiBlocked = false;
+
+        StartCoroutine(TrainingManager.Instance.RemoveTasks());
+        yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
+
         isTraining = false;
     }
 

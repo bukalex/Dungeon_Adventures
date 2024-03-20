@@ -118,6 +118,13 @@ public class NPCController : Timer, IInteractable, ITrainable
         switch (npcParameters.type)
         {
             case NPCParameters.NPCType.BANKER:
+                TrainingManager.Instance.dialogPanel.SetActive(true);
+                StartCoroutine(TrainingManager.Instance.StartTyping("Player:", TrainingManager.Instance.nameText));
+                yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+                StartCoroutine(TrainingManager.Instance.StartTyping("Hmm... I've got some coins in my pocket.", TrainingManager.Instance.textFieldObject));
+                yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+                yield return new WaitForSeconds(1.0f);
+                TrainingManager.Instance.dialogPanel.SetActive(false);
                 break;
 
             case NPCParameters.NPCType.TRADER:
@@ -132,9 +139,8 @@ public class NPCController : Timer, IInteractable, ITrainable
             case NPCParameters.NPCType.TELEPORT:
                 break;
         }
-        yield return new WaitForSeconds(2);
+        
         arrow.gameObject.SetActive(false);
-
         isTraining = false;
     }
 
