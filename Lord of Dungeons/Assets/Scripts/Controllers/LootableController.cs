@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LootableController : MonoBehaviour, IInteractable
 {
@@ -37,13 +34,13 @@ public class LootableController : MonoBehaviour, IInteractable
     public void BeingLooted(bool isLooted)
     {
 
-        
+
         if (chestInventory != null)
         {
             beingChecked = isLooted;
             chestInventory.SetActive(isLooted);
             UIManager.Instance.InventorySlots.SetActive(isLooted);
-            
+
             Debug.Log("Inventory chest should open.");
         }
         Open();
@@ -58,7 +55,7 @@ public class LootableController : MonoBehaviour, IInteractable
 
     private void Open()
     {
-        animator.SetBool("isOpen",beingChecked);
+        animator.SetBool("isOpen", beingChecked);
 
         Debug.Log("Opened Chest");
     }

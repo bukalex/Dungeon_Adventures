@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class TrapController : MonoBehaviour
@@ -21,7 +18,7 @@ public class TrapController : MonoBehaviour
     [SerializeField]
     private CapsuleCollider2D capsuleCollider;
 
-    
+
 
     private Vector3 lastPlayerPosition;
     private Vector3 movementDirection = Vector3.zero;

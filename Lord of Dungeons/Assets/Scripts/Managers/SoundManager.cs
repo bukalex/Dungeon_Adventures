@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,7 +40,7 @@ public class SoundManager : MonoBehaviour
     public void PlaySE(SESoundData.SE se)
     {
         SESoundData data = seSoundDatas.Find(data => data.se == se);
-        if (data != null) 
+        if (data != null)
         {
             seAudioSource.volume = data.volume * seMasterVolume * masterVolume;
             seAudioSource.PlayOneShot(data.audioClip);
@@ -61,7 +60,7 @@ public class BGMSoundData
 {
     public enum BGM
     {
-        
+
         Dungeon,
         Run,
     }

@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using UnityEngine.SceneManagement;
 using System;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -16,7 +15,7 @@ public class UIManager : MonoBehaviour
     public GameObject HealthBar, ManaBar, StaminaBar;
     [SerializeField]
     public GameObject inventory, toolbar, abilitybar, abilityInventory, equipment;
-    [SerializeField] 
+    [SerializeField]
     public GameObject cheatChestUIs;
     [SerializeField]
     private Button abilityInventoryOpen, abilityInventoryClose;
@@ -104,7 +103,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        
+
         resolutions = Screen.resolutions;
 
         resolutionDropdown.ClearOptions();
@@ -138,7 +137,7 @@ public class UIManager : MonoBehaviour
         InitializeBars();
 
         //Initializing all enemy health bars
-        if(spawnedEnemies != null)
+        if (spawnedEnemies != null)
         {
             enemyHealthBars = GameObject.FindGameObjectsWithTag("EnemyHealthBar");
             InitializeEnemiesHealthBar();
@@ -179,7 +178,7 @@ public class UIManager : MonoBehaviour
                 newText = "CTRL";
                 newCode = KeyCode.LeftControl;
             }
-            else if (!int.TryParse(Input.inputString, out int result) &&  Enum.TryParse(Input.inputString, true, out newCode))
+            else if (!int.TryParse(Input.inputString, out int result) && Enum.TryParse(Input.inputString, true, out newCode))
             {
                 newText = Input.inputString;
             }
@@ -212,7 +211,7 @@ public class UIManager : MonoBehaviour
             if (Input.GetKeyDown(keyCodes[13]))
             {
                 Debug.Log("Button TAB was pressed!");
-                if(InventorySlots.activeSelf == EquipmentSection.activeSelf)
+                if (InventorySlots.activeSelf == EquipmentSection.activeSelf)
                 {
                     InventorySlots.SetActive(!InventorySlots.activeSelf);
                     EquipmentSection.SetActive(!EquipmentSection.activeSelf);
@@ -235,13 +234,13 @@ public class UIManager : MonoBehaviour
                 Time.timeScale = 1.0f;
                 chosenIndex = -1;
             }
-                
+
 
             resumeButton.onClick.AddListener(() => Resume());
             settingButton.onClick.AddListener(() => Setting());
             quitButton.onClick.AddListener(() => Quit());
 
-        }   
+        }
 
     }
 
@@ -268,8 +267,8 @@ public class UIManager : MonoBehaviour
         chosenIndex = -1;
         escapeUI.SetActive(false);
     }
-    public void Setting() 
-    { 
+    public void Setting()
+    {
         settingUI.SetActive(!settingUI.activeSelf);
         if (settingUI.activeSelf)
             escapeButtons.transform.position = new Vector3(560f, 600f);
@@ -311,7 +310,7 @@ public class UIManager : MonoBehaviour
     public void displayInventoryUI()
     {
         //Display player stats
-        string HPstats = "HP: " + playerData.maxHealth.ToString("F2") + "\n"; 
+        string HPstats = "HP: " + playerData.maxHealth.ToString("F2") + "\n";
         string ManaStats = "Mana: " + playerData.maxMana.ToString("F2") + "\n";
         string StaminaStats = "Stamina: " + playerData.maxStamina.ToString("F2") + "\n";
         string SpeedStats = "Speed: " + playerData.speed.ToString("F2") + "\n";
@@ -411,10 +410,10 @@ public class UIManager : MonoBehaviour
     {
         foreach (GameObject enemyHealthBar in enemyHealthBars)
         {
-                EnemyController enemy = enemyHealthBar.transform.parent.GetComponentInParent<EnemyController>();
-                
-                enemyHealthBar.GetComponent<Slider>().value = enemy.enemyParameters.health;
-                enemyHealthBar.GetComponent<Slider>().maxValue = enemy.enemyParameters.maxHealth;
+            EnemyController enemy = enemyHealthBar.transform.parent.GetComponentInParent<EnemyController>();
+
+            enemyHealthBar.GetComponent<Slider>().value = enemy.enemyParameters.health;
+            enemyHealthBar.GetComponent<Slider>().maxValue = enemy.enemyParameters.maxHealth;
         }
     }
 
@@ -496,7 +495,7 @@ public class UIManager : MonoBehaviour
     public void UpdateArrowDirection(Transform arrowImage, Transform arrowTarget)
     {
         screenDirection = Camera.main.WorldToScreenPoint(arrowTarget.position) - Camera.main.WorldToScreenPoint(playerData.position);
-        diagonalAngle = Mathf.Atan2(Screen.width / 2, Screen.height/2) * Mathf.Rad2Deg;
+        diagonalAngle = Mathf.Atan2(Screen.width / 2, Screen.height / 2) * Mathf.Rad2Deg;
         arrowAngle = Vector3.SignedAngle(Vector3.up, screenDirection, Vector3.forward);
         arrowImage.rotation = Quaternion.AngleAxis(arrowAngle, Vector3.forward);
         if (Mathf.Abs(arrowAngle) <= diagonalAngle || (180 - diagonalAngle) <= Mathf.Abs(arrowAngle))

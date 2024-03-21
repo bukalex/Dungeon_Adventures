@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -87,7 +85,7 @@ public class NPCController : Timer, IInteractable
             interactIcon.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 1.5f);
             interactIcon.GetComponentInChildren<TMP_Text>().text = UIManager.Instance.textKeys[15].text;
             interactIcon.SetActive(true);
-        } 
+        }
     }
 
     public void HideButton()

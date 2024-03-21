@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class CheatManager : MonoBehaviour
 {
@@ -51,9 +48,9 @@ public class CheatManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.BackQuote))
         {
             chatMenu.SetActive(!chatMenu.activeSelf);
-            if(chatMenu.activeSelf)
+            if (chatMenu.activeSelf)
                 Time.timeScale = 0f;
-            else if(!chatMenu.activeSelf) 
+            else if (!chatMenu.activeSelf)
                 Time.timeScale = 1f;
         }
     }
@@ -98,7 +95,7 @@ public class CheatManager : MonoBehaviour
             playerData.speed = 3f;
         }
 
-        if(command == "/god")
+        if (command == "/god")
         {
             playerData.speed = 12.5f;
             playerData.attack = 12500.0f;

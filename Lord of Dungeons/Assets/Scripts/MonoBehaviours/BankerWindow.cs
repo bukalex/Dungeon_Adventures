@@ -1,9 +1,8 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System;
 
 public class BankerWindow : MonoBehaviour
 {
@@ -94,8 +93,8 @@ public class BankerWindow : MonoBehaviour
         int result;
         if (goingUp)
         {
-            result = (int)Mathf.Clamp(int.Parse(value), 
-                playerData.resources[Enum.Parse<Item.CoinType>(Enum.GetName(typeof(Item.CoinType), dropdownLeft.value + 1))] - slider.maxValue * rate, 
+            result = (int)Mathf.Clamp(int.Parse(value),
+                playerData.resources[Enum.Parse<Item.CoinType>(Enum.GetName(typeof(Item.CoinType), dropdownLeft.value + 1))] - slider.maxValue * rate,
                 playerData.resources[Enum.Parse<Item.CoinType>(Enum.GetName(typeof(Item.CoinType), dropdownLeft.value + 1))]);
             result = playerData.resources[Enum.Parse<Item.CoinType>(Enum.GetName(typeof(Item.CoinType), dropdownLeft.value + 1))] - result;
             result /= rate;
@@ -191,7 +190,7 @@ public class BankerWindow : MonoBehaviour
         }
         else
         {
-            multiplier.text = "1 / "+ rate;
+            multiplier.text = "1 / " + rate;
             slider.maxValue = leftValue;
             if (leftValue == 0) slider.interactable = false;
         }

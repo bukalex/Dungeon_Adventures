@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -98,8 +97,8 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
                 ChangeDirection();
                 lastPlayerPosition = enemyParameters.playerData.position;
 
-                if (enemyParameters.isBoss && 
-                    enemyParameters.health <= enemyParameters.maxHealth * 0.5f && 
+                if (enemyParameters.isBoss &&
+                    enemyParameters.health <= enemyParameters.maxHealth * 0.5f &&
                     targetDistance <= BattleManager.Instance.GetAttackRange(enemyParameters.type, BattleManager.AttackButton.RMB) &&
                     BattleManager.Instance.EnemyPerformAction(enemyParameters, BattleManager.AttackButton.RMB))
                 {
@@ -208,12 +207,12 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
 
     private bool PlayerDetected()
     {
-        targetDistance = (enemyParameters.playerData.position - transform.position).magnitude - 
-            enemyParameters.playerData.colliderRadius - 
+        targetDistance = (enemyParameters.playerData.position - transform.position).magnitude -
+            enemyParameters.playerData.colliderRadius -
             enemyParameters.colliderRadius;
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, 
-            (enemyParameters.playerData.position - transform.position).normalized, 
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position,
+            (enemyParameters.playerData.position - transform.position).normalized,
             (enemyParameters.playerData.position - transform.position).magnitude);
         foreach (RaycastHit2D hit in hits)
         {

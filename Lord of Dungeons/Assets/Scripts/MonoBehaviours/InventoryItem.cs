@@ -1,9 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using TMPro;
 
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -31,11 +30,11 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     }
     public void InitializeItem(Item newItem)
     {
-        item = newItem;                                             
+        item = newItem;
         image.sprite = newItem.image;
         InventoryItemPrefab.tag = newItem.tag.ToString();
         materialID = newItem.materialID;
-        
+
         updateCount();
     }
     public void updateCount()

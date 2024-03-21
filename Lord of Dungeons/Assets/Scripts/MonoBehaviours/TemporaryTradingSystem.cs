@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class TemporaryTradingSystem : MonoBehaviour
 {
@@ -25,7 +25,7 @@ public class TemporaryTradingSystem : MonoBehaviour
 
     private void Start()
     {
-        
+
     }
 
     void Update()
@@ -61,7 +61,7 @@ public class TemporaryTradingSystem : MonoBehaviour
 
     public void Purchase()
     {
-        if (itemInStore != null && 
+        if (itemInStore != null &&
             itemInStore.item.GoldenCoin <= playerData.resources[Item.CoinType.GoldenCoin] &&
             itemInStore.item.SilverCoin <= playerData.resources[Item.CoinType.SilverCoin] &&
             itemInStore.item.CopperCoin <= playerData.resources[Item.CoinType.CopperCoin])

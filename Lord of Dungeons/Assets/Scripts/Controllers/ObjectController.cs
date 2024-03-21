@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour
@@ -94,7 +92,7 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour
 
     private void Bust()
     {
-        
+
         animator.SetTrigger("isBroken");
         capsuleCollider.enabled = false;
         GetComponentInChildren<PolygonCollider2D>().enabled = false;
@@ -125,7 +123,7 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (objectParameters.isTrap == true) 
+        if (objectParameters.isTrap == true)
         {
             Attack();
         }

@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class ProjectileController : MonoBehaviour
 {
@@ -55,7 +52,7 @@ public class ProjectileController : MonoBehaviour
         rotationStep = 200 * Time.deltaTime;
         angleDifference = Mathf.DeltaAngle(targetAngle, transform.eulerAngles.z);
         rotationAmount = Mathf.Clamp(angleDifference, -rotationStep, rotationStep);
-        
+
         transform.Rotate(Vector3.forward, rotationAmount);
         body.velocity = transform.up * speed;
     }
@@ -92,10 +89,10 @@ public class ProjectileController : MonoBehaviour
     {
         if (collision.isTrigger)
         {
-            if (collision.transform.parent == null) return; 
+            if (collision.transform.parent == null) return;
             string targetTag = collision.transform.parent.tag;
-            
-            if (type == ProjectileType.EXPLOSION || 
+
+            if (type == ProjectileType.EXPLOSION ||
                 parentTag == "Enemy" && targetTag == "Player" ||
                 parentTag == "Player" && (targetTag == "Enemy" || targetTag == "Object"))
             {
@@ -117,7 +114,7 @@ public class ProjectileController : MonoBehaviour
         }
         else if (type != ProjectileType.BOOMERANG &&
             type != ProjectileType.GUISON_KNIFE &&
-            type != ProjectileType.EXPLOSION && 
+            type != ProjectileType.EXPLOSION &&
             !collision.transform.tag.Equals("Enemy") &&
             !collision.transform.tag.Equals("Player"))
         {

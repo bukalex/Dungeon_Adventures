@@ -1,12 +1,9 @@
 using Assets.Scripts.Recipes;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
-using Material = Assets.Scripts.Recipes.Material;
 
 public class BlacksmithUI : Timer//, IPointerDownHandler, IPointerUpHandler
 {
@@ -33,14 +30,14 @@ public class BlacksmithUI : Timer//, IPointerDownHandler, IPointerUpHandler
     private bool filled = true;
     private bool slotActivated = false;
 
-    private int firstMaterialPos= 0;
+    private int firstMaterialPos = 0;
     private int secondMaterialsPos = 0;
     private int thirdMaterialsPos = 0;
 
     public static BlacksmithUI Instance { get; private set; }
     private void Awake()
     {
-        
+
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
@@ -57,7 +54,7 @@ public class BlacksmithUI : Timer//, IPointerDownHandler, IPointerUpHandler
         UIManager.Instance.npcWindowActive = false;
     }
     private void Update()
-{ 
+    {
         base.TimerUpdate();
 
         if (timer > 0f)
@@ -103,14 +100,14 @@ public class BlacksmithUI : Timer//, IPointerDownHandler, IPointerUpHandler
             {
                 materialSlots[i + 1].gameObject.SetActive(true);
             }
-                
+
             if (materialSlots[i].transform.childCount == 0)
             {
                 materialSlots[i + 1].gameObject.SetActive(false);
-                if (materialSlots[i + 1].transform.childCount == 1) materialSlots[i + 1].transform.GetChild(0).transform.parent = materialSlots[i].transform;   
+                if (materialSlots[i + 1].transform.childCount == 1) materialSlots[i + 1].transform.GetChild(0).transform.parent = materialSlots[i].transform;
             }
         }
-            
+
         #endregion
         //Save previous inserted materials
         #region
@@ -123,14 +120,14 @@ public class BlacksmithUI : Timer//, IPointerDownHandler, IPointerUpHandler
         //Initialize inserted materials from each material slot
         #region
         insertedMaterial.Clear();
-        for (int i = 0; i < materialSlots.Length; i++) 
+        for (int i = 0; i < materialSlots.Length; i++)
         {
             InventorySlot materialSlot = materialSlots[i];
             InventoryItem materialInSlot = materialSlot.GetComponentInChildren<InventoryItem>();
-            if(materialInSlot != null)
+            if (materialInSlot != null)
             {
                 int materialId = materialInSlot.materialID;
-                int CraftAmount = materialInSlot.count; 
+                int CraftAmount = materialInSlot.count;
                 if (insertedMaterial.ContainsKey(materialId))
                 {
                     insertedMaterial[materialId] += CraftAmount;
@@ -142,7 +139,7 @@ public class BlacksmithUI : Timer//, IPointerDownHandler, IPointerUpHandler
         #endregion
         //Check every frame if something has changed in material slots
         #region
-        if(materialSlots[0].transform.childCount == 0)
+        if (materialSlots[0].transform.childCount == 0)
         {
             foreach (BlacksmithItemHolder itemHolder in ItemHolders)
                 ItemHoldersSorter(itemHolder);
@@ -185,9 +182,9 @@ public class BlacksmithUI : Timer//, IPointerDownHandler, IPointerUpHandler
         List<InventoryItem> materials = new List<InventoryItem>();
         foreach (InventorySlot materialSlot in materialSlots)
         {
-            
+
             InventoryItem material = materialSlot.GetComponentInChildren<InventoryItem>();
-            if(material != null)
+            if (material != null)
                 materials.Add(material);
         }
         #endregion
@@ -196,8 +193,8 @@ public class BlacksmithUI : Timer//, IPointerDownHandler, IPointerUpHandler
         #region
         int craftRate = 0;
         Item craftableItem = recipe.GetCraftableItem(ItemID);
-        List<MaterialToCraft> requireMaterials= recipe.GetMaterialsToCraft(ItemID);
-        if(insertedMaterial.Count == requireMaterials.Count)
+        List<MaterialToCraft> requireMaterials = recipe.GetMaterialsToCraft(ItemID);
+        if (insertedMaterial.Count == requireMaterials.Count)
         {
             //if inserted material mataches required materials, 
             foreach (MaterialToCraft requiredMaterial in requireMaterials)
@@ -231,7 +228,7 @@ public class BlacksmithUI : Timer//, IPointerDownHandler, IPointerUpHandler
 
                     if (material.count == 0)
                         Destroy(material.gameObject);
-                } 
+                }
             }
         }
         #endregion
@@ -284,7 +281,7 @@ public class BlacksmithUI : Timer//, IPointerDownHandler, IPointerUpHandler
                 break;
             }
         }
-       
+
     }
     public void ItemHoldersSorter(BlacksmithItemHolder itemHolder)
     {
@@ -292,34 +289,34 @@ public class BlacksmithUI : Timer//, IPointerDownHandler, IPointerUpHandler
         int threeMaterialsPos = firstMaterialPos + twoMaterialsPos + thirdMaterialsPos;
         List<MaterialToCraft> requireMaterials = recipe.GetMaterialsToCraft(itemHolder.ItemID);
 
-/*        for (int i = 0; i < requireMaterials.Count; i++)
-        {
-            InventorySlot materialSlot = materialSlots[i] ??= null;
-            InventoryItem material = materialSlot.GetComponentInChildren<InventoryItem>();
-            if (insertedMaterial.ContainsKey(requireMaterials[i].materialId) && material.count == int.Parse(currentItemHodler.materialDisplays[j].transform.GetChild(0).GetComponent<TMP_Text>().text) && insertedMaterial.ContainsKey(material.materialID))
-                itemHolder.materialDisplays[i].transform.GetChild(0).GetComponent<TMP_Text>().color = Color.green;
-            else
-                itemHolder.materialDisplays[i].transform.GetChild(0).GetComponent<TMP_Text>().color = Color.red;
-        }*/
+        /*        for (int i = 0; i < requireMaterials.Count; i++)
+                {
+                    InventorySlot materialSlot = materialSlots[i] ??= null;
+                    InventoryItem material = materialSlot.GetComponentInChildren<InventoryItem>();
+                    if (insertedMaterial.ContainsKey(requireMaterials[i].materialId) && material.count == int.Parse(currentItemHodler.materialDisplays[j].transform.GetChild(0).GetComponent<TMP_Text>().text) && insertedMaterial.ContainsKey(material.materialID))
+                        itemHolder.materialDisplays[i].transform.GetChild(0).GetComponent<TMP_Text>().color = Color.green;
+                    else
+                        itemHolder.materialDisplays[i].transform.GetChild(0).GetComponent<TMP_Text>().color = Color.red;
+                }*/
 
-/*        for (int i = 0; i < recipe.Recipe.Count; i++)
-        {
-            for (int n = 0; n < materialSlots.Length; n++)
-            {
-                if (requireMaterials.Count <= 2)
-                    if (n == 3) break;
-                InventorySlot materialSlot = materialSlots[n] ??= null;
-                InventoryItem material = materialSlot.GetComponentInChildren<InventoryItem>();
+        /*        for (int i = 0; i < recipe.Recipe.Count; i++)
+                {
+                    for (int n = 0; n < materialSlots.Length; n++)
+                    {
+                        if (requireMaterials.Count <= 2)
+                            if (n == 3) break;
+                        InventorySlot materialSlot = materialSlots[n] ??= null;
+                        InventoryItem material = materialSlot.GetComponentInChildren<InventoryItem>();
 
-                for (int j = 0; j < currentItemHodler.materialDisplays.Length; j++)
-                    if (material.image.sprite == currentItemHodler.materialDisplays[j].transform?.GetChild(1).GetComponent<Image>().sprite)
-                        if (material.count == int.Parse(currentItemHodler.materialDisplays[j].transform.GetChild(0).GetComponent<TMP_Text>().text) && insertedMaterial.ContainsKey(material.materialID))
-                            itemHolder.materialDisplays[j].transform.GetChild(0).GetComponent<TMP_Text>().color = Color.green;
+                        for (int j = 0; j < currentItemHodler.materialDisplays.Length; j++)
+                            if (material.image.sprite == currentItemHodler.materialDisplays[j].transform?.GetChild(1).GetComponent<Image>().sprite)
+                                if (material.count == int.Parse(currentItemHodler.materialDisplays[j].transform.GetChild(0).GetComponent<TMP_Text>().text) && insertedMaterial.ContainsKey(material.materialID))
+                                    itemHolder.materialDisplays[j].transform.GetChild(0).GetComponent<TMP_Text>().color = Color.green;
 
-                if (material.count == 0)
-                    Destroy(material.gameObject);
-            }
-        }*/
+                        if (material.count == 0)
+                            Destroy(material.gameObject);
+                    }
+                }*/
 
         foreach (BlacksmithItemHolder itemHold in ItemHolders)
         {
@@ -343,7 +340,7 @@ public class BlacksmithUI : Timer//, IPointerDownHandler, IPointerUpHandler
                         break;
                     }
                 }
-                    
+
 
             }
         }
