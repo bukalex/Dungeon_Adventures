@@ -216,24 +216,24 @@ public class UIManager : MonoBehaviour
                     SwitchInventory();
                 }
             }
+        }
 
-            if (!npcWindowActive && Input.GetKeyDown(keyCodes[12]))
+        if (!npcWindowActive && Input.GetKeyDown(keyCodes[12]))
+        {
+            escapeUI.SetActive(!escapeUI.activeSelf);
+            if (escapeUI.activeSelf)
+                Time.timeScale = 0f;
+            if (!escapeUI.activeSelf)
             {
-                escapeUI.SetActive(!escapeUI.activeSelf);
-                if (escapeUI.activeSelf)
-                    Time.timeScale = 0f;
-                if (!escapeUI.activeSelf)
-                {
-                    Time.timeScale = 1.0f;
-                    chosenIndex = -1;
-                }
-
-
-                resumeButton.onClick.AddListener(() => Resume());
-                settingButton.onClick.AddListener(() => Setting());
-                quitButton.onClick.AddListener(() => Quit());
-
+                Time.timeScale = 1.0f;
+                chosenIndex = -1;
             }
+
+
+            resumeButton.onClick.AddListener(() => Resume());
+            settingButton.onClick.AddListener(() => Setting());
+            quitButton.onClick.AddListener(() => Quit());
+
         }
     }
 

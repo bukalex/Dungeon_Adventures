@@ -144,6 +144,7 @@ public class BankerWindow : MonoBehaviour
 
     public void Convert()
     {
+        if (TrainingManager.Instance != null) TrainingManager.Instance.wasConverted = true;
         playerData.resources[Enum.Parse<Item.CoinType>(Enum.GetName(typeof(Item.CoinType), dropdownLeft.value + 1))] = int.Parse(inputLeft.text);
         playerData.resources[Enum.Parse<Item.CoinType>(Enum.GetName(typeof(Item.CoinType), dropdownRight.value + 1))] += int.Parse(inputRight.text);
         UpdateText();
@@ -151,6 +152,7 @@ public class BankerWindow : MonoBehaviour
 
     public void Deposit()
     {
+        if (TrainingManager.Instance != null) TrainingManager.Instance.wasDeposited = true;
         foreach (InventorySlot slot in InventoryManager.Instance.toolBar)
         {
             InventoryItem inventoryItem = slot.GetComponentInChildren<InventoryItem>();
@@ -203,6 +205,7 @@ public class BankerWindow : MonoBehaviour
             playerData.resources[Item.CoinType.SilverCoin] >= silver &&
             playerData.resources[Item.CoinType.CopperCoin] >= copper)
         {
+            if (TrainingManager.Instance != null) TrainingManager.Instance.vaultWasExpanded = true;
             playerData.resources[Item.CoinType.GoldenCoin] -= gold;
             playerData.resources[Item.CoinType.SilverCoin] -= silver;
             playerData.resources[Item.CoinType.CopperCoin] -= copper;

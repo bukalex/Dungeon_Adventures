@@ -162,73 +162,76 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
             }
             #endregion
 
-            //NPC interaction
-            #region
-            foreach (IInteractable interactable in interactables)
+            if (TrainingManager.Instance == null || TrainingManager.Instance != null && !TrainingManager.Instance.uiBlocked)
             {
-                interactable.HideButton();
-            }
-            interactables = DetectTargets<IInteractable>(playerData.npcDetectionRadius + playerData.colliderRadius, false);
-            foreach (IInteractable interactable in interactables)
-            {
-                interactable.ShowButton();
-            }
-
-            if (Input.GetKeyDown(UIManager.Instance.keyCodes[15]) || (isTalkingToNPC && Input.GetKeyDown(UIManager.Instance.keyCodes[12])))
-            {
-                if (activeNPC == null)
+                //NPC interaction
+                #region
+                foreach (IInteractable interactable in interactables)
                 {
-                    isTalkingToNPC = false;
+                    interactable.HideButton();
                 }
-                isTalkingToNPC = !isTalkingToNPC;
-
-                List<NPCController> npcs = DetectTargets<NPCController>(playerData.npcDetectionRadius + playerData.colliderRadius, false);
-
-                if (npcs.Count > 0)
+                interactables = DetectTargets<IInteractable>(playerData.npcDetectionRadius + playerData.colliderRadius, false);
+                foreach (IInteractable interactable in interactables)
                 {
-                    activeNPC = npcs[0];
-                    activeNPC.InteractWithPlayer(isTalkingToNPC);
+                    interactable.ShowButton();
                 }
+
+                if (Input.GetKeyDown(UIManager.Instance.keyCodes[15]) || (isTalkingToNPC && Input.GetKeyDown(UIManager.Instance.keyCodes[12])))
+                {
+                    if (activeNPC == null)
+                    {
+                        isTalkingToNPC = false;
+                    }
+                    isTalkingToNPC = !isTalkingToNPC;
+
+                    List<NPCController> npcs = DetectTargets<NPCController>(playerData.npcDetectionRadius + playerData.colliderRadius, false);
+
+                    if (npcs.Count > 0)
+                    {
+                        activeNPC = npcs[0];
+                        activeNPC.InteractWithPlayer(isTalkingToNPC);
+                    }
+                }
+
+                if (activeNPC != null)
+                {
+                    if ((activeNPC.transform.position - transform.position).magnitude - playerData.colliderRadius - activeNPC.GetColliderRadius() > playerData.npcDetectionRadius)
+                    {
+                        activeNPC.InteractWithPlayer(false);
+                        activeNPC = null;
+                    }
+                }
+                #endregion
+
+                //Chest Interactions
+                #region
+                if (Input.GetKeyDown(UIManager.Instance.keyCodes[15]) || (isLooting && Input.GetKeyDown(UIManager.Instance.keyCodes[12])))
+                {
+                    if (activeLootable == null)
+                    {
+                        isLooting = false;
+                    }
+                    isLooting = !isLooting;
+
+                    List<LootableController> lootables = DetectTargets<LootableController>(playerData.lootableDetectionRadius + playerData.colliderRadius, false);
+
+                    if (lootables.Count > 0)
+                    {
+                        activeLootable = lootables[0];
+                        activeLootable.BeingLooted(isLooting);
+                    }
+                }
+
+                if (activeLootable != null)
+                {
+                    if ((activeLootable.transform.position - transform.position).magnitude - playerData.colliderRadius - activeLootable.GetColliderRadius() > playerData.lootableDetectionRadius)
+                    {
+                        activeLootable.BeingLooted(false);
+                        activeLootable = null;
+                    }
+                }
+                #endregion
             }
-
-            if (activeNPC != null)
-            {
-                if ((activeNPC.transform.position - transform.position).magnitude - playerData.colliderRadius - activeNPC.GetColliderRadius() > playerData.npcDetectionRadius)
-                {
-                    activeNPC.InteractWithPlayer(false);
-                    activeNPC = null;
-                }
-            }
-            #endregion
-
-            //Chest Interactions
-            #region
-            if (Input.GetKeyDown(UIManager.Instance.keyCodes[15]) || (isLooting && Input.GetKeyDown(UIManager.Instance.keyCodes[12])))
-            {
-                if (activeLootable == null)
-                {
-                    isLooting = false;
-                }
-                isLooting = !isLooting;
-
-                List<LootableController> lootables = DetectTargets<LootableController>(playerData.lootableDetectionRadius + playerData.colliderRadius, false);
-
-                if (lootables.Count > 0)
-                {
-                    activeLootable = lootables[0];
-                    activeLootable.BeingLooted(isLooting);
-                }
-            }
-
-            if (activeLootable != null)
-            {
-                if ((activeLootable.transform.position - transform.position).magnitude - playerData.colliderRadius - activeLootable.GetColliderRadius() > playerData.lootableDetectionRadius)
-                {
-                    activeLootable.BeingLooted(false);
-                    activeLootable = null;
-                }
-            }
-            #endregion
 
             //Stats restore
             playerData.RestoreStats();
@@ -292,6 +295,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
 
     public IEnumerator StartTraining()
     {
+        TrainingManager.Instance.AddItem(0, 1);
         //WSAD LShift
         for (int i = 0; i < 5; i++)
         {
@@ -319,10 +323,10 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
         TrainingManager.Instance.movementBlocked = false;
         while (TrainingManager.Instance.HasUndoneTasks())
         {
-            if (Input.GetKeyDown(UIManager.Instance.keyCodes[0])) TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = true;
-            if (Input.GetKeyDown(UIManager.Instance.keyCodes[1])) TrainingManager.Instance.taskList.GetChild(1).GetComponent<Toggle>().isOn = true;
-            if (Input.GetKeyDown(UIManager.Instance.keyCodes[2])) TrainingManager.Instance.taskList.GetChild(2).GetComponent<Toggle>().isOn = true;
-            if (Input.GetKeyDown(UIManager.Instance.keyCodes[3])) TrainingManager.Instance.taskList.GetChild(3).GetComponent<Toggle>().isOn = true;
+            if (Input.GetKey(UIManager.Instance.keyCodes[0])) TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = true;
+            if (Input.GetKey(UIManager.Instance.keyCodes[1])) TrainingManager.Instance.taskList.GetChild(1).GetComponent<Toggle>().isOn = true;
+            if (Input.GetKey(UIManager.Instance.keyCodes[2])) TrainingManager.Instance.taskList.GetChild(2).GetComponent<Toggle>().isOn = true;
+            if (Input.GetKey(UIManager.Instance.keyCodes[3])) TrainingManager.Instance.taskList.GetChild(3).GetComponent<Toggle>().isOn = true;
             if (Input.GetKey(UIManager.Instance.keyCodes[4]) && body.velocity.magnitude != 0) TrainingManager.Instance.taskList.GetChild(4).GetComponent<Toggle>().isOn = true;
 
             yield return null;
@@ -333,6 +337,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
         yield return new WaitForSeconds(0.5f);
 
         //Dialog
+        TrainingManager.Instance.AddCoins(10);
         TrainingManager.Instance.dialogPanel.SetActive(true);
         StartCoroutine(TrainingManager.Instance.StartTyping("Player:", TrainingManager.Instance.nameText));
         yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
