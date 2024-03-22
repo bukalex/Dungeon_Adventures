@@ -2,11 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
-using System.Linq;
-using System;
 
 public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainable
 {

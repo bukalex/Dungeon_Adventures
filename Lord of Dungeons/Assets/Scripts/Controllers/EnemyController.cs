@@ -41,7 +41,10 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
         lastPlayerPosition = transform.position;
         animator.runtimeAnimatorController = enemyParameters.animController;
         enemyParameters.transform = transform;
+    }
 
+    void Start()
+    {
         if (enemyParameters.isBoss) UIManager.Instance.bossCounter.text = (int.Parse(UIManager.Instance.bossCounter.text) + 1).ToString();
         else UIManager.Instance.enemyCounter.text = (int.Parse(UIManager.Instance.enemyCounter.text) + 1).ToString();
     }
