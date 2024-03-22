@@ -13,6 +13,8 @@ public class TrainingManager : MonoBehaviour
     public bool itemUsageBlocked = true;
     public bool isTyping = false;
     public bool isRemovingTasks = false;
+    public bool isInside = false;
+    public bool canGoOut = false;
 
     public bool itemWasDraggedAndMoved = false;
     public bool itemWasClickedAndMoved = false;
@@ -29,7 +31,8 @@ public class TrainingManager : MonoBehaviour
 
     public Transform taskList;
 
-    public Transform bankerHouse, traiderHouse, blacksmithHouse, wizardHouse;
+    public Transform bankerHouseOutside, traiderHouseOutside, blacksmithHouseOutside, wizardHouseOutside;
+    public Transform bankerHouseInside, traiderHouseInside, blacksmithHouseInside, wizardHouseInside;
 
     public GameObject dialogPanel;
     public TMP_Text textFieldObject, nameText;
@@ -54,6 +57,11 @@ public class TrainingManager : MonoBehaviour
             yield return new WaitWhile(() => trainable.IsTraining());
             yield return new WaitForSeconds(1.0f);
         }
+
+        movementBlocked = false;
+        attacksBlocked = false;
+        uiBlocked = false;
+        itemUsageBlocked = false;
     }
 
     public IEnumerator StartTyping(string text, TMP_Text textField)

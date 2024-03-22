@@ -50,7 +50,7 @@ public class NPCController : Timer, IInteractable, ITrainable
                 if (TrainingManager.Instance != null)
                 {
                     dialogWindow.GetComponent<NPCReset>().HideItems(new List<string> { "Small Health Potion" });
-                    arrowTarget = TrainingManager.Instance.traiderHouse;
+                    arrowTarget = TrainingManager.Instance.traiderHouseOutside;
                 }
                 else
                 {
@@ -62,7 +62,7 @@ public class NPCController : Timer, IInteractable, ITrainable
                 if (TrainingManager.Instance != null)
                 {
                     dialogWindow.GetComponent<NPCReset>().HideItems(new List<string> { "Fans and Knifes" });
-                    arrowTarget = TrainingManager.Instance.wizardHouse;
+                    arrowTarget = TrainingManager.Instance.wizardHouseOutside;
                 }
                 else
                 {
@@ -77,14 +77,14 @@ public class NPCController : Timer, IInteractable, ITrainable
                 dialogWindow = UIManager.Instance.bankerWindow;
                 if (TrainingManager.Instance != null)
                 {
-                    arrowTarget = TrainingManager.Instance.bankerHouse;
+                    arrowTarget = TrainingManager.Instance.bankerHouseOutside;
                 }
                 break;
             case NPCParameters.NPCType.BLACKSMITH:
                 dialogWindow = UIManager.Instance.blacksmithWindow;
                 if (TrainingManager.Instance != null)
                 {
-                    arrowTarget = TrainingManager.Instance.blacksmithHouse;
+                    arrowTarget = TrainingManager.Instance.blacksmithHouseOutside;
                 }
                 break;
         }
@@ -162,6 +162,11 @@ public class NPCController : Timer, IInteractable, ITrainable
                 TrainingManager.Instance.AddTask("Come to the Banker");
                 while (TrainingManager.Instance.HasUndoneTasks())
                 {
+                    if (TrainingManager.Instance.isInside)
+                    {
+                        arrowTarget = transform;
+                        TrainingManager.Instance.canGoOut = false;
+                    }
                     TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = wasMet;
                     yield return null;
                 }
@@ -207,6 +212,14 @@ public class NPCController : Timer, IInteractable, ITrainable
                 TrainingManager.Instance.movementBlocked = false;
                 StartCoroutine(TrainingManager.Instance.RemoveTasks());
                 yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
+
+                TrainingManager.Instance.canGoOut = true;
+                while (TrainingManager.Instance.isInside)
+                {
+                    arrowTarget = TrainingManager.Instance.bankerHouseInside;
+                    yield return null;
+                }
+
                 break;
 
             case NPCParameters.NPCType.TRADER:
@@ -226,6 +239,11 @@ public class NPCController : Timer, IInteractable, ITrainable
                 TrainingManager.Instance.AddTask("Come to the Trader");
                 while (TrainingManager.Instance.HasUndoneTasks())
                 {
+                    if (TrainingManager.Instance.isInside)
+                    {
+                        arrowTarget = transform;
+                        TrainingManager.Instance.canGoOut = false;
+                    }
                     TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = wasMet;
                     yield return null;
                 }
@@ -266,6 +284,13 @@ public class NPCController : Timer, IInteractable, ITrainable
                 StartCoroutine(TrainingManager.Instance.RemoveTasks());
                 yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
 
+                TrainingManager.Instance.canGoOut = true;
+                while (TrainingManager.Instance.isInside)
+                {
+                    arrowTarget = TrainingManager.Instance.bankerHouseInside;
+                    yield return null;
+                }
+
                 break;
 
             case NPCParameters.NPCType.BLACKSMITH:
@@ -285,6 +310,11 @@ public class NPCController : Timer, IInteractable, ITrainable
                 TrainingManager.Instance.AddTask("Come to the Blacksmith");
                 while (TrainingManager.Instance.HasUndoneTasks())
                 {
+                    if (TrainingManager.Instance.isInside)
+                    {
+                        arrowTarget = transform;
+                        TrainingManager.Instance.canGoOut = false;
+                    }
                     TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = wasMet;
                     yield return null;
                 }
@@ -321,6 +351,13 @@ public class NPCController : Timer, IInteractable, ITrainable
                 StartCoroutine(TrainingManager.Instance.RemoveTasks());
                 yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
 
+                TrainingManager.Instance.canGoOut = true;
+                while (TrainingManager.Instance.isInside)
+                {
+                    arrowTarget = TrainingManager.Instance.bankerHouseInside;
+                    yield return null;
+                }
+
                 break;
 
             case NPCParameters.NPCType.WIZARD:
@@ -340,6 +377,11 @@ public class NPCController : Timer, IInteractable, ITrainable
                 TrainingManager.Instance.AddTask("Come to the Wizard");
                 while (TrainingManager.Instance.HasUndoneTasks())
                 {
+                    if (TrainingManager.Instance.isInside)
+                    {
+                        arrowTarget = transform;
+                        TrainingManager.Instance.canGoOut = false;
+                    }
                     TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = wasMet;
                     yield return null;
                 }
@@ -380,6 +422,13 @@ public class NPCController : Timer, IInteractable, ITrainable
                 TrainingManager.Instance.movementBlocked = false;
                 StartCoroutine(TrainingManager.Instance.RemoveTasks());
                 yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
+
+                TrainingManager.Instance.canGoOut = true;
+                while (TrainingManager.Instance.isInside)
+                {
+                    arrowTarget = TrainingManager.Instance.bankerHouseInside;
+                    yield return null;
+                }
 
                 break;
 
