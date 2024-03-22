@@ -1138,17 +1138,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32f91338c664b60489a5236ab6f8634b, type: 3}
---- !u!114 &623922933 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8499040632302370142, guid: 5c47eaaf97b69c547a66fd88b3fc8f14, type: 3}
-  m_PrefabInstance: {fileID: 1709149543}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8885081e8bd31a441b1aff298f598d83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &657136388
 GameObject:
   m_ObjectHideFlags: 0
@@ -1285,8 +1274,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 39fb0a707208e334483f0edfd2d945aa, type: 2}
   tutorialItems:
   - {fileID: 11400000, guid: 5c6d302094a9f054c8801f760271dc62, type: 2}
+  - {fileID: 11400000, guid: b30fd890fa269b6439e207262062f5d3, type: 2}
+  - {fileID: 11400000, guid: c5987065a81e66c4d90f8f2e6a125ce9, type: 2}
+  - {fileID: 11400000, guid: a76ded420a384a948b2a5cb9a77eda32, type: 2}
+  - {fileID: 11400000, guid: 9f93bc71da94b3d4c93857d97909c0a4, type: 2}
   trainables:
-  - {fileID: 623922933}
   - {fileID: 1959680714}
   taskList: {fileID: 1707300011}
   bankerHouse: {fileID: 899148197}

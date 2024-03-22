@@ -162,15 +162,12 @@ public class NPCController : Timer, IInteractable, ITrainable
                 TrainingManager.Instance.AddTask("Come to the Banker");
                 while (TrainingManager.Instance.HasUndoneTasks())
                 {
-                    if (wasMet)
-                    {
-                        TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = true;
-                        TrainingManager.Instance.uiBlocked = true;
-                        TrainingManager.Instance.movementBlocked = true;
-                    }
+                    TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = wasMet;
                     yield return null;
                 }
 
+                TrainingManager.Instance.uiBlocked = true;
+                TrainingManager.Instance.movementBlocked = true;
                 StartCoroutine(TrainingManager.Instance.RemoveTasks());
                 yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
 
@@ -195,11 +192,14 @@ public class NPCController : Timer, IInteractable, ITrainable
                         yield return new WaitForSeconds(2.0f);
                         TrainingManager.Instance.dialogPanel.SetActive(false);
                         TrainingManager.Instance.AddCoins(5);
+
+                        TrainingManager.Instance.wasDeposited = false;
+                        TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = false;
                     }
 
-                    if (TrainingManager.Instance.wasDeposited) TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = true;
-                    if (TrainingManager.Instance.wasConverted) TrainingManager.Instance.taskList.GetChild(1).GetComponent<Toggle>().isOn = true;
-                    if (TrainingManager.Instance.vaultWasExpanded) TrainingManager.Instance.taskList.GetChild(2).GetComponent<Toggle>().isOn = true;
+                    TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = TrainingManager.Instance.wasDeposited;
+                    TrainingManager.Instance.taskList.GetChild(1).GetComponent<Toggle>().isOn = TrainingManager.Instance.wasConverted;
+                    TrainingManager.Instance.taskList.GetChild(2).GetComponent<Toggle>().isOn = TrainingManager.Instance.vaultWasExpanded;
                     yield return null;
                 }
 
@@ -216,7 +216,7 @@ public class NPCController : Timer, IInteractable, ITrainable
                 TrainingManager.Instance.textFieldObject.text = "";
                 StartCoroutine(TrainingManager.Instance.StartTyping("Player:", TrainingManager.Instance.nameText));
                 yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
-                StartCoroutine(TrainingManager.Instance.StartTyping("I haven`t seen the Trader for awhile. Let`s see if he has something for me.", TrainingManager.Instance.textFieldObject));
+                StartCoroutine(TrainingManager.Instance.StartTyping("I haven`t seen the Trader for awhile. Maybe he has something for me.", TrainingManager.Instance.textFieldObject));
                 yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
                 yield return new WaitForSeconds(2.0f);
                 TrainingManager.Instance.dialogPanel.SetActive(false);
@@ -226,23 +226,20 @@ public class NPCController : Timer, IInteractable, ITrainable
                 TrainingManager.Instance.AddTask("Come to the Trader");
                 while (TrainingManager.Instance.HasUndoneTasks())
                 {
-                    if (wasMet)
-                    {
-                        TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = true;
-                        TrainingManager.Instance.uiBlocked = true;
-                        TrainingManager.Instance.movementBlocked = true;
-                    }
+                    TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = wasMet;
                     yield return null;
                 }
 
+                TrainingManager.Instance.uiBlocked = true;
+                TrainingManager.Instance.movementBlocked = true;
                 StartCoroutine(TrainingManager.Instance.RemoveTasks());
                 yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
 
                 //Buy, sell
                 TrainingManager.Instance.itemPurchased = false;
+                TrainingManager.Instance.itemSold = false;
                 TrainingManager.Instance.AddTask("Choose Small Health Potion and buy it");
                 TrainingManager.Instance.AddTask("Put any item to the sell bar and sell it");
-                TrainingManager.Instance.AddItem(0, 1);
                 while (TrainingManager.Instance.HasUndoneTasks())
                 {
                     if (DataManager.Instance.playerData.resources[Item.CoinType.CopperCoin] < 50 && !TrainingManager.Instance.itemPurchased)
@@ -259,8 +256,8 @@ public class NPCController : Timer, IInteractable, ITrainable
                         DataManager.Instance.playerData.resources[Item.CoinType.CopperCoin] += 50;
                     }
 
-                    if (TrainingManager.Instance.itemPurchased) TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = true;
-                    if (TrainingManager.Instance.itemSold) TrainingManager.Instance.taskList.GetChild(1).GetComponent<Toggle>().isOn = true;
+                    TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = TrainingManager.Instance.itemPurchased;
+                    TrainingManager.Instance.taskList.GetChild(1).GetComponent<Toggle>().isOn = TrainingManager.Instance.itemSold;
                     yield return null;
                 }
 
@@ -272,9 +269,118 @@ public class NPCController : Timer, IInteractable, ITrainable
                 break;
 
             case NPCParameters.NPCType.BLACKSMITH:
+                //Dialog
+                TrainingManager.Instance.dialogPanel.SetActive(true);
+                TrainingManager.Instance.nameText.text = "";
+                TrainingManager.Instance.textFieldObject.text = "";
+                StartCoroutine(TrainingManager.Instance.StartTyping("Player:", TrainingManager.Instance.nameText));
+                yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+                StartCoroutine(TrainingManager.Instance.StartTyping("I need a new sword. Let`s see what our Blacksmith can do.", TrainingManager.Instance.textFieldObject));
+                yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+                yield return new WaitForSeconds(2.0f);
+                TrainingManager.Instance.dialogPanel.SetActive(false);
+
+                //Go to
+                wasMet = false;
+                TrainingManager.Instance.AddTask("Come to the Blacksmith");
+                while (TrainingManager.Instance.HasUndoneTasks())
+                {
+                    TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = wasMet;
+                    yield return null;
+                }
+
+                TrainingManager.Instance.uiBlocked = true;
+                TrainingManager.Instance.movementBlocked = true;
+                StartCoroutine(TrainingManager.Instance.RemoveTasks());
+                yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
+
+                //Create Iron Sword
+                TrainingManager.Instance.AddItem(1, 1);
+                TrainingManager.Instance.AddItem(2, 3);
+                TrainingManager.Instance.AddItem(3, 1);
+                //TrainingManager.Instance.AddTask("Create Iron Sword");
+                //while (TrainingManager.Instance.HasUndoneTasks())
+                //{
+                //    TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = wasMet;
+                //    yield return null;
+                //}
+                //
+                TrainingManager.Instance.uiBlocked = false;
+                TrainingManager.Instance.movementBlocked = false;
+                //StartCoroutine(TrainingManager.Instance.RemoveTasks());
+                //yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
+
+                //Equip Iron Sword
+                TrainingManager.Instance.AddTask("Put Iron Sword to the weapon slot in the inventory to equip it");
+                while (TrainingManager.Instance.HasUndoneTasks())
+                {
+                    TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = InventoryManager.Instance.swordSlot.GetComponentInChildren<InventoryItem>() != null;
+                    yield return null;
+                }
+                
+                StartCoroutine(TrainingManager.Instance.RemoveTasks());
+                yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
+
                 break;
 
             case NPCParameters.NPCType.WIZARD:
+                //Dialog
+                TrainingManager.Instance.dialogPanel.SetActive(true);
+                TrainingManager.Instance.nameText.text = "";
+                TrainingManager.Instance.textFieldObject.text = "";
+                StartCoroutine(TrainingManager.Instance.StartTyping("Player:", TrainingManager.Instance.nameText));
+                yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+                StartCoroutine(TrainingManager.Instance.StartTyping("Yesterday the Wizard said he wanted to show me something.", TrainingManager.Instance.textFieldObject));
+                yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+                yield return new WaitForSeconds(2.0f);
+                TrainingManager.Instance.dialogPanel.SetActive(false);
+
+                //Go to
+                wasMet = false;
+                TrainingManager.Instance.AddTask("Come to the Wizard");
+                while (TrainingManager.Instance.HasUndoneTasks())
+                {
+                    TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = wasMet;
+                    yield return null;
+                }
+
+                TrainingManager.Instance.uiBlocked = true;
+                TrainingManager.Instance.movementBlocked = true;
+                StartCoroutine(TrainingManager.Instance.RemoveTasks());
+                yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
+
+                //Buy, exchange
+                TrainingManager.Instance.itemPurchased = false;
+                TrainingManager.Instance.itemSold = false;
+                TrainingManager.Instance.AddTask("Choose Encyclopedia of shields and buy it");
+                TrainingManager.Instance.AddTask("Put any artifact to the exchange bar and exchange it for a new ability");
+                TrainingManager.Instance.AddItem(4, 1);
+                while (TrainingManager.Instance.HasUndoneTasks())
+                {
+                    if (DataManager.Instance.playerData.resources[Item.CoinType.GoldenCoin] < 5 && !TrainingManager.Instance.itemPurchased)
+                    {
+                        TrainingManager.Instance.dialogPanel.SetActive(true);
+                        TrainingManager.Instance.nameText.text = "";
+                        TrainingManager.Instance.textFieldObject.text = "";
+                        StartCoroutine(TrainingManager.Instance.StartTyping("Wizard:", TrainingManager.Instance.nameText));
+                        yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+                        StartCoroutine(TrainingManager.Instance.StartTyping("Not enough coins? I`ll give you some, but it`s the last time.", TrainingManager.Instance.textFieldObject));
+                        yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+                        yield return new WaitForSeconds(2.0f);
+                        TrainingManager.Instance.dialogPanel.SetActive(false);
+                        DataManager.Instance.playerData.resources[Item.CoinType.GoldenCoin] += 5;
+                    }
+
+                    TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = TrainingManager.Instance.itemPurchased;
+                    TrainingManager.Instance.taskList.GetChild(1).GetComponent<Toggle>().isOn = TrainingManager.Instance.itemSold;
+                    yield return null;
+                }
+
+                TrainingManager.Instance.uiBlocked = false;
+                TrainingManager.Instance.movementBlocked = false;
+                StartCoroutine(TrainingManager.Instance.RemoveTasks());
+                yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
+
                 break;
 
             case NPCParameters.NPCType.TELEPORT:
