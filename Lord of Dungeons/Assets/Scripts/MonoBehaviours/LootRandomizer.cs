@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -43,7 +44,7 @@ public class LootRandomizer : MonoBehaviour
 
     public bool FillRandomLootTable(Item item, List<Item> lootTable)
     {
-
+        
         int randomNum = Random.Range(0, 101);
 
 

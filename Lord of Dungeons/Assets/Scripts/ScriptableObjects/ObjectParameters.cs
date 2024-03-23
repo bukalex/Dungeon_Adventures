@@ -1,4 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName = "New Object Parameters", menuName = "ScriptableObjects/Object parameters")]
 
@@ -22,7 +25,7 @@ public class ObjectParameters : ScriptableObject, IDefenseObject
 
     public bool isTrap;
 
-    public enum ObjectType { POT, CHEST, TRAP, CRATE }
+    public enum ObjectType { POT, CHEST, TRAP, CRATE}
 
     //Interfaces
     #region
@@ -48,7 +51,7 @@ public class ObjectParameters : ScriptableObject, IDefenseObject
 
     public void DisableStun()
     {
-
+        
     }
 
     public Vector3 GetPosition()

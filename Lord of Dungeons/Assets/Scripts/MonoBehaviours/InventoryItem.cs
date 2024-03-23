@@ -1,8 +1,9 @@
 using System.Collections;
-using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -20,6 +21,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public int count = 1;
     [HideInInspector]
     public Transform parentAfterDrag;
+    private Transform parentBeforeDrag;
     [HideInInspector]
     public string itemTag;
     [HideInInspector]
@@ -30,11 +32,11 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     }
     public void InitializeItem(Item newItem)
     {
-        item = newItem;
+        item = newItem;                                             
         image.sprite = newItem.image;
         InventoryItemPrefab.tag = newItem.tag.ToString();
         materialID = newItem.materialID;
-
+        
         updateCount();
     }
     public void updateCount()
@@ -56,6 +58,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             image.raycastTarget = false;
             BattleManager.Instance.isUsingUI = true;
             parentAfterDrag = transform.parent;
+            parentBeforeDrag = transform.parent;
             transform.SetParent(transform.root);
         }
     }
@@ -73,6 +76,7 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             image.raycastTarget = true;
             BattleManager.Instance.isUsingUI = false;
             transform.SetParent(parentAfterDrag);
+            if (TrainingManager.Instance != null && parentAfterDrag != parentBeforeDrag) TrainingManager.Instance.itemWasDraggedAndMoved = true;
         }
     }
     private IEnumerator ItemDescriptionOn(float interval)

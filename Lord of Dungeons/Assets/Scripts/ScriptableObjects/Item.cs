@@ -1,4 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/Item")]
 public class Item : ScriptableObject
@@ -71,8 +75,8 @@ public class Item : ScriptableObject
     public Sprite image;
     public RuntimeAnimatorController animController;
 
-    public enum ItemType { Potion, Material, Gear, Weapon, Artifact, Treasure, Food, Trash, Spell, MonsterLoot, Coin }
-    public enum ItemTag { Item, Helmet, Chestplate, Gloves, Boots, Sword, Gem, CraftMaterial }
+    public enum ItemType { Potion, Material, Gear, Weapon, Artifact, Treasure, Food, Trash, Spell, MonsterLoot, Coin}
+    public enum ItemTag { Item, Helmet, Chestplate, Gloves, Boots, Sword, Gem, CraftMaterial}
     public enum CoinType { OFF, GoldenCoin, SilverCoin, CopperCoin }
 
     public int GetCraftItemID(Item item)
@@ -90,7 +94,7 @@ public class Item : ScriptableObject
             case ItemType.Spell:
                 return ItemType.Spell.ToString();
 
-            case ItemType.MonsterLoot:
+            case ItemType.MonsterLoot: 
                 return "Monster Loot";
 
             case ItemType.Material:

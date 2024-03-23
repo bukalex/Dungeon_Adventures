@@ -1,6 +1,7 @@
-using Assets.Scripts.Recipes;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.Recipes;
 using Material = Assets.Scripts.Recipes.Material;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/RecipeCollection")]
@@ -56,7 +57,7 @@ public class RecipeCollection : ScriptableObject
         List<MaterialToCraft> materialToCrafts = recipe.GetMaterialsToCraft(ItemID);
 
         List<int> materialAmounts = new List<int>();
-        for (int i = 0; i < materialToCrafts.Count; i++)
+        for(int i = 0;i < materialToCrafts.Count;i++)
         {
             materialAmounts.Add(materialToCrafts[i].amount);
 

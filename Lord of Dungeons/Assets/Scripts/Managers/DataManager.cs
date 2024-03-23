@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -30,7 +31,7 @@ public class DataManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null)
+        if(Instance == null)
             Instance = this;
 
         playerData.SetStats();
@@ -43,7 +44,7 @@ public class DataManager : MonoBehaviour
 
         foreach (Item item in items)
         {
-            item.playerData = playerData;
+            item.playerData = playerData;   
         }
 
         foreach (NPCParameters npc in npcs)
@@ -57,7 +58,7 @@ public class DataManager : MonoBehaviour
         }
         if (UI != null)
         {
-            UI.playerData = playerData;
+            UI.playerData = playerData; 
         }
     }
 

@@ -1,9 +1,10 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
+using System;
 
 public class UIManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class UIManager : MonoBehaviour
     public GameObject HealthBar, ManaBar, StaminaBar;
     [SerializeField]
     public GameObject inventory, toolbar, abilitybar, abilityInventory, equipment;
-    [SerializeField]
+    [SerializeField] 
     public GameObject cheatChestUIs;
     [SerializeField]
     private Button abilityInventoryOpen, abilityInventoryClose;
@@ -73,7 +74,7 @@ public class UIManager : MonoBehaviour
     public GameObject[] enemyHealthBars;
     public TMP_Text bossCounter, enemyCounter, levelCounter;
 
-    [SerializeField] GameObject arrowPrefab;
+    public GameObject arrowPrefab;
     private Transform exitDirection;
     private Transform exit;
     private Vector3 screenDirection;
@@ -103,7 +104,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-
+        
         resolutions = Screen.resolutions;
 
         resolutionDropdown.ClearOptions();
@@ -137,7 +138,7 @@ public class UIManager : MonoBehaviour
         InitializeBars();
 
         //Initializing all enemy health bars
-        if (spawnedEnemies != null)
+        if(spawnedEnemies != null)
         {
             enemyHealthBars = GameObject.FindGameObjectsWithTag("EnemyHealthBar");
             InitializeEnemiesHealthBar();
@@ -178,7 +179,7 @@ public class UIManager : MonoBehaviour
                 newText = "CTRL";
                 newCode = KeyCode.LeftControl;
             }
-            else if (!int.TryParse(Input.inputString, out int result) && Enum.TryParse(Input.inputString, true, out newCode))
+            else if (!int.TryParse(Input.inputString, out int result) &&  Enum.TryParse(Input.inputString, true, out newCode))
             {
                 newText = Input.inputString;
             }
@@ -204,22 +205,15 @@ public class UIManager : MonoBehaviour
         abilityInventoryOpen.interactable = SceneManager.GetActiveScene().name == "HUB";
         abilityInventoryClose.interactable = SceneManager.GetActiveScene().name == "HUB";
 
-
-        //Open inventory
-        if (!npcWindowActive)
+        if (TrainingManager.Instance == null || TrainingManager.Instance != null && !TrainingManager.Instance.uiBlocked)
         {
-            if (Input.GetKeyDown(keyCodes[13]))
+            //Open inventory
+            if (!npcWindowActive)
             {
-                Debug.Log("Button TAB was pressed!");
-                if (InventorySlots.activeSelf == EquipmentSection.activeSelf)
+                if (Input.GetKeyDown(keyCodes[13]))
                 {
-                    InventorySlots.SetActive(!InventorySlots.activeSelf);
-                    EquipmentSection.SetActive(!EquipmentSection.activeSelf);
-                }
-                else
-                {
-                    InventorySlots.SetActive(!InventorySlots.activeSelf);
-                    EquipmentSection.SetActive(EquipmentSection.activeSelf);
+                    Debug.Log("Button TAB was pressed!");
+                    SwitchInventory();
                 }
             }
         }
@@ -241,12 +235,25 @@ public class UIManager : MonoBehaviour
             quitButton.onClick.AddListener(() => Quit());
 
         }
+    }
 
+    public void SwitchInventory()
+    {
+        if (InventorySlots.activeSelf == EquipmentSection.activeSelf)
+        {
+            InventorySlots.SetActive(!InventorySlots.activeSelf);
+            EquipmentSection.SetActive(!EquipmentSection.activeSelf);
+        }
+        else
+        {
+            InventorySlots.SetActive(!InventorySlots.activeSelf);
+            EquipmentSection.SetActive(EquipmentSection.activeSelf);
+        }
     }
 
     private void FixedUpdate()
     {
-        if (true/*!DataManager.Instance.isEducating*/)
+        if (!DataManager.Instance.isEducating)
         {
             if (exitDirection == null) exitDirection = Instantiate(arrowPrefab, transform).transform;
             if (exit == null) exit = GameObject.FindGameObjectWithTag("Finish")?.transform;
@@ -267,8 +274,8 @@ public class UIManager : MonoBehaviour
         chosenIndex = -1;
         escapeUI.SetActive(false);
     }
-    public void Setting()
-    {
+    public void Setting() 
+    { 
         settingUI.SetActive(!settingUI.activeSelf);
         if (settingUI.activeSelf)
             escapeButtons.transform.position = new Vector3(560f, 600f);
@@ -310,7 +317,7 @@ public class UIManager : MonoBehaviour
     public void displayInventoryUI()
     {
         //Display player stats
-        string HPstats = "HP: " + playerData.maxHealth.ToString("F2") + "\n";
+        string HPstats = "HP: " + playerData.maxHealth.ToString("F2") + "\n"; 
         string ManaStats = "Mana: " + playerData.maxMana.ToString("F2") + "\n";
         string StaminaStats = "Stamina: " + playerData.maxStamina.ToString("F2") + "\n";
         string SpeedStats = "Speed: " + playerData.speed.ToString("F2") + "\n";
@@ -410,10 +417,10 @@ public class UIManager : MonoBehaviour
     {
         foreach (GameObject enemyHealthBar in enemyHealthBars)
         {
-            EnemyController enemy = enemyHealthBar.transform.parent.GetComponentInParent<EnemyController>();
-
-            enemyHealthBar.GetComponent<Slider>().value = enemy.enemyParameters.health;
-            enemyHealthBar.GetComponent<Slider>().maxValue = enemy.enemyParameters.maxHealth;
+                EnemyController enemy = enemyHealthBar.transform.parent.GetComponentInParent<EnemyController>();
+                
+                enemyHealthBar.GetComponent<Slider>().value = enemy.enemyParameters.health;
+                enemyHealthBar.GetComponent<Slider>().maxValue = enemy.enemyParameters.maxHealth;
         }
     }
 
@@ -495,7 +502,7 @@ public class UIManager : MonoBehaviour
     public void UpdateArrowDirection(Transform arrowImage, Transform arrowTarget)
     {
         screenDirection = Camera.main.WorldToScreenPoint(arrowTarget.position) - Camera.main.WorldToScreenPoint(playerData.position);
-        diagonalAngle = Mathf.Atan2(Screen.width / 2, Screen.height / 2) * Mathf.Rad2Deg;
+        diagonalAngle = Mathf.Atan2(Screen.width / 2, Screen.height/2) * Mathf.Rad2Deg;
         arrowAngle = Vector3.SignedAngle(Vector3.up, screenDirection, Vector3.forward);
         arrowImage.rotation = Quaternion.AngleAxis(arrowAngle, Vector3.forward);
         if (Mathf.Abs(arrowAngle) <= diagonalAngle || (180 - diagonalAngle) <= Mathf.Abs(arrowAngle))

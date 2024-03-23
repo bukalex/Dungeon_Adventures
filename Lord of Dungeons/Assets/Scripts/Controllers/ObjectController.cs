@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour
+public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainable
 {
     [SerializeField]
     private ObjectParameters objectParametersOriginal;
@@ -26,6 +28,7 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour
     private LootRandomizer randomizer;
 
     private bool alreadyBusted = false;
+    private bool isTraining = true;
 
     private int spriteOrder;
     private int enemyOrder;
@@ -92,7 +95,7 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour
 
     private void Bust()
     {
-
+        
         animator.SetTrigger("isBroken");
         capsuleCollider.enabled = false;
         GetComponentInChildren<PolygonCollider2D>().enabled = false;
@@ -123,7 +126,7 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (objectParameters.isTrap == true)
+        if (objectParameters.isTrap == true) 
         {
             Attack();
         }
@@ -132,5 +135,40 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour
     public IDefenseObject GetDefenseObject()
     {
         return objectParameters;
+    }
+
+    public IEnumerator StartTraining()
+    {
+        TrainingManager.Instance.uiBlocked = false;
+        TrainingManager.Instance.movementBlocked = false;
+        TrainingManager.Instance.attacksBlocked = false;
+
+        //Dialog
+        TrainingManager.Instance.dialogPanel.SetActive(true);
+        TrainingManager.Instance.nameText.text = "";
+        TrainingManager.Instance.textFieldObject.text = "";
+        StartCoroutine(TrainingManager.Instance.StartTyping("Player:", TrainingManager.Instance.nameText));
+        yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+        StartCoroutine(TrainingManager.Instance.StartTyping("Time to try the new sword.", TrainingManager.Instance.textFieldObject));
+        yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+        yield return new WaitForSeconds(2.0f);
+        TrainingManager.Instance.dialogPanel.SetActive(false);
+
+        TrainingManager.Instance.AddTask("Destroy the barricade");
+        while (TrainingManager.Instance.HasUndoneTasks())
+        {
+            TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = alreadyBusted;
+            yield return null;
+        }
+
+        StartCoroutine(TrainingManager.Instance.RemoveTasks());
+        yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
+
+        isTraining = false;
+    }
+
+    public bool IsTraining()
+    {
+        return isTraining;
     }
 }

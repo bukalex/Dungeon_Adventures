@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -81,9 +82,9 @@ public class InventoryManager : MonoBehaviour
             AddItem(item, cheatSlots, cheatSlots);
 
         //Add bility to a abilitySlots
-        foreach (var ability in startAbilities)
+        foreach(var ability in startAbilities)
             AddAbility(ability);
-
+        
         //Fill stacks of usable items in cheat chests
         foreach (var item in allItems)
             fillStacks(item, cheatSlots);
@@ -102,7 +103,7 @@ public class InventoryManager : MonoBehaviour
         wizardSellSlots = UIManager.Instance.wizardSellSlots.GetComponentsInChildren<InventorySlot>();
 
         //Initializing slots for purchase menu
-        storageSlots = UIManager.Instance.traderStorage.GetComponentsInChildren<InventorySlot>();
+        storageSlots = UIManager.Instance.traderStorage.GetComponentsInChildren<InventorySlot>(); 
 
         //Initializing slots for abilities
         abilityBar = UIManager.Instance.abilitybar.GetComponentsInChildren<AbilitySlot>();
@@ -122,6 +123,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (currentInventoryItem != null && Input.GetMouseButtonDown(0) && itemToChange == currentInventoryItem.GetComponent<InventoryItem>().item)
             {
+                if (TrainingManager.Instance != null) TrainingManager.Instance.itemWasClickedAndMoved = true;
                 instantlyMoveItem(itemToChange, toolBar, internalInventorySlots);
             }
         }
@@ -141,7 +143,7 @@ public class InventoryManager : MonoBehaviour
         selectedSlot = Mathf.Clamp(selectedSlot + (int)Input.mouseScrollDelta.y, 0, 8);
         if (selectedSlot != -1) toolBar[selectedSlot].selectSlot();
 
-        if (Input.GetKeyUp(KeyCode.Q))
+        if (Input.GetKeyUp(UIManager.Instance.keyCodes[14]) && (TrainingManager.Instance == null || TrainingManager.Instance != null && !TrainingManager.Instance.itemUsageBlocked))
         {
             useSelectedItem();
         }
@@ -190,7 +192,7 @@ public class InventoryManager : MonoBehaviour
                 itemInSlot.updateCount();
                 return true;
             }
-            if (InventoryType1 != InventoryType2)
+            if(InventoryType1 != InventoryType2)
             {
                 for (int j = 0; j < InventoryType2.Length; j++)
                 {
@@ -210,7 +212,7 @@ public class InventoryManager : MonoBehaviour
         {
             InventorySlot slot = InventoryType1[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            if (itemInSlot == null)
+            if(itemInSlot == null)
             {
                 spawnNewItem(item, slot);
                 items.Add(item);
@@ -220,14 +222,14 @@ public class InventoryManager : MonoBehaviour
         if (InventoryType1 != InventoryType2)
         {
             for (int j = 0; j < InventoryType2.Length; j++)
-            {
+            {   
                 InventorySlot internalSlots = InventoryType2[j];
                 InventoryItem internalItemInSlot = internalSlots.GetComponentInChildren<InventoryItem>();
                 if (internalItemInSlot == null)
                 {
                     spawnNewItem(item, internalSlots);
                     items.Add(item);
-
+                    
                     return true;
                 }
             }
@@ -246,14 +248,14 @@ public class InventoryManager : MonoBehaviour
     public void instantlyMoveItem(Item item, InventorySlot[] toolbar, InventorySlot[] inventoryType2)
     {
         int itemPosition = -1;
-        for (int i = 0; i < toolbar.Length; i++)
+        for(int i = 0; i < toolbar.Length; i++)
         {
             InventorySlot slot = toolbar[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            if (itemInSlot != null && itemInSlot == currentInventoryItem)
-            {
-                itemPosition = 0;
-            }
+                if (itemInSlot != null && itemInSlot == currentInventoryItem)
+                {
+                    itemPosition = 0;
+                }
         }
         if (itemPosition == -1)
         {
@@ -269,7 +271,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
         Debug.Log(itemPosition);
-        if (itemPosition == 0)
+        if(itemPosition == 0)
         {
             for (int i = 0; i < inventoryType2.Length; i++)
             {
@@ -349,7 +351,7 @@ public class InventoryManager : MonoBehaviour
         {
             InventorySlot slot = InventoryType[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            if (itemInSlot != null &&
+            if(itemInSlot != null &&
                 itemInSlot.item.isStackable == true
                 && itemInSlot.count < itemInSlot.item.unitsPerStack)
             {
@@ -440,11 +442,11 @@ public class InventoryManager : MonoBehaviour
 
     public bool AddAbility(Ability ability)
     {
-        for (int i = 0; i < abilityBar.Length; i++)
+        for(int i = 0; i  < abilityBar.Length; i++)
         {
             AbilitySlot abilitySlot = abilityBar[i];
             AbilityItem abilityInSlot = abilitySlot.GetComponentInChildren<AbilityItem>();
-            if (abilityInSlot == null)
+            if(abilityInSlot == null)
             {
                 spawnNewAbility(ability, abilitySlot);
                 BattleManager.Instance.AssingAbility(DataManager.Instance.playerData, ability.attackParameters, abilitySlot.attackButton);
@@ -512,7 +514,7 @@ public class InventoryManager : MonoBehaviour
     {
         GameObject newAbilityGo = Instantiate(abilityItemPrefab, slot.transform);
         AbilityItem abilityItem = newAbilityGo.GetComponent<AbilityItem>();
-        abilityItem.InitializeAbility(ability, rank);
+        abilityItem.InitializeAbility(ability, rank); 
     }
     public void itemIsUsed(Item item)
     {
@@ -536,17 +538,17 @@ public class InventoryManager : MonoBehaviour
     {
         InventorySlot slot = toolBar[selectedSlot];
         InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-        if (itemInSlot != null)
+        if (itemInSlot != null) 
         {
             Item item = itemInSlot.item;
             if (item.isUsable == true)
             {
                 itemIsUsed(item);
                 itemInSlot.count--;
-                if (itemInSlot.count <= 0)
+                if(itemInSlot.count <= 0)
                 {
                     Destroy(itemInSlot.gameObject);
-
+                        
                 }
                 else
                 {

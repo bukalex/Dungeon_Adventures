@@ -1,7 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Enemy Parameters", menuName = "ScriptableObjects/Enemy parameters")]
+[CreateAssetMenu (fileName = "New Enemy Parameters", menuName = "ScriptableObjects/Enemy parameters")]
 public class EnemyParameters : ScriptableObject, IAttackObject, IDefenseObject
 {
     [Header("Initial stats")]
@@ -70,7 +71,7 @@ public class EnemyParameters : ScriptableObject, IAttackObject, IDefenseObject
             case BattleManager.AttackType.SPECIAL:
                 return specialAttack;
         }
-
+        
         return 0;
     }
 

@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
+using UnityEngine.EventSystems;
 
 public class TemporaryTradingSystem : MonoBehaviour
 {
@@ -25,7 +25,7 @@ public class TemporaryTradingSystem : MonoBehaviour
 
     private void Start()
     {
-
+        
     }
 
     void Update()
@@ -57,15 +57,24 @@ public class TemporaryTradingSystem : MonoBehaviour
                 }
             }
         }
+        if (itemInStore == null || !itemInStore.gameObject.activeInHierarchy)
+        {
+            traderItemName.text = "Item name";
+            traderItemDescription.text = "Description";
+
+            wizardItemName.text = "Item name";
+            wizardItemDescription.text = "Description";
+        }
     }
 
     public void Purchase()
     {
-        if (itemInStore != null &&
+        if (itemInStore != null && 
             itemInStore.item.GoldenCoin <= playerData.resources[Item.CoinType.GoldenCoin] &&
             itemInStore.item.SilverCoin <= playerData.resources[Item.CoinType.SilverCoin] &&
             itemInStore.item.CopperCoin <= playerData.resources[Item.CoinType.CopperCoin])
         {
+            if (TrainingManager.Instance != null) TrainingManager.Instance.itemPurchased = true;
             playerData.resources[Item.CoinType.GoldenCoin] -= itemInStore.item.GoldenCoin;
             playerData.resources[Item.CoinType.SilverCoin] -= itemInStore.item.SilverCoin;
             playerData.resources[Item.CoinType.CopperCoin] -= itemInStore.item.CopperCoin;
@@ -97,6 +106,7 @@ public class TemporaryTradingSystem : MonoBehaviour
                     InventoryItem inventoryItem = sellSlot.GetComponentInChildren<InventoryItem>();
                     if (inventoryItem != null)
                     {
+                        if (TrainingManager.Instance != null) TrainingManager.Instance.itemSold = true;
                         coinsFromSell[0] += inventoryItem.item.GoldenCoins * inventoryItem.count;
                         coinsFromSell[1] += inventoryItem.item.SilverCoins * inventoryItem.count;
                         coinsFromSell[2] += inventoryItem.item.CopperCoins * inventoryItem.count;
@@ -119,6 +129,7 @@ public class TemporaryTradingSystem : MonoBehaviour
                     InventoryItem inventoryItem = sellSlot.GetComponentInChildren<InventoryItem>();
                     if (inventoryItem != null)
                     {
+                        if (TrainingManager.Instance != null) TrainingManager.Instance.itemSold = true;
                         canExchange = true;
                         wizardLuck += 0.1f;
 

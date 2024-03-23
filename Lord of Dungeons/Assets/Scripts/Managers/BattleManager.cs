@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using TMPro;
 
 public class BattleManager : MonoBehaviour
 {
@@ -100,7 +100,7 @@ public class BattleManager : MonoBehaviour
     private Dictionary<T, Dictionary<AttackButton, AttackParameters>> CloneDictionary<T>(Dictionary<T, Dictionary<AttackButton, AttackParameters>> originalDictionary)
     {
         Dictionary<T, Dictionary<AttackButton, AttackParameters>> copy = new Dictionary<T, Dictionary<AttackButton, AttackParameters>>();
-
+        
         foreach (KeyValuePair<T, Dictionary<AttackButton, AttackParameters>> outPair in originalDictionary)
         {
             Dictionary<AttackButton, AttackParameters> inCopy = new Dictionary<AttackButton, AttackParameters>();
@@ -112,7 +112,7 @@ public class BattleManager : MonoBehaviour
             }
             copy.Add(outPair.Key, inCopy);
         }
-
+        
         return copy;
     }
 
@@ -157,7 +157,7 @@ public class BattleManager : MonoBehaviour
         {
             playerData.attacks = CloneDictionary(playerAttacks);
         }
-
+        
         if (playerData.attacks.ContainsKey(playerData.type) && playerData.attacks[playerData.type].ContainsKey(attackButton))
         {
             attack = playerData.attacks[playerData.type][attackButton];
@@ -167,7 +167,7 @@ public class BattleManager : MonoBehaviour
         {
             return false;
         }
-
+        
         if (attack.isReady && AffordAttack(playerData, attack, attack.isPerSecond))
         {
             StartCoroutine(DelayAttack(attack, playerData, null));
@@ -176,7 +176,7 @@ public class BattleManager : MonoBehaviour
         {
             return false;
         }
-
+        
         if (attack.cooldown > 0)
         {
             InventoryManager.Instance.StartCooldown(attackButton);
@@ -286,7 +286,7 @@ public class BattleManager : MonoBehaviour
             {
                 bool isVisible = true;
                 Vector2 targetDirection = collider.transform.parent.position - position;
-
+                
                 if (!inSector || Vector2.Angle(attackDirection, targetDirection) <= 45)
                 {
                     if (target == null || (target.transform.position - position).magnitude > targetDirection.magnitude)
@@ -378,7 +378,7 @@ public class BattleManager : MonoBehaviour
         {
             damage = 1.0f;
         }
-
+        
         string text = defenseObject.DealDamage(damage * multiplier).ToString("F1");
         GameObject textObject = Instantiate(battleData.textDamagePrefab, Camera.main.WorldToScreenPoint(defenseObject.GetPosition() + Vector3.up * 1.6f), Quaternion.identity, GameObject.FindGameObjectWithTag("MainCanvas").transform);
         if (attack.enemyAction != null)
@@ -502,7 +502,7 @@ public class BattleManager : MonoBehaviour
             trail.localScale = new Vector3(-0.85f, -0.85f, 0.85f);
             trail.Rotate(0, 0, 90);
         }
-        else if (Mathf.Abs(angle) > 135)
+        else if(Mathf.Abs(angle) > 135)
         {
             trail.localScale = new Vector3(0.85f, -0.85f, 0.85f);
         }
@@ -623,7 +623,7 @@ public class BattleManager : MonoBehaviour
     {
         SoundManager.Instance.PlaySE(SESoundData.SE.Leap);
         attack.playerData = playerData;
-
+        
         EnemyController enemy = GetNearestTarget<EnemyController>(playerData.position, attack.range + playerData.colliderRadius, playerData.attackDirection, false);
         if (enemy != null)
         {
@@ -720,7 +720,7 @@ public class BattleManager : MonoBehaviour
         if (enemy != null)
         {
             SoundManager.Instance.PlaySE(SESoundData.SE.PlayerExplosion);
-            Instantiate(battleData.explosionPrefab, enemy.transform.position - new Vector3(0, enemy.enemyParameters.colliderRadius / 2, 0), Quaternion.identity).GetComponent<ProjectileController>().Launch(playerData, attack);
+            Instantiate(battleData.explosionPrefab, enemy.transform.position - new Vector3(0, enemy.enemyParameters.colliderRadius/2, 0), Quaternion.identity).GetComponent<ProjectileController>().Launch(playerData, attack);
         }
     }
 
@@ -768,9 +768,9 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             SoundManager.Instance.PlaySE(SESoundData.SE.PlayerKnife);
-            ProjectileController projectile = Instantiate(battleData.guisonKnifePrefab,
-                playerData.position,
-                Quaternion.AngleAxis(Vector3.SignedAngle(Vector3.up, playerData.attackDirection, Vector3.forward) - 45 + 22.5f * i, Vector3.forward)).GetComponent<ProjectileController>();
+            ProjectileController projectile = Instantiate(battleData.guisonKnifePrefab, 
+                playerData.position, 
+                Quaternion.AngleAxis(Vector3.SignedAngle(Vector3.up, playerData.attackDirection, Vector3.forward) -45 + 22.5f * i, Vector3.forward)).GetComponent<ProjectileController>();
             projectile.Launch("Player", playerData, attack, projectile.transform.up);
             projectile.Launch(projectile.transform.up * attack.range * 3.0f / attack.duration);
             battleData.guisonKnifes.Add(projectile);
@@ -814,7 +814,7 @@ public class BattleManager : MonoBehaviour
 
     private void GuardUseSword(EnemyParameters enemyParameters, AttackParameters attack)
     {
-        if (!enemyParameters.isBoss) SoundManager.Instance.PlaySE(SESoundData.SE.GuardAttack);
+        if(!enemyParameters.isBoss) SoundManager.Instance.PlaySE(SESoundData.SE.GuardAttack);
         else SoundManager.Instance.PlaySE(SESoundData.SE.GuardSpecialAttack);
         List<PlayerController> players = DetectTargets<PlayerController>(enemyParameters.position, attack.range + enemyParameters.colliderRadius + 0.25f, enemyParameters.attackDirection);
         foreach (PlayerController player in players)
@@ -826,7 +826,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-
+    
 
     private void GuardUseSpecial(EnemyParameters enemyParameters, AttackParameters attack)
     {
