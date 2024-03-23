@@ -8,6 +8,8 @@ public class HouseDoor : MonoBehaviour, IInteractable
     [SerializeField]
     private Transform oppositeSide;
     [SerializeField]
+    private Vector3 popUpOffset;
+    [SerializeField]
     private bool isInside;
 
     [SerializeField]
@@ -16,7 +18,7 @@ public class HouseDoor : MonoBehaviour, IInteractable
 
     void Start()
     {
-        interactIcon = Instantiate(interactIconPrefab, Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 2), Quaternion.identity, GameObject.FindGameObjectWithTag("MainCanvas").transform);
+        interactIcon = Instantiate(interactIconPrefab, Camera.main.WorldToScreenPoint(transform.position + popUpOffset), Quaternion.identity, GameObject.FindGameObjectWithTag("MainCanvas").transform);
         interactIcon.transform.SetSiblingIndex(0);
         interactIcon.SetActive(false);
     }
@@ -27,6 +29,7 @@ public class HouseDoor : MonoBehaviour, IInteractable
         {
             DataManager.Instance.playerData.transform.position = oppositeSide.position;
             TrainingManager.Instance.isInside = !isInside;
+            if (!isInside) GetComponent<Collider2D>().enabled = false;
         }
     }
 
@@ -34,7 +37,7 @@ public class HouseDoor : MonoBehaviour, IInteractable
     {
         if (interactIcon != null && (!isInside || isInside && TrainingManager.Instance.canGoOut))
         {
-            interactIcon.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 1.5f);
+            interactIcon.transform.position = Camera.main.WorldToScreenPoint(transform.position + popUpOffset);
             interactIcon.GetComponentInChildren<TMP_Text>().text = UIManager.Instance.textKeys[15].text;
             interactIcon.SetActive(true);
         }

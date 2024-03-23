@@ -117,11 +117,6 @@ public class NPCController : Timer, IInteractable, ITrainable
         UIManager.Instance.npcWindowActive = isActive;
     }
 
-    public float GetColliderRadius()
-    {
-        return npcParameters.colliderRadius;
-    }
-
     public void ShowButton()
     {
         if (interactIcon != null)
@@ -286,7 +281,7 @@ public class NPCController : Timer, IInteractable, ITrainable
                 TrainingManager.Instance.canGoOut = true;
                 while (TrainingManager.Instance.isInside)
                 {
-                    arrowTarget = TrainingManager.Instance.bankerHouseInside;
+                    arrowTarget = TrainingManager.Instance.traiderHouseInside;
                     yield return null;
                 }
 
@@ -353,7 +348,7 @@ public class NPCController : Timer, IInteractable, ITrainable
                 TrainingManager.Instance.canGoOut = true;
                 while (TrainingManager.Instance.isInside)
                 {
-                    arrowTarget = TrainingManager.Instance.bankerHouseInside;
+                    arrowTarget = TrainingManager.Instance.blacksmithHouseInside;
                     yield return null;
                 }
 
@@ -425,7 +420,7 @@ public class NPCController : Timer, IInteractable, ITrainable
                 TrainingManager.Instance.canGoOut = true;
                 while (TrainingManager.Instance.isInside)
                 {
-                    arrowTarget = TrainingManager.Instance.bankerHouseInside;
+                    arrowTarget = TrainingManager.Instance.wizardHouseInside;
                     yield return null;
                 }
 

@@ -173,6 +173,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
                     interactable.ShowButton();
                 }
 
+                List<NPCController> npcs = DetectTargets<NPCController>(playerData.npcDetectionRadius + playerData.colliderRadius, false);
                 if (Input.GetKeyDown(UIManager.Instance.keyCodes[15]) || (isTalkingToNPC && Input.GetKeyDown(UIManager.Instance.keyCodes[12])))
                 {
                     if (activeNPC == null)
@@ -180,8 +181,6 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
                         isTalkingToNPC = false;
                     }
                     isTalkingToNPC = !isTalkingToNPC;
-
-                    List<NPCController> npcs = DetectTargets<NPCController>(playerData.npcDetectionRadius + playerData.colliderRadius, false);
 
                     if (npcs.Count > 0)
                     {
@@ -192,7 +191,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
 
                 if (activeNPC != null)
                 {
-                    if ((activeNPC.transform.position - transform.position).magnitude - playerData.colliderRadius - activeNPC.GetColliderRadius() > playerData.npcDetectionRadius)
+                    if (!npcs.Contains(activeNPC))
                     {
                         activeNPC.InteractWithPlayer(false);
                         activeNPC = null;
