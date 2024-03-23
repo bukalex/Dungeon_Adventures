@@ -27,6 +27,9 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
     [SerializeField]
     private LootRandomizer randomizer;
 
+    [SerializeField]
+    private List<ObjectController> barricade;
+
     private bool alreadyBusted = false;
     private bool isTraining = true;
 
@@ -37,44 +40,55 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
     void Awake()
     {
         objectParameters = Instantiate(objectParametersOriginal);
-        animator.runtimeAnimatorController = objectParameters.animController;
+        if (animator != null) animator.runtimeAnimatorController = objectParameters.animController;
         objectParameters.position = transform.position;
+
+        if (objectParameters.isBarricade)
+        {
+            foreach (ObjectController objectController in barricade)
+            {
+                objectController.GetComponentInChildren<PolygonCollider2D>().enabled = false;
+            }
+        }
     }
 
     void Update()
     {
-        List<SpriteRenderer> renderers = DetectSprites<SpriteRenderer>();
-        foreach (SpriteRenderer renderer in renderers)
+        if (spriteRenderer != null)
         {
-            if (renderer.sortingLayerName.Equals(spriteRenderer.sortingLayerName))
+            List<SpriteRenderer> renderers = DetectSprites<SpriteRenderer>();
+            foreach (SpriteRenderer renderer in renderers)
             {
-                angle = Vector2.SignedAngle(Vector3.right, renderer.transform.parent.position - transform.position);
-                if (135 >= angle && angle > 45)
+                if (renderer.sortingLayerName.Equals(spriteRenderer.sortingLayerName))
                 {
-                    spriteOrder = renderer.sortingOrder;
-                    enemyOrder = spriteRenderer.sortingOrder;
-                    if (spriteOrder > enemyOrder)
+                    angle = Vector2.SignedAngle(Vector3.right, renderer.transform.parent.position - transform.position);
+                    if (135 >= angle && angle > 45)
                     {
-                        spriteRenderer.sortingOrder = spriteOrder;
-                        renderer.sortingOrder = enemyOrder;
+                        spriteOrder = renderer.sortingOrder;
+                        enemyOrder = spriteRenderer.sortingOrder;
+                        if (spriteOrder > enemyOrder)
+                        {
+                            spriteRenderer.sortingOrder = spriteOrder;
+                            renderer.sortingOrder = enemyOrder;
+                        }
+                        else if (spriteOrder == enemyOrder)
+                        {
+                            spriteRenderer.sortingOrder += 1;
+                        }
                     }
-                    else if (spriteOrder == enemyOrder)
+                    else if (-135 <= angle && angle < -45)
                     {
-                        spriteRenderer.sortingOrder += 1;
-                    }
-                }
-                else if (-135 <= angle && angle < -45)
-                {
-                    spriteOrder = renderer.sortingOrder;
-                    enemyOrder = spriteRenderer.sortingOrder;
-                    if (spriteOrder < enemyOrder)
-                    {
-                        spriteRenderer.sortingOrder = spriteOrder;
-                        renderer.sortingOrder = enemyOrder;
-                    }
-                    else if (spriteOrder == enemyOrder)
-                    {
-                        renderer.sortingOrder += 1;
+                        spriteOrder = renderer.sortingOrder;
+                        enemyOrder = spriteRenderer.sortingOrder;
+                        if (spriteOrder < enemyOrder)
+                        {
+                            spriteRenderer.sortingOrder = spriteOrder;
+                            renderer.sortingOrder = enemyOrder;
+                        }
+                        else if (spriteOrder == enemyOrder)
+                        {
+                            renderer.sortingOrder += 1;
+                        }
                     }
                 }
             }
@@ -84,7 +98,7 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
         {
             Bust();
             alreadyBusted = true;
-            randomizer.DropItems();
+            if (randomizer != null) randomizer.DropItems();
         }
     }
 
@@ -95,10 +109,19 @@ public class ObjectController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
 
     private void Bust()
     {
-        
-        animator.SetTrigger("isBroken");
-        capsuleCollider.enabled = false;
-        GetComponentInChildren<PolygonCollider2D>().enabled = false;
+        if (objectParameters.isBarricade)
+        {
+            foreach (ObjectController objectController in barricade)
+            {
+                objectController.objectParameters.health = 0;
+            }
+        }
+        else
+        {
+            animator.SetTrigger("isBroken");
+            capsuleCollider.enabled = false;
+            GetComponentInChildren<PolygonCollider2D>().enabled = false;
+        }
     }
 
     private void Attack()

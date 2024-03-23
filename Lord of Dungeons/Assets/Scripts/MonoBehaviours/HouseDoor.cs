@@ -9,8 +9,9 @@ public class HouseDoor : MonoBehaviour, IInteractable
     private Transform oppositeSide;
     [SerializeField]
     private Vector3 popUpOffset;
+    public bool isInside;
     [SerializeField]
-    private bool isInside;
+    private bool isTeleport;
 
     [SerializeField]
     private GameObject interactIconPrefab;
@@ -28,8 +29,9 @@ public class HouseDoor : MonoBehaviour, IInteractable
         if (interactIcon.activeSelf && Input.GetKeyDown(UIManager.Instance.keyCodes[15]) && (!isInside || isInside && TrainingManager.Instance.canGoOut))
         {
             DataManager.Instance.playerData.transform.position = oppositeSide.position;
-            TrainingManager.Instance.isInside = !isInside;
+            TrainingManager.Instance.isInside = oppositeSide.GetComponent<HouseDoor>().isInside;
             if (!isInside) GetComponent<Collider2D>().enabled = false;
+            if (isTeleport) TrainingManager.Instance.teleported = true;
         }
     }
 

@@ -23,11 +23,14 @@ public class TrainingManager : MonoBehaviour
     public bool vaultWasExpanded = false;
     public bool itemPurchased = false;
     public bool itemSold = false;
+    public bool abilityLearned = false;
+    public bool teleported = false;
 
     public GameObject taskPrefab;
     [SerializeField] private List<Item> coins;
     [SerializeField] private List<Item> tutorialItems;
     [SerializeField] private List<MonoBehaviour> trainables;
+    [SerializeField] private Color inColor, outColor;
 
     public Transform taskList;
 
@@ -46,6 +49,12 @@ public class TrainingManager : MonoBehaviour
             Instance = this;
             StartCoroutine(StartTraining());
         }
+    }
+
+    void Update()
+    {
+        if (isInside) Camera.main.backgroundColor = inColor;
+        else Camera.main.backgroundColor = outColor;
     }
 
     private IEnumerator StartTraining()

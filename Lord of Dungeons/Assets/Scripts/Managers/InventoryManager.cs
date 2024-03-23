@@ -528,6 +528,7 @@ public class InventoryManager : MonoBehaviour
         else if (item.itemType == Item.ItemType.Spell)
         {
             if (!HasAbility(item.ability)) AddAbility(item.ability);
+            if (TrainingManager.Instance != null) TrainingManager.Instance.abilityLearned = true;
         }
         else if (item.itemType == Item.ItemType.Food)
         {

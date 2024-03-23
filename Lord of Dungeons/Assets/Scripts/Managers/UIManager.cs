@@ -202,8 +202,8 @@ public class UIManager : MonoBehaviour
         barLabels[2].text = textKeys[10].text;
         barLabels[3].text = textKeys[11].text;
 
-        abilityInventoryOpen.interactable = SceneManager.GetActiveScene().name == "HUB";
-        abilityInventoryClose.interactable = SceneManager.GetActiveScene().name == "HUB";
+        abilityInventoryOpen.interactable = SceneManager.GetActiveScene().name == "HUB" || SceneManager.GetActiveScene().name == "Education";
+        abilityInventoryClose.interactable = SceneManager.GetActiveScene().name == "HUB" || SceneManager.GetActiveScene().name == "Education";
 
         if (TrainingManager.Instance == null || TrainingManager.Instance != null && !TrainingManager.Instance.uiBlocked)
         {

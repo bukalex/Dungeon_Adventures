@@ -417,6 +417,63 @@ public class NPCController : Timer, IInteractable, ITrainable
                 StartCoroutine(TrainingManager.Instance.RemoveTasks());
                 yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
 
+                //Dialog
+                TrainingManager.Instance.dialogPanel.SetActive(true);
+                TrainingManager.Instance.nameText.text = "";
+                TrainingManager.Instance.textFieldObject.text = "";
+                StartCoroutine(TrainingManager.Instance.StartTyping("Wizard:", TrainingManager.Instance.nameText));
+                yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+                StartCoroutine(TrainingManager.Instance.StartTyping("From my books you can learn new abilities. The more you read them - the more powerful they will be.", TrainingManager.Instance.textFieldObject));
+                yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+
+                TrainingManager.Instance.AddTask("Press space bar to continue");
+                while (TrainingManager.Instance.HasUndoneTasks())
+                {
+                    if (Input.GetKeyDown(KeyCode.Space)) TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = true;
+                    yield return null;
+                }
+
+                StartCoroutine(TrainingManager.Instance.RemoveTasks());
+                yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
+
+                TrainingManager.Instance.dialogPanel.SetActive(false);
+
+                //Read book
+                TrainingManager.Instance.itemUsageBlocked = false;
+                TrainingManager.Instance.AddTask("Choose Encyclopedia of shields in the tool bar and press " + UIManager.Instance.keyCodes[14].ToString() + " to read it");
+                while (TrainingManager.Instance.HasUndoneTasks())
+                {
+                    TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = TrainingManager.Instance.abilityLearned;
+                    yield return null;
+                }
+
+                StartCoroutine(TrainingManager.Instance.RemoveTasks());
+                yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
+
+                //Dialog
+                TrainingManager.Instance.dialogPanel.SetActive(true);
+                TrainingManager.Instance.nameText.text = "";
+                TrainingManager.Instance.textFieldObject.text = "";
+                StartCoroutine(TrainingManager.Instance.StartTyping("Wizard:", TrainingManager.Instance.nameText));
+                yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+                StartCoroutine(TrainingManager.Instance.StartTyping("When knowledge from the books will become overwhelming for you mind, new abilities will be stored in the panel above the ability bar. To take ability from the panel, simply drag it to a slot in the bar.", TrainingManager.Instance.textFieldObject));
+                yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+
+                TrainingManager.Instance.AddTask("Press space bar to continue");
+                while (TrainingManager.Instance.HasUndoneTasks())
+                {
+                    if (Input.GetKeyDown(KeyCode.Space)) TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = true;
+                    yield return null;
+                }
+
+                StartCoroutine(TrainingManager.Instance.RemoveTasks());
+                yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
+
+                StartCoroutine(TrainingManager.Instance.StartTyping("Now go and try youself.", TrainingManager.Instance.textFieldObject));
+                yield return new WaitWhile(() => TrainingManager.Instance.isTyping);
+                yield return new WaitForSeconds(2.0f);
+                TrainingManager.Instance.dialogPanel.SetActive(false);
+
                 TrainingManager.Instance.canGoOut = true;
                 while (TrainingManager.Instance.isInside)
                 {
@@ -427,6 +484,17 @@ public class NPCController : Timer, IInteractable, ITrainable
                 break;
 
             case NPCParameters.NPCType.TELEPORT:
+                //Go to
+                TrainingManager.Instance.AddTask("Use the Teleport");
+                while (TrainingManager.Instance.HasUndoneTasks())
+                {
+                    TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = TrainingManager.Instance.teleported;
+                    yield return null;
+                }
+                arrow.gameObject.SetActive(false);
+
+                StartCoroutine(TrainingManager.Instance.RemoveTasks());
+                yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
                 break;
         }
         

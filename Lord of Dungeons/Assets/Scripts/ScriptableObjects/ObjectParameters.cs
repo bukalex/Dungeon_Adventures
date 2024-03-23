@@ -24,6 +24,7 @@ public class ObjectParameters : ScriptableObject, IDefenseObject
     public RuntimeAnimatorController animController;
 
     public bool isTrap;
+    public bool isBarricade;
 
     public enum ObjectType { POT, CHEST, TRAP, CRATE}
 
