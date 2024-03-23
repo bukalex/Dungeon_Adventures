@@ -140,6 +140,7 @@ public class NPCController : Timer, IInteractable, ITrainable
         switch (npcParameters.type)
         {
             case NPCParameters.NPCType.BANKER:
+                TrainingManager.Instance.bankerHouseOutside.GetComponent<CircleCollider2D>().enabled = true;
                 //Dialog
                 TrainingManager.Instance.dialogPanel.SetActive(true);
                 TrainingManager.Instance.nameText.text = "";
@@ -217,6 +218,7 @@ public class NPCController : Timer, IInteractable, ITrainable
                 break;
 
             case NPCParameters.NPCType.TRADER:
+                TrainingManager.Instance.traiderHouseOutside.GetComponent<CircleCollider2D>().enabled = true;
                 //Dialog
                 TrainingManager.Instance.dialogPanel.SetActive(true);
                 TrainingManager.Instance.nameText.text = "";
@@ -288,6 +290,7 @@ public class NPCController : Timer, IInteractable, ITrainable
                 break;
 
             case NPCParameters.NPCType.BLACKSMITH:
+                TrainingManager.Instance.blacksmithHouseOutside.GetComponent<CircleCollider2D>().enabled = true;
                 //Dialog
                 TrainingManager.Instance.dialogPanel.SetActive(true);
                 TrainingManager.Instance.nameText.text = "";
@@ -355,6 +358,7 @@ public class NPCController : Timer, IInteractable, ITrainable
                 break;
 
             case NPCParameters.NPCType.WIZARD:
+                TrainingManager.Instance.wizardHouseOutside.GetComponent<CircleCollider2D>().enabled = true;
                 //Dialog
                 TrainingManager.Instance.dialogPanel.SetActive(true);
                 TrainingManager.Instance.nameText.text = "";

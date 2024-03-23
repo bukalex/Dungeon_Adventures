@@ -51,6 +51,11 @@ public class TrainingManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        UIManager.Instance.levelCounter.text = "Tutorial";
+    }
+
     void Update()
     {
         if (isInside) Camera.main.backgroundColor = inColor;

@@ -7,6 +7,15 @@ public class EnemyGroup : MonoBehaviour, ITrainable
 {
     private bool isTraining = true;
 
+    void Start()
+    {
+        foreach (EnemyController enemy in GetComponentsInChildren<EnemyController>())
+        {
+            enemy.enemyParameters.attack = -100;
+            enemy.enemyParameters.specialAttack = -100;
+        }
+    }
+
     public IEnumerator StartTraining()
     {
         TrainingManager.Instance.uiBlocked = false;
