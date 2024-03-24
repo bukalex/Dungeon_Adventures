@@ -72,12 +72,19 @@ public class SceneChanger : MonoBehaviour, IInteractable
             UIManager.Instance.levelCounter.text = "Level " + CheckpointManager.Instance.levelsPassed.ToString();
             SceneManager.LoadScene(SceneToChange);
         }
-        else SceneManager.LoadScene("HUB");
+        else
+        {
+            DataManager.Instance.isEducating = false;
+            UIManager.Instance.bossCounter.text = "0";
+            UIManager.Instance.enemyCounter.text = "0";
+            UIManager.Instance.levelCounter.text = "HUB";
+            SceneManager.LoadScene("HUB");
+        }
     }
 
     public void ShowButton()
     {
-        if (interactIcon != null)
+        if (interactIcon != null && !DataManager.Instance.isEducating)
         {
             interactIcon.transform.position = Camera.main.WorldToScreenPoint(transform.position + Vector3.up * 1.5f);
             interactIcon.GetComponentInChildren<TMP_Text>().text = UIManager.Instance.textKeys[15].text;
@@ -87,6 +94,14 @@ public class SceneChanger : MonoBehaviour, IInteractable
 
     public void HideButton()
     {
-        if (interactIcon != null) interactIcon.SetActive(false);
+        if (interactIcon != null && !DataManager.Instance.isEducating) interactIcon.SetActive(false);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (DataManager.Instance.isEducating && collision.tag == "Player")
+        {
+            StartCoroutine(waitForAnimation());
+        }
     }
 }

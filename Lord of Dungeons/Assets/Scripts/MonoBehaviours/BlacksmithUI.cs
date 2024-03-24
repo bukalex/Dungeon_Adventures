@@ -210,6 +210,7 @@ public class BlacksmithUI : Timer//, IPointerDownHandler, IPointerUpHandler
                     craftedItemDisplay.SetActive(true);
                     InventoryManager.Instance.spawnNewItem(craftableItem, craftedItemSlot.GetComponent<InventorySlot>());
                     slotActivated = true;
+                    if (TrainingManager.Instance != null) TrainingManager.Instance.itemPurchased = true;
                 });
                 for (int i = 0; i < materialSlots.Length; i++)
                 {

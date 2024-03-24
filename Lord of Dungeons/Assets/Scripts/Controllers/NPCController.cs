@@ -322,20 +322,21 @@ public class NPCController : Timer, IInteractable, ITrainable
                 yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
 
                 //Create Iron Sword
+                TrainingManager.Instance.itemPurchased = false;
                 TrainingManager.Instance.AddItem(1, 1);
                 TrainingManager.Instance.AddItem(2, 3);
                 TrainingManager.Instance.AddItem(3, 1);
-                //TrainingManager.Instance.AddTask("Create Iron Sword");
-                //while (TrainingManager.Instance.HasUndoneTasks())
-                //{
-                //    TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = wasMet;
-                //    yield return null;
-                //}
-                //
+                TrainingManager.Instance.AddTask("Create Iron Sword");
+                while (TrainingManager.Instance.HasUndoneTasks())
+                {
+                    TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = TrainingManager.Instance.itemPurchased;
+                    yield return null;
+                }
+                
                 TrainingManager.Instance.uiBlocked = false;
                 TrainingManager.Instance.movementBlocked = false;
-                //StartCoroutine(TrainingManager.Instance.RemoveTasks());
-                //yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
+                StartCoroutine(TrainingManager.Instance.RemoveTasks());
+                yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
 
                 //Equip Iron Sword
                 TrainingManager.Instance.AddTask("Put Iron Sword to the weapon slot in the inventory to equip it");
