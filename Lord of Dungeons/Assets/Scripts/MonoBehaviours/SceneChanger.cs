@@ -35,8 +35,15 @@ public class SceneChanger : MonoBehaviour, IInteractable
 
     public IEnumerator waitForAnimation()
     {
+        if (DataManager.Instance.isEducating)
+        {
+            Camera.main.GetComponent<Animator>().SetBool("earthquake", true);
+            yield return new WaitForSeconds(1);
+        }
+
         anim.SetTrigger("FadeOut");
         yield return new WaitForSeconds(1);
+        Camera.main.GetComponent<Animator>().SetBool("earthquake", false);
         ChangeScene();
     }
     public void ChangeScene()
