@@ -179,6 +179,7 @@ public class BattleManager : MonoBehaviour
         
         if (attack.cooldown > 0)
         {
+            attack.playerData = playerData;
             InventoryManager.Instance.StartCooldown(attackButton);
             StartCoroutine(Cooldown(attack));
         }
@@ -263,7 +264,7 @@ public class BattleManager : MonoBehaviour
             if (target.isTrigger && target.GetComponentInParent<T>() != null)
             {
                 Vector2 targetDirection = target.transform.parent.position - position;
-                if (!inSector || Vector2.Angle(attackDirection, targetDirection) <= 45)
+                if (!inSector || Vector2.Angle(attackDirection, targetDirection) <= 75)
                 {
                     targets.Add(target.GetComponentInParent<T>());
                 }
@@ -287,7 +288,7 @@ public class BattleManager : MonoBehaviour
                 bool isVisible = true;
                 Vector2 targetDirection = collider.transform.parent.position - position;
                 
-                if (!inSector || Vector2.Angle(attackDirection, targetDirection) <= 45)
+                if (!inSector || Vector2.Angle(attackDirection, targetDirection) <= 75)
                 {
                     if (target == null || (target.transform.position - position).magnitude > targetDirection.magnitude)
                     {
@@ -401,9 +402,11 @@ public class BattleManager : MonoBehaviour
     private IEnumerator Cooldown(AttackParameters attack)
     {
         attack.isReady = false;
+        if (attack.playerData != null) attack.playerData.isAttacking = true;
         if (attack.playerAction != null) InventoryManager.Instance.activeAbilities += 1;
         yield return new WaitForSeconds(attack.cooldown);
         if (attack.playerAction != null) InventoryManager.Instance.activeAbilities -= 1;
+        if (attack.playerData != null) attack.playerData.isAttacking = false;
         attack.isReady = true;
     }
 
@@ -825,8 +828,6 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
-
-    
 
     private void GuardUseSpecial(EnemyParameters enemyParameters, AttackParameters attack)
     {

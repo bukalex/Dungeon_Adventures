@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
         {
             //Movement
             #region
-            if (!CheatManager.Instance.ChatIsActive() && (TrainingManager.Instance == null || TrainingManager.Instance != null && !TrainingManager.Instance.movementBlocked))
+            if (!playerData.isAttacking && !CheatManager.Instance.ChatIsActive() && (TrainingManager.Instance == null || TrainingManager.Instance != null && !TrainingManager.Instance.movementBlocked))
             {
                 movementDirection = new Vector3(-System.Convert.ToInt32(Input.GetKey(UIManager.Instance.keyCodes[2])) + System.Convert.ToInt32(Input.GetKey(UIManager.Instance.keyCodes[3])),
                 -System.Convert.ToInt32(Input.GetKey(UIManager.Instance.keyCodes[1])) + System.Convert.ToInt32(Input.GetKey(UIManager.Instance.keyCodes[0])), 0).normalized;
@@ -95,6 +95,11 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
                     Stop();
                     body.velocity = Vector3.zero;
                 }
+            }
+            else if (playerData.isAttacking || CheatManager.Instance.ChatIsActive())
+            {
+                Stop();
+                body.velocity = Vector3.zero;
             }
             #endregion
 
