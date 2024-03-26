@@ -54,7 +54,6 @@ public class BattleManager : MonoBehaviour
         enemyActions.Add(GuardUseSword);
         enemyActions.Add(GuardUseSpecial);
         enemyActions.Add(GhostShoot);
-
         enemyActions.Add(RatBite);
 
         enemyActions.Add(TrapSpikeAttack);

@@ -20,12 +20,16 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
     private CapsuleCollider2D capsuleCollider;
 
     private Vector3 movementDirection = Vector3.zero;
+    private Vector3 cameraPosition;
+    private Vector3 cameraOffset;
+    private float cameraOffsetLength = 1.0f;
 
     private bool alreadyDead = false;
     private bool isTalkingToNPC = false;
     private bool isLooting = false;
     private bool isGoingBackward = false;
     private bool isTraining = true;
+    private bool cameraFollowing = false;
 
     private NPCController activeNPC = null;
     private LootableController activeLootable = null;
@@ -45,6 +49,9 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
             transform.position += Vector3.down * 15;
             playerData.isDead = false;
         }
+
+        cameraPosition = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, 0);
+        //InvokeRepeating("CameraSeek", 0, Time.deltaTime);
     }
     void LateUpdate()
     {
@@ -250,6 +257,23 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
             StartCoroutine(Respawn());
         }
     }
+
+    //private void CameraSeek()
+    //{
+    //    cameraOffset = transform.position - cameraPosition;
+    //    if (!cameraFollowing)
+    //    {
+    //        Camera.main.transform.position = cameraPosition + Vector3.forward * Camera.main.transform.position.z;
+    //        cameraFollowing = cameraOffset.magnitude >= cameraOffsetLength;
+    //    }
+    //    else
+    //    {
+    //        Camera.main.transform.position = cameraPosition + Vector3.forward * Camera.main.transform.position.z + cameraOffset.normalized * body.velocity.magnitude * 1.1f * Time.deltaTime;
+    //        cameraPosition = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, 0);
+    //
+    //        cameraFollowing = cameraOffset.magnitude > 0.1f;
+    //    }
+    //}
 
     //Detect targets in the 90 degree sector in front of the player
     private List<T> DetectTargets<T>(float range, bool inSector = true)
