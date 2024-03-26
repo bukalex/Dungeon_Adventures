@@ -45,7 +45,7 @@ public class InventoryManager : MonoBehaviour
     public GameObject gemSlot;
     public GameObject swordSlot;
 
-    public int selectedSlot = -1;
+    public int selectedSlot = 0;
     public int[] intsd;
     public int activeAbilities = 0;
 
@@ -127,7 +127,7 @@ public class InventoryManager : MonoBehaviour
                 instantlyMoveItem(itemToChange, toolBar, internalInventorySlots);
             }
         }
-        if (selectedSlot != -1) toolBar[selectedSlot].unselectSlot();
+        toolBar[selectedSlot].unselectSlot();
         if (Input.anyKeyDown)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1)) selectedSlot = 0;
@@ -140,8 +140,8 @@ public class InventoryManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha8)) selectedSlot = 7;
             if (Input.GetKeyDown(KeyCode.Alpha9)) selectedSlot = 8;
         }
-        selectedSlot = Mathf.Clamp(selectedSlot + (int)Input.mouseScrollDelta.y, 0, 8);
-        if (selectedSlot != -1) toolBar[selectedSlot].selectSlot();
+        selectedSlot = (selectedSlot + (int)Input.mouseScrollDelta.y + 9) % 9;
+        toolBar[selectedSlot].selectSlot();
 
         if (Input.GetKeyUp(UIManager.Instance.keyCodes[14]) && (TrainingManager.Instance == null || TrainingManager.Instance != null && !TrainingManager.Instance.itemUsageBlocked))
         {

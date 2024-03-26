@@ -51,6 +51,7 @@ public class PlayerData : ScriptableObject, IAttackObject, IDefenseObject
     public bool isStunned = false;
     public bool isDead = false;
     public bool isBlocking = false;
+    public bool isAttacking = false;
     public Dictionary<CharacterType, Dictionary<BattleManager.AttackButton, AttackParameters>> attacks = null;
 
     //Type
