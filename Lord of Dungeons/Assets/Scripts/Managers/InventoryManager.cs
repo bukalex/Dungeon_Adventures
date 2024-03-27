@@ -152,15 +152,15 @@ public class InventoryManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha9)) selectedSlot = 8;
         }
 
-        if (isEmpty)
+        foreach (InventorySlot equipmentSlot in equipmentSlots)
         {
-            if (legginsSlot.GetComponent<InventorySlot>() != null)
+            InventoryItem itemInSlot = equipmentSlot.GetComponentInChildren<InventoryItem>();
+            if(itemInSlot != null)
             {
-                InventoryItem itemInSlot = legginsSlot.GetComponentInChildren<InventoryItem>();
                 EquipeArmor(itemInSlot.item);
-                isEmpty = false;
             }
         }
+
 
         selectedSlot = Mathf.Clamp(selectedSlot + (int)Input.mouseScrollDelta.y, 0, 8);
         if (selectedSlot != -1) toolBar[selectedSlot].selectSlot();
@@ -269,17 +269,14 @@ public class InventoryManager : MonoBehaviour
                 directions.ForEach(i => i.Armor.sprite = i.Armor.GetComponent<SpriteMapping>().FindSprite(armorSprite));
                 break;
             case BodyPartName.Legs:
-                Debug.Log(armorSprite);
-                Debug.Log(directions[0].LeftLeg.GetComponent<SpriteMapping>().FindSprite(armorSprite));
                 directions.ForEach(i => i.LeftLeg.sprite = i.LeftLeg.GetComponent<SpriteMapping>().FindSprite(armorSprite));
                 directions.ForEach(i => i.RightLeg.sprite = i.RightLeg.GetComponent<SpriteMapping>().FindSprite(armorSprite));
                 break;
             case BodyPartName.Arms:
                 directions.ForEach(i => i.LeftArm.sprite = i.LeftArm.GetComponent<SpriteMapping>().FindSprite(armorSprite));
-                directions.ForEach(i => i.LeftArm.sprite = i.LeftArm.GetComponent<SpriteMapping>().FindSprite(armorSprite));
+                directions.ForEach(i => i.RightArm.sprite = i.RightArm.GetComponent<SpriteMapping>().FindSprite(armorSprite));
                 break;
             case BodyPartName.Head:
-                Debug.Log(armorSprite);
                 directions.ForEach(i => i.Helmet.sprite = i.Helmet.GetComponent<SpriteMapping>().FindSprite(armorSprite));
                 break;
         }
