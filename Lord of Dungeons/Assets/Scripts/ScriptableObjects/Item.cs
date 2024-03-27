@@ -17,6 +17,7 @@ public class Item : ScriptableObject
 
     [Header("For equipment")]
     public BodyPartName bodyPart;
+    public WeaponType weaponType;
     public int atlasID;
 
     [Header("Inventory enums")]

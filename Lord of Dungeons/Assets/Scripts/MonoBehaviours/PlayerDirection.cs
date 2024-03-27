@@ -18,7 +18,11 @@ public class PlayerDirection : MonoBehaviour
     public SpriteRenderer Helmet;
     public SpriteRenderer Armor;
 
-    [Header("Weapon")]
-    public SpriteRenderer Bow;
-    public SpriteRenderer MainWeapon;   
+    [Header("Right Hand")]
+    public SpriteRenderer MainWeapon;
+
+    [Header("Left Hand")]
+    public SpriteRenderer Handle;
+    public SpriteRenderer LimbU;
+    public SpriteRenderer LimbL;
 }

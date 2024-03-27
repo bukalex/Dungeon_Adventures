@@ -9,6 +9,8 @@ using UnityEditor.Experimental.GraphView;
 
 public class InventoryManager : MonoBehaviour
 {
+    public WeaponType currentWeaponType;
+
     public GameObject ItemDescription;
     private InventorySlot[] emp;
     public SpriteCollection spriteCollection;
@@ -170,7 +172,12 @@ public class InventoryManager : MonoBehaviour
             InventoryItem itemInSlot = equipmentSlot.GetComponentInChildren<InventoryItem>();
             if(itemInSlot != null)
             {
-                EquipeArmor(itemInSlot.item);
+                if (itemInSlot.item.itemType == Item.ItemType.Weapon)
+                {
+                    EquipeWeapon(itemInSlot.item);
+                }
+                else
+                    EquipeArmor(itemInSlot.item);
             }
         }
 
@@ -291,6 +298,26 @@ public class InventoryManager : MonoBehaviour
                 break;
             case BodyPartName.Head:
                 directions.ForEach(i => i.Helmet.sprite = i.Helmet.GetComponent<SpriteMapping>().FindSprite(armorSprite));
+                break;
+        }
+    }
+
+    public void EquipeWeapon(Item item)
+    {
+        SpriteAtlas bowSprites = spriteCollection.Bows[item.atlasID].Sprites;
+        Sprite swordSprite = spriteCollection.Swords[item.atlasID].Sprite;
+
+        switch (item.weaponType)
+        {
+            case WeaponType.Bow:
+                directions.ForEach(i => i.Handle.sprite = i.Handle.GetComponent<SpriteMapping>().FindSprite(bowSprites));
+                directions.ForEach(i => i.LimbU.sprite = i.LimbU.GetComponent<SpriteMapping>().FindSprite(bowSprites));
+                directions.ForEach(i => i.LimbL.sprite = i.LimbL.GetComponent<SpriteMapping>().FindSprite(bowSprites));
+                currentWeaponType = WeaponType.Bow;
+                break;
+            case WeaponType.Sword:
+                directions.ForEach(i => i.MainWeapon.sprite = swordSprite);
+                currentWeaponType = WeaponType.Sword;
                 break;
         }
     }
