@@ -2,11 +2,8 @@ using System.Collections;
 using Assets.Enums.ItemEnums;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.U2D;
-using UnityEditor.Experimental.GraphView;
-using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -207,19 +204,6 @@ public class InventoryManager : MonoBehaviour
             directions.ForEach(i => i.LimbL.sprite = null );
 
         }
-        InventorySlot armorSlot = chestplateSlot.GetComponent<InventorySlot>();
-        if (swrdSlot.transform.childCount == 0)
-        {
-            directions.ForEach(i => i.Armor.sprite = null);
-        }
-
-        InventorySlot bootsSlot = legginsSlot.GetComponent<InventorySlot>();
-        if (swrdSlot.transform.childCount == 0)
-        {
-            directions.ForEach(i => i.LeftLeg.sprite = null);
-            directions.ForEach(i => i.RightLeg.sprite = null);
-        }
-        InventorySlot slot = helmetSlot.GetComponent<InventorySlot>();
 
         selectedSlot = (selectedSlot + (int)Input.mouseScrollDelta.y + 9) % 9;
         toolBar[selectedSlot].selectSlot();
