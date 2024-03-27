@@ -34,6 +34,15 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
 
     public enum DirectionName { FRONT, BACK, LEFT, RIGHT }
 
+    // Patrol script
+    public Transform[] patrolPoints;
+    public float patrolSpeed = 2f;
+
+    private int currentPatrolIndex = 0;
+    private Vector3 currentTarget;
+    private bool isPatrolling = true;
+    private Transform player;
+
     void Awake()
     {
         enemyParameters = Instantiate(enemyParametersOriginal);
@@ -45,12 +54,55 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
 
     void Start()
     {
+        // Patrol script
+        currentTarget = patrolPoints[currentPatrolIndex].position;
+        animator = GetComponent<Animator>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+
         if (enemyParameters.isBoss) UIManager.Instance.bossCounter.text = (int.Parse(UIManager.Instance.bossCounter.text) + 1).ToString();
         else UIManager.Instance.enemyCounter.text = (int.Parse(UIManager.Instance.enemyCounter.text) + 1).ToString();
     }
 
+    // Patrol behavior
+    private void Patrol()
+    {
+        transform.position = Vector2.MoveTowards(transform.position, currentTarget, patrolSpeed * Time.deltaTime);
+
+        if (Vector2.Distance(transform.position, currentTarget) < 0.1f)
+        {
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+            currentTarget = patrolPoints[currentPatrolIndex].position;
+        }
+    }
+
     void Update()
     {
+
+        // Patrol behavior
+        if (isPatrolling)
+        {
+            Patrol();
+            animator.SetBool("isWalking", true);
+        }
+        else
+        {
+            Debug.Log("1");
+            animator.SetBool("isWalking", false);
+        }
+
+        if (PlayerDetected())
+        {
+            isPatrolling = false;
+            if (targetDistance <= enemyParameters.attack)
+            {
+                Attack();
+            }
+        }
+        else
+        {
+            animator.SetBool("isWalking", true);
+        }
+
         enemyParameters.position = transform.position;
         enemyParameters.attackDirection = (enemyParameters.playerData.position - transform.position).normalized;
         enemyParameters.isUsingMana = false;
@@ -101,7 +153,7 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
                 ChangeDirection();
                 lastPlayerPosition = enemyParameters.playerData.position;
 
-                if (enemyParameters.isBoss && 
+                /*if (enemyParameters.isBoss && 
                     enemyParameters.health <= enemyParameters.maxHealth * 0.5f && 
                     targetDistance <= BattleManager.Instance.GetAttackRange(enemyParameters.type, BattleManager.AttackButton.RMB) &&
                     BattleManager.Instance.EnemyPerformAction(enemyParameters, BattleManager.AttackButton.RMB))
@@ -135,7 +187,7 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
                             Attack();
                         }
                     }
-                }
+                }*/
             }
             else if ((lastPlayerPosition - transform.position).magnitude <= 0.5)
             {
@@ -144,9 +196,9 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
             }
             else
             {
-                Run();
-                Seek();
-                AvoidObstacles();
+                /*Run();
+                Seek();*/
+                //AvoidObstacles();
             }
 
             //Stats restore
@@ -286,6 +338,16 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
         }
     }
 
+    // Patrol behvaior
+    public void StartPatrolling()
+    {
+        isPatrolling = true;
+    }
+
+    public void StopPatrolling()
+    {
+        isPatrolling = false;
+    }
     private void Stop()
     {
         animator.SetBool("isRunning", false);
@@ -309,12 +371,20 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
     {
         Stop();
         animator.SetTrigger("attack");
+
+        // Stop patrolling and attacks player
+        isPatrolling = false;
+        animator.SetTrigger("attack");
     }
 
     private void SuperAttack()
     {
         Stop();
         animator.SetTrigger("superAttack");
+
+        // Stop patrolling and attacks player
+        isPatrolling = false;
+        animator.SetTrigger("attack");
     }
 
     private void Die()
