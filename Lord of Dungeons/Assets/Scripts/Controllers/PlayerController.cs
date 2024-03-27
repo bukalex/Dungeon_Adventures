@@ -457,7 +457,8 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
     private void AttackWithLMB()
     {
         Stop();
-        animator.SetTrigger("attack1");
+        if (playerData.type == PlayerData.CharacterType.WARRIOR) animator.SetTrigger("attack1");
+        else if (playerData.type == PlayerData.CharacterType.ARCHER) animator.SetTrigger("attack2");
     }
 
     //Die
