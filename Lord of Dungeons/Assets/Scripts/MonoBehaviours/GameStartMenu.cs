@@ -10,10 +10,12 @@ public class GameStartMenu : MonoBehaviour
     private string filePath = "Assets/Resources/GameData.json";
     [SerializeField] private List<Image> buttons;
     [SerializeField] private Toggle toggle;
+    [SerializeField] private Button continueButton;
 
     private void Start()
     {
         foreach (Image button in buttons) button.alphaHitTestMinimumThreshold = 0.5f;
+        continueButton.interactable = File.Exists(filePath);
     }
 
     public void NewGame()

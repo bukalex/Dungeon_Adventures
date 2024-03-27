@@ -359,6 +359,8 @@ MonoBehaviour:
   animator: {fileID: 8465829421107590888}
   body: {fileID: 5838760337194241135}
   capsuleCollider: {fileID: 4567441550735861179}
+  frontDirection: {fileID: 640912014688545605}
+  backDirection: {fileID: 6933530661315185244}
 --- !u!114 &4915881392985584648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,6 +471,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1326620336912269522}
   m_SourcePrefab: {fileID: 100100000, guid: 5711168938a4bb248aeb9e8f1efa3f76, type: 3}
+--- !u!1 &640912014688545605 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6707360452843450739, guid: 5711168938a4bb248aeb9e8f1efa3f76, type: 3}
+  m_PrefabInstance: {fileID: 6192923237894511158}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1762411154707988698 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5585863508760238828, guid: 5711168938a4bb248aeb9e8f1efa3f76, type: 3}
@@ -518,12 +525,43 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0, y: 1}
-      - {x: -0.95105654, y: 0.30901697}
-      - {x: -0.5877852, y: -0.80901706}
-      - {x: 0.58778536, y: -0.80901694}
-      - {x: 0.9510565, y: 0.30901712}
+    - - {x: 0.58574885, y: 0.9820208}
+      - {x: 0.6651136, y: 1.0870085}
+      - {x: 0.5752158, y: 1.5941828}
+      - {x: 0.38272768, y: 1.9208633}
+      - {x: -0.040742435, y: 1.995633}
+      - {x: -0.33414048, y: 1.9337497}
+      - {x: -0.6145266, y: 1.6640961}
+      - {x: -0.72255594, y: 1.2731966}
+      - {x: -0.67260534, y: 1.0733389}
+      - {x: -0.538353, y: 0.94850427}
+      - {x: -0.40638646, y: 0.8205241}
+      - {x: -0.25718486, y: 0.73146266}
+      - {x: -0.36274192, y: 0.5685868}
+      - {x: -0.44983172, y: 0.3038231}
+      - {x: -0.39412954, y: 0.22665787}
+      - {x: -0.2891281, y: 0.19862497}
+      - {x: -0.2845685, y: -0.024893545}
+      - {x: -0.16811167, y: -0.06488183}
+      - {x: -0.07289096, y: 0.032495618}
+      - {x: 0.0021705497, y: 0.21074766}
+      - {x: 0.11976594, y: -0.0176192}
+      - {x: 0.20382427, y: -0.0559569}
+      - {x: 0.2689265, y: -0.013643134}
+      - {x: 0.28145626, y: 0.20895621}
+      - {x: 0.37742683, y: 0.20641589}
+      - {x: 0.45433834, y: 0.2954119}
+      - {x: 0.44344446, y: 0.4333514}
+      - {x: 0.36953908, y: 0.5880667}
+      - {x: 0.25355762, y: 0.7242866}
+      - {x: 0.37305012, y: 0.7936906}
+      - {x: 0.4774295, y: 0.91760075}
   m_UseDelaunayMesh: 0
+--- !u!1 &6933530661315185244 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3875760591738916970, guid: 5711168938a4bb248aeb9e8f1efa3f76, type: 3}
+  m_PrefabInstance: {fileID: 6192923237894511158}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7500075860802496223 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4459744083739131113, guid: 5711168938a4bb248aeb9e8f1efa3f76, type: 3}

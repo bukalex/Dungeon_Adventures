@@ -58,7 +58,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Escape Menu Properties")]
     [SerializeField] private GameObject escapeUI, escapeButtons, settingUI;
-    [SerializeField] private Button resumeButton, settingButton, quitButton;
+    [SerializeField] private Button resumeButton, settingButton, quitButton, menuButton;
     [SerializeField] private Button[] changeButtons;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
     [SerializeField] public TMP_Text[] textKeys;
@@ -233,7 +233,7 @@ public class UIManager : MonoBehaviour
             resumeButton.onClick.AddListener(() => Resume());
             settingButton.onClick.AddListener(() => Setting());
             quitButton.onClick.AddListener(() => Quit());
-
+            menuButton.onClick.AddListener(() => Menu());
         }
     }
 
@@ -285,6 +285,13 @@ public class UIManager : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void Menu()
+    {
+        CheckpointManager.Instance.SaveData();
+        SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetActiveScene());
+        SceneManager.LoadScene(0);
     }
 
     public void SetQuality(int qualityIndex)
