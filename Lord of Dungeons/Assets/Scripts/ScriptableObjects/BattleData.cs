@@ -18,4 +18,5 @@ public class BattleData : ScriptableObject
     public GameObject explosionPrefab;
     public GameObject textDamagePrefab;
     public GameObject swordParticles;
+    public GameObject arrowPrefab;
 }

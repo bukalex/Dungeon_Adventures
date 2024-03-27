@@ -289,8 +289,9 @@ public class UIManager : MonoBehaviour
 
     public void Menu()
     {
-        CheckpointManager.Instance.SaveData();
+        if (SceneManager.GetActiveScene().name != "Education") CheckpointManager.Instance.SaveData();
         SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetActiveScene());
+        Time.timeScale = 1;
         SceneManager.LoadScene(0);
     }
 

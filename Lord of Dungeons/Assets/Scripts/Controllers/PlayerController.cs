@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
             if (!BattleManager.Instance.isUsingUI && !EventSystem.current.IsPointerOverGameObject() && (TrainingManager.Instance == null || TrainingManager.Instance != null && !TrainingManager.Instance.attacksBlocked))
             {
                 //Left Mouse Button
-                if (InventoryManager.Instance.swordSlot.GetComponentInChildren<InventoryItem>() != null && Input.GetKey(UIManager.Instance.keyCodes[6]) && !Input.GetKey(UIManager.Instance.keyCodes[7]))
+                if (Input.GetKey(UIManager.Instance.keyCodes[6]) && !Input.GetKey(UIManager.Instance.keyCodes[7]))
                 {
                     if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.LMB))
                     {

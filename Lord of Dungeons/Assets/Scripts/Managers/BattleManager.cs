@@ -50,6 +50,7 @@ public class BattleManager : MonoBehaviour
         playerActions.Add(PlayerGuisonKnife);
         playerActions.Add(PlayerMindControl);
         playerActions.Add(PlayerBlock);
+        playerActions.Add(PlayerUseBow);
 
         enemyActions.Add(GuardUseSword);
         enemyActions.Add(GuardUseSpecial);
@@ -553,6 +554,12 @@ public class BattleManager : MonoBehaviour
         {
             playerData.transform.GetComponentInChildren<Animator>().Play("Idle");
         }
+    }
+
+    private void PlayerUseBow(PlayerData playerData, AttackParameters attack)
+    {
+        ProjectileController projectileController = Instantiate(battleData.arrowPrefab, playerData.position + Vector3.up * 0.7f, Quaternion.AngleAxis(Vector3.SignedAngle(Vector3.up, playerData.attackDirection, Vector3.forward), Vector3.forward)).GetComponent<ProjectileController>();
+        projectileController.Launch("Player", playerData, attack, playerData.attackDirection);
     }
 
     private void PlayerBlock(PlayerData playerData, AttackParameters attack)
