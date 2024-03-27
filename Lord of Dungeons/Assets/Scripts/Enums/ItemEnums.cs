@@ -9,6 +9,14 @@ namespace Assets.Enums.ItemEnums
         Body, 
         Arms, 
         Legs, 
-        Head 
+        Head,
+        OFF
+    }
+
+    public enum WeaponType
+    {
+        OFF,
+        Sword,
+        Bow
     }
 }

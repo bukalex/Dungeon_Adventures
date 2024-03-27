@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using System.Linq;
+using Assets.Enums.ItemEnums;
 
 public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainable
 {
@@ -40,6 +42,8 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
 
     private void Start()
     {
+        InventoryManager.Instance.directions = transform.GetChild(0).GetComponentsInChildren<PlayerDirection>(true).ToList();
+
         playerData.position = transform.position;
         playerData.transform = transform;
         animator.runtimeAnimatorController = playerData.animController;
