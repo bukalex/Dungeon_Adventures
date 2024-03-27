@@ -55,7 +55,7 @@ public class InventoryManager : MonoBehaviour
 
     public InventorySlot helmet;
 
-    public int selectedSlot = -1;
+    public int selectedSlot = 0;
     public int activeAbilities = 0;
 
     private List<Item> items = new List<Item>();
@@ -138,7 +138,20 @@ public class InventoryManager : MonoBehaviour
                 instantlyMoveItem(itemToChange, toolBar, internalInventorySlots);
             }
         }
-        if (selectedSlot != -1) toolBar[selectedSlot].unselectSlot();
+        if (ItemDescription.activeSelf)
+        {
+            ItemDescription.transform.position = Input.mousePosition + new Vector3(250f, 200f);
+            if (Input.mousePosition.x + ItemDescription.GetComponent<RectTransform>().sizeDelta.x > Screen.width)
+            {
+                ItemDescription.transform.position += Vector3.left * ItemDescription.GetComponent<RectTransform>().sizeDelta.x + new Vector3(150f, 0);
+            }
+            if (Input.mousePosition.y + ItemDescription.GetComponent<RectTransform>().sizeDelta.y > Screen.height)
+            {
+                ItemDescription.transform.position += Vector3.down * ItemDescription.GetComponent<RectTransform>().sizeDelta.y;
+            }
+        }
+
+        toolBar[selectedSlot].unselectSlot();
         if (Input.anyKeyDown)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1)) selectedSlot = 0;
@@ -162,8 +175,8 @@ public class InventoryManager : MonoBehaviour
         }
 
 
-        selectedSlot = Mathf.Clamp(selectedSlot + (int)Input.mouseScrollDelta.y, 0, 8);
-        if (selectedSlot != -1) toolBar[selectedSlot].selectSlot();
+        selectedSlot = (selectedSlot + (int)Input.mouseScrollDelta.y + 9) % 9;
+        toolBar[selectedSlot].selectSlot();
 
         if (Input.GetKeyUp(UIManager.Instance.keyCodes[14]) && (TrainingManager.Instance == null || TrainingManager.Instance != null && !TrainingManager.Instance.itemUsageBlocked))
         {
