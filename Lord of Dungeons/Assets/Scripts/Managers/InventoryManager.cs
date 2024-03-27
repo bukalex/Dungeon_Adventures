@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.U2D;
 using UnityEditor.Experimental.GraphView;
+using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class InventoryManager : MonoBehaviour
     public GameObject ItemDescription;
     private InventorySlot[] emp;
     public SpriteCollection spriteCollection;
-
+    public SpriteAtlas hairAtlas;
     public List<PlayerDirection> directions = new List<PlayerDirection>();
     public List<GameObject> inventorySlots = new List<GameObject>();
     [Header("Loot Tables")]
@@ -179,8 +180,46 @@ public class InventoryManager : MonoBehaviour
                 else
                     EquipeArmor(itemInSlot.item);
             }
+
+
         }
 
+
+        InventorySlot helmSlot = helmetSlot.GetComponent<InventorySlot>();
+        if (helmetSlot.transform.childCount == 1)
+            directions.ForEach(i => i.Hair.sprite = null);
+        else
+            directions.ForEach(i => i.Hair.sprite = i.Hair.GetComponent<SpriteMapping>().FindSprite(hairAtlas));
+
+        InventorySlot glovSlot = glovesSlot.GetComponent<InventorySlot>();
+        if (glovSlot.transform.childCount == 0)
+        {
+            directions.ForEach(i => i.LeftArm.sprite = null);
+            directions.ForEach(i => i.RightArm.sprite = null);
+        }
+
+        InventorySlot swrdSlot = swordSlot.GetComponent<InventorySlot>();
+        if (swrdSlot.transform.childCount == 0)
+        {
+            directions.ForEach(i => i.MainWeapon.sprite = null);
+            directions.ForEach(i => i.Handle.sprite =null );
+            directions.ForEach(i => i.LimbU.sprite = null );
+            directions.ForEach(i => i.LimbL.sprite = null );
+
+        }
+        InventorySlot armorSlot = chestplateSlot.GetComponent<InventorySlot>();
+        if (swrdSlot.transform.childCount == 0)
+        {
+            directions.ForEach(i => i.Armor.sprite = null);
+        }
+
+        InventorySlot bootsSlot = legginsSlot.GetComponent<InventorySlot>();
+        if (swrdSlot.transform.childCount == 0)
+        {
+            directions.ForEach(i => i.LeftLeg.sprite = null);
+            directions.ForEach(i => i.RightLeg.sprite = null);
+        }
+        InventorySlot slot = helmetSlot.GetComponent<InventorySlot>();
 
         selectedSlot = (selectedSlot + (int)Input.mouseScrollDelta.y + 9) % 9;
         toolBar[selectedSlot].selectSlot();
