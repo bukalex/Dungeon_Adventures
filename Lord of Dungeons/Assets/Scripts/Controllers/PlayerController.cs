@@ -124,11 +124,14 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
                 //Left Mouse Button
                 if (Input.GetKey(UIManager.Instance.keyCodes[6]) && !Input.GetKey(UIManager.Instance.keyCodes[7]))
                 {
+                    if (InventoryManager.Instance.currentWeaponType == WeaponType.Sword) playerData.type = PlayerData.CharacterType.WARRIOR;
+                    else if (InventoryManager.Instance.currentWeaponType == WeaponType.Bow) playerData.type = PlayerData.CharacterType.ARCHER;
                     if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.LMB))
                     {
                         body.velocity = movementDirection * playerData.speed * 0.5f;
                         AttackWithLMB();
                     }
+                    playerData.type = PlayerData.CharacterType.WARRIOR;
                 }
 
                 //Right Mouse Button
