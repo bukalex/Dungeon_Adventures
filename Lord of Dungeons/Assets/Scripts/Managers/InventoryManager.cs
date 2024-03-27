@@ -125,8 +125,23 @@ public class InventoryManager : MonoBehaviour
             {
                 if (TrainingManager.Instance != null) TrainingManager.Instance.itemWasClickedAndMoved = true;
                 instantlyMoveItem(itemToChange, toolBar, internalInventorySlots);
+                ItemDescription.SetActive(false);
             }
         }
+        if (ItemDescription.activeSelf)
+        {
+            Debug.Log(Input.mousePosition);
+            ItemDescription.transform.position = Input.mousePosition + new Vector3(250f, 200f);
+            if (Input.mousePosition.x + ItemDescription.GetComponent<RectTransform>().sizeDelta.x > Screen.width)
+            {
+                ItemDescription.transform.position += Vector3.left * ItemDescription.GetComponent<RectTransform>().sizeDelta.x + new Vector3(150f, 0);
+            }
+            if (Input.mousePosition.y + ItemDescription.GetComponent<RectTransform>().sizeDelta.y > Screen.height)
+            {
+                ItemDescription.transform.position += Vector3.down * ItemDescription.GetComponent<RectTransform>().sizeDelta.y;
+            }
+        }
+
         toolBar[selectedSlot].unselectSlot();
         if (Input.anyKeyDown)
         {
