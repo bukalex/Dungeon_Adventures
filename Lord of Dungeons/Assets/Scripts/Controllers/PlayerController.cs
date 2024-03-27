@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
     [SerializeField]
     private CapsuleCollider2D capsuleCollider;
 
+    [SerializeField]
+    private GameObject frontDirection, backDirection;
+
     private Vector3 movementDirection = Vector3.zero;
     private Vector3 cameraPosition;
     private Vector3 cameraOffset;
@@ -115,7 +118,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
             if (!BattleManager.Instance.isUsingUI && !EventSystem.current.IsPointerOverGameObject() && (TrainingManager.Instance == null || TrainingManager.Instance != null && !TrainingManager.Instance.attacksBlocked))
             {
                 //Left Mouse Button
-                if (Input.GetKey(UIManager.Instance.keyCodes[6]) && !Input.GetKey(UIManager.Instance.keyCodes[7]))
+                if (InventoryManager.Instance.swordSlot.GetComponentInChildren<InventoryItem>() != null && Input.GetKey(UIManager.Instance.keyCodes[6]) && !Input.GetKey(UIManager.Instance.keyCodes[7]))
                 {
                     if (BattleManager.Instance.PlayerPerformAction(playerData, BattleManager.AttackButton.LMB))
                     {
@@ -415,6 +418,11 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour, ITrainab
     {
         animator.SetFloat("Horizontal", playerData.attackDirection.x);
         animator.SetFloat("Vertical", playerData.attackDirection.y);
+        if (playerData.attackDirection.x != 0 && playerData.attackDirection.y != 0)
+        {
+            frontDirection.SetActive(false);
+            backDirection.SetActive(false);
+        }
     }
 
     //Stop walking and running
