@@ -34,8 +34,24 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
 
     public enum DirectionName { FRONT, BACK, LEFT, RIGHT }
 
+    // Patrol behavior
+    public Transform[] patrolPoints;
+    public float patrolSpeed = 2f;
+
+    private int currentPatrolIndex = 0;
+    private Vector3 currentTarget;
+    private bool isPatrolling = true;
+    private Transform player;
+
     void Awake()
     {
+        // Patrol behavior
+        currentTarget = patrolPoints[currentPatrolIndex].position;
+        animator = GetComponent<Animator>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        
+
         enemyParameters = Instantiate(enemyParametersOriginal);
 
         lastPlayerPosition = transform.position;
@@ -48,6 +64,33 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
 
     void Update()
     {
+
+        // Patrol behavior
+        if (isPatrolling)
+        {
+            Patrol();
+            animator.SetBool("isWalking", true);
+        }
+        else
+        {
+            animator.SetBool("isWalking", false);
+        }
+
+        if (PlayerDetected())
+        {
+            isPatrolling = false;
+            if (targetDistance <= enemyParameters.attack)
+            {
+                Attack();
+            }
+        }
+        else
+        {
+            Patrol();
+            animator.SetBool("isWalking", true);
+        }
+
+
         enemyParameters.position = transform.position;
         enemyParameters.attackDirection = (enemyParameters.playerData.position - transform.position).normalized;
         enemyParameters.isUsingMana = false;
@@ -90,7 +133,7 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
             }
         }
 
-        if (IsAlive() && !enemyParameters.isStunned)
+        if (IsAlive())
         {
             //Movement and attack
             if (PlayerDetected())
@@ -165,6 +208,18 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
         }
     }
 
+    // Patrol behavior
+    private void Patrol()
+    {
+        transform.position = Vector2.MoveTowards(transform.position, currentTarget, patrolSpeed * Time.deltaTime);
+
+        if (Vector2.Distance(transform.position, currentTarget) < 0.1f)
+        {
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+            currentTarget = patrolPoints[currentPatrolIndex].position;
+        }
+    }
+
     private void Seek()
     {
         movementDirection = (lastPlayerPosition - transform.position).normalized;
@@ -173,7 +228,6 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
     private void Flee()
     {
         movementDirection = (transform.position - enemyParameters.playerData.position).normalized;
-
     }
 
     private void AvoidObstacles()
@@ -283,6 +337,17 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
         }
     }
 
+    // Patrol behvaior
+    public void StartPatrolling()
+    {
+        isPatrolling = true;
+    }
+
+    public void StopPatrolling()
+    {
+        isPatrolling = false;
+    }
+
     private void Stop()
     {
         animator.SetBool("isRunning", false);
@@ -306,12 +371,20 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
     {
         Stop();
         animator.SetTrigger("attack");
+
+        // Stop patrolling and attacks player
+        isPatrolling = false;
+        animator.SetTrigger("attack");
     }
 
     private void SuperAttack()
     {
         Stop();
         animator.SetTrigger("superAttack");
+
+        // Stop patrolling and attacks player
+        isPatrolling = false;
+        animator.SetTrigger("attack");
     }
 
     private void Die()
