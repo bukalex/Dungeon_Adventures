@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.U2D;
+using System;
+using Random = UnityEngine.Random;
+using System.Linq;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -62,6 +65,7 @@ public class InventoryManager : MonoBehaviour
     public Item itemToChange;
     public InventoryItem currentInventoryItem;
     private bool isEmpty = true;
+    //private List<InventorySlot> previousBusySlots = new List<InventorySlot>(); 
 
 
     public static InventoryManager Instance { get; private set; }
@@ -126,6 +130,10 @@ public class InventoryManager : MonoBehaviour
     }
     private void Update()
     {
+        StartCoroutine(onSlotChanged(equipmentSlots.ToList(), () => Debug.Log("232"))); 
+
+
+
         if (Input.GetMouseButtonDown(1))
         {
             MoveItemSilently(itemToChange);
@@ -177,10 +185,7 @@ public class InventoryManager : MonoBehaviour
                 else
                     EquipeArmor(itemInSlot.item);
             }
-
-
         }
-
 
         InventorySlot helmSlot = helmetSlot.GetComponent<InventorySlot>();
         if (helmetSlot.transform.childCount == 1)
@@ -204,6 +209,7 @@ public class InventoryManager : MonoBehaviour
             directions.ForEach(i => i.LimbL.sprite = null );
 
         }
+
 
         selectedSlot = (selectedSlot + (int)Input.mouseScrollDelta.y + 9) % 9;
         toolBar[selectedSlot].selectSlot();
@@ -774,6 +780,40 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private Func<bool> EquipmentSlotChanged(List<InventorySlot> equipmentSlots123)
+    {
+        List<InventorySlot> openSlots = new List<InventorySlot>();
+        List<InventorySlot> busySlots = new List<InventorySlot>();
+        int adjSlotAmount = 0;
+        int previousOpenSlotsCount = 0;
+        int previousBusySlotsCount = 0;
+
+        foreach (InventorySlot slot in equipmentSlots123)
+        {
+            if (slot.GetComponentInChildren<InventoryItem>() != null)
+                busySlots.Add(slot);
+            else
+            {
+                openSlots.Add(slot);
+            }
+            previousOpenSlotsCount = openSlots.Count;
+        }
+
+        if (previousOpenSlotsCount < openSlots.Count)
+            {
+                return () => true;
+            }
+        busySlots.Clear();
+        return () => false;
+    }
+
+    public IEnumerator onSlotChanged(List<InventorySlot> equipmentSlots123, Action callback)
+    {
+        yield return new WaitUntil(EquipmentSlotChanged(equipmentSlots123));
+        Debug.Log("Hah");
+        callback();
     }
 }
 

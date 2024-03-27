@@ -95,7 +95,6 @@ public class InventoryItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         InventoryManager.Instance.itemToChange = item;
         StartCoroutine(ItemDescriptionOn(0.75f));
         InventoryManager.Instance.InitializeItemDescription(item);
-        Debug.Log("Enter");
 
         InventoryManager.Instance.itemToChange = item;
     }
