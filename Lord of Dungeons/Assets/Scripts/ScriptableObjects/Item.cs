@@ -14,6 +14,11 @@ public class Item : ScriptableObject
     public int materialID;
     public int unitsPerStack;
 
+    [Header("For equipment")]
+    public BodyPartName bodyPart;
+    public int atlasID;
+
+    [Header("Inventory enums")]
     public ItemTag tag;
     public ItemType itemType;
     public CoinType materialType;
@@ -78,6 +83,7 @@ public class Item : ScriptableObject
     public enum ItemType { Potion, Material, Gear, Weapon, Artifact, Treasure, Food, Trash, Spell, MonsterLoot, Coin}
     public enum ItemTag { Item, Helmet, Chestplate, Gloves, Boots, Sword, Gem, CraftMaterial}
     public enum CoinType { OFF, GoldenCoin, SilverCoin, CopperCoin }
+    public enum BodyPartName { Body, Arms, Legs, Head}
 
     public int GetCraftItemID(Item item)
     {

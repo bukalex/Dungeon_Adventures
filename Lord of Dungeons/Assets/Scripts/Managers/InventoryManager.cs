@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class InventoryManager : MonoBehaviour
 {
     public GameObject ItemDescription;
     private InventorySlot[] emp;
+    public SpriteCollection spriteCollection;
+
+    public List<PlayerDirection> directions = new List<PlayerDirection>();
     [Header("Loot Tables")]
     public Item[] startItems;
     public Item[] allItems;
@@ -235,6 +239,13 @@ public class InventoryManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void EquipeArmor(Item item)
+    {
+        SpriteAtlas armorSprite = spriteCollection.Armors[item.atlasID].Sprites;
+
+
     }
     public void DeleteItem()
     {
