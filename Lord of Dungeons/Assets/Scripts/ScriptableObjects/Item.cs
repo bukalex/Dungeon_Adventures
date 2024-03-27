@@ -1,3 +1,4 @@
+using Assets.Enums.ItemEnums;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -83,7 +84,6 @@ public class Item : ScriptableObject
     public enum ItemType { Potion, Material, Gear, Weapon, Artifact, Treasure, Food, Trash, Spell, MonsterLoot, Coin}
     public enum ItemTag { Item, Helmet, Chestplate, Gloves, Boots, Sword, Gem, CraftMaterial}
     public enum CoinType { OFF, GoldenCoin, SilverCoin, CopperCoin }
-    public enum BodyPartName { Body, Arms, Legs, Head}
 
     public int GetCraftItemID(Item item)
     {

@@ -1,8 +1,11 @@
 using System.Collections;
+using Assets.Enums.ItemEnums;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.U2D;
+using UnityEditor.Experimental.GraphView;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -11,6 +14,7 @@ public class InventoryManager : MonoBehaviour
     public SpriteCollection spriteCollection;
 
     public List<PlayerDirection> directions = new List<PlayerDirection>();
+    public List<GameObject> inventorySlots = new List<GameObject>();
     [Header("Loot Tables")]
     public Item[] startItems;
     public Item[] allItems;
@@ -49,13 +53,16 @@ public class InventoryManager : MonoBehaviour
     public GameObject gemSlot;
     public GameObject swordSlot;
 
+    public InventorySlot helmet;
+
     public int selectedSlot = -1;
-    public int[] intsd;
     public int activeAbilities = 0;
 
     private List<Item> items = new List<Item>();
     public Item itemToChange;
     public InventoryItem currentInventoryItem;
+    private bool isEmpty = true;
+
 
     public static InventoryManager Instance { get; private set; }
     public void Awake()
@@ -144,6 +151,17 @@ public class InventoryManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha8)) selectedSlot = 7;
             if (Input.GetKeyDown(KeyCode.Alpha9)) selectedSlot = 8;
         }
+
+        if (isEmpty)
+        {
+            if (legginsSlot.GetComponent<InventorySlot>() != null)
+            {
+                InventoryItem itemInSlot = legginsSlot.GetComponentInChildren<InventoryItem>();
+                EquipeArmor(itemInSlot.item);
+                isEmpty = false;
+            }
+        }
+
         selectedSlot = Mathf.Clamp(selectedSlot + (int)Input.mouseScrollDelta.y, 0, 8);
         if (selectedSlot != -1) toolBar[selectedSlot].selectSlot();
 
@@ -245,7 +263,26 @@ public class InventoryManager : MonoBehaviour
     {
         SpriteAtlas armorSprite = spriteCollection.Armors[item.atlasID].Sprites;
 
-
+        switch (item.bodyPart)
+        {
+            case BodyPartName.Body:
+                directions.ForEach(i => i.Armor.sprite = i.Armor.GetComponent<SpriteMapping>().FindSprite(armorSprite));
+                break;
+            case BodyPartName.Legs:
+                Debug.Log(armorSprite);
+                Debug.Log(directions[0].LeftLeg.GetComponent<SpriteMapping>().FindSprite(armorSprite));
+                directions.ForEach(i => i.LeftLeg.sprite = i.LeftLeg.GetComponent<SpriteMapping>().FindSprite(armorSprite));
+                directions.ForEach(i => i.RightLeg.sprite = i.RightLeg.GetComponent<SpriteMapping>().FindSprite(armorSprite));
+                break;
+            case BodyPartName.Arms:
+                directions.ForEach(i => i.LeftArm.sprite = i.LeftArm.GetComponent<SpriteMapping>().FindSprite(armorSprite));
+                directions.ForEach(i => i.LeftArm.sprite = i.LeftArm.GetComponent<SpriteMapping>().FindSprite(armorSprite));
+                break;
+            case BodyPartName.Head:
+                Debug.Log(armorSprite);
+                directions.ForEach(i => i.Helmet.sprite = i.Helmet.GetComponent<SpriteMapping>().FindSprite(armorSprite));
+                break;
+        }
     }
     public void DeleteItem()
     {
