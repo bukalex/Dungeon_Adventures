@@ -1,3 +1,4 @@
+using Assets.Enums.ItemEnums;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -14,6 +15,11 @@ public class Item : ScriptableObject
     public int materialID;
     public int unitsPerStack;
 
+    [Header("For equipment")]
+    public BodyPartName bodyPart;
+    public int atlasID;
+
+    [Header("Inventory enums")]
     public ItemTag tag;
     public ItemType itemType;
     public CoinType materialType;

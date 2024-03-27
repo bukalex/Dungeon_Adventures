@@ -1,12 +1,20 @@
 using System.Collections;
+using Assets.Enums.ItemEnums;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.U2D;
+using UnityEditor.Experimental.GraphView;
 
 public class InventoryManager : MonoBehaviour
 {
     public GameObject ItemDescription;
     private InventorySlot[] emp;
+    public SpriteCollection spriteCollection;
+
+    public List<PlayerDirection> directions = new List<PlayerDirection>();
+    public List<GameObject> inventorySlots = new List<GameObject>();
     [Header("Loot Tables")]
     public Item[] startItems;
     public Item[] allItems;
@@ -45,13 +53,16 @@ public class InventoryManager : MonoBehaviour
     public GameObject gemSlot;
     public GameObject swordSlot;
 
-    public int selectedSlot = 0;
-    public int[] intsd;
+    public InventorySlot helmet;
+
+    public int selectedSlot = -1;
     public int activeAbilities = 0;
 
     private List<Item> items = new List<Item>();
     public Item itemToChange;
     public InventoryItem currentInventoryItem;
+    private bool isEmpty = true;
+
 
     public static InventoryManager Instance { get; private set; }
     public void Awake()
@@ -127,7 +138,7 @@ public class InventoryManager : MonoBehaviour
                 instantlyMoveItem(itemToChange, toolBar, internalInventorySlots);
             }
         }
-        toolBar[selectedSlot].unselectSlot();
+        if (selectedSlot != -1) toolBar[selectedSlot].unselectSlot();
         if (Input.anyKeyDown)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1)) selectedSlot = 0;
@@ -140,8 +151,19 @@ public class InventoryManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha8)) selectedSlot = 7;
             if (Input.GetKeyDown(KeyCode.Alpha9)) selectedSlot = 8;
         }
-        selectedSlot = (selectedSlot + (int)Input.mouseScrollDelta.y + 9) % 9;
-        toolBar[selectedSlot].selectSlot();
+
+        foreach (InventorySlot equipmentSlot in equipmentSlots)
+        {
+            InventoryItem itemInSlot = equipmentSlot.GetComponentInChildren<InventoryItem>();
+            if(itemInSlot != null)
+            {
+                EquipeArmor(itemInSlot.item);
+            }
+        }
+
+
+        selectedSlot = Mathf.Clamp(selectedSlot + (int)Input.mouseScrollDelta.y, 0, 8);
+        if (selectedSlot != -1) toolBar[selectedSlot].selectSlot();
 
         if (Input.GetKeyUp(UIManager.Instance.keyCodes[14]) && (TrainingManager.Instance == null || TrainingManager.Instance != null && !TrainingManager.Instance.itemUsageBlocked))
         {
@@ -235,6 +257,29 @@ public class InventoryManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void EquipeArmor(Item item)
+    {
+        SpriteAtlas armorSprite = spriteCollection.Armors[item.atlasID].Sprites;
+
+        switch (item.bodyPart)
+        {
+            case BodyPartName.Body:
+                directions.ForEach(i => i.Armor.sprite = i.Armor.GetComponent<SpriteMapping>().FindSprite(armorSprite));
+                break;
+            case BodyPartName.Legs:
+                directions.ForEach(i => i.LeftLeg.sprite = i.LeftLeg.GetComponent<SpriteMapping>().FindSprite(armorSprite));
+                directions.ForEach(i => i.RightLeg.sprite = i.RightLeg.GetComponent<SpriteMapping>().FindSprite(armorSprite));
+                break;
+            case BodyPartName.Arms:
+                directions.ForEach(i => i.LeftArm.sprite = i.LeftArm.GetComponent<SpriteMapping>().FindSprite(armorSprite));
+                directions.ForEach(i => i.RightArm.sprite = i.RightArm.GetComponent<SpriteMapping>().FindSprite(armorSprite));
+                break;
+            case BodyPartName.Head:
+                directions.ForEach(i => i.Helmet.sprite = i.Helmet.GetComponent<SpriteMapping>().FindSprite(armorSprite));
+                break;
+        }
     }
     public void DeleteItem()
     {
