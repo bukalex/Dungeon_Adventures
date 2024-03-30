@@ -71,6 +71,8 @@ public class CheckpointManager : MonoBehaviour
 
     public void SaveData()
     {
+        if (!Directory.Exists("Assets/Resources")) return;
+
         gameData.checkpointsReached = checkpointsReached;
         gameData.timers = DataManager.Instance.GetNPCTimers();
         List<int> intKeyCodes = new List<int>();
@@ -169,46 +171,46 @@ public class CheckpointManager : MonoBehaviour
 
     public void LoadData()
     {
-        if (File.Exists(filePath))
-        {
-            string jsonData = File.ReadAllText(filePath);
+        if (!File.Exists(filePath)) return;
 
-            gameData = JsonUtility.FromJson<GameData>(jsonData);
-            checkpointsReached = gameData.checkpointsReached;
-            DataManager.Instance.SetNPCTimers(gameData.timers);
-            for (int i = 0; i < gameData.intKeyCodes.Count; i++)
-            {
-                UIManager.Instance.keyCodes[i] = Enum.Parse<KeyCode>(Enum.GetName(typeof(KeyCode), gameData.intKeyCodes[i]));
-            }
-            UIManager.Instance.InitializeKeyCodeSettings();
-            InventoryManager.Instance.InitializeSlots();
-            for (int i = 0; i < gameData.inventoryItems.Count; i++)
-            {
-                InventoryManager.Instance.LoadItem(InventoryManager.Instance.internalInventorySlots, i, (int)gameData.inventoryItems[i].x, (int)gameData.inventoryItems[i].y);
-            }
-            for (int i = 0; i < gameData.toolBarItems.Count; i++)
-            {
-                InventoryManager.Instance.LoadItem(InventoryManager.Instance.toolBar, i, (int)gameData.toolBarItems[i].x, (int)gameData.toolBarItems[i].y);
-            }
-            for (int i = 0; i < gameData.equipmentItems.Count; i++)
-            {
-                InventoryManager.Instance.LoadItem(InventoryManager.Instance.equipmentSlots, i, (int)gameData.equipmentItems[i].x, (int)gameData.equipmentItems[i].y);
-            }
-            UIManager.Instance.bankerWindow.GetComponent<BankerWindow>().LoadVault(gameData.vaultCapacity, gameData.bankerItems);
-            DataManager.Instance.playerData.resources[Item.CoinType.GoldenCoin] = gameData.gold;
-            DataManager.Instance.playerData.resources[Item.CoinType.SilverCoin] = gameData.silver;
-            DataManager.Instance.playerData.resources[Item.CoinType.CopperCoin] = gameData.copper;
-            InventoryManager.Instance.LoadAbilityInventory(gameData.inventoryAbilities.Count);
-            for (int i = 0; i < gameData.inventoryAbilities.Count; i++)
-            {
-                InventoryManager.Instance.LoadAbility(InventoryManager.Instance.abilityInventory, i, (int)gameData.inventoryAbilities[i].x, (int)gameData.inventoryAbilities[i].y);
-            }
-            for (int i = 0; i < gameData.toolBarAbilities.Count; i++)
-            {
-                InventoryManager.Instance.LoadAbility(InventoryManager.Instance.abilityBar, i, (int)gameData.toolBarAbilities[i].x, (int)gameData.toolBarAbilities[i].y);
-            }
-            tradingSystem.wizardLuck = gameData.wizardLuck;
+        string jsonData = File.ReadAllText(filePath);
+
+        gameData = JsonUtility.FromJson<GameData>(jsonData);
+        checkpointsReached = gameData.checkpointsReached;
+        DataManager.Instance.SetNPCTimers(gameData.timers);
+        for (int i = 0; i < gameData.intKeyCodes.Count; i++)
+        {
+            UIManager.Instance.keyCodes[i] = Enum.Parse<KeyCode>(Enum.GetName(typeof(KeyCode), gameData.intKeyCodes[i]));
         }
+        UIManager.Instance.InitializeKeyCodeSettings();
+        InventoryManager.Instance.InitializeSlots();
+        for (int i = 0; i < gameData.inventoryItems.Count; i++)
+        {
+            InventoryManager.Instance.LoadItem(InventoryManager.Instance.internalInventorySlots, i, (int)gameData.inventoryItems[i].x, (int)gameData.inventoryItems[i].y);
+        }
+        for (int i = 0; i < gameData.toolBarItems.Count; i++)
+        {
+            InventoryManager.Instance.LoadItem(InventoryManager.Instance.toolBar, i, (int)gameData.toolBarItems[i].x, (int)gameData.toolBarItems[i].y);
+        }
+        for (int i = 0; i < gameData.equipmentItems.Count; i++)
+        {
+            InventoryManager.Instance.LoadItem(InventoryManager.Instance.equipmentSlots, i, (int)gameData.equipmentItems[i].x, (int)gameData.equipmentItems[i].y);
+        }
+        UIManager.Instance.bankerWindow.GetComponent<BankerWindow>().LoadVault(gameData.vaultCapacity, gameData.bankerItems);
+        DataManager.Instance.playerData.resources[Item.CoinType.GoldenCoin] = gameData.gold;
+        DataManager.Instance.playerData.resources[Item.CoinType.SilverCoin] = gameData.silver;
+        DataManager.Instance.playerData.resources[Item.CoinType.CopperCoin] = gameData.copper;
+        InventoryManager.Instance.LoadAbilityInventory(gameData.inventoryAbilities.Count);
+        for (int i = 0; i < gameData.inventoryAbilities.Count; i++)
+        {
+            InventoryManager.Instance.LoadAbility(InventoryManager.Instance.abilityInventory, i, (int)gameData.inventoryAbilities[i].x, (int)gameData.inventoryAbilities[i].y);
+        }
+        for (int i = 0; i < gameData.toolBarAbilities.Count; i++)
+        {
+            InventoryManager.Instance.LoadAbility(InventoryManager.Instance.abilityBar, i, (int)gameData.toolBarAbilities[i].x, (int)gameData.toolBarAbilities[i].y);
+        }
+        tradingSystem.wizardLuck = gameData.wizardLuck;
+        
     }
 
     private void OnApplicationQuit()

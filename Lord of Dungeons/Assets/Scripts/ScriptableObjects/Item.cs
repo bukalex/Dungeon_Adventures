@@ -42,10 +42,10 @@ public class Item : ScriptableObject
     public float addSpecialDefense;
 
     [Header("Multipliers")]
-    public float increseAttack;
-    public float increaseDefense;
-    public float increseSpecialAttack;
-    public float increaseSpecialDefense;
+    public float increseAttack = 1;
+    public float increaseDefense = 1;
+    public float increseSpecialAttack = 1;
+    public float increaseSpecialDefense = 1;
 
     [Range(0f, 30f)]
     [Header("Change the name of the variable to 'duration' later")]

@@ -116,6 +116,7 @@ public class NPCController : Timer, IInteractable, ITrainable
         }
 
         UIManager.Instance.npcWindowActive = isActive;
+        if (!isActive) InventoryManager.Instance.ItemDescription.SetActive(false);
     }
 
     public void ShowButton()
