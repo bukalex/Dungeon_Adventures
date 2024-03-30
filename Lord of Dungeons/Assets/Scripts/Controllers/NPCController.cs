@@ -60,7 +60,7 @@ public class NPCController : Timer, IInteractable, ITrainable
                 dialogWindow = UIManager.Instance.wizardWindow;
                 if (TrainingManager.Instance != null)
                 {
-                    dialogWindow.GetComponent<NPCReset>().HideItems(new List<string> { "Fans and Knifes" });
+                    dialogWindow.GetComponent<NPCReset>().HideItems(new List<string> { "Encyclopedia of shields" });
                     arrowTarget = TrainingManager.Instance.wizardHouseOutside;
                 }
                 else
@@ -92,6 +92,7 @@ public class NPCController : Timer, IInteractable, ITrainable
         interactIcon.SetActive(false);
 
         arrow = Instantiate(UIManager.Instance.arrowPrefab, UIManager.Instance.transform).transform;
+        arrow.SetAsFirstSibling();
         arrow.gameObject.SetActive(false);
     }
 
@@ -326,7 +327,7 @@ public class NPCController : Timer, IInteractable, ITrainable
                 TrainingManager.Instance.AddItem(1, 1);
                 TrainingManager.Instance.AddItem(2, 3);
                 TrainingManager.Instance.AddItem(3, 1);
-                TrainingManager.Instance.AddTask("Create Iron Sword");
+                TrainingManager.Instance.AddTask("Create a weapon");
                 while (TrainingManager.Instance.HasUndoneTasks())
                 {
                     TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = TrainingManager.Instance.itemPurchased;
@@ -339,7 +340,7 @@ public class NPCController : Timer, IInteractable, ITrainable
                 yield return new WaitWhile(() => TrainingManager.Instance.isRemovingTasks);
 
                 //Equip Iron Sword
-                TrainingManager.Instance.AddTask("Put Iron Sword to the weapon slot in the inventory to equip it");
+                TrainingManager.Instance.AddTask("Put the weapon to the weapon slot in the inventory to equip it");
                 while (TrainingManager.Instance.HasUndoneTasks())
                 {
                     TrainingManager.Instance.taskList.GetChild(0).GetComponent<Toggle>().isOn = InventoryManager.Instance.swordSlot.GetComponentInChildren<InventoryItem>() != null;

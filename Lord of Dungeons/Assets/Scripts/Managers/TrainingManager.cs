@@ -112,9 +112,9 @@ public class TrainingManager : MonoBehaviour
 
         for (int i = taskList.childCount-1; i >= 0; i--)
         {
-            for (int j = 0; j < 100; j++)
+            for (int j = 0; j < 80; j++)
             {
-                taskList.GetChild(i).Translate(new Vector3(20.0f, 0, 0));
+                taskList.GetChild(i).Translate(new Vector3(2000.0f * Time.deltaTime, 0, 0));
                 yield return new WaitForEndOfFrame();
             }
             Destroy(taskList.GetChild(i).gameObject);

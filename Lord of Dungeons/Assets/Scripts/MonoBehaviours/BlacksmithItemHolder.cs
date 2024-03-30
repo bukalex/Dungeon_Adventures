@@ -16,6 +16,8 @@ public class BlacksmithItemHolder : MonoBehaviour, IPointerClickHandler
 
     private void Update()
     {
+        if (BlacksmithUI.Instance.currentItemHodler == thisItemHolder) itemIcon.transform.Rotate(0, 150 * Time.deltaTime, 0);
+        else itemIcon.transform.rotation = Quaternion.identity;
         transform.SetSiblingIndex(ChildPos);
     }
 
@@ -28,7 +30,7 @@ public class BlacksmithItemHolder : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         BlacksmithUI.Instance.craftItemButton.interactable = true;
-        BlacksmithUI.Instance.buttonText.text = "Craft" + recipe.GetItemName(ItemID);
+        BlacksmithUI.Instance.buttonText.text = "Craft " + recipe.GetItemName(ItemID);
         BlacksmithUI.Instance.currentItemID = ItemID;
         BlacksmithUI.Instance.currentItemHodler = thisItemHolder;
         offButton(15);

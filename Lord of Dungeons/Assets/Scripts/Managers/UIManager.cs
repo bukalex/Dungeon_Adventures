@@ -239,6 +239,7 @@ public class UIManager : MonoBehaviour
 
     public void SwitchInventory()
     {
+        InventoryManager.Instance.ItemDescription.SetActive(false);
         if (InventorySlots.activeSelf == EquipmentSection.activeSelf)
         {
             InventorySlots.SetActive(!InventorySlots.activeSelf);
@@ -255,7 +256,11 @@ public class UIManager : MonoBehaviour
     {
         if (!DataManager.Instance.isEducating)
         {
-            if (exitDirection == null) exitDirection = Instantiate(arrowPrefab, transform).transform;
+            if (exitDirection == null)
+            {
+                exitDirection = Instantiate(arrowPrefab, transform).transform;
+                exitDirection.transform.SetAsFirstSibling();
+            }
             if (exit == null) exit = GameObject.FindGameObjectWithTag("Finish")?.transform;
             if (exit != null)
             {
@@ -513,16 +518,25 @@ public class UIManager : MonoBehaviour
         diagonalAngle = Mathf.Atan2(Screen.width / 2, Screen.height/2) * Mathf.Rad2Deg;
         arrowAngle = Vector3.SignedAngle(Vector3.up, screenDirection, Vector3.forward);
         arrowImage.rotation = Quaternion.AngleAxis(arrowAngle, Vector3.forward);
-        if (Mathf.Abs(arrowAngle) <= diagonalAngle || (180 - diagonalAngle) <= Mathf.Abs(arrowAngle))
+
+        if (!DataManager.Instance.isEducating)
         {
-            factor = Mathf.Abs((Screen.height / 2 - 25) / Mathf.Cos(arrowAngle * Mathf.Deg2Rad)) / screenDirection.magnitude;
+            if (Mathf.Abs(arrowAngle) <= diagonalAngle || (180 - diagonalAngle) <= Mathf.Abs(arrowAngle))
+            {
+                factor = Mathf.Abs((Screen.height / 2 - 25) / Mathf.Cos(arrowAngle * Mathf.Deg2Rad)) / screenDirection.magnitude;
+            }
+            else
+            {
+                factor = Mathf.Abs((Screen.width / 2 - 25) / Mathf.Sin(arrowAngle * Mathf.Deg2Rad)) / screenDirection.magnitude;
+            }
         }
         else
         {
-            factor = Mathf.Abs((Screen.width / 2 - 25) / Mathf.Sin(arrowAngle * Mathf.Deg2Rad)) / screenDirection.magnitude;
+            factor = 200.0f / screenDirection.magnitude;
         }
+        arrowImage.position = Camera.main.WorldToScreenPoint(Vector3.Lerp(playerData.position, arrowTarget.position, factor));
+
         if (factor >= 1) arrowImage.GetComponent<Image>().enabled = false;
         else arrowImage.GetComponent<Image>().enabled = true;
-        arrowImage.position = Camera.main.WorldToScreenPoint(Vector3.Lerp(playerData.position, arrowTarget.position, factor));
     }
 }

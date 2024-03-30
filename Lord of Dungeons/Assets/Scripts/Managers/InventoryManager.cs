@@ -211,7 +211,7 @@ public class InventoryManager : MonoBehaviour
         }
 
 
-        selectedSlot = (selectedSlot + (int)Input.mouseScrollDelta.y + 9) % 9;
+        if (!UIManager.Instance.npcWindowActive) selectedSlot = (selectedSlot + (int)Input.mouseScrollDelta.y + 9) % 9;
         toolBar[selectedSlot].selectSlot();
 
         if (Input.GetKeyUp(UIManager.Instance.keyCodes[14]) && (TrainingManager.Instance == null || TrainingManager.Instance != null && !TrainingManager.Instance.itemUsageBlocked))
