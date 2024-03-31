@@ -13,63 +13,13 @@ MonoBehaviour:
   m_Name: RecipeCollection
   m_EditorClassIdentifier: 
   Recipe:
-  - craftItem: {fileID: 11400000, guid: fefa174d7d9d4224bb9e2d6c512cdf67, type: 2}
+  - craftItem: {fileID: 11400000, guid: 0096631c82fad394c87d28bf0d6722f1, type: 2}
     ItemId: 0
     materials:
-    - amount: 4
-      materialId: 1
-    - amount: 2
-      materialId: 4
-  - craftItem: {fileID: 11400000, guid: 0a8989261c20e58459a5f4ebf6e4cc98, type: 2}
-    ItemId: 1
-    materials:
     - amount: 2
       materialId: 0
-    - amount: 4
-      materialId: 1
-    - amount: 1
-      materialId: 3
-  - craftItem: {fileID: 11400000, guid: de95299caa47e9545923684b319cd34d, type: 2}
-    ItemId: 2
-    materials:
-    - amount: 3
-      materialId: 0
-    - amount: 3
-      materialId: 1
-    - amount: 1
-      materialId: 3
-  - craftItem: {fileID: 11400000, guid: 51b54330146aa544a82654267ec7ae09, type: 2}
-    ItemId: 3
-    materials:
-    - amount: 4
-      materialId: 1
-    - amount: 1
-      materialId: 2
-  - craftItem: {fileID: 11400000, guid: dbbbd316b6060054e9ac3d4bb8a0c0b9, type: 2}
-    ItemId: 4
-    materials:
-    - amount: 4
-      materialId: 6
-    - amount: 4
-      materialId: 5
-  - craftItem: {fileID: 11400000, guid: 79df8dbdbf1e753478e67d38c5d5307e, type: 2}
-    ItemId: 5
-    materials:
-    - amount: 3
-      materialId: 5
-    - amount: 1
-      materialId: 3
-    - amount: 1
-      materialId: 2
-  - craftItem: {fileID: 11400000, guid: 0096631c82fad394c87d28bf0d6722f1, type: 2}
-    ItemId: 6
-    materials:
-    - amount: 2
-      materialId: 0
-    - amount: 6
-      materialId: 3
   - craftItem: {fileID: 11400000, guid: 24b7b41a74928a843bc2b0f5d2a8750d, type: 2}
-    ItemId: 7
+    ItemId: 1
     materials:
     - amount: 1
       materialId: 0
@@ -78,7 +28,7 @@ MonoBehaviour:
     - amount: 3
       materialId: 3
   - craftItem: {fileID: 11400000, guid: 8a2101e15bbf0104ebfeb69816b3af0d, type: 2}
-    ItemId: 8
+    ItemId: 2
     materials:
     - amount: 5
       materialId: 2
@@ -87,7 +37,7 @@ MonoBehaviour:
     - amount: 2
       materialId: 4
   - craftItem: {fileID: 11400000, guid: fafe80f71bcfacb44bad767901d9242c, type: 2}
-    ItemId: 9
+    ItemId: 3
     materials:
     - amount: 2
       materialId: 0
@@ -96,13 +46,67 @@ MonoBehaviour:
     - amount: 2
       materialId: 4
   - craftItem: {fileID: 11400000, guid: bbef4c927fa482a49818788ea9da9252, type: 2}
-    ItemId: 10
+    ItemId: 4
     materials:
     - amount: 2
       materialId: 0
     - amount: 6
       materialId: 6
   - craftItem: {fileID: 11400000, guid: a6e35bc639bff6b4385bbc6fa4283d9f, type: 2}
+    ItemId: 5
+    materials:
+    - amount: 6
+      materialId: 0
+    - amount: 3
+      materialId: 6
+    - amount: 5
+      materialId: 3
+  - craftItem: {fileID: 11400000, guid: 2e297ed268c4de84593280444fa1baf3, type: 2}
+    ItemId: 6
+    materials:
+    - amount: 6
+      materialId: 0
+    - amount: 3
+      materialId: 6
+    - amount: 5
+      materialId: 3
+  - craftItem: {fileID: 11400000, guid: b6d629e7fc3a2c945b327661d6bcdf34, type: 2}
+    ItemId: 7
+    materials:
+    - amount: 6
+      materialId: 0
+    - amount: 3
+      materialId: 6
+    - amount: 5
+      materialId: 3
+  - craftItem: {fileID: 11400000, guid: 91d0415cbc7b4694d8e0c46f964feb4b, type: 2}
+    ItemId: 8
+    materials:
+    - amount: 6
+      materialId: 0
+    - amount: 3
+      materialId: 6
+    - amount: 5
+      materialId: 3
+  - craftItem: {fileID: 11400000, guid: 3203788b25a6f0046b2eec55ac9ac4c6, type: 2}
+    ItemId: 9
+    materials:
+    - amount: 6
+      materialId: 0
+    - amount: 3
+      materialId: 6
+    - amount: 5
+      materialId: 3
+  - craftItem: {fileID: 11400000, guid: a9bc2ac444e6db94a82141346f0f156c, type: 2}
+    ItemId: 10
+    materials:
+    - amount: 6
+      materialId: 0
+    - amount: 3
+      materialId: 6
+    - amount: 5
+      materialId: 3
+  - craftItem: {fileID: 11400000, guid: aa4e80fd14da3c34381a9d5954af523d, type: 2}
     ItemId: 11
     materials:
     - amount: 6
@@ -111,31 +115,96 @@ MonoBehaviour:
       materialId: 6
     - amount: 5
       materialId: 3
-  - craftItem: {fileID: 11400000, guid: c774abe7d32c663498c01a019d7baa4d, type: 2}
+  - craftItem: {fileID: 11400000, guid: 55e3559edeaffbe45913471e54ae8ace, type: 2}
     ItemId: 12
     materials:
-    - amount: 5
+    - amount: 6
       materialId: 0
+    - amount: 3
+      materialId: 6
     - amount: 5
       materialId: 3
-  - craftItem: {fileID: 11400000, guid: e0fb87410f6a96a4cb772b2f677479f2, type: 2}
+  - craftItem: {fileID: 11400000, guid: 54c57f519c3e12747bc822c8294a7c91, type: 2}
     ItemId: 13
     materials:
-    - amount: 8
-      materialId: 4
-    - amount: 4
+    - amount: 6
       materialId: 0
-    - amount: 2
-      materialId: 4
-  - craftItem: {fileID: 11400000, guid: de95299caa47e9545923684b319cd34d, type: 2}
+    - amount: 3
+      materialId: 6
+    - amount: 5
+      materialId: 3
+  - craftItem: {fileID: 11400000, guid: 05eaa33c9c6558d41a52f9281e995bf8, type: 2}
     ItemId: 14
     materials:
-    - amount: 2
-      materialId: 5
-    - amount: 4
-      materialId: 2
+    - amount: 6
+      materialId: 0
+    - amount: 3
+      materialId: 6
     - amount: 5
-      materialId: 1
+      materialId: 3
+  - craftItem: {fileID: 11400000, guid: 3760973accdbee542aa373860ca87be0, type: 2}
+    ItemId: 15
+    materials:
+    - amount: 6
+      materialId: 0
+    - amount: 3
+      materialId: 6
+    - amount: 5
+      materialId: 3
+  - craftItem: {fileID: 11400000, guid: 2501ec1d5d66a9645b7e4d7d877db686, type: 2}
+    ItemId: 16
+    materials:
+    - amount: 6
+      materialId: 0
+    - amount: 3
+      materialId: 6
+    - amount: 5
+      materialId: 3
+  - craftItem: {fileID: 11400000, guid: 54339221f63c39e4881d78f5ecd95945, type: 2}
+    ItemId: 17
+    materials:
+    - amount: 6
+      materialId: 0
+    - amount: 3
+      materialId: 6
+    - amount: 5
+      materialId: 3
+  - craftItem: {fileID: 11400000, guid: ebee9dcf2ba6edc48adbdcafbce9e6fe, type: 2}
+    ItemId: 18
+    materials:
+    - amount: 6
+      materialId: 0
+    - amount: 3
+      materialId: 6
+    - amount: 5
+      materialId: 3
+  - craftItem: {fileID: 11400000, guid: bcec95ea8e9f076489b4dc78b86ad9af, type: 2}
+    ItemId: 19
+    materials:
+    - amount: 6
+      materialId: 0
+    - amount: 3
+      materialId: 6
+    - amount: 5
+      materialId: 3
+  - craftItem: {fileID: 11400000, guid: 8b51bf74f2f6e68459310a73fa8ecf84, type: 2}
+    ItemId: 20
+    materials:
+    - amount: 6
+      materialId: 0
+    - amount: 3
+      materialId: 6
+    - amount: 5
+      materialId: 3
+  - craftItem: {fileID: 11400000, guid: 3c4b4ce8a01b08840b6b8ac6478a0ea3, type: 2}
+    ItemId: 21
+    materials:
+    - amount: 6
+      materialId: 0
+    - amount: 3
+      materialId: 6
+    - amount: 5
+      materialId: 3
   materials:
   - MaterialSprite: {fileID: -1951645582, guid: 4a40cc9ce2b1e964a9746080cf604546, type: 3}
     MaterialId: 0
