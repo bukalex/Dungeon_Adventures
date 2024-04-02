@@ -182,9 +182,13 @@ public class InventoryManager : MonoBehaviour
                         break;
                 }
             }
-
-         
         }
+
+        InventorySlot helmSlot = helmetSlot.GetComponent<InventorySlot>();
+        if (helmetSlot.transform.childCount == 1)
+            directions.ForEach(i => i.Hair.sprite = null);
+        else
+            directions.ForEach(i => i.Hair.sprite = i.Hair.GetComponent<SpriteMapping>().FindSprite(hairAtlas));
 
         if (Input.GetMouseButtonDown(1))
         {
