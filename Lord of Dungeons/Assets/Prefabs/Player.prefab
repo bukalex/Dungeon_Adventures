@@ -3838,6 +3838,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3472088174676578112}
   - component: {fileID: 7589761041327516888}
+  - component: {fileID: 3100152944165238342}
   m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
@@ -3918,6 +3919,14 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!222 &3100152944165238342
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3083103462531324263}
+  m_CullTransparentMesh: 1
 --- !u!1 &3242118969268548250
 GameObject:
   m_ObjectHideFlags: 0

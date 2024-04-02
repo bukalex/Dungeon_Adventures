@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using TMPro;
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
@@ -12,13 +9,14 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     public Color selectedSlot, nonSelectedSlot;
     public Image image;
 
+    public string slotTag;
+
     private void Awake()
     {
         //unselectSlot();
     }
-    private void Update()
+    private void Start()
     {
-        //InventoryManager.Instance.ItemDescription.transform.position = Input.mousePosition + new Vector3(250f, 100f);
     }
     public void selectSlot()
     {

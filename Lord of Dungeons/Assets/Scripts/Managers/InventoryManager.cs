@@ -6,7 +6,9 @@ using UnityEngine;
 using UnityEngine.U2D;
 using System;
 using Random = UnityEngine.Random;
+
 using System.Linq;
+using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -65,8 +67,6 @@ public class InventoryManager : MonoBehaviour
     public Item itemToChange;
     public InventoryItem currentInventoryItem;
     private bool isEmpty = true;
-    //private List<InventorySlot> previousBusySlots = new List<InventorySlot>(); 
-
 
     public static InventoryManager Instance { get; private set; }
     public void Awake()
@@ -76,6 +76,12 @@ public class InventoryManager : MonoBehaviour
     private void Start()
     {
         InitializeSlots();
+
+        foreach(InventorySlot slot in equipmentSlots)
+        {
+            slot.slotTag = slot.tag;
+        }
+
         //Create all items in a cheat chest
         foreach (var item in allItems)
             AddItem(item, cheatSlots, cheatSlots);
@@ -130,9 +136,54 @@ public class InventoryManager : MonoBehaviour
     }
     private void Update()
     {
-        StartCoroutine(onSlotChanged(equipmentSlots.ToList(), () => Debug.Log("232"))); 
+        
+        
+        foreach (InventorySlot slot in equipmentSlots)
+        {
+            StartCoroutine(onSlotEquiped(slot, () =>
+            {
+                if (slot.transform.childCount > 0)
+                {
+                    Item item = slot.GetComponentInChildren<InventoryItem>().item;
+                    if (item.itemType == Item.ItemType.Weapon)
+                        EquipeWeapon(item);
+                    else
+                        EquipeArmor(item);
+                }
+            }));
+        }
 
+        foreach (InventorySlot slot in equipmentSlots)
+        {
+           if(slot.transform.childCount == 0)
+            {
+                switch (slot.slotTag)
+                {
+                    case "Sword":
+                        directions.ForEach(i => i.MainWeapon.sprite = null);
+                        directions.ForEach(i => i.Handle.sprite = null);
+                        directions.ForEach(i => i.LimbL.sprite = null);
+                        directions.ForEach(i => i.LimbU.sprite = null);
+                        break;
+                    case "Boots":
+                        directions.ForEach(i => i.LeftLeg.sprite = null);
+                        directions.ForEach(i => i.RightLeg.sprite = null);
+                        break;
+                    case "Chestplate":
+                        directions.ForEach(i => i.Armor.sprite = null);
+                        break;
+                    case "Helmet":
+                        directions.ForEach(i => i.Helmet.sprite = null);
+                        break;
+                    case "Gloves":
+                        directions.ForEach(i => i.LeftArm.sprite = null);
+                        directions.ForEach(i => i.RightArm.sprite = null);
+                        break;
+                }
+            }
 
+         
+        }
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -172,44 +223,6 @@ public class InventoryManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha8)) selectedSlot = 7;
             if (Input.GetKeyDown(KeyCode.Alpha9)) selectedSlot = 8;
         }
-
-        foreach (InventorySlot equipmentSlot in equipmentSlots)
-        {
-            InventoryItem itemInSlot = equipmentSlot.GetComponentInChildren<InventoryItem>();
-            if(itemInSlot != null)
-            {
-                if (itemInSlot.item.itemType == Item.ItemType.Weapon)
-                {
-                    EquipeWeapon(itemInSlot.item);
-                }
-                else
-                    EquipeArmor(itemInSlot.item);
-            }
-        }
-
-        InventorySlot helmSlot = helmetSlot.GetComponent<InventorySlot>();
-        if (helmetSlot.transform.childCount == 1)
-            directions.ForEach(i => i.Hair.sprite = null);
-        else
-            directions.ForEach(i => i.Hair.sprite = i.Hair.GetComponent<SpriteMapping>().FindSprite(hairAtlas));
-
-        InventorySlot glovSlot = glovesSlot.GetComponent<InventorySlot>();
-        if (glovSlot.transform.childCount == 0)
-        {
-            directions.ForEach(i => i.LeftArm.sprite = null);
-            directions.ForEach(i => i.RightArm.sprite = null);
-        }
-
-        InventorySlot swrdSlot = swordSlot.GetComponent<InventorySlot>();
-        if (swrdSlot.transform.childCount == 0)
-        {
-            directions.ForEach(i => i.MainWeapon.sprite = null);
-            directions.ForEach(i => i.Handle.sprite =null );
-            directions.ForEach(i => i.LimbU.sprite = null );
-            directions.ForEach(i => i.LimbL.sprite = null );
-
-        }
-
 
         if (!UIManager.Instance.npcWindowActive) selectedSlot = (selectedSlot + (int)Input.mouseScrollDelta.y + 9) % 9;
         toolBar[selectedSlot].selectSlot();
@@ -326,6 +339,7 @@ public class InventoryManager : MonoBehaviour
                 directions.ForEach(i => i.RightArm.sprite = i.RightArm.GetComponent<SpriteMapping>().FindSprite(armorSprite));
                 break;
             case BodyPartName.Head:
+
                 directions.ForEach(i => i.Helmet.sprite = i.Helmet.GetComponent<SpriteMapping>().FindSprite(armorSprite));
                 break;
         }
@@ -552,7 +566,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
         return false;
-    }
+    }   
 
     public bool AddAbility(Ability ability)
     {
@@ -782,38 +796,10 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    private Func<bool> EquipmentSlotChanged(List<InventorySlot> equipmentSlots123)
+    private IEnumerator onSlotEquiped(InventorySlot equipmentSlot, Action callback)
     {
-        List<InventorySlot> openSlots = new List<InventorySlot>();
-        List<InventorySlot> busySlots = new List<InventorySlot>();
-        int adjSlotAmount = 0;
-        int previousOpenSlotsCount = 0;
-        int previousBusySlotsCount = 0;
+        yield return new WaitUntil(() => equipmentSlot != null);
 
-        foreach (InventorySlot slot in equipmentSlots123)
-        {
-            if (slot.GetComponentInChildren<InventoryItem>() != null)
-                busySlots.Add(slot);
-            else
-            {
-                openSlots.Add(slot);
-            }
-            previousOpenSlotsCount = openSlots.Count;
-        }
-
-        if (previousOpenSlotsCount < openSlots.Count)
-            {
-                return () => true;
-            }
-        busySlots.Clear();
-        return () => false;
-    }
-
-    public IEnumerator onSlotChanged(List<InventorySlot> equipmentSlots123, Action callback)
-    {
-        yield return new WaitUntil(EquipmentSlotChanged(equipmentSlots123));
-        Debug.Log("Hah");
         callback();
     }
 }
-
