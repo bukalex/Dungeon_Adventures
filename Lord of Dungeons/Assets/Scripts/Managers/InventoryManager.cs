@@ -7,9 +7,6 @@ using UnityEngine.U2D;
 using System;
 using Random = UnityEngine.Random;
 
-using System.Linq;
-using static UnityEditor.Progress;
-
 public class InventoryManager : MonoBehaviour
 {
     public WeaponType currentWeaponType;
