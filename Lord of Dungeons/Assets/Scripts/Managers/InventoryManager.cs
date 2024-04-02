@@ -348,19 +348,16 @@ public class InventoryManager : MonoBehaviour
 
     public void EquipeWeapon(Item item)
     {
-        SpriteAtlas bowSprites = spriteCollection.Bows[item.atlasID].Sprites;
-        Sprite swordSprite = spriteCollection.Swords[item.atlasID].Sprite;
-
         switch (item.weaponType)
         {
             case WeaponType.Bow:
-                directions.ForEach(i => i.Handle.sprite = i.Handle.GetComponent<SpriteMapping>().FindSprite(bowSprites));
-                directions.ForEach(i => i.LimbU.sprite = i.LimbU.GetComponent<SpriteMapping>().FindSprite(bowSprites));
-                directions.ForEach(i => i.LimbL.sprite = i.LimbL.GetComponent<SpriteMapping>().FindSprite(bowSprites));
+                directions.ForEach(i => i.Handle.sprite = i.Handle.GetComponent<SpriteMapping>().FindSprite(spriteCollection.Bows[item.atlasID].Sprites));
+                directions.ForEach(i => i.LimbU.sprite = i.LimbU.GetComponent<SpriteMapping>().FindSprite(spriteCollection.Bows[item.atlasID].Sprites));
+                directions.ForEach(i => i.LimbL.sprite = i.LimbL.GetComponent<SpriteMapping>().FindSprite(spriteCollection.Bows[item.atlasID].Sprites));
                 currentWeaponType = WeaponType.Bow;
                 break;
             case WeaponType.Sword:
-                directions.ForEach(i => i.MainWeapon.sprite = swordSprite);
+                directions.ForEach(i => i.MainWeapon.sprite = spriteCollection.Swords[item.atlasID].Sprite);
                 currentWeaponType = WeaponType.Sword;
                 break;
         }
