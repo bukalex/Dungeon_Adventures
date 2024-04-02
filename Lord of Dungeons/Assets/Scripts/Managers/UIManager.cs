@@ -104,7 +104,6 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        
         resolutions = Screen.resolutions;
 
         resolutionDropdown.ClearOptions();

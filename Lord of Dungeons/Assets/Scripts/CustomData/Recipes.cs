@@ -6,7 +6,6 @@ using UnityEngine;
 namespace Assets.Scripts.Recipes
 {
     [Serializable]
-
     public struct ItemRecipe
     {
         public Item craftItem;

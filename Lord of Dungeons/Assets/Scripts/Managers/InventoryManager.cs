@@ -397,7 +397,6 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log(itemPosition);
         if(itemPosition == 0)
         {
             for (int i = 0; i < inventoryType2.Length; i++)
@@ -426,7 +425,10 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
-    public void instantlyMoveItem(Item item, InventorySlot[] toolbar, InventorySlot[] inventoryType2, InventorySlot[] inventoryType3)
+
+    //need to be finished (Alex)
+
+ /*   public void instantlyMoveItem(Item item, InventorySlot[] toolbar, InventorySlot[] inventoryType2, InventorySlot[] inventoryType3)
     {
         int itemPosition = -1;
 
@@ -471,7 +473,7 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
-    }
+    }*/
     public bool fillStacks(Item item, InventorySlot[] InventoryType)
     {
         for (int i = 0; i < InventoryType.Length; i++)
