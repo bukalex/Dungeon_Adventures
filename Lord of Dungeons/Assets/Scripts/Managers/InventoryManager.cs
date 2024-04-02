@@ -173,7 +173,7 @@ public class InventoryManager : MonoBehaviour
                         directions.ForEach(i => i.Armor.sprite = null);
                         break;
                     case "Helmet":
-                        directions.ForEach(i => i.Hair.gameObject.SetActive(true));
+                        directions.ForEach(i => i.Hair.color = new Color(0, 0, 0, 0));
                         directions.ForEach(i => i.Helmet.sprite = null);
                         break;
                     case "Gloves":
