@@ -173,6 +173,7 @@ public class InventoryManager : MonoBehaviour
                         directions.ForEach(i => i.Armor.sprite = null);
                         break;
                     case "Helmet":
+                        directions.ForEach(i => i.Hair.gameObject.SetActive(true));
                         directions.ForEach(i => i.Helmet.sprite = null);
                         break;
                     case "Gloves":
@@ -339,7 +340,7 @@ public class InventoryManager : MonoBehaviour
                 directions.ForEach(i => i.RightArm.sprite = i.RightArm.GetComponent<SpriteMapping>().FindSprite(armorSprite));
                 break;
             case BodyPartName.Head:
-
+                directions.ForEach(i => i.Helmet.sprite = i.Helmet.GetComponent<SpriteMapping>().FindSprite(armorSprite));
                 directions.ForEach(i => i.Helmet.sprite = i.Helmet.GetComponent<SpriteMapping>().FindSprite(armorSprite));
                 break;
         }
