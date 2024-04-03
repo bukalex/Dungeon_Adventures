@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security;
 using TMPro;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +13,7 @@ public class LootableController : MonoBehaviour, IInteractable
     private LootableParameters lootableParameters;
     [SerializeField]
     private int chestIndex;
-    private GameObject chestInventory;
+    public GameObject chestInventory;
     [SerializeField]
     private Animator animator;
     [SerializeField]
@@ -18,6 +21,15 @@ public class LootableController : MonoBehaviour, IInteractable
     [SerializeField]
     private GameObject interactIconPrefab;
     private GameObject interactIcon;
+    [Header("Trapped Chest Properties")]
+    [SerializeField]
+    private bool isTrapped;
+    private bool triggered = false;
+    [SerializeField]
+    public GameObject encounter;
+    [SerializeField]
+    public List<GameObject> enemies = new List<GameObject>();
+    public float remaining;
 
     private bool beingChecked;
 
@@ -36,20 +48,41 @@ public class LootableController : MonoBehaviour, IInteractable
     }
     public void BeingLooted(bool isLooted)
     {
-
-        
-        if (chestInventory != null)
+        if (isTrapped == false)
         {
-            beingChecked = isLooted;
-            chestInventory.SetActive(isLooted);
-            UIManager.Instance.InventorySlots.SetActive(isLooted);
-            
-            Debug.Log("Inventory chest should open.");
+            if (chestInventory != null)
+            {
+                beingChecked = isLooted;
+                chestInventory.SetActive(isLooted);
+                UIManager.Instance.InventorySlots.SetActive(isLooted);
+
+                Debug.Log("Inventory chest should open.");
+            }
+            Open();
+            //beingChecked = false;
+            UIManager.Instance.npcWindowActive = isLooted;
+            if (!isLooted) InventoryManager.Instance.ItemDescription.SetActive(false);
         }
-        Open();
-        //beingChecked = false;
-        UIManager.Instance.npcWindowActive = isLooted;
-        if (!isLooted) InventoryManager.Instance.ItemDescription.SetActive(false);
+        else
+        {
+            
+            if(isTrapped == true && triggered == false)
+            {
+                encounter.SetActive(true);
+                triggered = true;
+                Debug.Log("Trap has been triggered?: " + triggered);
+            }
+            enemies.RemoveAll(enemy => enemy == null);
+            remaining = enemies.Count;
+
+            if (remaining <= 0)
+            {
+                isTrapped = false;
+            }
+
+            
+        }
+        
     }
 
     public float GetColliderRadius()
