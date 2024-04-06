@@ -22,6 +22,7 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
     [SerializeField]
     private LootRandomizer randomizer;
 
+
     private Vector3 lastPlayerPosition;
     private Vector3 movementDirection = Vector3.zero;
     private float targetDistance;
@@ -30,12 +31,14 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
     private int spriteOrder;
     private int enemyOrder;
     private float angle;
+    private const float CrisisHp = 0.1f;
 
     public enum DirectionName { FRONT, BACK, LEFT, RIGHT }
 
     void Awake()
     {
         enemyParameters = Instantiate(enemyParametersOriginal);
+        
 
         lastPlayerPosition = transform.position;
         animator.runtimeAnimatorController = enemyParameters.animController;
@@ -94,6 +97,7 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
             //Movement and attack
             if (PlayerDetected())
             {
+                SoundManager.Instance.SetGameState(SoundManager.GameState.Combat);
                 ChangeDirection();
                 lastPlayerPosition = enemyParameters.playerData.position;
 
@@ -150,6 +154,8 @@ public class EnemyController : MonoBehaviour, IDefensiveMonoBehaviour
         }
         else if (!alreadyDead && !enemyParameters.isStunned)
         {
+            SoundManager.Instance.SetGameState(SoundManager.GameState.Normal);
+            
             capsuleCollider.enabled = false;
             GetComponentInChildren<PolygonCollider2D>().enabled = false;
             body.velocity = Vector3.zero;
