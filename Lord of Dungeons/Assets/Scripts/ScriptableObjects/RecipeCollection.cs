@@ -7,10 +7,22 @@ using Material = Assets.Scripts.Recipes.Material;
 [CreateAssetMenu(menuName = "ScriptableObjects/RecipeCollection")]
 public class RecipeCollection : ScriptableObject
 {
+    public List<DishRecipe> Dishes = new List<DishRecipe>();
     public List<ItemRecipe> Recipe = new List<ItemRecipe>();
 
     public List<Material> materials = new List<Material>();
 
+    public List<Item> GetIngridientList(DishRecipe recipe)
+    {
+        List<Item> ingridientList = new List<Item>();
+
+        foreach (RequiredIngridients ingridient in recipe.ingridients)
+        {
+            ingridientList.Add(ingridient.ingridient);
+        }
+
+        return ingridientList;
+    }
     public string GetItemName(int ItemID)
     {
         return Recipe[ItemID].ItemName;

@@ -12,6 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe3737c6e5d0534ea8eadb82464d88e, type: 3}
   m_Name: RecipeCollection
   m_EditorClassIdentifier: 
+  Dishes:
+  - dish: {fileID: 0}
+    failedDish: {fileID: 0}
+    dishName: 
+    ingridients:
+    - ingridient: {fileID: 0}
+      ingridientAmount: 0
   Recipe:
   - craftItem: {fileID: 11400000, guid: a4f48891a08850c408f1a1145e31ce14, type: 2}
     ItemId: 0
