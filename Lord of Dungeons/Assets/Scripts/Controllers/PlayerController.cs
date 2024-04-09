@@ -232,6 +232,7 @@ public class PlayerController : MonoBehaviour, IDefensiveMonoBehaviour
         {
             Die();
             SoundManager.Instance.PlaySE(SESoundData.SE.PlayerDeath);
+            SoundManager.Instance.SetGameState(SoundManager.GameState.Normal);
 
             capsuleCollider.enabled = false;
             body.velocity = Vector3.zero;
