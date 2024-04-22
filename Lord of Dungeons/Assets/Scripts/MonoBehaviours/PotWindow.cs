@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Assets.Scripts.Recipes;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using System.Linq;
+using UnityEngine.Events;
 
 public class PotWindow : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class PotWindow : MonoBehaviour
     [SerializeField] private InventorySlot ingridientSlot;
     [SerializeField] private InventorySlot dishSlot;
     [SerializeField] private Slider progressBar;
+    [SerializeField] private UnityEvent onIngridientAdd;
 
     private List<CustomDictionary<Item, int>> insertedIngridients = new List<CustomDictionary<Item, int>>();
     private string requiredFood;
@@ -23,6 +25,8 @@ public class PotWindow : MonoBehaviour
     {
         addIngridientButton.onClick.AddListener(() => InsertItem(ingridientSlot.GetComponentInChildren<InventoryItem>().item));
         startCookingButton.onClick.AddListener(() => CookDish());
+
+        onIngridientAdd.AddListener (() => { if (ingridientSlot.transform.childCount == 1) onIngridientAdd.Invoke(); });
     }
 
     private void InsertItem(Item ingridientInSlot)
