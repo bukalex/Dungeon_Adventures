@@ -6,50 +6,47 @@ using Assets.Scripts.Recipes;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using System.Linq;
 using UnityEngine.Events;
+using System.Collections;
+using System;
+using Unity.VisualScripting;
 
 public class PotWindow : MonoBehaviour
 {
     [SerializeField] private RecipeCollection recipeCollection;
     [SerializeField] private TMP_Text text;
-    [SerializeField] private Button addIngridientButton;
     [SerializeField] private Button startCookingButton;
     [SerializeField] private InventorySlot ingridientSlot;
     [SerializeField] private InventorySlot dishSlot;
     [SerializeField] private Slider progressBar;
-    [SerializeField] private UnityEvent onIngridientAdd;
+    public UnityEvent onIngridientAdd;
 
+    public Item ingridientInSlot;
     private List<CustomDictionary<Item, int>> insertedIngridients = new List<CustomDictionary<Item, int>>();
     private string requiredFood;
     private int ingridientAmount;
     private void Start()
     {
-        addIngridientButton.onClick.AddListener(() => InsertItem(ingridientSlot.GetComponentInChildren<InventoryItem>().item));
         startCookingButton.onClick.AddListener(() => CookDish());
-
-        onIngridientAdd.AddListener (() => { if (ingridientSlot.transform.childCount == 1) onIngridientAdd.Invoke(); });
     }
 
-    private void InsertItem(Item ingridientInSlot)
+    public void InsertItem()
     {
-        if(ingridientInSlot != null)
-        {
-            CustomDictionary<Item, int> existedIngridient = insertedIngridients.Find(i => i.ContainsKey(ingridientInSlot));
+        CustomDictionary<Item, int> existedIngridient = insertedIngridients.Find(i => i.ContainsKey(ingridientInSlot));
 
-            if(existedIngridient != null)
-            {
-                insertedIngridients.Find(i => i == existedIngridient)[ingridientInSlot] += ingridientSlot.GetComponentInChildren<InventoryItem>().count;
+        if(existedIngridient != null)
+        {
+            insertedIngridients.Find(i => i == existedIngridient)[ingridientInSlot] += ingridientSlot.GetComponentInChildren<InventoryItem>().count;
                 
-            }
-            else
-            {
-                CustomDictionary<Item, int> ingrigient = new CustomDictionary<Item, int>
-                {
-                    { ingridientInSlot, ingridientSlot.GetComponentInChildren<InventoryItem>().count }
-                };
-                insertedIngridients.Insert(insertedIngridients.Count, ingrigient);
-            }
-            Destroy(ingridientSlot.GetComponentInChildren<InventoryItem>().gameObject);
         }
+        else
+        {
+            CustomDictionary<Item, int> ingrigient = new CustomDictionary<Item, int>
+            {
+                { ingridientInSlot, ingridientSlot.GetComponentInChildren<InventoryItem>().count }
+            };
+            insertedIngridients.Insert(insertedIngridients.Count, ingrigient);
+        }
+        Destroy(ingridientSlot.GetComponentInChildren<InventoryItem>().gameObject);
     }
 
     private void CookDish()
@@ -74,7 +71,7 @@ public class PotWindow : MonoBehaviour
             }
         }
 
-        InventoryManager.Instance.spawnNewItem(possibleDishes[Random.Range(0, possibleDishes.Count - 1)]);
+        InventoryManager.Instance.spawnNewItem(possibleDishes[UnityEngine.Random.Range(0, possibleDishes.Count - 1)]);
     }
 
     private bool isEnoughIngridients(DishRecipe recipe, List<int> amount, List<Item> ingridients)
@@ -105,4 +102,5 @@ public class PotWindow : MonoBehaviour
 
         return false;
     }
+
 }

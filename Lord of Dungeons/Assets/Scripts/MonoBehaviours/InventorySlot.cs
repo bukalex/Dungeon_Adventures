@@ -27,10 +27,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     {
         image.color = nonSelectedSlot;
     }
-    public void OnDrop(PointerEventData eventData)
+    public void OnDrop(PointerEventData eventData)  
     {
         GameObject dropped = eventData.pointerDrag;
         InventoryItem inventoryItem = dropped.GetComponent<InventoryItem>();
+
         //Check if item and slot have the same tag
         #region
         //Inventory slots
@@ -58,11 +59,22 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             }
         }
         #endregion
+
+        if (transform.parent.GetComponentInParent<PotWindow>() != null)
+        {
+            StartCoroutine(IngridientEvent(0.1f));
+        }
     }
     public IEnumerator onItemDescribe(float interval)
     {
         yield return new WaitForSeconds(interval);
         InventoryManager.Instance.ItemDescription.SetActive(true);
     }
+    private IEnumerator IngridientEvent(float timer)
+    {
+        yield return new WaitForSeconds(timer);
 
+        transform.parent.GetComponentInParent<PotWindow>().ingridientInSlot = transform.GetComponentInChildren<InventoryItem>().item;
+        transform.parent.GetComponentInParent<PotWindow>().onIngridientAdd.Invoke();
+    }
 }
