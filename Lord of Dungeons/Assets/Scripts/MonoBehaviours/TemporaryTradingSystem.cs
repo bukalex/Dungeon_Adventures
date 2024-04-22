@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using System.Linq;
 
 public class TemporaryTradingSystem : MonoBehaviour
 {
@@ -79,7 +80,7 @@ public class TemporaryTradingSystem : MonoBehaviour
             playerData.resources[Item.CoinType.SilverCoin] -= itemInStore.item.SilverCoin;
             playerData.resources[Item.CoinType.CopperCoin] -= itemInStore.item.CopperCoin;
 
-            InventoryManager.Instance.AddItem(itemInStore.item, InventoryManager.Instance.toolBar, InventoryManager.Instance.internalInventorySlots);
+            InventoryManager.Instance.AddItem(itemInStore.item, InventoryManager.Instance.toolBar.ToList(), InventoryManager.Instance.internalInventorySlots.ToList());
         }
     }
 

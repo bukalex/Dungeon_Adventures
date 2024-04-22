@@ -6,17 +6,19 @@ using UnityEngine;
 using UnityEngine.U2D;
 using System;
 using Random = UnityEngine.Random;
+using System.Linq;
 
 public class InventoryManager : MonoBehaviour
 {
     public WeaponType currentWeaponType;
 
     public GameObject ItemDescription;
-    private InventorySlot[] emp;
+    public InventorySlot[] emp;
     public SpriteCollection spriteCollection;
     public SpriteAtlas hairAtlas;
     public List<PlayerDirection> directions = new List<PlayerDirection>();
     public List<GameObject> inventorySlots = new List<GameObject>();
+   
     [Header("Loot Tables")]
     public Item[] startItems;
     public Item[] allItems;
@@ -81,7 +83,7 @@ public class InventoryManager : MonoBehaviour
 
         //Create all items in a cheat chest
         foreach (var item in allItems)
-            AddItem(item, cheatSlots, cheatSlots);
+            AddItem(item, cheatSlots.ToList(), cheatSlots.ToList());
 
         //Create Random Loot Table from all items in the game
         //foreach (var item in allItems)
@@ -89,7 +91,7 @@ public class InventoryManager : MonoBehaviour
 
         //Pick up items to correct inventory slot
         foreach (var item in startItems)
-            AddItem(item, toolBar, internalInventorySlots);
+            AddItem(item, toolBar.ToList(), internalInventorySlots.ToList());
 
         //adds random items from all items in the game to the inventory of the player
         //foreach (var item in randomLootTable)
@@ -97,7 +99,7 @@ public class InventoryManager : MonoBehaviour
 
         //Create all items in a cheat chest
         foreach (var item in allItems)
-            AddItem(item, cheatSlots, cheatSlots);
+            AddItem(item, cheatSlots.ToList(), cheatSlots.ToList());
 
         //Add bility to a abilitySlots
         foreach(var ability in startAbilities)
@@ -133,22 +135,8 @@ public class InventoryManager : MonoBehaviour
     }
     private void Update()
     {
-        
-        
-        foreach (InventorySlot slot in equipmentSlots)
-        {
-            StartCoroutine(onSlotEquiped(slot, () =>
-            {
-                if (slot.transform.childCount > 0)
-                {
-                    Item item = slot.GetComponentInChildren<InventoryItem>().item;
-                    if (item.itemType == Item.ItemType.Weapon)
-                        EquipeWeapon(item);
-                    else
-                        EquipeArmor(item);
-                }
-            }));
-        }
+
+        EquipEvent();
 
         foreach (InventorySlot slot in equipmentSlots)
         {
@@ -196,7 +184,7 @@ public class InventoryManager : MonoBehaviour
             if (currentInventoryItem != null && Input.GetMouseButtonDown(0) && itemToChange == currentInventoryItem.GetComponent<InventoryItem>().item)
             {
                 if (TrainingManager.Instance != null) TrainingManager.Instance.itemWasClickedAndMoved = true;
-                instantlyMoveItem(itemToChange, toolBar, internalInventorySlots);
+                InstantlyMoveItem(itemToChange, toolBar, internalInventorySlots);
             }
         }
         if (ItemDescription.activeSelf)
@@ -265,62 +253,63 @@ public class InventoryManager : MonoBehaviour
             playerData.specialDefense *= item.item.increaseSpecialDefense;
         }
     }
-    public bool AddItem(Item item, InventorySlot[] InventoryType1, InventorySlot[] InventoryType2)
+    public bool AddItem(Item item, List<InventorySlot> InventoryType1, List<InventorySlot> InventoryType2)
     {
-        //check if any slot has the same item with count lower than max stack
-        for (int i = 0; i < InventoryType1.Length; i++)
+        InventorySlot slotInToolbar = InventoryType1.Find(slot => slot.transform.childCount == 0);
+        InventorySlot slotInventory2 = InventoryType2.Find(slot => slot.transform.childCount == 0);
+
+        InventoryItem itemInToolbar = InventoryType1.Find(slot => slot.GetComponentInChildren<InventoryItem>()?.item == item)?.GetComponentInChildren<InventoryItem>();
+        InventoryItem itemInventory2 = InventoryType2.Find(slot => slot.GetComponentInChildren<InventoryItem>()?.item == item)?.GetComponentInChildren<InventoryItem>();
+
+        Item toolbarItem = itemInToolbar?.item ?? item;
+        Item internalItem = itemInventory2?.item ?? item;
+
+        if (item.isStackable
+            && itemInToolbar != null && itemInToolbar.item == item
+            && itemInToolbar.count < item.unitsPerStack && itemInToolbar.item.isStackable)
         {
-            InventorySlot slot = InventoryType1[i];
-            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count < item.unitsPerStack && itemInSlot.item.isStackable == true)
-            {
-                itemInSlot.count++;
-                itemInSlot.updateCount();
-                return true;
-            }
-            if(InventoryType1 != InventoryType2)
-            {
-                for (int j = 0; j < InventoryType2.Length; j++)
-                {
-                    InventorySlot intertalSlot = InventoryType2[j];
-                    InventoryItem internalItemInSlot = intertalSlot.GetComponentInChildren<InventoryItem>();
-                    if (internalItemInSlot != null && internalItemInSlot.item == item && internalItemInSlot.count < item.unitsPerStack && internalItemInSlot.item.isStackable == true)
-                    {
-                        internalItemInSlot.count++;
-                        internalItemInSlot.updateCount();
-                        return true;
-                    }
-                }
-            }
+            itemInToolbar.count++;
+            itemInToolbar.updateCount();
+
+            return true;
         }
-        //Check if any slot has the same item
-        for (int i = 0; i < InventoryType1.Length; i++)
+        else if (item.isStackable 
+            && itemInventory2 != null && itemInventory2.item == item
+            && itemInventory2.count < item.unitsPerStack && itemInventory2.item.isStackable)
         {
-            InventorySlot slot = InventoryType1[i];
-            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-            if(itemInSlot == null)
-            {
-                spawnNewItem(item, slot);
-                items.Add(item);
-                return true;
-            }
+            itemInventory2.count++;
+            itemInventory2.updateCount();
+
+            return true;
         }
-        if (InventoryType1 != InventoryType2)
+
+        if (slotInToolbar != null || slotInventory2 != null)
         {
-            for (int j = 0; j < InventoryType2.Length; j++)
-            {   
-                InventorySlot internalSlots = InventoryType2[j];
-                InventoryItem internalItemInSlot = internalSlots.GetComponentInChildren<InventoryItem>();
-                if (internalItemInSlot == null)
-                {
-                    spawnNewItem(item, internalSlots);
-                    items.Add(item);
-                    
-                    return true;
-                }
-            }
+            spawnNewItem(item, slotInToolbar ?? slotInventory2);
+            items.Add(item);
+
+            return true;
         }
+
         return false;
+    }
+
+    public void EquipEvent()
+    {
+        foreach (InventorySlot slot in equipmentSlots)
+        {
+            StartCoroutine(onSlotEquiped(slot, () =>
+            {
+                if (slot.transform.childCount > 0)
+                {
+                    Item item = slot.GetComponentInChildren<InventoryItem>().item;
+                    if (item.itemType == Item.ItemType.Weapon)
+                        EquipeWeapon(item);
+                    else
+                        EquipeArmor(item);
+                }
+            }));
+        }
     }
 
     public void EquipeArmor(Item item)
@@ -372,7 +361,7 @@ public class InventoryManager : MonoBehaviour
     {
         //spawnNewItem(item)
     }
-    public void instantlyMoveItem(Item item, InventorySlot[] toolbar, InventorySlot[] inventoryType2)
+    public void InstantlyMoveItem(Item item, InventorySlot[] toolbar, InventorySlot[] inventoryType2)
     {
         int itemPosition = -1;
         for(int i = 0; i < toolbar.Length; i++)

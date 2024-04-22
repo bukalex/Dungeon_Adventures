@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SolidItem : MonoBehaviour
@@ -49,7 +50,7 @@ public class SolidItem : MonoBehaviour
                 Seek();
                 if ((target.position - transform.position).magnitude <= 0.25f)
                 {
-                    if (InventoryManager.Instance.AddItem(item, InventoryManager.Instance.toolBar, InventoryManager.Instance.internalInventorySlots)) Destroy(gameObject);
+                    if (InventoryManager.Instance.AddItem(item, InventoryManager.Instance.toolBar.ToList(), InventoryManager.Instance.internalInventorySlots.ToList())) Destroy(gameObject);
                 }
             }
         }

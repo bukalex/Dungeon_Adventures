@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class TrainingManager : MonoBehaviour
 {
@@ -128,7 +129,7 @@ public class TrainingManager : MonoBehaviour
         {
             for (int i = 0; i < amount; i++)
             {
-                InventoryManager.Instance.AddItem(coin, InventoryManager.Instance.internalInventorySlots, InventoryManager.Instance.toolBar);
+                InventoryManager.Instance.AddItem(coin, InventoryManager.Instance.internalInventorySlots.ToList(), InventoryManager.Instance.toolBar.ToList());
             }
         }
     }
@@ -137,7 +138,7 @@ public class TrainingManager : MonoBehaviour
     {
         for (int i = 0; i < amount; i++)
         {
-            InventoryManager.Instance.AddItem(tutorialItems[index], InventoryManager.Instance.internalInventorySlots, InventoryManager.Instance.toolBar);
+            InventoryManager.Instance.AddItem(tutorialItems[index], InventoryManager.Instance.internalInventorySlots.ToList(), InventoryManager.Instance.toolBar.ToList());
         }
     }
 }
