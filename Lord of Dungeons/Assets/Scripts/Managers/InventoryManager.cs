@@ -85,17 +85,9 @@ public class InventoryManager : MonoBehaviour
         foreach (var item in allItems)
             AddItem(item, cheatSlots.ToList(), cheatSlots.ToList());
 
-        //Create Random Loot Table from all items in the game
-        //foreach (var item in allItems)
-        //    FillRandomLootTable(item);
-
         //Pick up items to correct inventory slot
         foreach (var item in startItems)
             AddItem(item, toolBar.ToList(), internalInventorySlots.ToList());
-
-        //adds random items from all items in the game to the inventory of the player
-        //foreach (var item in randomLootTable)
-        //   AddItem(item, cheatSlots, cheatSlots);
 
         //Create all items in a cheat chest
         foreach (var item in allItems)
@@ -414,55 +406,6 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
-
-    //need to be finished (Alex)
-
- /*   public void instantlyMoveItem(Item item, InventorySlot[] toolbar, InventorySlot[] inventoryType2, InventorySlot[] inventoryType3)
-    {
-        int itemPosition = -1;
-
-        if (itemPosition == -1)
-        {
-            for (int i = 0; i < inventoryType2.Length; i++)
-            {
-                InventorySlot slot = inventoryType2[i];
-                InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-                if (itemInSlot != null)
-                {
-                    itemPosition = 1;
-                    break;
-                }
-            }
-        }
-        Debug.Log(itemPosition);
-        if (itemPosition == 0)
-        {
-            for (int i = 0; i < inventoryType2.Length; i++)
-            {
-                InventorySlot slot = inventoryType2[i];
-                InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-                if (itemInSlot == null)
-                {
-                    currentInventoryItem.transform.parent = slot.transform;
-                    break;
-                }
-            }
-        }
-
-        if (itemPosition == 1)
-        {
-            for (int i = 0; i < toolbar.Length; i++)
-            {
-                InventorySlot slot = toolbar[i];
-                InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-                if (itemInSlot == null)
-                {
-                    currentInventoryItem.transform.parent = slot.transform;
-                    break;
-                }
-            }
-        }
-    }*/
     public bool fillStacks(Item item, InventorySlot[] InventoryType)
     {
         for (int i = 0; i < InventoryType.Length; i++)
@@ -622,12 +565,6 @@ public class InventoryManager : MonoBehaviour
         InventoryItem inventoryItem = newItemGo.GetComponent<InventoryItem>();
         inventoryItem.InitializeItem(item);
     }
-    //public void spawnNewItem(Item item, InventorySlot slot)
-    //{
-    //    GameObject newItemGo = Instantiate(inventoryItemPrefab, slot.transform);
-    //    InventoryItem inventoryItem = newItemGo.GetComponent<InventoryItem>();
-    //    inventoryItem.InitializeItem(item);
-    //}
     public void spawnNewAbility(Ability ability, AbilitySlot slot, int rank = 1)
     {
         GameObject newAbilityGo = Instantiate(abilityItemPrefab, slot.transform);
@@ -785,7 +722,6 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
-
     private IEnumerator onSlotEquiped(InventorySlot equipmentSlot, Action callback)
     {
         yield return new WaitUntil(() => equipmentSlot != null);
